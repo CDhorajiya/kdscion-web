@@ -261,6 +261,58 @@
             background: rgba(0,0,0,0.45);
         }
 
+
+        /* ── Cart actions ── */
+        .cfg-actions {
+            margin-top: 1.2rem;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .cfg-price-label {
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            text-align: right;
+        }
+        .cfg-price-label strong {
+            color: rgba(255,255,255,0.9);
+        }
+        .cfg-add-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.85);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .cfg-add-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.16);
+            border-color: rgba(255,255,255,0.6);
+            color: #fff;
+        }
+        .cfg-add-btn:disabled { opacity: 0.5; cursor: default; }
+        .cfg-status {
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .cfg-status--ok    { color: rgba(180,220,180,0.9); }
+        .cfg-status--warn  { color: rgba(220,200,140,0.9); }
+        .cfg-status--error { color: rgba(220,140,140,0.9); }
     </style>
 </head>
 <body>
@@ -294,7 +346,7 @@
 
             <!-- Right: fabric panel -->
             <div class="fabric-col">
-                <div class="fabric-panel">
+                <div class="fabric-panel" data-sku="KD-P34-SMX">
                 <p class="fabric-panel-title">Select Fabric</p>
 
                 <!-- COTTON -->
@@ -303,11 +355,11 @@
                         Cotton <span class="chevron">▼</span>
                     </button>
                     <div class="fabric-swatches" id="group-cotton">
-                        <div class="fabric-item" data-texture="images/cotton-1.jpg">
+                        <div class="fabric-item" data-texture="images/cotton-1.jpg" data-fabric-id="cotton-1">
                             <img src="images/cotton-1.jpg" alt="Cotton 1">
                             <p>Cotton 1</p>
                         </div>
-                        <div class="fabric-item" data-texture="images/cotton-2.jpg">
+                        <div class="fabric-item" data-texture="images/cotton-2.jpg" data-fabric-id="cotton-2">
                             <img src="images/cotton-2.jpg" alt="Cotton 2">
                             <p>Cotton 2</p>
                         </div>
@@ -320,11 +372,11 @@
                         Linen <span class="chevron">▼</span>
                     </button>
                     <div class="fabric-swatches" id="group-linen">
-                        <div class="fabric-item" data-texture="images/linen-1.jpg">
+                        <div class="fabric-item" data-texture="images/linen-1.jpg" data-fabric-id="linen-1">
                             <img src="images/linen-1.jpg" alt="Linen 1">
                             <p>Linen 1</p>
                         </div>
-                        <div class="fabric-item" data-texture="images/linen-2.webp">
+                        <div class="fabric-item" data-texture="images/linen-2.webp" data-fabric-id="linen-2">
                             <img src="images/linen-2.webp" alt="Linen 2">
                             <p>Linen 2</p>
                         </div>
@@ -337,11 +389,11 @@
                         Cotton-Linen Blend <span class="chevron">▼</span>
                     </button>
                     <div class="fabric-swatches" id="group-cotton-linen">
-                        <div class="fabric-item" data-texture="images/cotton-linen blend-1.webp">
+                        <div class="fabric-item" data-texture="images/cotton-linen blend-1.webp" data-fabric-id="cotton-linen-1">
                             <img src="images/cotton-linen blend-1.webp" alt="Cotton-Linen Blend 1">
                             <p>Cotton-Linen Blend 1</p>
                         </div>
-                        <div class="fabric-item" data-texture="images/cotton-linen blend-2.jpg">
+                        <div class="fabric-item" data-texture="images/cotton-linen blend-2.jpg" data-fabric-id="cotton-linen-2">
                             <img src="images/cotton-linen blend-2.jpg" alt="Cotton-Linen Blend 2">
                             <p>Cotton-Linen Blend 2</p>
                         </div>
@@ -354,7 +406,7 @@
                         Wool <span class="chevron">▼</span>
                     </button>
                     <div class="fabric-swatches" id="group-wool">
-                        <div class="fabric-item" data-texture="images/wool-1.jpg">
+                        <div class="fabric-item" data-texture="images/wool-1.jpg" data-fabric-id="wool-1">
                             <img src="images/wool-1.jpg" alt="Wool 1">
                             <p>Wool 1</p>
                         </div>
@@ -367,13 +419,19 @@
                         Wool Blend <span class="chevron">▼</span>
                     </button>
                     <div class="fabric-swatches" id="group-wool-blend">
-                        <div class="fabric-item" data-texture="images/wool-blend-2.avif">
+                        <div class="fabric-item" data-texture="images/wool-blend-2.avif" data-fabric-id="wool-blend-2">
                             <img src="images/wool-blend-2.avif" alt="Wool Blend 2">
                             <p>Wool Blend 2</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Price + Add to Cart -->
+                <div class="cfg-actions">
+                    <span class="cfg-price-label">Total &nbsp;<strong id="cfg-price">—</strong></span>
+                    <button id="cfg-add-btn" class="cfg-add-btn">ADD TO CART</button>
+                    <p id="cfg-status" class="cfg-status"></p>
+                </div>
                 </div>
             </div>
         </div>
@@ -382,10 +440,18 @@
 
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
+        import { initConfigurator, selectFabric, addSelectedToCart } from './js/configurator.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
         const canvas = document.getElementById('viewer-canvas');
+
+        // Load product + options from API
+        const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
+        if (sku) initConfigurator(sku);
+
+        // Wire up Add to Cart button
+        document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
         let rendererS, sceneS, cameraS, controlsS, animIdS, currentModel;
 
         function initViewer() {
@@ -533,6 +599,7 @@
                 document.querySelectorAll('.fabric-item').forEach(f => f.classList.remove('active'));
                 item.classList.add('active');
                 applyFabric(item.dataset.texture);
+                if (item.dataset.fabricId) selectFabric(item.dataset.fabricId);
             });
         });
 

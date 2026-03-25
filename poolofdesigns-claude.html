@@ -263,7 +263,7 @@
         function skuToPageLink(sku) {
             // KD-P1-FSS → p1-product-claude.html
             const match = sku.match(/KD-P(\d+)-/);
-            return match ? `p${match[1]}-product-claude.html` : null;
+            return match ? `p${match[1]}-product.html` : null;
         }
 
         function modelPath(url) {

@@ -719,16 +719,12 @@
             });
         });
 
-        /* ── Open correct modal on product click ── */
+        /* ── Navigate to product detail page on click ── */
         document.querySelectorAll('.product-item[data-model]').forEach(item => {
             item.addEventListener('click', () => {
-                if (item.dataset.fabrics) {
-                    modalSplit.classList.add('open');
-                    // wait one frame so canvas has layout dimensions
-                    requestAnimationFrame(() => initSplitViewer(item.dataset.model));
-                } else {
-                    modal.classList.add('open');
-                    requestAnimationFrame(() => initViewer(item.dataset.model));
+                const match = item.dataset.model.match(/p(\d+)-/);
+                if (match) {
+                    window.location.href = `p${match[1]}-product-claude.html`;
                 }
             });
         });

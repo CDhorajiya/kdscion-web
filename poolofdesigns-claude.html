@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/pen-nib-solid.svg" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pool of Designs</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(310deg) saturate(8) brightness(0.35) contrast(1.5);
+        }
+        /* ── Product gallery ── */
+        .product-gallery {
+            display: flex;
+            gap: 8rem;
+            margin-top: 0;
+        }
+
+        .product-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8rem;
+            flex: 1;
+        }
+
+        /* ── Each product card ── */
+        .product-item {
+            position: relative;
+            cursor: default;
+            z-index: 1;
+            transition: transform 0.4s ease;
+        }
+
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* ── Description popup (default: hidden, opens right) ── */
+        .product-desc {
+            position: absolute;
+            top: 50%;
+            left: calc(100% + 2rem);
+            transform: translateY(-50%) translateX(-16px);
+            width: 28rem;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid #d9d1c5;
+            padding: 2.8rem 3.2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.9s ease, transform 0.9s ease;
+            z-index: 300;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Column 3 — popup opens to the left */
+        .product-column:last-child .product-desc {
+            left: auto;
+            right: calc(100% + 2rem);
+            transform: translateY(-50%) translateX(16px);
+        }
+
+        /* Active state — popup visible */
+        .product-item.popup-active .product-desc {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+            pointer-events: auto;
+        }
+
+        .product-column:last-child .product-item.popup-active .product-desc {
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .product-desc__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #000;
+            margin: 0 0 1.4rem 0;
+            line-height: 1.8;
+            word-break: break-word;
+        }
+
+        .product-desc__divider {
+            width: 3rem;
+            height: 1px;
+            background: #000;
+            margin-bottom: 1.4rem;
+        }
+
+        .product-desc__sub {
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: #5c5577;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* ── Blur overlay ── */
+        .blur-overlay {
+            position: fixed;
+            inset: 0;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            background: rgba(255, 255, 255, 0);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease, backdrop-filter 0.7s ease;
+        }
+
+        body.gallery-blur-active .blur-overlay {
+            opacity: 1;
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            background: rgba(255, 255, 255, 0.15);
+            pointer-events: auto;
+        }
+
+        body.gallery-blur-active .product-item.popup-active {
+            z-index: 400;
+        }
+
+        header {
+            position: relative;
+            z-index: 500;
+        }
+
+        /* ── 3D viewer modal ── */
+        .viewer-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+        .viewer-modal.open {
+            display: flex;
+        }
+        .viewer-wrap {
+            position: relative;
+            width: min(1000px, 92vw);
+            height: min(1000px, 85vh);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+        #viewer-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+        .viewer-close {
+            position: absolute;
+            top: -4rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-family: "Times New Roman", serif;
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .viewer-close:hover { opacity: 1; }
+        .viewer-label {
+            position: absolute;
+            bottom: -3.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        /* ── 3D badge on first product ── */
+        .has-3d::after {
+            content: '3D';
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #000;
+            color: #fff;
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            padding: 0.3rem 0.8rem;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blur-overlay" id="blurOverlay"></div>
+
+    <header>
+        <nav class="nav collapsible">
+            <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+            <svg class="icon icon--white nav__toggler">
+                <use xlink:href="images/sprite.svg#menu"></use>
+            </svg>
+            <a class="bb" href="#"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+        </nav>
+    </header>
+
+    <div class="container-snaps">
+        <h3 class="title">POOL OF DESIGNS</h3>
+
+        <div class="product-gallery snap-gallery" id="productGallery">
+            <div class="product-column column column1" id="col1"></div>
+            <div class="product-column column column2" id="col2"></div>
+            <div class="product-column column column3" id="col3"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer_details">
+            <a href="foundermessage.html"><h5>About House</h5></a>
+            <a href="contacthouse.html"><h5>Contact House</h5></a>
+            <a href=""><h5>Career</h5></a>
+            <a href=""><h5>Account</h5></a>
+        </div>
+        <div class="footer_branding">
+            <div class="monogram">
+                <a href="index.html">
+                    <img src="/images/kd-b&w.png" alt="KD monogram home page link">
+                </a>
+            </div>
+            <p>Copyright 2024 KING DHORAJIYA</p>
+        </div>
+    </div>
+
+    <!-- ── 3D Viewer Modal ── -->
+    <div class="viewer-modal" id="viewerModal">
+        <div class="viewer-wrap">
+            <button class="viewer-close" id="viewerClose">CLOSE ✕</button>
+            <canvas id="viewer-canvas"></canvas>
+            <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getProducts } from './js/api.js';
+
+        function skuToPageLink(sku) {
+            // KD-P1-FSS → p1-product-claude.html
+            const match = sku.match(/KD-P(\d+)-/);
+            return match ? `p${match[1]}-product-claude.html` : null;
+        }
+
+        function modelPath(url) {
+            // models/p1-full sleeve classic shirt.glb → 3d/p1-full sleeve classic shirt.glb
+            return url.replace(/^models\//, '3d/');
+        }
+
+        function buildCard(product) {
+            const link = skuToPageLink(product.sku);
+            const model = modelPath(product.modelUrl);
+            const img = product.thumbnailUrl ?? '';
+            const el = document.createElement('div');
+            el.className = 'product-item has-3d';
+            el.dataset.model = model;
+            if (link) el.dataset.link = link;
+            el.innerHTML = `
+                <img src="${img}" alt="${product.name}">
+                <div class="product-desc">
+                    <p class="product-desc__title">${product.name}</p>
+                    <div class="product-desc__divider"></div>
+                    <p class="product-desc__sub">King Dhorajiya</p>
+                </div>`;
+            return el;
+        }
+
+        async function loadGallery() {
+            const raw = await getProducts(1, 20);
+            const products = Array.isArray(raw) ? raw[0] : raw.data;
+            // Sort by SKU number so order is consistent (p1, p2, p6, p8 …)
+            products.sort((a, b) => {
+                const n = s => parseInt(s.match(/KD-P(\d+)-/)?.[1] ?? 0);
+                return n(a.sku) - n(b.sku);
+            });
+
+            const cols = [
+                document.getElementById('col1'),
+                document.getElementById('col2'),
+                document.getElementById('col3'),
+            ];
+
+            products.forEach((product, i) => {
+                cols[i % 3].appendChild(buildCard(product));
+            });
+
+            // Re-attach popup hover behaviour after cards are injected
+            initPopups();
+        }
+
+        function initPopups() {
+            const items = document.querySelectorAll('.product-item');
+            const blurOverlay = document.getElementById('blurOverlay');
+            const hoverTimers = new Map();
+
+            items.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const timer = setTimeout(() => {
+                        items.forEach(el => el.classList.remove('popup-active'));
+                        item.classList.add('popup-active');
+                        document.body.classList.add('gallery-blur-active');
+                    }, 3000);
+                    hoverTimers.set(item, timer);
+                });
+                item.addEventListener('mouseleave', () => {
+                    clearTimeout(hoverTimers.get(item));
+                    hoverTimers.delete(item);
+                    item.classList.remove('popup-active');
+                    document.body.classList.remove('gallery-blur-active');
+                });
+            });
+
+            blurOverlay.addEventListener('click', () => {
+                items.forEach(el => el.classList.remove('popup-active'));
+                document.body.classList.remove('gallery-blur-active');
+            });
+        }
+
+        loadGallery().catch(err => {
+            console.error('Failed to load products:', err);
+        });
+    </script>
+
+    <script type="module">
+        import * as THREE from 'https://esm.sh/three@0.169.0';
+        import { GLTFLoader } from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+
+        const modal   = document.getElementById('viewerModal');
+        const closeBtn = document.getElementById('viewerClose');
+        const canvas  = document.getElementById('viewer-canvas');
+
+        let renderer, scene, camera, controls, animId;
+
+        function initViewer(modelPath) {
+            const W = canvas.clientWidth  || canvas.offsetWidth  || 600;
+            const H = canvas.clientHeight || canvas.offsetHeight || 600;
+
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(W, H);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+            scene  = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+            camera.position.set(0, 1, 3);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+            const key = new THREE.DirectionalLight(0xffffff, 2.5);
+            key.position.set(5, 8, 5);
+            scene.add(key);
+            const fill = new THREE.DirectionalLight(0xffffff, 0.8);
+            fill.position.set(-5, 2, -5);
+            scene.add(fill);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.2;
+
+            new GLTFLoader().load(modelPath, (gltf) => {
+                const model = gltf.scene;
+                const box   = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size   = box.getSize(new THREE.Vector3()).length();
+                model.position.sub(center);
+                model.scale.setScalar(2.2 / size);
+                scene.add(model);
+            }, undefined, (err) => console.error('GLB load error:', err));
+
+            (function animate() {
+                animId = requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            })();
+        }
+
+        function destroyViewer() {
+            cancelAnimationFrame(animId);
+            if (renderer) { renderer.dispose(); renderer = null; }
+            scene = camera = controls = null;
+        }
+
+        // Event delegation — works for dynamically injected cards
+        document.getElementById('productGallery').addEventListener('click', (e) => {
+            const item = e.target.closest('.product-item[data-model]');
+            if (!item) return;
+            if (item.dataset.link) {
+                window.location.href = item.dataset.link;
+                return;
+            }
+            modal.classList.add('open');
+            initViewer(item.dataset.model);
+        });
+
+        // Close
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('open');
+            destroyViewer();
+        });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('open');
+                destroyViewer();
+            }
+        });
+    </script>
+
+
+</body>
+</html>

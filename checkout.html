@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/pen-nib-solid.svg" type="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — King Dhorajiya</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html, body {
+      min-height: 100%;
+      background: #0a080f;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── Nav ── */
+    .monogram img {
+      filter: invert(1) sepia(1) hue-rotate(310deg) saturate(8) brightness(0.35) contrast(1.5);
+    }
+
+    /* ── Page wrap ── */
+    .checkout-wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 3rem 3rem 6rem;
+    }
+
+    .checkout-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin: 0 0 3.2rem;
+      font-weight: 400;
+    }
+
+    /* ── Two-column layout ── */
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ── Panel shared style ── */
+    .checkout-panel {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 2.4rem 2.4rem 2rem;
+    }
+    .checkout-panel h3 {
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      font-weight: 400;
+      margin: 0 0 2rem;
+    }
+
+    /* ── Cart items ── */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      gap: 1rem;
+    }
+    .cart-item:last-of-type { border-bottom: none; }
+
+    .cart-item__name {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+    .cart-item__qty {
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 0.3rem;
+    }
+    .cart-item__price {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.7);
+      white-space: nowrap;
+    }
+    .cart-item__remove {
+      background: none; border: none;
+      color: rgba(255,255,255,0.2);
+      cursor: pointer; font-size: 1rem;
+      padding: 0 0 0 1rem;
+      transition: color .2s;
+    }
+    .cart-item__remove:hover { color: rgba(220,140,140,0.8); }
+
+    .cart-empty {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.6rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      font-family: "Times New Roman", serif;
+      font-size: 1.15rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .cart-total strong {
+      color: rgba(255,255,255,0.9);
+      font-weight: 400;
+    }
+
+    /* ── Address form ── */
+    .addr-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .addr-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-family: "Times New Roman", serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .addr-form input, .addr-form select {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      padding: 0.75rem 1rem;
+      color: rgba(255,255,255,0.85);
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .addr-form input:focus, .addr-form select:focus {
+      border-color: rgba(255,255,255,0.4);
+    }
+    .addr-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .place-btn {
+      margin-top: 0.8rem;
+      width: 100%;
+      padding: 1.1rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.85);
+      font-family: "Times New Roman", serif;
+      font-size: 1.15rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background .2s, border-color .2s;
+    }
+    .place-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+    }
+    .place-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .checkout-error {
+      margin: 0.8rem 0 0;
+      font-family: "Times New Roman", serif;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      color: rgba(220,140,140,0.9);
+      min-height: 1.2rem;
+    }
+
+    /* ── Confirmation screen ── */
+    .confirmation {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .confirmation.show { display: block; }
+    .confirmation__icon {
+      font-size: 3rem;
+      margin-bottom: 1.6rem;
+    }
+    .confirmation__title {
+      font-family: "Times New Roman", serif;
+      font-size: 1.6rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      font-weight: 400;
+      margin: 0 0 1.2rem;
+    }
+    .confirmation__sub {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+      margin: 0 0 0.6rem;
+    }
+    .confirmation__id {
+      font-family: "Times New Roman", serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.25);
+      margin: 0 0 3rem;
+      word-break: break-all;
+    }
+    .confirmation__link {
+      display: inline-block;
+      padding: 1rem 3rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: border-color .2s, color .2s;
+    }
+    .confirmation__link:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav collapsible">
+      <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+      <svg class="icon icon--white nav__toggler">
+        <use xlink:href="images/sprite.svg#menu"></use>
+      </svg>
+      <a class="bb" href="#"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+    </nav>
+  </header>
+
+  <div class="checkout-wrap">
+    <h2 class="checkout-title">Checkout</h2>
+
+    <!-- Confirmation (hidden until order placed) -->
+    <div class="confirmation" id="confirmation">
+      <div class="confirmation__icon">✦</div>
+      <h3 class="confirmation__title">Order Placed</h3>
+      <p class="confirmation__sub">Your bespoke order has been received.</p>
+      <p class="confirmation__id" id="conf-order-id"></p>
+      <a href="poolofdesigns-claude.html" class="confirmation__link">Continue Shopping</a>
+    </div>
+
+    <!-- Checkout grid (hidden after order placed) -->
+    <div class="checkout-grid" id="checkout-grid">
+
+      <!-- Left: cart summary -->
+      <div class="checkout-panel">
+        <h3>Your Selection</h3>
+        <div id="cart-items-list">
+          <p class="cart-empty">Loading…</p>
+        </div>
+        <div class="cart-total">
+          <span>Total</span>
+          <strong id="cart-total-display">—</strong>
+        </div>
+      </div>
+
+      <!-- Right: shipping + place order -->
+      <div class="checkout-panel">
+        <h3>Shipping Address</h3>
+        <form class="addr-form" id="addr-form">
+          <label>Address line 1
+            <input type="text" id="addr-line1" placeholder="123 Main Street" required>
+          </label>
+          <label>Address line 2 <span style="opacity:.4">(optional)</span>
+            <input type="text" id="addr-line2" placeholder="Apt, suite, etc.">
+          </label>
+          <div class="addr-row">
+            <label>City
+              <input type="text" id="addr-city" required>
+            </label>
+            <label>State / Region
+              <input type="text" id="addr-state" required>
+            </label>
+          </div>
+          <div class="addr-row">
+            <label>Postal code
+              <input type="text" id="addr-postal" required>
+            </label>
+            <label>Country
+              <input type="text" id="addr-country" placeholder="US" required>
+            </label>
+          </div>
+          <label>Notes <span style="opacity:.4">(optional)</span>
+            <input type="text" id="order-notes" placeholder="Any special instructions">
+          </label>
+
+          <p class="checkout-error" id="checkout-error"></p>
+          <button type="submit" class="place-btn" id="place-btn">PLACE ORDER</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer_details">
+      <a href="foundermessage.html"><h5>About House</h5></a>
+      <a href="contacthouse.html"><h5>Contact House</h5></a>
+      <a href=""><h5>Career</h5></a>
+      <a href="checkout.html"><h5>Checkout</h5></a>
+    </div>
+    <div class="footer_branding">
+      <div class="monogram">
+        <a href="index.html">
+          <img src="/images/kd-b&w.png" alt="KD monogram home page link">
+        </a>
+      </div>
+      <p>Copyright 2024 KING DHORAJIYA</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getCart, getCartTotal, removeFromCart, placeOrder, isLoggedIn } from './js/api.js';
+    import { openAuthModal } from './js/auth-modal.js';
+
+    // ── Redirect to login if not authenticated ────────────────────────────────
+    if (!isLoggedIn()) {
+      openAuthModal(() => window.location.reload());
+    }
+
+    // ── Render cart ───────────────────────────────────────────────────────────
+    async function renderCart() {
+      const list = document.getElementById('cart-items-list');
+      const totalEl = document.getElementById('cart-total-display');
+
+      const items = await getCart();
+
+      if (!items.length) {
+        list.innerHTML = `<p class="cart-empty">Your cart is empty.</p>`;
+        totalEl.textContent = '$0';
+        document.getElementById('place-btn').disabled = true;
+        return;
+      }
+
+      list.innerHTML = items.map(item => `
+        <div class="cart-item" data-id="${item.id}">
+          <div>
+            <p class="cart-item__name">${item.displayName}</p>
+            <p class="cart-item__qty">Qty ${item.quantity}</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <span class="cart-item__price">$${(Number(item.unitPrice) * item.quantity).toLocaleString()}</span>
+            <button class="cart-item__remove" data-id="${item.id}" title="Remove">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      const total = await getCartTotal(items);
+      totalEl.textContent = `$${total.toLocaleString()}`;
+
+      // Remove item buttons
+      list.querySelectorAll('.cart-item__remove').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          btn.disabled = true;
+          await removeFromCart(btn.dataset.id);
+          renderCart();
+        });
+      });
+    }
+
+    // ── Place order ───────────────────────────────────────────────────────────
+    document.getElementById('addr-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('place-btn');
+      const errEl = document.getElementById('checkout-error');
+      errEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'PLACING ORDER…';
+
+      const shippingAddress = {
+        line1:      document.getElementById('addr-line1').value,
+        line2:      document.getElementById('addr-line2').value || undefined,
+        city:       document.getElementById('addr-city').value,
+        state:      document.getElementById('addr-state').value,
+        postalCode: document.getElementById('addr-postal').value,
+        country:    document.getElementById('addr-country').value,
+      };
+      const notes = document.getElementById('order-notes').value;
+
+      try {
+        const order = await placeOrder(shippingAddress, notes);
+        document.getElementById('checkout-grid').style.display = 'none';
+        const conf = document.getElementById('confirmation');
+        conf.classList.add('show');
+        document.getElementById('conf-order-id').textContent = `Order ID: ${order.id}`;
+      } catch (err) {
+        errEl.textContent = err.data?.message ?? err.message ?? 'Something went wrong.';
+        btn.disabled = false;
+        btn.textContent = 'PLACE ORDER';
+      }
+    });
+
+    renderCart();
+  </script>
+
+</body>
+</html>

@@ -75,20 +75,23 @@
 
     .cart-item__name {
       font-family: "Times New Roman", serif;
-      font-size: 1.15rem;
+      font-size: 1.3rem;
       letter-spacing: 2px;
       color: #1a1a1a;
       line-height: 1.6;
+      text-decoration: none;
+      display: block;
     }
+    .cart-item__name:hover { text-decoration: underline; }
     .cart-item__qty {
-      font-size: 1rem;
+      font-size: 1.05rem;
       letter-spacing: 1px;
       color: #999;
       margin-top: 0.3rem;
     }
     .cart-item__price {
       font-family: "Times New Roman", serif;
-      font-size: 1.15rem;
+      font-size: 1.3rem;
       letter-spacing: 2px;
       color: #333;
       white-space: nowrap;
@@ -119,7 +122,7 @@
       padding-top: 1.4rem;
       border-top: 1px solid #e0e0e0;
       font-family: "Times New Roman", serif;
-      font-size: 1.3rem;
+      font-size: 1.45rem;
       letter-spacing: 4px;
       text-transform: uppercase;
       color: #666;
@@ -428,18 +431,21 @@
         return;
       }
 
-      list.innerHTML = items.map(item => `
+      list.innerHTML = items.map(item => {
+        const skuMatch = item.product?.sku?.match(/KD-P(\d+)-/i);
+        const productPage = skuMatch ? `p${skuMatch[1]}-product-claude.html` : 'poolofdesigns-productdescription-claude.html';
+        return `
         <div class="cart-item" data-id="${item.id}">
           <div>
-            <p class="cart-item__name">${item.displayName}</p>
+            <a href="${productPage}" class="cart-item__name">${item.displayName ?? 'Product'}</a>
             <p class="cart-item__qty">Qty ${item.quantity}</p>
           </div>
           <div style="display:flex;align-items:center;gap:.5rem">
             <span class="cart-item__price">$${(Number(item.unitPrice) * item.quantity).toLocaleString()}</span>
             <button class="cart-item__remove" data-id="${item.id}" title="Remove">✕</button>
           </div>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
 
       currentTotal = await getCartTotal(items);
       totalEl.textContent = `$${currentTotal.toLocaleString()}`;

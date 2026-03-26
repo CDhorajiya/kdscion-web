@@ -13,8 +13,11 @@ async function request(path, options = {}) {
 
   if (res.status === 204) return null;
 
-  const data = await res.json();
-  if (!res.ok) throw Object.assign(new Error(data.message ?? 'Request failed'), { status: res.status, data });
+  const text = await res.text();
+  if (!text) return null;
+  let data;
+  try { data = JSON.parse(text); } catch (_) { data = null; }
+  if (!res.ok) throw Object.assign(new Error(data?.message ?? 'Request failed'), { status: res.status, data });
 
   return data;
 }

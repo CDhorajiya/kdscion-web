@@ -95,23 +95,26 @@
         /* ── Align nav items with brand name ── */
         .navigation {
             align-items: baseline;
-            padding-right: 8%;
+            padding-right: 2%;
         }
         .navigation ul > li > a {
             margin-left: 0;
             margin-top: 0;
-            padding: 1rem 2rem;
+            padding: 0.8rem 0.9rem;
             display: block;
         }
 
-
-        /* ── Nav parent label hover ── */
+        /* ── Compact h4 for all nav items ── */
         .navigation ul > li > a h4 {
+            font-size: 0.78rem;
+            letter-spacing: 0.22rem;
+            font-weight: 700;
+            margin: 0;
             transition: letter-spacing 0.25s ease;
         }
         .navigation ul > li:hover > a h4,
         .navigation ul > li.open > a h4 {
-            letter-spacing: 14px;
+            letter-spacing: 0.5rem;
         }
 
         /* JS-controlled open state overrides CSS hover */
@@ -125,6 +128,14 @@
     <nav class="navigation">
         <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
      <ul>
+        <li><a href="measurement guide-claude.html" class=""><h4>MEASUREMENTS</h4></a>
+            <ul class="dropdown">
+                <li><a href="measurement guide-claude.html">My Measurements</a></li>
+                <li><a href="measurement guide-claude.html">How to Measure</a></li>
+                <li><a href="measurement guide-claude.html">Size Reference Chart</a></li>
+            </ul>
+        </li>
+
         <li><a href="" class=""><h4>MEN</h4></a>
             <ul class="dropdown">
                 <li><a href="" class="">Formal shirts</a></li>
@@ -240,6 +251,14 @@
                 <li><a href="" class=""><em>House Recommendations</em></a></li>
                 <li><a href="" class="">Pool of Designs - GIRL</a></li>
               </ul></li>
+
+        <li><a href="skinprofile-claude.html" class=""><h4>SKIN PROFILE</h4></a>
+            <ul class="dropdown">
+                <li><a href="skinprofile-claude.html">My Skin Profile</a></li>
+                <li><a href="skinprofile-claude.html">Colour Analysis</a></li>
+                <li><a href="skinprofile-claude.html">Fabric Recommendations</a></li>
+            </ul>
+        </li>
      </ul>
     </nav>
 

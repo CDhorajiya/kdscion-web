@@ -120,3 +120,9 @@ export async function placeOrder(shippingAddress, notes = '') {
 export async function getOrders() {
   return request('/orders');
 }
+
+// ── Payments ──────────────────────────────────────────────────────────────────
+
+export async function createPaymentIntent(orderId) {
+  return request(`/payments/intent/${orderId}`, { method: 'POST' });
+}

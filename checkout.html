@@ -7,6 +7,7 @@
   <title>Checkout — King Dhorajiya</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://js.stripe.com/v3/"></script>
   <style>
     html, body {
       min-height: 100%;
@@ -244,6 +245,38 @@
       border-color: rgba(255,255,255,0.5);
       color: #fff;
     }
+
+    /* ── Payment step ── */
+    .payment-step {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    #card-element {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.2rem;
+      transition: border-color .2s;
+    }
+    #card-element.StripeElement--focus {
+      border-color: rgba(255,255,255,0.4);
+    }
+    #card-element.StripeElement--invalid {
+      border-color: rgba(220,140,140,0.6);
+    }
+    .payment-order-summary {
+      font-family: "Times New Roman", serif;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+    .payment-order-summary strong {
+      color: rgba(255,255,255,0.7);
+    }
   </style>
 </head>
 <body>
@@ -267,7 +300,18 @@
       <h3 class="confirmation__title">Order Placed</h3>
       <p class="confirmation__sub">Your bespoke order has been received.</p>
       <p class="confirmation__id" id="conf-order-id"></p>
-      <a href="poolofdesigns-claude.html" class="confirmation__link">Continue Shopping</a>
+      <a href="poolofdesigns-productdescription-claude.html" class="confirmation__link">Continue Shopping</a>
+    </div>
+
+    <!-- Payment step (shown after order created, hidden until then) -->
+    <div id="payment-step" style="display:none">
+      <div class="checkout-panel payment-step">
+        <h3>Payment Details</h3>
+        <p class="payment-order-summary" id="payment-summary"></p>
+        <div id="card-element"></div>
+        <p class="checkout-error" id="payment-error"></p>
+        <button id="pay-btn" class="place-btn">PAY NOW</button>
+      </div>
     </div>
 
     <!-- Checkout grid (hidden after order placed) -->
@@ -341,19 +385,23 @@
   </div>
 
   <script type="module">
-    import { getCart, getCartTotal, removeFromCart, placeOrder, isLoggedIn } from './js/api.js';
+    import { getCart, getCartTotal, removeFromCart, placeOrder, createPaymentIntent, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
 
-    // ── Redirect to login if not authenticated ────────────────────────────────
+    // ── Replace with your Stripe publishable key from dashboard.stripe.com/apikeys
+    const STRIPE_KEY = 'pk_test_51TF1uoD4pLXnD62zsIhrMXEuD0t1Ir0AZ2Qkrmp5aAbJYTLzTZE5P6PR5PdEzFdpq0p0rHbZeQMdJQJ4CuSuajAT00pYbAuYs9';
+
     if (!isLoggedIn()) {
       openAuthModal(() => window.location.reload());
     }
+
+    let currentOrderId = null;
+    let currentTotal = 0;
 
     // ── Render cart ───────────────────────────────────────────────────────────
     async function renderCart() {
       const list = document.getElementById('cart-items-list');
       const totalEl = document.getElementById('cart-total-display');
-
       const items = await getCart();
 
       if (!items.length) {
@@ -376,10 +424,9 @@
         </div>
       `).join('');
 
-      const total = await getCartTotal(items);
-      totalEl.textContent = `$${total.toLocaleString()}`;
+      currentTotal = await getCartTotal(items);
+      totalEl.textContent = `$${currentTotal.toLocaleString()}`;
 
-      // Remove item buttons
       list.querySelectorAll('.cart-item__remove').forEach(btn => {
         btn.addEventListener('click', async () => {
           btn.disabled = true;
@@ -389,7 +436,7 @@
       });
     }
 
-    // ── Place order ───────────────────────────────────────────────────────────
+    // ── Step 1: Place order → Step 2: Payment ────────────────────────────────
     document.getElementById('addr-form').addEventListener('submit', async e => {
       e.preventDefault();
       const btn = document.getElementById('place-btn');
@@ -410,10 +457,59 @@
 
       try {
         const order = await placeOrder(shippingAddress, notes);
+        currentOrderId = order.id;
+
+        const { clientSecret } = await createPaymentIntent(order.id);
+
+        // Show payment step
         document.getElementById('checkout-grid').style.display = 'none';
-        const conf = document.getElementById('confirmation');
-        conf.classList.add('show');
-        document.getElementById('conf-order-id').textContent = `Order ID: ${order.id}`;
+        document.getElementById('payment-step').style.display = 'block';
+        document.getElementById('payment-summary').innerHTML =
+          `Order total &nbsp;<strong>$${currentTotal.toLocaleString()}</strong>`;
+
+        // Mount Stripe card element
+        const stripe = Stripe(STRIPE_KEY);
+        const elements = stripe.elements();
+        const card = elements.create('card', {
+          style: {
+            base: {
+              color: 'rgba(255,255,255,0.85)',
+              fontFamily: '"Times New Roman", Times, serif',
+              fontSize: '16px',
+              letterSpacing: '1px',
+              '::placeholder': { color: 'rgba(255,255,255,0.3)' },
+            },
+            invalid: { color: 'rgba(220,140,140,0.9)' },
+          },
+        });
+        card.mount('#card-element');
+
+        // Step 2: Confirm payment
+        document.getElementById('pay-btn').addEventListener('click', async () => {
+          const payBtn = document.getElementById('pay-btn');
+          const payErr = document.getElementById('payment-error');
+          payErr.textContent = '';
+          payBtn.disabled = true;
+          payBtn.textContent = 'PROCESSING…';
+
+          const { error } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: { card },
+          });
+
+          if (error) {
+            payErr.textContent = error.message;
+            payBtn.disabled = false;
+            payBtn.textContent = 'PAY NOW';
+            return;
+          }
+
+          // Payment succeeded — show confirmation
+          document.getElementById('payment-step').style.display = 'none';
+          const conf = document.getElementById('confirmation');
+          conf.classList.add('show');
+          document.getElementById('conf-order-id').textContent = `Order ID: ${currentOrderId}`;
+        });
+
       } catch (err) {
         errEl.textContent = err.data?.message ?? err.message ?? 'Something went wrong.';
         btn.disabled = false;

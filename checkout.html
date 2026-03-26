@@ -309,9 +309,25 @@
       <div class="checkout-panel payment-step">
         <h3>Payment Details</h3>
         <p class="payment-order-summary" id="payment-summary"></p>
+
+        <!-- Measurements gate (shown when measurements are missing) -->
+        <div id="measure-gate" style="display:none; margin-bottom:1.6rem; padding:1.4rem 1.6rem; border:1px solid rgba(220,170,100,0.35); border-radius:3px; background:rgba(220,170,100,0.07); font-family:'Times New Roman',serif; font-size:0.95rem; letter-spacing:2px; color:rgba(255,255,255,0.7); line-height:2;">
+          <strong style="color:rgba(255,220,150,0.9); display:block; letter-spacing:4px; margin-bottom:0.5rem; font-weight:400;">MEASUREMENTS REQUIRED</strong>
+          We craft every piece to your exact measurements. Please submit your measurements before completing payment.
+          <br>
+          <a href="measurements.html" style="display:inline-block; margin-top:0.8rem; padding:0.65rem 1.8rem; border:1px solid rgba(255,220,150,0.5); color:rgba(255,220,150,0.9); text-decoration:none; letter-spacing:4px; font-size:0.9rem; border-radius:2px; transition:border-color .2s, color .2s;">
+            Submit Measurements →
+          </a>
+        </div>
+
+        <!-- Measurements confirmed banner (shown when measurements exist) -->
+        <div id="measure-ok" style="display:none; margin-bottom:1.6rem; padding:0.9rem 1.4rem; border:1px solid rgba(120,200,120,0.3); border-radius:3px; background:rgba(120,200,120,0.06); font-family:'Times New Roman',serif; font-size:0.88rem; letter-spacing:2px; color:rgba(150,220,150,0.8);">
+          ✓ &nbsp; Measurements on file
+        </div>
+
         <div id="card-element"></div>
         <p class="checkout-error" id="payment-error"></p>
-        <button id="pay-btn" class="place-btn">PAY NOW</button>
+        <button id="pay-btn" class="place-btn" disabled>PAY NOW</button>
       </div>
     </div>
 
@@ -386,7 +402,7 @@
   </div>
 
   <script type="module">
-    import { getCart, getCartTotal, removeFromCart, placeOrder, createPaymentIntent, isLoggedIn } from './js/api.js';
+    import { getCart, getCartTotal, removeFromCart, placeOrder, createPaymentIntent, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
 
     // ── Replace with your Stripe publishable key from dashboard.stripe.com/apikeys
@@ -467,6 +483,27 @@
         document.getElementById('payment-step').style.display = 'block';
         document.getElementById('payment-summary').innerHTML =
           `Order total &nbsp;<strong>$${currentTotal.toLocaleString()}</strong>`;
+
+        // Check measurements gate
+        async function checkMeasurements() {
+          try {
+            const measRes = await getMeasurements();
+            if (measRes?.measurements && Object.keys(measRes.measurements).length > 0) {
+              document.getElementById('measure-gate').style.display = 'none';
+              document.getElementById('measure-ok').style.display = 'block';
+              document.getElementById('pay-btn').disabled = false;
+            } else {
+              document.getElementById('measure-gate').style.display = 'block';
+              document.getElementById('measure-ok').style.display = 'none';
+              document.getElementById('pay-btn').disabled = true;
+            }
+          } catch (_) {
+            document.getElementById('measure-gate').style.display = 'block';
+          }
+        }
+        checkMeasurements();
+        // Re-check when user returns from measurements page
+        window.addEventListener('focus', checkMeasurements);
 
         // Mount Stripe card element
         const stripe = Stripe(STRIPE_KEY);

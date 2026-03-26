@@ -121,6 +121,16 @@ export async function getOrders() {
   return request('/orders');
 }
 
+// ── Measurements ──────────────────────────────────────────────────────────────
+
+export async function getMeasurements() {
+  return request('/users/me/measurements');
+}
+
+export async function saveMeasurements(data) {
+  return request('/users/me/measurements', { method: 'POST', body: JSON.stringify(data) });
+}
+
 // ── Payments ──────────────────────────────────────────────────────────────────
 
 export async function createPaymentIntent(orderId) {

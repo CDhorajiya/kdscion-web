@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/pen-nib-solid.svg" type="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Measurements — King Dhorajiya</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html, body {
+      min-height: 100%;
+      background: #fff;
+      color: #1a1a1a;
+    }
+
+    .monogram img {
+      filter: none;
+    }
+    .nav .brand-name h1,
+    .nav__toggler { color: #1a1a1a; }
+
+    .measure-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 8rem;
+    }
+
+    .measure-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: #888;
+      font-weight: 400;
+      margin: 0 0 0.6rem;
+    }
+
+    .measure-subtitle {
+      font-family: "Times New Roman", serif;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: #aaa;
+      margin: 0 0 3rem;
+    }
+    .measure-subtitle a {
+      color: #555;
+      text-decoration: underline;
+    }
+
+    .measure-section {
+      margin-bottom: 2.8rem;
+    }
+    .measure-section h3 {
+      font-family: "Times New Roman", serif;
+      font-size: 0.9rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 400;
+      margin: 0 0 1.4rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .measure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem 2rem;
+    }
+
+    .measure-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .measure-field label {
+      font-family: "Times New Roman", serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+    }
+    .measure-field input {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      padding: 0.65rem 0.9rem;
+      color: #1a1a1a;
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .measure-field input:focus {
+      border-color: #999;
+      background: #fff;
+    }
+    .measure-field .hint {
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      color: #bbb;
+      font-family: "Times New Roman", serif;
+    }
+
+    .unit-note {
+      font-family: "Times New Roman", serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: #bbb;
+      margin: 0 0 2rem;
+      text-transform: uppercase;
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 1.1rem;
+      background: #1a1a1a;
+      border: none;
+      color: #fff;
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background .2s;
+      margin-top: 1rem;
+    }
+    .save-btn:hover:not(:disabled) { background: #333; }
+    .save-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .measure-error {
+      font-family: "Times New Roman", serif;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      color: #c0392b;
+      min-height: 1.2rem;
+      margin-top: 0.6rem;
+    }
+
+    .measure-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+      font-family: "Times New Roman", serif;
+    }
+    .measure-success.show { display: block; }
+    .measure-success__icon { font-size: 2.4rem; margin-bottom: 1.2rem; }
+    .measure-success__title {
+      font-size: 1.4rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      font-weight: 400;
+      margin: 0 0 0.8rem;
+    }
+    .measure-success__sub {
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: #888;
+      margin: 0 0 2.4rem;
+    }
+    .measure-success__links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .measure-success__link {
+      display: inline-block;
+      padding: 0.9rem 2.4rem;
+      border: 1px solid #ccc;
+      color: #555;
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: border-color .2s, color .2s;
+    }
+    .measure-success__link:hover { border-color: #888; color: #1a1a1a; }
+
+    @media (max-width: 600px) {
+      .measure-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav collapsible">
+      <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+      <svg class="icon nav__toggler">
+        <use xlink:href="images/sprite.svg#menu"></use>
+      </svg>
+      <a class="bb" href="#"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+    </nav>
+  </header>
+
+  <div class="measure-wrap">
+    <h2 class="measure-title">My Measurements</h2>
+    <p class="measure-subtitle">
+      All measurements in inches. &nbsp;
+      <a href="measurement guide-claude.html" target="_blank">View Measurement Guide →</a>
+    </p>
+
+    <div id="success-screen" class="measure-success">
+      <div class="measure-success__icon">✦</div>
+      <h3 class="measure-success__title">Measurements Saved</h3>
+      <p class="measure-success__sub">Your measurements are on file. We're ready to craft your order.</p>
+      <div class="measure-success__links">
+        <a href="checkout.html" class="measure-success__link">Return to Checkout</a>
+        <a href="poolofdesigns-productdescription-claude.html" class="measure-success__link">Continue Shopping</a>
+      </div>
+    </div>
+
+    <form id="measure-form">
+      <p class="unit-note">All measurements in inches</p>
+
+      <div class="measure-section">
+        <h3>Upper Body</h3>
+        <div class="measure-grid">
+          <div class="measure-field">
+            <label>Chest / Bust</label>
+            <input type="number" step="0.5" min="20" max="80" id="m-chest" placeholder="e.g. 38">
+            <span class="hint">Fullest part of chest</span>
+          </div>
+          <div class="measure-field">
+            <label>Waist</label>
+            <input type="number" step="0.5" min="20" max="60" id="m-waist" placeholder="e.g. 32">
+            <span class="hint">Natural waistline</span>
+          </div>
+          <div class="measure-field">
+            <label>Hips</label>
+            <input type="number" step="0.5" min="20" max="80" id="m-hips" placeholder="e.g. 40">
+            <span class="hint">Fullest part of hips</span>
+          </div>
+          <div class="measure-field">
+            <label>Shoulder Width</label>
+            <input type="number" step="0.5" min="10" max="30" id="m-shoulder" placeholder="e.g. 18">
+            <span class="hint">Shoulder seam to seam</span>
+          </div>
+          <div class="measure-field">
+            <label>Neck</label>
+            <input type="number" step="0.5" min="10" max="24" id="m-neck" placeholder="e.g. 15">
+            <span class="hint">Around base of neck</span>
+          </div>
+          <div class="measure-field">
+            <label>Chest to Waist</label>
+            <input type="number" step="0.5" min="5" max="30" id="m-chest-to-waist" placeholder="e.g. 17">
+            <span class="hint">Shoulder to natural waist</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="measure-section">
+        <h3>Arms</h3>
+        <div class="measure-grid">
+          <div class="measure-field">
+            <label>Sleeve Length</label>
+            <input type="number" step="0.5" min="15" max="40" id="m-sleeve" placeholder="e.g. 25">
+            <span class="hint">Shoulder to wrist</span>
+          </div>
+          <div class="measure-field">
+            <label>Bicep</label>
+            <input type="number" step="0.5" min="8" max="25" id="m-bicep" placeholder="e.g. 14">
+            <span class="hint">Fullest part of upper arm</span>
+          </div>
+          <div class="measure-field">
+            <label>Wrist</label>
+            <input type="number" step="0.5" min="5" max="12" id="m-wrist" placeholder="e.g. 7">
+            <span class="hint">Around wrist bone</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="measure-section">
+        <h3>Lower Body</h3>
+        <div class="measure-grid">
+          <div class="measure-field">
+            <label>Inseam</label>
+            <input type="number" step="0.5" min="20" max="40" id="m-inseam" placeholder="e.g. 30">
+            <span class="hint">Crotch to ankle</span>
+          </div>
+          <div class="measure-field">
+            <label>Outseam</label>
+            <input type="number" step="0.5" min="30" max="50" id="m-outseam" placeholder="e.g. 42">
+            <span class="hint">Waist to ankle (outside)</span>
+          </div>
+          <div class="measure-field">
+            <label>Thigh</label>
+            <input type="number" step="0.5" min="15" max="40" id="m-thigh" placeholder="e.g. 22">
+            <span class="hint">Fullest part of thigh</span>
+          </div>
+          <div class="measure-field">
+            <label>Knee</label>
+            <input type="number" step="0.5" min="10" max="30" id="m-knee" placeholder="e.g. 15">
+            <span class="hint">Around the knee</span>
+          </div>
+          <div class="measure-field">
+            <label>Calf</label>
+            <input type="number" step="0.5" min="10" max="25" id="m-calf" placeholder="e.g. 14">
+            <span class="hint">Fullest part of calf</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="measure-section">
+        <h3>Additional</h3>
+        <div class="measure-grid">
+          <div class="measure-field">
+            <label>Height</label>
+            <input type="number" step="0.5" min="48" max="96" id="m-height" placeholder="e.g. 70">
+            <span class="hint">Total height in inches</span>
+          </div>
+          <div class="measure-field">
+            <label>Weight (lbs)</label>
+            <input type="number" step="1" min="50" max="400" id="m-weight" placeholder="e.g. 165">
+            <span class="hint">Helps fit heavy fabrics</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="measure-error" id="measure-error"></p>
+      <button type="submit" class="save-btn" id="save-btn">SAVE MEASUREMENTS</button>
+    </form>
+  </div>
+
+  <div class="footer">
+    <div class="footer_details">
+      <a href="foundermessage.html"><h5>About House</h5></a>
+      <a href="contacthouse.html"><h5>Contact House</h5></a>
+      <a href=""><h5>Career</h5></a>
+      <a href="checkout.html"><h5>Checkout</h5></a>
+    </div>
+    <div class="footer_branding">
+      <div class="monogram">
+        <a href="index.html"><img src="/images/KD_monogram.png" alt="KD monogram home page link"></a>
+      </div>
+      <p>Copyright 2024 KING DHORAJIYA</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getMeasurements, saveMeasurements, isLoggedIn } from './js/api.js';
+    import { openAuthModal } from './js/auth-modal.js';
+
+    if (!isLoggedIn()) {
+      openAuthModal(() => window.location.reload());
+    }
+
+    const FIELDS = [
+      'chest','waist','hips','shoulder','neck','chest-to-waist',
+      'sleeve','bicep','wrist',
+      'inseam','outseam','thigh','knee','calf',
+      'height','weight',
+    ];
+
+    // Pre-fill if measurements already saved
+    async function loadExisting() {
+      try {
+        const res = await getMeasurements();
+        if (res?.measurements) {
+          FIELDS.forEach(f => {
+            const el = document.getElementById(`m-${f}`);
+            if (el && res.measurements[f] != null) el.value = res.measurements[f];
+          });
+        }
+      } catch (_) {}
+    }
+    loadExisting();
+
+    document.getElementById('measure-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('save-btn');
+      const errEl = document.getElementById('measure-error');
+      errEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'SAVING…';
+
+      const data = {};
+      FIELDS.forEach(f => {
+        const el = document.getElementById(`m-${f}`);
+        if (el && el.value) data[f] = parseFloat(el.value);
+      });
+
+      if (Object.keys(data).length === 0) {
+        errEl.textContent = 'Please enter at least one measurement.';
+        btn.disabled = false;
+        btn.textContent = 'SAVE MEASUREMENTS';
+        return;
+      }
+
+      try {
+        await saveMeasurements(data);
+        document.getElementById('measure-form').style.display = 'none';
+        document.querySelector('.unit-note')?.remove();
+        document.getElementById('success-screen').classList.add('show');
+        // If came from checkout, go back automatically after 2 seconds
+        const ref = document.referrer;
+        if (ref && ref.includes('checkout.html')) {
+          setTimeout(() => { window.location.href = 'checkout.html'; }, 2000);
+        }
+      } catch (err) {
+        errEl.textContent = err.message ?? 'Failed to save measurements.';
+        btn.disabled = false;
+        btn.textContent = 'SAVE MEASUREMENTS';
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -783,6 +783,11 @@ a {
   padding-left: 33.33%;
 }
 
+.monogram img {
+  max-width: 576px;
+  height: auto;
+}
+
 .footer_branding p {
   text-align: center;
   font-size: 1.8rem;

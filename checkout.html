@@ -11,14 +11,14 @@
   <style>
     html, body {
       min-height: 100%;
-      background: #0a080f;
-      color: rgba(255,255,255,0.85);
+      background: #fff;
+      color: #1a1a1a;
     }
 
     /* ── Nav ── */
-    .monogram img {
-      filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
-    }
+    .monogram img { filter: none; }
+    .nav .brand-name h1 { color: #1a1a1a; }
+    .icon--white { filter: invert(1); }
 
     /* ── Page wrap ── */
     .checkout-wrap {
@@ -32,7 +32,7 @@
       font-size: 1.4rem;
       letter-spacing: 8px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+      color: #888;
       margin: 0 0 3.2rem;
       font-weight: 400;
     }
@@ -47,8 +47,8 @@
 
     /* ── Panel shared style ── */
     .checkout-panel {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: #f9f9f9;
+      border: 1px solid #e5e5e5;
       border-radius: 4px;
       padding: 2.4rem 2.4rem 2rem;
     }
@@ -57,7 +57,7 @@
       font-size: 1.1rem;
       letter-spacing: 6px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
+      color: #999;
       font-weight: 400;
       margin: 0 0 2rem;
     }
@@ -68,7 +68,7 @@
       justify-content: space-between;
       align-items: flex-start;
       padding: 1.2rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid #ececec;
       gap: 1rem;
     }
     .cart-item:last-of-type { border-bottom: none; }
@@ -77,36 +77,36 @@
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.8);
+      color: #1a1a1a;
       line-height: 1.6;
     }
     .cart-item__qty {
       font-size: 0.9rem;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.35);
+      color: #999;
       margin-top: 0.3rem;
     }
     .cart-item__price {
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.7);
+      color: #333;
       white-space: nowrap;
     }
     .cart-item__remove {
       background: none; border: none;
-      color: rgba(255,255,255,0.2);
+      color: #ccc;
       cursor: pointer; font-size: 1rem;
       padding: 0 0 0 1rem;
       transition: color .2s;
     }
-    .cart-item__remove:hover { color: rgba(220,140,140,0.8); }
+    .cart-item__remove:hover { color: #c0392b; }
 
     .cart-empty {
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 3px;
-      color: rgba(255,255,255,0.25);
+      color: #bbb;
       text-align: center;
       padding: 2rem 0;
     }
@@ -117,15 +117,15 @@
       align-items: center;
       margin-top: 1.6rem;
       padding-top: 1.4rem;
-      border-top: 1px solid rgba(255,255,255,0.12);
+      border-top: 1px solid #e0e0e0;
       font-family: "Times New Roman", serif;
       font-size: 1.15rem;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: #666;
     }
     .cart-total strong {
-      color: rgba(255,255,255,0.9);
+      color: #1a1a1a;
       font-weight: 400;
     }
 
@@ -143,14 +143,14 @@
       font-size: 0.9rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: #888;
     }
     .addr-form input, .addr-form select {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: #f5f5f5;
+      border: 1px solid #ddd;
       border-radius: 2px;
       padding: 0.75rem 1rem;
-      color: rgba(255,255,255,0.85);
+      color: #1a1a1a;
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 1px;
@@ -158,7 +158,7 @@
       transition: border-color .2s;
     }
     .addr-form input:focus, .addr-form select:focus {
-      border-color: rgba(255,255,255,0.4);
+      border-color: #999;
     }
     .addr-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
@@ -166,9 +166,9 @@
       margin-top: 0.8rem;
       width: 100%;
       padding: 1.1rem;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: rgba(255,255,255,0.85);
+      background: #1a1a1a;
+      border: 1px solid #1a1a1a;
+      color: #fff;
       font-family: "Times New Roman", serif;
       font-size: 1.15rem;
       letter-spacing: 5px;
@@ -178,18 +178,18 @@
       transition: background .2s, border-color .2s;
     }
     .place-btn:hover:not(:disabled) {
-      background: rgba(255,255,255,0.14);
-      border-color: rgba(255,255,255,0.5);
+      background: #333;
+      border-color: #333;
       color: #fff;
     }
-    .place-btn:disabled { opacity: 0.4; cursor: default; }
+    .place-btn:disabled { opacity: 0.35; cursor: default; }
 
     .checkout-error {
       margin: 0.8rem 0 0;
       font-family: "Times New Roman", serif;
       font-size: 0.95rem;
       letter-spacing: 1px;
-      color: rgba(220,140,140,0.9);
+      color: #c0392b;
       min-height: 1.2rem;
     }
 
@@ -209,7 +209,7 @@
       font-size: 1.6rem;
       letter-spacing: 6px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
+      color: #1a1a1a;
       font-weight: 400;
       margin: 0 0 1.2rem;
     }
@@ -217,22 +217,22 @@
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.4);
+      color: #888;
       margin: 0 0 0.6rem;
     }
     .confirmation__id {
       font-family: "Times New Roman", serif;
       font-size: 0.9rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.25);
+      color: #bbb;
       margin: 0 0 3rem;
       word-break: break-all;
     }
     .confirmation__link {
       display: inline-block;
       padding: 1rem 3rem;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.6);
+      border: 1px solid #ccc;
+      color: #555;
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 4px;
@@ -242,8 +242,8 @@
       transition: border-color .2s, color .2s;
     }
     .confirmation__link:hover {
-      border-color: rgba(255,255,255,0.5);
-      color: #fff;
+      border-color: #888;
+      color: #1a1a1a;
     }
 
     /* ── Payment step ── */
@@ -252,30 +252,30 @@
       margin: 0 auto;
     }
     #card-element {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: #f5f5f5;
+      border: 1px solid #ddd;
       border-radius: 2px;
       padding: 0.9rem 1rem;
       margin-bottom: 1.2rem;
       transition: border-color .2s;
     }
     #card-element.StripeElement--focus {
-      border-color: rgba(255,255,255,0.4);
+      border-color: #999;
     }
     #card-element.StripeElement--invalid {
-      border-color: rgba(220,140,140,0.6);
+      border-color: #c0392b;
     }
     .payment-order-summary {
       font-family: "Times New Roman", serif;
       font-size: 0.95rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.35);
+      color: #888;
       text-align: center;
       margin-bottom: 2rem;
       text-transform: uppercase;
     }
     .payment-order-summary strong {
-      color: rgba(255,255,255,0.7);
+      color: #1a1a1a;
     }
   </style>
 </head>
@@ -511,13 +511,13 @@
         const card = elements.create('card', {
           style: {
             base: {
-              color: 'rgba(255,255,255,0.85)',
+              color: '#1a1a1a',
               fontFamily: '"Times New Roman", Times, serif',
               fontSize: '16px',
               letterSpacing: '1px',
-              '::placeholder': { color: 'rgba(255,255,255,0.3)' },
+              '::placeholder': { color: '#bbb' },
             },
-            invalid: { color: 'rgba(220,140,140,0.9)' },
+            invalid: { color: '#c0392b' },
           },
         });
         card.mount('#card-element');

@@ -11,30 +11,12 @@
         html, body {
             height: 100%;
             overflow: hidden;
-            background: #000;
+            background: #fff;
+            color: #1a1a1a;
         }
         body {
             display: flex;
             flex-direction: column;
-        }
-
-        .bg-frame {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .bg-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.52);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 1;
-            pointer-events: none;
         }
 
         /* ── Page wrap ── */
@@ -339,12 +321,107 @@
             color: rgba(255,220,150,1);
             border-color: rgba(255,220,150,0.6);
         }
+
+        /* ── White theme overrides ── */
+        .title-row h2 { color: #1a1a1a; }
+        .title-row p  { color: #888; }
+        .title-row a:hover { color: #1a1a1a; }
+        .title-tagline { color: #999; }
+
+        .viewer-panel {
+            background: #f5f5f5;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .viewer-label { color: #bbb; }
+
+        .ann-dot  { background: rgba(80,60,10,0.85); box-shadow: 0 0 6px rgba(80,60,10,0.5); }
+        .ann-label { color: rgba(80,60,10,0.85); }
+        .ann-line  { background: rgba(100,80,10,0.35); }
+
+        .form-panel {
+            background: #fff;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .form-panel::-webkit-scrollbar-thumb { background: #ddd; }
+        .form-title { color: #1a1a1a; }
+        .form-unit-note { color: #aaa; }
+        .form-section-title {
+            color: rgba(100,70,0,0.8);
+            border-bottom-color: rgba(100,70,0,0.15);
+        }
+        .field label { color: #666; }
+        .field label:hover { color: rgba(100,70,0,0.85); }
+        .field input[type="number"] {
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #1a1a1a;
+        }
+        .field input[type="number"]:focus {
+            border-color: #999;
+            background: #fff;
+        }
+        .field input[type="number"]::placeholder { color: #ccc; }
+        .field-unit { color: #bbb; }
+
+        .unit-btn {
+            border-color: #ddd;
+            color: #888;
+        }
+        .unit-btn.active {
+            background: rgba(100,70,0,0.08);
+            border-color: rgba(100,70,0,0.35);
+            color: rgba(100,70,0,0.85);
+        }
+
+        .btn {
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #555;
+        }
+        .btn:hover {
+            background: #eee;
+            color: #1a1a1a;
+            border-color: #bbb;
+        }
+        .btn-primary {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #333;
+            color: #fff;
+            border-color: #333;
+        }
+
+        /* success banner */
+        .save-success {
+            display: none;
+            text-align: center;
+            padding: 1.4rem 1rem;
+            font-family: "Times New Roman", serif;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            color: #2a6e2a;
+            background: #f0faf0;
+            border: 1px solid #b8ddb8;
+            border-radius: 3px;
+            margin-top: 1rem;
+        }
+        .save-success a {
+            color: #1a1a1a;
+            font-weight: 600;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-
-    <iframe class="bg-frame" src="poolofdesigns-claude.html" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="bg-overlay"></div>
 
     <div class="page-wrap">
 
@@ -541,7 +618,11 @@
                 <!-- Buttons -->
                 <div class="save-btn">
                     <button class="btn" onclick="clearAll()">Clear</button>
-                    <button class="btn btn-primary" onclick="saveMeasurements()">Save</button>
+                    <button class="btn btn-primary" id="save-measurements-btn" onclick="saveMeasurements()">Save</button>
+                </div>
+                <div class="save-success" id="save-success">
+                    ✓ &nbsp; Measurements saved.
+                    <br><a href="checkout.html">Return to Checkout →</a>
                 </div>
 
             </div>
@@ -725,10 +806,10 @@
             ANNOTATIONS.forEach(a => {
                 const els = annEls[a.id];
                 if (a.id === annId) {
-                    els.dot.style.background  = '#fff';
-                    els.dot.style.boxShadow   = '0 0 14px rgba(255,255,255,1)';
-                    els.lbl.style.color       = '#fff';
-                    els.line.style.background = 'rgba(255,255,255,0.85)';
+                    els.dot.style.background  = '#1a1a1a';
+                    els.dot.style.boxShadow   = '0 0 10px rgba(0,0,0,0.5)';
+                    els.lbl.style.color       = '#1a1a1a';
+                    els.line.style.background = 'rgba(0,0,0,0.7)';
                     els.dot.style.opacity  = '1';
                     els.line.style.opacity = '1';
                     els.lbl.style.opacity  = '1';
@@ -910,34 +991,66 @@
         });
     </script>
 
-    <script>
+    <script type="module">
+        import { getMeasurements, saveMeasurements as apiSave, isLoggedIn } from './js/api.js';
+        import { openAuthModal } from './js/auth-modal.js';
+
+        if (!isLoggedIn()) {
+            openAuthModal(() => window.location.reload());
+        }
+
         /* ── Unit toggle ── */
         let currentUnit = 'cm';
-        function setUnit(unit) {
+        window.setUnit = function(unit) {
             currentUnit = unit;
             document.querySelectorAll('.unit-btn').forEach(b =>
                 b.classList.toggle('active', b.dataset.unit === unit)
             );
             document.querySelectorAll('.unit-label').forEach(el => el.textContent = unit);
-        }
+        };
 
         /* ── Clear all inputs ── */
-        function clearAll() {
+        window.clearAll = function() {
             document.querySelectorAll('.form-panel input[type="number"]').forEach(i => i.value = '');
-        }
+        };
 
-        /* ── Save / download as JSON ── */
-        function saveMeasurements() {
-            const data = { unit: currentUnit, measurements: {} };
-            document.querySelectorAll('.form-panel input[type="number"]').forEach(input => {
-                if (input.value) data.measurements[input.id.replace('f-', '')] = parseFloat(input.value);
-            });
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const a    = document.createElement('a');
-            a.href     = URL.createObjectURL(blob);
-            a.download = 'kdscion-measurements.json';
-            a.click();
+        /* ── Pre-fill existing measurements ── */
+        async function loadExisting() {
+            try {
+                const res = await getMeasurements();
+                if (res?.measurements) {
+                    Object.entries(res.measurements).forEach(([key, val]) => {
+                        const el = document.getElementById(`f-${key}`);
+                        if (el && val != null) el.value = val;
+                    });
+                }
+            } catch (_) {}
         }
+        loadExisting();
+
+        /* ── Save to backend ── */
+        window.saveMeasurements = async function() {
+            const btn = document.getElementById('save-measurements-btn');
+            btn.disabled = true;
+            btn.textContent = 'Saving…';
+            const data = { unit: currentUnit };
+            document.querySelectorAll('.form-panel input[type="number"]').forEach(input => {
+                if (input.value) data[input.id.replace('f-', '')] = parseFloat(input.value);
+            });
+            try {
+                await apiSave(data);
+                btn.textContent = 'Saved ✓';
+                document.getElementById('save-success').style.display = 'block';
+                // If came from checkout, redirect back after 2s
+                if (document.referrer.includes('checkout.html')) {
+                    setTimeout(() => { window.location.href = 'checkout.html'; }, 2000);
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = 'Save';
+                alert(err.message ?? 'Failed to save. Please try again.');
+            }
+        };
     </script>
 
 </body>

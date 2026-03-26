@@ -8,15 +8,6 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    html, body {
-      min-height: 100%;
-      background: #0a080f;
-      color: rgba(255,255,255,0.85);
-    }
-    .monogram img {
-      filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
-    }
-
     .orders-wrap {
       max-width: 860px;
       margin: 0 auto;
@@ -27,8 +18,8 @@
       font-size: 1.4rem;
       letter-spacing: 8px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-      margin: 0 0 3.2rem;
+      color: #555;
+      margin: 0 0 3rem;
       font-weight: 400;
     }
 
@@ -37,7 +28,7 @@
       font-family: "Times New Roman", serif;
       font-size: 1rem;
       letter-spacing: 3px;
-      color: rgba(255,255,255,0.25);
+      color: #aaa;
       text-align: center;
       padding: 4rem 0;
       text-transform: uppercase;
@@ -45,139 +36,143 @@
 
     /* ── Order card ── */
     .order-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: #fff;
+      border: 1px solid #e8e8e8;
       border-radius: 4px;
-      margin-bottom: 1.6rem;
+      margin-bottom: 1.4rem;
       overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
 
     .order-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.4rem 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 1.2rem 1.8rem;
+      border-bottom: 1px solid #f0f0f0;
       gap: 1rem;
       flex-wrap: wrap;
+      background: #fafafa;
     }
     .order-header__left {
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.25rem;
     }
     .order-id {
       font-family: "Times New Roman", serif;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.25);
+      color: #aaa;
       text-transform: uppercase;
     }
     .order-date {
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
-      letter-spacing: 3px;
-      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: #555;
       text-transform: uppercase;
     }
     .order-header__right {
       display: flex;
       align-items: center;
-      gap: 1.6rem;
+      gap: 1.4rem;
     }
     .order-total {
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
-      letter-spacing: 3px;
-      color: rgba(255,255,255,0.8);
+      font-size: 1.05rem;
+      letter-spacing: 2px;
+      color: #222;
+      font-weight: 600;
     }
 
     /* ── Status badge ── */
     .order-status {
       font-family: "Times New Roman", serif;
-      font-size: 0.8rem;
-      letter-spacing: 3px;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      padding: 0.35rem 0.9rem;
+      padding: 0.3rem 0.8rem;
       border-radius: 2px;
       border: 1px solid;
     }
     .status-confirmed, .status-delivered {
-      color: rgba(160,220,160,0.9);
-      border-color: rgba(160,220,160,0.3);
-      background: rgba(160,220,160,0.06);
+      color: #2a7a2a;
+      border-color: #b8ddb8;
+      background: #f0faf0;
     }
     .status-payment_pending, .status-pending {
-      color: rgba(220,200,120,0.9);
-      border-color: rgba(220,200,120,0.3);
-      background: rgba(220,200,120,0.06);
+      color: #7a6000;
+      border-color: #e8d87a;
+      background: #fdfbee;
     }
     .status-in_production {
-      color: rgba(120,180,220,0.9);
-      border-color: rgba(120,180,220,0.3);
-      background: rgba(120,180,220,0.06);
+      color: #1a4a7a;
+      border-color: #a8c8e8;
+      background: #f0f6fc;
     }
     .status-shipped {
-      color: rgba(180,140,220,0.9);
-      border-color: rgba(180,140,220,0.3);
-      background: rgba(180,140,220,0.06);
+      color: #5a2a7a;
+      border-color: #c8a8e8;
+      background: #f8f0fc;
     }
     .status-cancelled {
-      color: rgba(220,120,120,0.9);
-      border-color: rgba(220,120,120,0.3);
-      background: rgba(220,120,120,0.06);
+      color: #7a1a1a;
+      border-color: #e8a8a8;
+      background: #fdf0f0;
     }
     .status-refunded {
-      color: rgba(220,160,100,0.9);
-      border-color: rgba(220,160,100,0.3);
-      background: rgba(220,160,100,0.06);
+      color: #7a4a00;
+      border-color: #e8c88a;
+      background: #fdf6ee;
     }
 
     /* ── Order items ── */
     .order-items {
-      padding: 0.4rem 2rem 1.4rem;
+      padding: 0.4rem 1.8rem 1.2rem;
     }
     .order-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.85rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #f5f5f5;
       gap: 1rem;
     }
     .order-item:last-child { border-bottom: none; }
     .order-item__name {
       font-family: "Times New Roman", serif;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.75);
+      color: #333;
+      text-transform: uppercase;
     }
     .order-item__qty {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.3);
+      color: #999;
       margin-top: 0.2rem;
     }
     .order-item__price {
       font-family: "Times New Roman", serif;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.55);
+      color: #666;
       white-space: nowrap;
     }
 
-    /* ── Continue shopping link ── */
+    /* ── CTA ── */
     .orders-cta {
       text-align: center;
-      margin-top: 3rem;
+      margin-top: 2.4rem;
     }
     .orders-cta a {
       display: inline-block;
-      padding: 1rem 3rem;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.5);
+      padding: 0.9rem 2.8rem;
+      border: 1px solid #ccc;
+      color: #666;
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
+      font-size: 0.9rem;
       letter-spacing: 4px;
       text-transform: uppercase;
       text-decoration: none;
@@ -185,8 +180,8 @@
       transition: border-color .2s, color .2s;
     }
     .orders-cta a:hover {
-      border-color: rgba(255,255,255,0.5);
-      color: #fff;
+      border-color: #555;
+      color: #222;
     }
   </style>
 </head>

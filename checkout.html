@@ -286,7 +286,7 @@
 
   <header>
     <nav class="nav collapsible">
-      <a href="index-claude.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+      <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
       <svg class="icon icon--white nav__toggler">
         <use xlink:href="images/sprite.svg#menu"></use>
       </svg>
@@ -304,7 +304,7 @@
       <p class="confirmation__sub">Your bespoke order has been received.</p>
       <p class="confirmation__id" id="conf-order-id"></p>
       <a href="orders.html" class="confirmation__link" style="margin-right:1rem">View Orders</a>
-      <a href="poolofdesigns-productdescription-claude.html" class="confirmation__link">Continue Shopping</a>
+      <a href="poolofdesigns-productdescription.html" class="confirmation__link">Continue Shopping</a>
     </div>
 
     <!-- Payment step (shown after order created, hidden until then) -->
@@ -318,7 +318,7 @@
           <strong style="color:rgba(255,220,150,0.9); display:block; letter-spacing:4px; margin-bottom:0.5rem; font-weight:400;">MEASUREMENTS REQUIRED</strong>
           We craft every piece to your exact measurements. Please submit your measurements before completing payment.
           <br>
-          <a href="measurement guide-claude.html" style="display:inline-block; margin-top:0.8rem; padding:0.65rem 1.8rem; border:1px solid rgba(255,220,150,0.5); color:rgba(255,220,150,0.9); text-decoration:none; letter-spacing:4px; font-size:0.9rem; border-radius:2px; transition:border-color .2s, color .2s;">
+          <a href="measurement guide.html" style="display:inline-block; margin-top:0.8rem; padding:0.65rem 1.8rem; border:1px solid rgba(255,220,150,0.5); color:rgba(255,220,150,0.9); text-decoration:none; letter-spacing:4px; font-size:0.9rem; border-radius:2px; transition:border-color .2s, color .2s;">
             Submit Measurements →
           </a>
         </div>
@@ -396,7 +396,7 @@
     </div>
     <div class="footer_branding">
       <div class="monogram">
-        <a href="index-claude.html">
+        <a href="index.html">
           <img src="/images/KD_monogram.png" alt="KD monogram home page link">
         </a>
       </div>
@@ -433,7 +433,7 @@
 
       list.innerHTML = items.map(item => {
         const skuMatch = item.product?.sku?.match(/KD-P(\d+)-/i);
-        const productPage = skuMatch ? `p${skuMatch[1]}-product-claude.html` : 'poolofdesigns-productdescription-claude.html';
+        const productPage = skuMatch ? `p${skuMatch[1]}-product.html` : 'poolofdesigns-productdescription.html';
         return `
         <div class="cart-item" data-id="${item.id}">
           <div>

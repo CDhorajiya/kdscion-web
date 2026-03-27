@@ -92,11 +92,18 @@
             color: rgb(220, 30, 30);
         }
 
+        /* ── z-index: 1 makes the nav ul a higher stacking layer than the
+           brand-name anchor, so pointer events in the overlap zone go to
+           the nav items first — fixes hover on SKIN PROFILE & MEASUREMENTS ── */
+        .navigation > ul {
+            z-index: 1;
+        }
+
         /* ── Align nav items with brand name ── */
         .navigation {
             align-items: baseline;
-            padding-right: 0;
-            justify-content: flex-start;
+            padding-right: 4%;
+            justify-content: space-between;
         }
         .navigation ul > li > a {
             margin-left: 0;
@@ -131,17 +138,13 @@
      <ul>
         <li><a href="skinprofile-claude.html" class=""><h4>SKIN PROFILE</h4></a>
             <ul class="dropdown">
-                <li><a href="skinprofile-claude.html">My Skin Profile</a></li>
-                <li><a href="skinprofile-claude.html">Colour Analysis</a></li>
-                <li><a href="skinprofile-claude.html">Fabric Recommendations</a></li>
+                <li><a href="skinprofile-claude.html">Skin Profile Guide</a></li>
             </ul>
         </li>
 
         <li><a href="measurement guide-claude.html" class=""><h4>MEASUREMENTS</h4></a>
             <ul class="dropdown">
-                <li><a href="measurement guide-claude.html">My Measurements</a></li>
                 <li><a href="measurement guide-claude.html">How to Measure</a></li>
-                <li><a href="measurement guide-claude.html">Size Reference Chart</a></li>
             </ul>
         </li>
 

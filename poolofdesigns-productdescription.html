@@ -27,7 +27,7 @@
         /* ── Each product card ── */
         .product-item {
             position: relative;
-            cursor: default;
+            cursor: pointer;
             z-index: 1;
             transition: transform 0.4s ease;
         }
@@ -121,20 +121,6 @@
             z-index: 500;
         }
 
-        /* ── 3D badge ── */
-        .has-3d::after {
-            content: '3D';
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: #000;
-            color: #fff;
-            font-family: "Times New Roman", serif;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            padding: 0.3rem 0.8rem;
-            pointer-events: none;
-        }
 
         /* ── 3D Viewer modal base ── */
         .viewer-modal {
@@ -759,7 +745,7 @@
                     items.forEach(el => el.classList.remove('popup-active'));
                     item.classList.add('popup-active');
                     document.body.classList.add('gallery-blur-active');
-                }, 3000);
+                }, 1500);
                 hoverTimers.set(item, timer);
             });
             item.addEventListener('mouseleave', () => {

@@ -181,77 +181,153 @@
             text-align: center;
         }
 
-        /* ── Fabric category accordion ── */
-        .fabric-group {
-            border-bottom: 1px solid rgba(255,255,255,0.12);
-        }
-        .fabric-group-btn {
-            width: 100%;
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
+        /* ── Fabric full-preview overlay ── */
+        .fabric-preview {
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: rgb(18,18,20);
+            border-radius: 4px;
+            overflow: hidden;
             align-items: center;
-            justify-content: space-between;
-            padding: 1.1rem 0;
-            font-family: "Times New Roman", serif;
-            font-size: 1.25rem;
-            font-weight: bold;
+            justify-content: center;
+        }
+        .fabric-preview.visible { display: flex; }
+        .fabric-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .fabric-preview-back {
+            position: absolute;
+            top: 1.1rem;
+            left: 1.1rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.28);
+            color: rgba(255,255,255,0.82);
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.56rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            padding: 0.76rem 1.7rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .fabric-preview-back:hover {
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+        }
+
+        /* ── Fabric flat list ── */
+        .fabric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .fabric-list.has-open .fabric-category:not(.open) {
+            display: none;
+        }
+
+        /* ── Fabric category container ── */
+        .fabric-category {
+            border: 2px solid transparent;
+            border-radius: 3px;
+            transition: border-color 0.2s;
+            overflow: hidden;
+        }
+        .fabric-category.open {
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        /* ── Category header (wreath card) ── */
+        .category-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fabric-category:not(.open):hover {
+            border-color: rgba(255,255,255,0.4);
+        }
+        .category-card:hover { transform: scale(1.01); }
+        .category-card .wreath-preview {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0.5rem 0.3rem;
+            background: rgba(0,0,0,0.18);
+            overflow: hidden;
+        }
+        .category-card .wreath-preview img {
+            height: 72px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.25s ease;
+        }
+        .category-card:hover .wreath-preview img { transform: scale(1.1); }
+        .category-card p {
+            margin: 0;
+            padding: 0.55rem 0.8rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1rem;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.55);
-            transition: color 0.2s;
+            color: rgba(180,160,200,0.85);
+            background: rgba(0,0,0,0.25);
+            text-align: center;
         }
-        .fabric-group-btn:hover { color: rgba(255,255,255,0.9); }
-        .fabric-group-btn.open { color: #ffffff; }
-        .fabric-group-btn .chevron {
-            font-size: 0.7rem;
-            transition: transform 0.25s ease;
-            opacity: 0.45;
+        .fabric-category.open .category-card p {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.38);
         }
-        .fabric-group-btn.open .chevron { transform: rotate(180deg); opacity: 1; }
-        .fabric-swatches {
-            display: none;
-            flex-direction: column;
-            gap: 0.8rem;
-            padding-bottom: 1.2rem;
-        }
-        .fabric-swatches.open { display: flex; }
 
-        /* ── Individual fabric swatch ── */
-        .fabric-item {
+        /* ── Sub-swatch grid (hidden until open) ── */
+        .swatch-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem;
+            background: rgba(0,0,0,0.15);
+        }
+        .fabric-category.open .swatch-grid { display: grid; }
+
+        /* ── Individual square swatch card ── */
+        .swatch-card {
             cursor: pointer;
             border: 2px solid transparent;
             border-radius: 3px;
             overflow: hidden;
-            transition: border-color 0.2s, transform 0.2s;
+            transition: border-color 0.2s;
         }
-        .fabric-item:hover {
-            border-color: rgba(255,255,255,0.5);
-            transform: scale(1.02);
-        }
-        .fabric-item.active {
-            border-color: #ffffff;
-        }
-        .fabric-item img {
+        .swatch-card:hover { border-color: rgba(255,255,255,0.5); }
+        .swatch-card.active { border-color: #ffffff; }
+        .swatch-card img {
             width: 100%;
-            height: 90px;
+            aspect-ratio: 1;
             object-fit: cover;
             display: block;
+            transition: transform 0.4s ease 0s;
         }
-        .fabric-item p {
-            margin: 0;
-            padding: 0.6rem 0.8rem;
-            font-family: "Times New Roman", serif;
-            font-size: 0.85rem;
+        .swatch-card:hover img {
+            transform: scale(3);
+            transition: transform 0.4s ease 3s;
+        }
+        .swatch-card span {
+            display: block;
+            padding: 0.3rem 0.2rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 0.7rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.7);
+            color: rgba(180,160,200,0.8);
             background: rgba(0,0,0,0.25);
             text-align: center;
         }
-        .fabric-item.active p {
-            color: #fff;
+        .swatch-card.active span {
+            color: rgba(180,160,200,1);
             background: rgba(0,0,0,0.45);
         }
 
@@ -334,6 +410,10 @@
             <div class="viewer-panel">
                 <canvas id="viewer-canvas"></canvas>
                 <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
+                <div id="fabric-preview" class="fabric-preview">
+                    <img id="fabric-preview-img" src="" alt="Fabric Preview">
+                    <button class="fabric-preview-back" id="fabric-preview-back">← 3D View</button>
+                </div>
             </div>
 
             <!-- Right: fabric panel -->
@@ -341,81 +421,106 @@
                 <div class="fabric-panel" data-sku="KD-P12-FAD">
                 <p class="fabric-panel-title">Select Fabric</p>
 
-                <!-- COTTON -->
-                <div class="fabric-group">
-                    <button class="fabric-group-btn" data-group="cotton">
-                        Cotton <span class="chevron">▼</span>
-                    </button>
-                    <div class="fabric-swatches" id="group-cotton">
-                        <div class="fabric-item" data-texture="images/cotton-1.jpg" data-fabric-id="cotton-1">
+                <div class="fabric-list">
+
+                <!-- 100% COTTON -->
+                <div class="fabric-category">
+                    <div class="category-card">
+                        <div class="wreath-preview">
+                            <img src="images/cotton-wreath-final.png" alt="Cotton">
+                        </div>
+                        <p>100% Cotton</p>
+                    </div>
+                    <div class="swatch-grid">
+                        <div class="swatch-card" data-texture="images/cotton-1.jpg" data-fabric-id="cotton-1">
                             <img src="images/cotton-1.jpg" alt="Cotton 1">
-                            <p>Cotton 1</p>
+                            <span>Cotton 1</span>
                         </div>
-                        <div class="fabric-item" data-texture="images/cotton-2.jpg" data-fabric-id="cotton-2">
+                        <div class="swatch-card" data-texture="images/cotton-2.jpg" data-fabric-id="cotton-2">
                             <img src="images/cotton-2.jpg" alt="Cotton 2">
-                            <p>Cotton 2</p>
+                            <span>Cotton 2</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- LINEN -->
-                <div class="fabric-group">
-                    <button class="fabric-group-btn" data-group="linen">
-                        Linen <span class="chevron">▼</span>
-                    </button>
-                    <div class="fabric-swatches" id="group-linen">
-                        <div class="fabric-item" data-texture="images/linen-1.jpg" data-fabric-id="linen-1">
+                <!-- 100% LINEN -->
+                <div class="fabric-category">
+                    <div class="category-card">
+                        <div class="wreath-preview">
+                            <img src="images/linen-wreath-final.png" alt="Linen">
+                        </div>
+                        <p>100% Linen</p>
+                    </div>
+                    <div class="swatch-grid">
+                        <div class="swatch-card" data-texture="images/linen-1.jpg" data-fabric-id="linen-1">
                             <img src="images/linen-1.jpg" alt="Linen 1">
-                            <p>Linen 1</p>
+                            <span>Linen 1</span>
                         </div>
-                        <div class="fabric-item" data-texture="images/linen-2.webp" data-fabric-id="linen-2">
+                        <div class="swatch-card" data-texture="images/linen-2.webp" data-fabric-id="linen-2">
                             <img src="images/linen-2.webp" alt="Linen 2">
-                            <p>Linen 2</p>
+                            <span>Linen 2</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- COTTON-LINEN BLEND -->
-                <div class="fabric-group">
-                    <button class="fabric-group-btn" data-group="cotton-linen">
-                        Cotton-Linen Blend <span class="chevron">▼</span>
-                    </button>
-                    <div class="fabric-swatches" id="group-cotton-linen">
-                        <div class="fabric-item" data-texture="images/cotton-linen blend-1.webp" data-fabric-id="cotton-linen-1">
-                            <img src="images/cotton-linen blend-1.webp" alt="Cotton-Linen Blend 1">
-                            <p>Cotton-Linen Blend 1</p>
+                <!-- 100% WOOL -->
+                <div class="fabric-category">
+                    <div class="category-card">
+                        <div class="wreath-preview">
+                            <img src="images/wool-wreath-1-final.png" alt="Wool">
                         </div>
-                        <div class="fabric-item" data-texture="images/cotton-linen blend-2.jpg" data-fabric-id="cotton-linen-2">
-                            <img src="images/cotton-linen blend-2.jpg" alt="Cotton-Linen Blend 2">
-                            <p>Cotton-Linen Blend 2</p>
-                        </div>
+                        <p>100% Wool</p>
                     </div>
-                </div>
-
-                <!-- WOOL -->
-                <div class="fabric-group">
-                    <button class="fabric-group-btn" data-group="wool">
-                        Wool <span class="chevron">▼</span>
-                    </button>
-                    <div class="fabric-swatches" id="group-wool">
-                        <div class="fabric-item" data-texture="images/wool-1.jpg" data-fabric-id="wool-1">
+                    <div class="swatch-grid">
+                        <div class="swatch-card" data-texture="images/wool-1.jpg" data-fabric-id="wool-1">
                             <img src="images/wool-1.jpg" alt="Wool 1">
-                            <p>Wool 1</p>
+                            <span>Wool 1</span>
+                        </div>
+                        <div class="swatch-card" data-texture="images/woolen fabric.jpg" data-fabric-id="wool-2">
+                            <img src="images/woolen fabric.jpg" alt="Wool 2">
+                            <span>Wool 2</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- WOOL BLEND -->
-                <div class="fabric-group">
-                    <button class="fabric-group-btn" data-group="wool-blend">
-                        Wool Blend <span class="chevron">▼</span>
-                    </button>
-                    <div class="fabric-swatches" id="group-wool-blend">
-                        <div class="fabric-item" data-texture="images/wool-blend-2.avif" data-fabric-id="wool-blend-2">
-                            <img src="images/wool-blend-2.avif" alt="Wool Blend 2">
-                            <p>Wool Blend 2</p>
+                <!-- COTTON LINEN BLEND -->
+                <div class="fabric-category">
+                    <div class="category-card">
+                        <div class="wreath-preview">
+                            <img src="images/cotton-wreath-final.png" alt="Cotton">
+                            <img src="images/linen-wreath-final.png" alt="Linen">
+                        </div>
+                        <p>Cotton Linen Blend</p>
+                    </div>
+                    <div class="swatch-grid">
+                        <div class="swatch-card" data-texture="images/cotton-linen blend-1.webp" data-fabric-id="cotton-linen-1">
+                            <img src="images/cotton-linen blend-1.webp" alt="Cotton-Linen 1">
+                            <span>Blend 1</span>
+                        </div>
+                        <div class="swatch-card" data-texture="images/cotton-linen blend-2.jpg" data-fabric-id="cotton-linen-2">
+                            <img src="images/cotton-linen blend-2.jpg" alt="Cotton-Linen 2">
+                            <span>Blend 2</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- COTTON WOOL BLEND -->
+                <div class="fabric-category">
+                    <div class="category-card">
+                        <div class="wreath-preview">
+                            <img src="images/cotton-wreath-final.png" alt="Cotton">
+                            <img src="images/wool-wreath-1-final.png" alt="Wool">
+                        </div>
+                        <p>Cotton Wool Blend</p>
+                    </div>
+                    <div class="swatch-grid">
+                        <div class="swatch-card" data-texture="images/wool-blend-2.avif" data-fabric-id="cotton-wool-1">
+                            <img src="images/wool-blend-2.avif" alt="Cotton-Wool 1">
+                            <span>Blend 1</span>
+                        </div>
+                    </div>
+                </div>
+
                 </div>
 
                 </div>
@@ -568,28 +673,49 @@
             }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
         }
 
-        /* ── Accordion: category buttons ── */
-        document.querySelectorAll('.fabric-group-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const isOpen = btn.classList.contains('open');
-                // close all
-                document.querySelectorAll('.fabric-group-btn').forEach(b => b.classList.remove('open'));
-                document.querySelectorAll('.fabric-swatches').forEach(s => s.classList.remove('open'));
-                // open clicked one if it was closed
+        /* ── Fabric category toggle ── */
+        const fabricList = document.querySelector('.fabric-list');
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const cat = card.closest('.fabric-category');
+                const isOpen = cat.classList.contains('open');
+                document.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
                 if (!isOpen) {
-                    btn.classList.add('open');
-                    document.getElementById('group-' + btn.dataset.group).classList.add('open');
+                    cat.classList.add('open');
+                    fabricList.classList.add('has-open');
+                } else {
+                    fabricList.classList.remove('has-open');
                 }
             });
         });
 
-        /* ── Fabric click handlers ── */
-        document.querySelectorAll('.fabric-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.fabric-item').forEach(f => f.classList.remove('active'));
-                item.classList.add('active');
-                applyFabric(item.dataset.texture);
-                if (item.dataset.fabricId) selectFabric(item.dataset.fabricId);
+        /* ── Click outside: collapse and show all ── */
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.fabric-category')) {
+                document.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                fabricList.classList.remove('has-open');
+            }
+        });
+
+        /* ── Fabric preview overlay ── */
+        const fabricPreview    = document.getElementById('fabric-preview');
+        const fabricPreviewImg = document.getElementById('fabric-preview-img');
+        document.getElementById('fabric-preview-back').addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabricPreview.classList.remove('visible');
+        });
+
+        /* ── Swatch click handlers ── */
+        document.querySelectorAll('.swatch-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
+                card.classList.add('active');
+                applyFabric(card.dataset.texture);
+                if (card.dataset.fabricId) selectFabric(card.dataset.fabricId);
+                fabricPreviewImg.src = card.dataset.texture;
+                fabricPreview.classList.add('visible');
             });
         });
 

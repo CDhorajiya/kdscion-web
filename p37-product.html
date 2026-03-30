@@ -331,6 +331,53 @@
             background: rgba(0,0,0,0.45);
         }
 
+        /* ── Sub-category (collection) within a fabric type ── */
+        .fabric-subcategory {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.4rem;
+        }
+        .fabric-subcategory:last-child { margin-bottom: 0; }
+        .subcategory-header {
+            cursor: pointer;
+            padding: 0.42rem 0.8rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.65);
+            background: rgba(0,0,0,0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .subcategory-header:hover {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,1);
+        }
+        .fabric-subcategory.open .subcategory-header {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.35);
+        }
+        .subcategory-header .sub-arrow {
+            font-size: 0.6rem;
+            transition: transform 0.2s;
+            opacity: 0.5;
+        }
+        .fabric-subcategory.open .subcategory-header .sub-arrow {
+            transform: rotate(90deg);
+        }
+        .sub-swatch-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.1);
+        }
+        .fabric-subcategory.open .sub-swatch-grid { display: grid; }
+
 
         /* ── Cart actions ── */
         .cfg-actions {
@@ -472,13 +519,34 @@
                         <p>100% Cotton</p>
                     </div>
                     <div class="swatch-grid">
-                        <div class="swatch-card" data-texture="images/cotton-1.jpg" data-fabric-id="cotton-1">
-                            <img src="images/cotton-1.jpg" alt="Cotton 1">
-                            <span>Cotton 1</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Plain Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid">
+                                <div class="swatch-card" data-texture="images/cotton-1.jpg" data-fabric-id="cotton-1">
+                                    <img src="images/cotton-1.jpg" alt="Cotton 1">
+                                    <span>Cotton 1</span>
+                                </div>
+                                <div class="swatch-card" data-texture="images/cotton-2.jpg" data-fabric-id="cotton-2">
+                                    <img src="images/cotton-2.jpg" alt="Cotton 2">
+                                    <span>Cotton 2</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="swatch-card" data-texture="images/cotton-2.jpg" data-fabric-id="cotton-2">
-                            <img src="images/cotton-2.jpg" alt="Cotton 2">
-                            <span>Cotton 2</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Dobies Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Lining Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Chex Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Print Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
                         </div>
                     </div>
                 </div>
@@ -492,13 +560,34 @@
                         <p>100% Linen</p>
                     </div>
                     <div class="swatch-grid">
-                        <div class="swatch-card" data-texture="images/linen-1.jpg" data-fabric-id="linen-1">
-                            <img src="images/linen-1.jpg" alt="Linen 1">
-                            <span>Linen 1</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Plain Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid">
+                                <div class="swatch-card" data-texture="images/linen-1.jpg" data-fabric-id="linen-1">
+                                    <img src="images/linen-1.jpg" alt="Linen 1">
+                                    <span>Linen 1</span>
+                                </div>
+                                <div class="swatch-card" data-texture="images/linen-2.webp" data-fabric-id="linen-2">
+                                    <img src="images/linen-2.webp" alt="Linen 2">
+                                    <span>Linen 2</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="swatch-card" data-texture="images/linen-2.webp" data-fabric-id="linen-2">
-                            <img src="images/linen-2.webp" alt="Linen 2">
-                            <span>Linen 2</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Dobies Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Lining Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Chex Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Print Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
                         </div>
                     </div>
                 </div>
@@ -512,13 +601,38 @@
                         <p>100% Wool</p>
                     </div>
                     <div class="swatch-grid">
-                        <div class="swatch-card" data-texture="images/wool-1.jpg" data-fabric-id="wool-1">
-                            <img src="images/wool-1.jpg" alt="Wool 1">
-                            <span>Wool 1</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Plain Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid">
+                                <div class="swatch-card" data-texture="images/wool-1.jpg" data-fabric-id="wool-1">
+                                    <img src="images/wool-1.jpg" alt="Wool 1">
+                                    <span>Wool 1</span>
+                                </div>
+                                <div class="swatch-card" data-texture="images/woolen fabric.jpg" data-fabric-id="wool-2">
+                                    <img src="images/woolen fabric.jpg" alt="Wool 2">
+                                    <span>Wool 2</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="swatch-card" data-texture="images/woolen fabric.jpg" data-fabric-id="wool-2">
-                            <img src="images/woolen fabric.jpg" alt="Wool 2">
-                            <span>Wool 2</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Dobies Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Lining Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Chex Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Print Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Tweed Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
                         </div>
                     </div>
                 </div>
@@ -533,13 +647,34 @@
                         <p>Cotton Linen Blend</p>
                     </div>
                     <div class="swatch-grid">
-                        <div class="swatch-card" data-texture="images/cotton-linen blend-1.webp" data-fabric-id="cotton-linen-1">
-                            <img src="images/cotton-linen blend-1.webp" alt="Cotton-Linen 1">
-                            <span>Blend 1</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Plain Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid">
+                                <div class="swatch-card" data-texture="images/cotton-linen blend-1.webp" data-fabric-id="cotton-linen-1">
+                                    <img src="images/cotton-linen blend-1.webp" alt="Cotton-Linen 1">
+                                    <span>Blend 1</span>
+                                </div>
+                                <div class="swatch-card" data-texture="images/cotton-linen blend-2.jpg" data-fabric-id="cotton-linen-2">
+                                    <img src="images/cotton-linen blend-2.jpg" alt="Cotton-Linen 2">
+                                    <span>Blend 2</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="swatch-card" data-texture="images/cotton-linen blend-2.jpg" data-fabric-id="cotton-linen-2">
-                            <img src="images/cotton-linen blend-2.jpg" alt="Cotton-Linen 2">
-                            <span>Blend 2</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Dobies Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Lining Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Chex Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Print Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
                         </div>
                     </div>
                 </div>
@@ -554,9 +689,30 @@
                         <p>Cotton Wool Blend</p>
                     </div>
                     <div class="swatch-grid">
-                        <div class="swatch-card" data-texture="images/wool-blend-2.avif" data-fabric-id="cotton-wool-1">
-                            <img src="images/wool-blend-2.avif" alt="Cotton-Wool 1">
-                            <span>Blend 1</span>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Plain Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid">
+                                <div class="swatch-card" data-texture="images/wool-blend-2.avif" data-fabric-id="cotton-wool-1">
+                                    <img src="images/wool-blend-2.avif" alt="Cotton-Wool 1">
+                                    <span>Blend 1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Dobies Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Lining Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Chex Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
+                        </div>
+                        <div class="fabric-subcategory">
+                            <div class="subcategory-header"><span>Print Collection</span><span class="sub-arrow">&#9654;</span></div>
+                            <div class="sub-swatch-grid"></div>
                         </div>
                     </div>
                 </div>
@@ -816,6 +972,17 @@
                 } else {
                     fabricList.classList.remove('has-open');
                 }
+            });
+        });
+
+        /* ── Sub-category toggle ── */
+        document.querySelectorAll('.subcategory-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sub = header.closest('.fabric-subcategory');
+                const isOpen = sub.classList.contains('open');
+                sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
+                if (!isOpen) sub.classList.add('open');
             });
         });
 

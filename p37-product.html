@@ -120,6 +120,8 @@
             box-shadow: 0 8px 48px rgba(0,0,0,0.35);
         }
         #viewer-canvas {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             display: block;
@@ -461,6 +463,171 @@
             color: #fff;
         }
 
+        /* ── Design Details button ── */
+        .design-details-btn {
+            position: absolute;
+            bottom: 1.8rem;
+            right: 1.4rem;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.72);
+            font-family: "Times New Roman", serif;
+            font-size: 0.78rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 0.52rem 1.1rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        .design-details-btn:hover {
+            background: rgba(0,0,0,0.65);
+            border-color: rgba(255,255,255,0.5);
+            color: #fff;
+        }
+        .design-details-btn.active {
+            background: rgba(255,220,150,0.12);
+            border-color: rgba(255,220,150,0.45);
+            color: rgba(255,220,150,0.9);
+        }
+
+        /* ── Design details annotation layer ── */
+        #detail-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 4;
+        }
+        #detail-layer.visible { opacity: 1; }
+        .dann-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255,220,150,0.95);
+            box-shadow: 0 0 6px rgba(255,200,80,0.8);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .dann-label {
+            position: absolute;
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,220,150,0.9);
+            white-space: normal;
+            max-width: 140px;
+            pointer-events: none;
+            line-height: 1.35;
+        }
+        .dann-label.right { transform: translateY(-50%); }
+        .dann-label.left  { transform: translate(-100%, -50%); }
+        .dann-line {
+            position: absolute;
+            height: 1px;
+            background: rgba(255,200,80,0.45);
+            pointer-events: none;
+            transform-origin: left center;
+        }
+
+        /* ── White theme overrides ── */
+        html, body { background: #fff; color: #1a1a1a; }
+        .bg-frame, .bg-overlay { display: none; }
+
+        .monogram img { filter: none; }
+
+        .product-breadcrumb { color: #888; }
+        .product-breadcrumb a { color: #888; }
+        .product-breadcrumb a:hover { color: #1a1a1a; }
+
+        .product-title-row h2 { color: #1a1a1a; }
+        .product-title-row p  { color: #888; }
+        .product-home-link:hover { color: #1a1a1a; }
+        .product-tagline { color: #999; }
+
+        .viewer-panel {
+            background: #f5f5f5;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .viewer-label { color: #bbb; }
+
+        .design-details-btn {
+            background: rgba(255,255,255,0.82);
+            border-color: #ccc;
+            color: #666;
+        }
+        .design-details-btn:hover { background: #fff; border-color: #999; color: #1a1a1a; }
+        .design-details-btn.active {
+            background: rgba(100,70,0,0.08);
+            border-color: rgba(100,70,0,0.45);
+            color: rgba(100,70,0,0.85);
+        }
+        .dann-dot  { background: rgba(80,60,10,0.85); box-shadow: 0 0 6px rgba(80,60,10,0.5); }
+        .dann-label { color: rgba(80,60,10,0.85); }
+        .dann-line  { background: rgba(100,80,10,0.4); }
+
+        .fabric-preview { background: #fff; }
+        .fabric-preview-back {
+            background: rgba(255,255,255,0.9);
+            border-color: #ccc;
+            color: #333;
+        }
+        .fabric-preview-back:hover { background: #fff; color: #1a1a1a; }
+
+        .fabric-panel {
+            background: #fff;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .fabric-panel-title { color: #1a1a1a; }
+
+        .fabric-category.open { border-color: #ccc; }
+        .fabric-category:not(.open):hover { border-color: #bbb; }
+        .category-card .wreath-preview { background: #f5f5f5; }
+        .category-card p { color: #555; background: #f0f0f0; }
+        .fabric-category.open .category-card p { color: #1a1a1a; background: #e8e8e8; }
+
+        .swatch-grid { background: #fafafa; }
+        .swatch-card:hover { border-color: #999; }
+        .swatch-card.active { border-color: #1a1a1a; }
+        .swatch-card span { color: #666; background: #f0f0f0; }
+        .swatch-card.active span { color: #1a1a1a; background: #e0e0e0; }
+
+        .fabric-subcategory { border-color: #e0e0e0; }
+        .subcategory-header { color: #555; background: #f5f5f5; }
+        .subcategory-header:hover { background: #eee; color: #1a1a1a; }
+        .fabric-subcategory.open .subcategory-header { color: #1a1a1a; background: #e8e8e8; }
+        .sub-swatch-grid { background: #fafafa; }
+
+        .cfg-price-label { color: #555; }
+        .cfg-price-label strong { color: #1a1a1a; }
+        .cfg-add-btn {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .cfg-add-btn:hover:not(:disabled) {
+            background: #333;
+            border-color: #333;
+            color: #fff;
+        }
+        .cfg-status--ok    { color: #2a6e2a; }
+        .cfg-status--warn  { color: #7a6000; }
+        .cfg-status--error { color: #8a1a1a; }
+
+        .skin-btn {
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #555;
+        }
+        .skin-btn:hover { background: #eee; border-color: #bbb; color: #1a1a1a; }
+        .skin-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
     </style>
 </head>
 <body>
@@ -497,6 +664,8 @@
             <div class="viewer-panel">
                 <canvas id="viewer-canvas"></canvas>
                 <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
+                                <div id="detail-layer"></div>
+                <button class="design-details-btn" id="design-details-btn">Design Details</button>
                 <div id="fabric-preview" class="fabric-preview">
                     <img id="fabric-preview-img" src="" alt="Fabric Preview">
                     <button class="fabric-preview-back" id="fabric-preview-back">← 3D View</button>
@@ -829,16 +998,17 @@
         });
 
         function initViewer() {
-            const W = canvas.clientWidth  || 800;
-            const H = canvas.clientHeight || 700;
+            const panel = canvas.parentElement;
+            const W = panel.clientWidth  || 800;
+            const H = panel.clientHeight || 700;
             rendererS = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
             rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
-            rendererS.setSize(W, H);
+            rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 
             sceneS  = new THREE.Scene();
             cameraS = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
-            cameraS.position.set(0, 1, 3);
+            cameraS.position.set(0, 0, 3);
 
             sceneS.add(new THREE.AmbientLight(0xffffff, 1.8));
             const key = new THREE.DirectionalLight(0xffffff, 1.4);
@@ -853,6 +1023,8 @@
             controlsS.dampingFactor = 0.08;
             controlsS.autoRotate = true;
             controlsS.autoRotateSpeed = 1.2;
+            controlsS.target.set(0, 0, 0);
+            controlsS.update();
 
             new GLTFLoader().load('3d/p37-sleeveless-shift dress.glb', (gltf) => {
                 currentModel = gltf.scene;
@@ -875,6 +1047,7 @@
                 animIdS = requestAnimationFrame(animate);
                 controlsS.update();
                 rendererS.render(sceneS, cameraS);
+                updateDetailAnnotations();
             })();
         }
 
@@ -1015,17 +1188,79 @@
             });
         });
 
+        /* ── Design Details annotations ── */
+        const DETAIL_ANNS = [
+            // Leaders to be added per product
+        ];
+
+        const detailLayer    = document.getElementById('detail-layer');
+        const detailBtn      = document.getElementById('design-details-btn');
+        let   detailsVisible = false;
+
+        const detailEls = {};
+        DETAIL_ANNS.forEach(a => {
+            const dot  = document.createElement('div');  dot.className = 'dann-dot';
+            const line = document.createElement('div');  line.className = 'dann-line';
+            const lbl  = document.createElement('div');  lbl.className = `dann-label ${a.side}`;
+            lbl.innerHTML = a.label;
+            detailLayer.appendChild(dot);
+            detailLayer.appendChild(line);
+            detailLayer.appendChild(lbl);
+            detailEls[a.id] = { dot, line, lbl };
+        });
+
+        detailBtn.addEventListener('click', () => {
+            detailsVisible = !detailsVisible;
+            detailBtn.classList.toggle('active', detailsVisible);
+            detailLayer.classList.toggle('visible', detailsVisible);
+        });
+
+        const _dVec  = new THREE.Vector3();
+        const D_LINE = 44;
+
+        function updateDetailAnnotations() {
+            if (!detailsVisible || !cameraS) return;
+            const rect = canvas.getBoundingClientRect();
+            if (!rect.width) return;
+            DETAIL_ANNS.forEach(a => {
+                const els = detailEls[a.id];
+                _dVec.copy(a.pos);
+                _dVec.project(cameraS);
+                const px = ( _dVec.x * 0.5 + 0.5) * rect.width;
+                const py = (-_dVec.y * 0.5 + 0.5) * rect.height;
+                const behind = _dVec.z > 1;
+                [els.dot, els.line, els.lbl].forEach(el => { el.style.display = behind ? 'none' : ''; });
+                if (behind) return;
+                els.dot.style.left = `${px}px`;
+                els.dot.style.top  = `${py}px`;
+                const off = 6;
+                if (a.side === 'right') {
+                    els.line.style.left  = `${px + off}px`;
+                    els.line.style.top   = `${py}px`;
+                    els.line.style.width = `${D_LINE}px`;
+                    els.lbl.style.left   = `${px + off + D_LINE + 5}px`;
+                    els.lbl.style.top    = `${py}px`;
+                } else {
+                    els.line.style.left  = `${px - off - D_LINE}px`;
+                    els.line.style.top   = `${py}px`;
+                    els.line.style.width = `${D_LINE}px`;
+                    els.lbl.style.left   = `${px - off - D_LINE - 5}px`;
+                    els.lbl.style.top    = `${py}px`;
+                }
+            });
+        }
+
         /* ── Start viewer on page load ── */
         requestAnimationFrame(initViewer);
 
         /* ── Resize handling ── */
         window.addEventListener('resize', () => {
             if (!rendererS) return;
-            const W = canvas.clientWidth;
-            const H = canvas.clientHeight;
+            const W = canvas.parentElement.clientWidth;
+            const H = canvas.parentElement.clientHeight;
             cameraS.aspect = W / H;
             cameraS.updateProjectionMatrix();
-            rendererS.setSize(W, H);
+            rendererS.setSize(W, H, false);
         });
     </script>
 

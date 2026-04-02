@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/KD_monogram.png" type="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Brief — King Dhorajiya</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html, body {
+      background: #fff;
+      color: #1a1a1a;
+      min-height: 100%;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    .monogram img { filter: none; }
+    .nav .brand-name h1 { color: #1a1a1a; }
+
+    /* ── Wrap ── */
+    .brief-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.2rem 3rem 7rem;
+    }
+
+    /* ── Header row ── */
+    .brief-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 3.2rem;
+    }
+    .brief-heading {
+      font-family: "Times New Roman", serif;
+      font-size: 1.26rem;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: #111;
+      font-weight: 400;
+      margin: 0 0 0.55rem;
+    }
+    .brief-meta {
+      font-family: "Times New Roman", serif;
+      font-size: 1.54rem;
+      letter-spacing: 2px;
+      color: #111;
+      margin: 0;
+      line-height: 2;
+    }
+    .print-btn {
+      background: none;
+      border: 1px solid #888;
+      border-radius: 2px;
+      padding: 0.6rem 1.6rem;
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #111;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .print-btn:hover { border-color: #111; color: #111; }
+
+    /* ── Divider ── */
+    .brief-divider {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 2.8rem 0;
+    }
+
+    /* ── Section label ── */
+    .brief-section-label {
+      font-family: "Times New Roman", serif;
+      font-size: 1.47rem;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: #111;
+      margin: 0 0 1.6rem;
+    }
+
+    /* ── Garment row ── */
+    .garment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 2rem;
+      margin-bottom: 0.55rem;
+    }
+    .garment-name {
+      font-family: "Times New Roman", serif;
+      font-size: 2.17rem;
+      letter-spacing: 3px;
+      color: #111;
+      font-weight: 400;
+    }
+    .garment-price {
+      font-family: "Times New Roman", serif;
+      font-size: 1.96rem;
+      letter-spacing: 2px;
+      color: #111;
+      white-space: nowrap;
+    }
+    .garment-sub {
+      font-family: "Times New Roman", serif;
+      font-size: 1.61rem;
+      letter-spacing: 2px;
+      color: #111;
+      margin: 0.3rem 0 0;
+    }
+    .garment-qty {
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #111;
+      margin: 0.4rem 0 0;
+    }
+
+    /* ── Total row ── */
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: 1.6rem;
+      border-top: 1px solid #e8e8e8;
+      margin-top: 1.2rem;
+    }
+    .total-label {
+      font-family: "Times New Roman", serif;
+      font-size: 1.54rem;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: #111;
+    }
+    .total-amount {
+      font-family: "Times New Roman", serif;
+      font-size: 2.38rem;
+      letter-spacing: 3px;
+      color: #111;
+    }
+
+    /* ── Measurements grid ── */
+    .meas-groups {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 3.5rem;
+    }
+    .meas-group { margin-bottom: 1.8rem; }
+    .meas-group-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #111;
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .meas-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.45rem;
+    }
+    .meas-key {
+      font-family: "Times New Roman", serif;
+      font-size: 1.47rem;
+      letter-spacing: 1px;
+      color: #111;
+    }
+    .meas-val {
+      font-family: "Times New Roman", serif;
+      font-size: 1.54rem;
+      letter-spacing: 1px;
+      color: #111;
+    }
+    .meas-none {
+      font-family: "Times New Roman", serif;
+      font-size: 1.47rem;
+      letter-spacing: 2px;
+      color: #111;
+    }
+
+    /* ── Address ── */
+    .address-block {
+      font-family: "Times New Roman", serif;
+      font-size: 1.68rem;
+      letter-spacing: 1px;
+      color: #111;
+      line-height: 2.1;
+    }
+
+    /* ── Notes ── */
+    .notes-block {
+      font-family: "Times New Roman", serif;
+      font-size: 1.61rem;
+      letter-spacing: 1px;
+      color: #111;
+      line-height: 2;
+      font-style: italic;
+    }
+
+    /* ── Loading / error ── */
+    .brief-loading {
+      font-family: "Times New Roman", serif;
+      font-size: 1.68rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #111;
+      text-align: center;
+      padding: 5rem 0;
+    }
+    .brief-error {
+      font-family: "Times New Roman", serif;
+      font-size: 1.54rem;
+      letter-spacing: 2px;
+      color: #c0392b;
+      text-align: center;
+      padding: 5rem 0;
+    }
+
+    /* ── Footer note ── */
+    .brief-footer-note {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e8e8e8;
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: #111;
+      text-align: center;
+      line-height: 2.2;
+    }
+
+    /* ── Return link ── */
+    .return-link {
+      display: inline-block;
+      margin-top: 0.6rem;
+      font-family: "Times New Roman", serif;
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #111;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .return-link:hover { color: #111; }
+
+    /* ── Print styles ── */
+    @media print {
+      header, .print-btn, .return-link, .footer { display: none !important; }
+      .brief-wrap { padding: 0; max-width: 100%; }
+      html, body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav collapsible">
+      <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+      <svg class="icon nav__toggler">
+        <use xlink:href="images/sprite.svg#menu"></use>
+      </svg>
+      <a class="bb" href="#"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+    </nav>
+  </header>
+
+  <div class="brief-wrap" id="brief-wrap">
+    <p class="brief-loading" id="brief-loading">Loading…</p>
+  </div>
+
+  <script type="module">
+    import { getOrder, getOrders, getMeasurements, isLoggedIn } from './js/api.js';
+    import { openAuthModal } from './js/auth-modal.js';
+
+    if (!isLoggedIn()) {
+      openAuthModal(() => window.location.reload());
+    }
+
+    const params  = new URLSearchParams(window.location.search);
+    const orderId = params.get('order');
+    const wrap    = document.getElementById('brief-wrap');
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function fmt(n) { return `$${Number(n).toLocaleString()}`; }
+
+    function fmtDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function addrLines(a) {
+      if (!a) return '—';
+      return [a.line1, a.line2, a.city, a.state, a.postalCode, a.country]
+        .filter(Boolean).join(', ');
+    }
+
+    // ── Measurement display map ───────────────────────────────────────────────
+    const MEAS_GROUPS = [
+      {
+        title: 'General',
+        fields: [
+          { key: 'height',       label: 'Height',       unit: 'cm' },
+          { key: 'weight',       label: 'Weight',       unit: 'kg' },
+        ],
+      },
+      {
+        title: 'Upper Body',
+        fields: [
+          { key: 'neck',         label: 'Neck',         unit: 'cm' },
+          { key: 'shoulder',     label: 'Shoulder',     unit: 'cm' },
+          { key: 'chest',        label: 'Chest',        unit: 'cm' },
+          { key: 'underbust',    label: 'Under Bust',   unit: 'cm' },
+          { key: 'waist',        label: 'Waist',        unit: 'cm' },
+          { key: 'highhip',      label: 'High Hip',     unit: 'cm' },
+          { key: 'hip',          label: 'Full Hip',     unit: 'cm' },
+          { key: 'backlength',   label: 'Back Length',  unit: 'cm' },
+        ],
+      },
+      {
+        title: 'Arms',
+        fields: [
+          { key: 'armlength',    label: 'Arm Length',   unit: 'cm' },
+          { key: 'bicep',        label: 'Bicep',        unit: 'cm' },
+          { key: 'wrist',        label: 'Wrist',        unit: 'cm' },
+        ],
+      },
+      {
+        title: 'Lower Body',
+        fields: [
+          { key: 'inseam',       label: 'Inseam',       unit: 'cm' },
+          { key: 'outseam',      label: 'Outseam',      unit: 'cm' },
+          { key: 'knee',         label: 'Knee',         unit: 'cm' },
+          { key: 'calf',         label: 'Calf',         unit: 'cm' },
+          { key: 'ankle',        label: 'Ankle',        unit: 'cm' },
+          { key: 'waisttoankle', label: 'Waist–Ankle',  unit: 'cm' },
+        ],
+      },
+    ];
+
+    function buildMeasHtml(meas) {
+      if (!meas || Object.keys(meas).length === 0) {
+        return `<p class="meas-none">No measurements on file.</p>`;
+      }
+      let html = `<div class="meas-groups">`;
+      // Left column: General + Upper Body, Right column: Arms + Lower Body
+      const cols = [
+        MEAS_GROUPS.slice(0, 2),
+        MEAS_GROUPS.slice(2),
+      ];
+      cols.forEach(groups => {
+        html += `<div>`;
+        groups.forEach(group => {
+          const rows = group.fields.filter(f => meas[f.key] != null);
+          if (!rows.length) return;
+          html += `<div class="meas-group">
+            <p class="meas-group-title">${group.title}</p>`;
+          rows.forEach(f => {
+            html += `<div class="meas-row">
+              <span class="meas-key">${f.label}</span>
+              <span class="meas-val">${meas[f.key]} ${f.unit}</span>
+            </div>`;
+          });
+          html += `</div>`;
+        });
+        html += `</div>`;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
+    function render(order, meas) {
+      const items = order.items ?? order.cartItems ?? [];
+      const total = items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
+      const addr  = order.shippingAddress;
+
+      // Items HTML
+      let itemsHtml = '';
+      items.forEach(item => {
+        const name    = item.displayName ?? item.product?.name ?? 'Bespoke Garment';
+        const fabric  = item.configuratorSession?.selections
+          ? Object.values(item.configuratorSession.selections)[0]?.label ?? ''
+          : '';
+        const price   = Number(item.unitPrice ?? 0) * (item.quantity ?? 1);
+        itemsHtml += `
+          <div style="margin-bottom:1.6rem;">
+            <div class="garment-row">
+              <p class="garment-name">${name}</p>
+              <p class="garment-price">${fmt(price)}</p>
+            </div>
+            ${fabric ? `<p class="garment-sub">Fabric &nbsp;·&nbsp; ${fabric}</p>` : ''}
+            ${(item.quantity ?? 1) > 1 ? `<p class="garment-qty">Qty ${item.quantity}</p>` : ''}
+          </div>`;
+      });
+
+      if (!itemsHtml) {
+        itemsHtml = `<p class="meas-none">No items found for this order.</p>`;
+      }
+
+      // Notes
+      const notesHtml = order.notes
+        ? `<hr class="brief-divider">
+           <p class="brief-section-label">Notes</p>
+           <p class="notes-block">${order.notes}</p>`
+        : '';
+
+      wrap.innerHTML = `
+        <div class="brief-header">
+          <div>
+            <h2 class="brief-heading">Order Brief</h2>
+            <p class="brief-meta">
+              Order &nbsp;${order.id ?? orderId ?? '—'}<br>
+              ${fmtDate(order.createdAt)}
+            </p>
+          </div>
+          <button class="print-btn" onclick="window.print()">Print</button>
+        </div>
+
+        <!-- Garments -->
+        <p class="brief-section-label">Garment</p>
+        ${itemsHtml}
+        <div class="total-row">
+          <span class="total-label">Total</span>
+          <span class="total-amount">${fmt(total)}</span>
+        </div>
+
+        <!-- Measurements -->
+        <hr class="brief-divider">
+        <p class="brief-section-label">Measurements on File</p>
+        ${buildMeasHtml(meas?.measurements ?? meas)}
+
+        <!-- Delivery -->
+        <hr class="brief-divider">
+        <p class="brief-section-label">Delivery Address</p>
+        <p class="address-block">${addrLines(addr)}</p>
+
+        ${notesHtml}
+
+        <p class="brief-footer-note">
+          The House of Scion &nbsp;·&nbsp; King Dhorajiya<br>
+          Your garment will be crafted to the above specifications.<br>
+          For any amendments, contact the house directly.
+          <br><br>
+          <a href="poolofdesigns-productdescription.html" class="return-link">← Return to Pool of Designs</a>
+        </p>
+
+        <div style="text-align:center; margin-top:3rem; padding-top:2.5rem; border-top:1px solid #e8e8e8;">
+          <a href="index.html">
+            <img src="images/KD_monogram.png" alt="King Dhorajiya" style="width:346px; max-width:100%; opacity:0.85;">
+          </a>
+        </div>
+      `;
+    }
+
+    // ── Load data ─────────────────────────────────────────────────────────────
+    async function load() {
+      try {
+        let order = null;
+
+        if (orderId) {
+          // Try direct fetch first, fall back to list search
+          try {
+            order = await getOrder(orderId);
+          } catch (_) {
+            const list = await getOrders();
+            const orders = Array.isArray(list) ? list : (list?.data ?? []);
+            order = orders.find(o => String(o.id) === String(orderId)) ?? null;
+          }
+        }
+
+        if (!order) {
+          // No order ID in URL — just show measurements + placeholder
+          order = { id: orderId, items: [], shippingAddress: null, createdAt: null };
+        }
+
+        const measRes = await getMeasurements().catch(() => null);
+        render(order, measRes);
+
+      } catch (err) {
+        wrap.innerHTML = `<p class="brief-error">${err.message ?? 'Could not load order details.'}</p>`;
+      }
+    }
+
+    load();
+  </script>
+
+</body>
+</html>

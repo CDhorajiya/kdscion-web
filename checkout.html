@@ -554,11 +554,8 @@
             return;
           }
 
-          // Payment succeeded — show confirmation
-          document.getElementById('payment-step').style.display = 'none';
-          const conf = document.getElementById('confirmation');
-          conf.classList.add('show');
-          document.getElementById('conf-order-id').textContent = `Order ID: ${currentOrderId}`;
+          // Payment succeeded — redirect to order brief
+          window.location.href = `order-brief.html?order=${currentOrderId}`;
         });
 
       } catch (err) {

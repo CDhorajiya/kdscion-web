@@ -124,6 +124,10 @@ export async function getOrders() {
   return request('/orders');
 }
 
+export async function getOrder(id) {
+  return request(`/orders/${id}`);
+}
+
 // ── Measurements ──────────────────────────────────────────────────────────────
 
 export async function getMeasurements() {
@@ -139,3 +143,4 @@ export async function saveMeasurements(data) {
 export async function createPaymentIntent(orderId) {
   return request(`/payments/intent/${orderId}`, { method: 'POST' });
 }
+

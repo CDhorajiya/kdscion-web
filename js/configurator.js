@@ -3,6 +3,7 @@ import {
   getProductOptions,
   saveConfiguratorSession,
   addToCart,
+  getCart,
   isLoggedIn,
 } from './api.js';
 import { openAuthModal } from './auth-modal.js';
@@ -74,42 +75,36 @@ export async function addSelectedToCart() {
     const session = await saveConfiguratorSession(product.id, selections);
     await addToCart(product.id, 1, session.id);
 
-    showStatus('Added to cart.', 'ok');
+    showStatus('Added to collection.', 'ok');
     btn.textContent = 'ADDED ✓';
-    showCheckoutLink();
+    enableGoToCollection();
     setTimeout(() => {
-      btn.textContent = 'ADD TO CART';
+      btn.textContent = 'ADD TO COLLECTION';
       btn.disabled = false;
     }, 2500);
   } catch (err) {
     console.error(err);
     showStatus(err.message ?? 'Something went wrong.', 'error');
-    btn.textContent = 'ADD TO CART';
+    btn.textContent = 'ADD TO COLLECTION';
     btn.disabled = false;
   }
 }
 
-// ── Checkout link ─────────────────────────────────────────────────────────────
+// ── Go to collection ──────────────────────────────────────────────────────────
 
-function showCheckoutLink() {
-  let el = document.getElementById('cfg-checkout-link');
-  if (el) { el.style.display = 'block'; return; }
-  const actions = document.querySelector('.cfg-actions');
-  if (!actions) return;
-  el = document.createElement('a');
-  el.id = 'cfg-checkout-link';
-  el.href = 'checkout.html';
-  el.textContent = 'GO TO CHECKOUT →';
-  el.style.cssText = `
-    display:block; text-align:center; margin-top:.4rem;
-    font-family:"Times New Roman",serif; font-size:1rem;
-    letter-spacing:4px; text-transform:uppercase;
-    color:rgba(255,255,255,0.5); text-decoration:none;
-    transition:color .2s;
-  `;
-  el.addEventListener('mouseenter', () => el.style.color = '#fff');
-  el.addEventListener('mouseleave', () => el.style.color = 'rgba(255,255,255,0.5)');
-  actions.appendChild(el);
+function enableGoToCollection() {
+  const btn = document.getElementById('cfg-goto-btn');
+  if (btn) btn.disabled = false;
+}
+
+export async function initGoToCollection() {
+  if (!isLoggedIn()) return;
+  try {
+    const items = await getCart();
+    if (items && items.length > 0) enableGoToCollection();
+  } catch {
+    // silently ignore — button stays disabled
+  }
 }
 
 // ── Status message ────────────────────────────────────────────────────────────

@@ -472,7 +472,7 @@
             border: 1px solid rgba(255,255,255,0.25);
             color: rgba(255,255,255,0.72);
             font-family: "Times New Roman", serif;
-            font-size: 0.78rem;
+            font-size: 1.1rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             padding: 0.52rem 1.1rem;
@@ -893,7 +893,8 @@
                 <!-- Price + Add to Cart -->
                 <div class="cfg-actions">
                     <span class="cfg-price-label">Total &nbsp;<strong id="cfg-price">—</strong></span>
-                    <button id="cfg-add-btn" class="cfg-add-btn">ADD TO CART</button>
+                    <button id="cfg-add-btn" class="cfg-add-btn">ADD TO COLLECTION</button>
+                    <button id="cfg-goto-btn" class="cfg-add-btn" disabled>GO TO COLLECTION</button>
                     <p id="cfg-status" class="cfg-status"></p>
                 </div>
             </div>
@@ -903,7 +904,7 @@
 
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
-        import { initConfigurator, selectFabric, addSelectedToCart } from './js/configurator.js';
+        import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
@@ -912,6 +913,8 @@
         const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
         if (sku) initConfigurator(sku);
         document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
+        document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
+        initGoToCollection();
         let rendererS, sceneS, cameraS, controlsS, animIdS, currentModel;
 
         /* ── Skin tone system ── */

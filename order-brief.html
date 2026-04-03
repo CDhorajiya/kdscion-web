@@ -14,184 +14,180 @@
       min-height: 100%;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
     }
     .monogram img { filter: none; }
     .nav .brand-name h1 { color: #1a1a1a; }
 
     /* ── Wrap ── */
     .brief-wrap {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 3.5rem 2.4rem 8rem;
+      padding: 4rem 3rem 9rem;
     }
 
-    /* ── Header row ── */
+    /* ── Top bar: title + print ── */
     .brief-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding-top: 2.4rem;
-      border-top: 1px solid #ebebeb;
-      margin-bottom: 2.8rem;
+      border-top: 2px solid #111;
+      padding-top: 2rem;
+      margin-bottom: 3.5rem;
     }
     .brief-heading {
       font-family: "Times New Roman", serif;
-      font-size: 1.3rem;
-      letter-spacing: 10px;
+      font-size: 1.6rem;
+      letter-spacing: 12px;
       text-transform: uppercase;
-      color: #aaa;
+      color: #111;
       font-weight: 400;
-      margin: 0 0 1.1rem;
+      margin: 0 0 1.4rem;
+    }
+    .brief-meta-row {
+      display: flex;
+      gap: 3rem;
+      align-items: baseline;
+    }
+    .brief-meta-label {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #ccc;
+      margin: 0 0 0.2rem;
     }
     .brief-ref {
       font-family: "Courier New", Courier, monospace;
-      font-size: 1rem;
+      font-size: 1.1rem;
       letter-spacing: 1px;
-      color: #c8c8c8;
-      margin: 0 0 0.4rem;
+      color: #888;
+      margin: 0;
     }
     .brief-date {
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
-      letter-spacing: 3px;
-      color: #999;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      color: #555;
       margin: 0;
     }
     .print-btn {
       flex-shrink: 0;
       background: none;
-      border: 1px solid #ddd;
-      border-radius: 2px;
-      padding: 0.55rem 1.4rem;
+      border: 1px solid #ccc;
+      padding: 0.6rem 1.6rem;
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
+      font-size: 1.1rem;
       letter-spacing: 5px;
       text-transform: uppercase;
-      color: #aaa;
+      color: #888;
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s;
-      margin-top: 0.15rem;
+      margin-top: 0.2rem;
     }
-    .print-btn:hover { border-color: #999; color: #555; }
+    .print-btn:hover { border-color: #555; color: #111; }
 
     /* ── Dividers ── */
     .brief-divider {
       border: none;
-      border-top: 1px solid #efefef;
-      margin: 2.8rem 0;
+      border-top: 1px solid #e8e8e8;
+      margin: 3.2rem 0;
     }
 
     /* ── Section labels ── */
     .brief-section-label {
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
-      letter-spacing: 7px;
+      font-size: 1.1rem;
+      letter-spacing: 8px;
       text-transform: uppercase;
-      color: #bbb;
-      margin: 0 0 1.5rem;
+      color: #aaa;
+      margin: 0 0 2rem;
       font-weight: 400;
     }
 
     /* ── Garment item ── */
     .garment-item {
-      margin-bottom: 1.6rem;
+      margin-bottom: 2.4rem;
     }
-    .garment-row {
+    .garment-main-row {
       display: flex;
+      justify-content: space-between;
       align-items: baseline;
-      gap: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #efefef;
+      margin-bottom: 0.8rem;
     }
     .garment-name {
       font-family: "Times New Roman", serif;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       letter-spacing: 3px;
       color: #111;
       font-weight: 400;
       margin: 0;
-      white-space: nowrap;
-    }
-    .garment-row-fill {
-      flex: 1;
-      border-bottom: 1px dotted #ddd;
-      margin-bottom: 0.18rem;
     }
     .garment-price {
       font-family: "Times New Roman", serif;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       letter-spacing: 2px;
-      color: #333;
+      color: #111;
       margin: 0;
       white-space: nowrap;
     }
-    .garment-design-ref {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 1rem;
-      letter-spacing: 1.5px;
-      color: #c0c0c0;
-      margin: 0.35rem 0 0.6rem;
+    .garment-meta {
+      display: grid;
+      grid-template-columns: 7rem 1fr;
+      gap: 0.5rem 1rem;
+      margin-top: 0.6rem;
     }
-    .garment-fabric-block {
-      border-left: 2px solid #f0f0f0;
-      padding-left: 0.85rem;
-      margin-top: 0.5rem;
-    }
-    .garment-fabric-row {
-      display: flex;
-      gap: 0.6rem;
-      margin-bottom: 0.4rem;
-      align-items: baseline;
-    }
-    .garment-fabric-key {
+    .garment-meta-key {
       font-family: "Times New Roman", serif;
       font-size: 1rem;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       text-transform: uppercase;
-      color: #bbb;
-      width: 5rem;
-      flex-shrink: 0;
+      color: #ccc;
+      align-self: baseline;
+      padding-top: 0.1rem;
     }
-    .garment-fabric-val {
+    .garment-meta-val {
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       letter-spacing: 1.5px;
       color: #444;
+      align-self: baseline;
     }
-    .garment-fabric-val.mono {
+    .garment-meta-val.code {
       font-family: "Courier New", Courier, monospace;
-      font-size: 1rem;
+      font-size: 1.1rem;
       letter-spacing: 1px;
       color: #999;
     }
     .garment-qty {
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
+      font-size: 1.1rem;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: #bbb;
-      margin: 0.5rem 0 0;
+      margin: 0.6rem 0 0;
     }
 
     /* ── Total row ── */
     .total-row {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: baseline;
-      gap: 2rem;
-      border-top: 1px solid #efefef;
-      padding-top: 1.4rem;
-      margin-top: 1.4rem;
+      border-top: 2px solid #111;
+      padding-top: 1.6rem;
+      margin-top: 1rem;
     }
     .total-label {
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
-      letter-spacing: 7px;
+      font-size: 1.1rem;
+      letter-spacing: 8px;
       text-transform: uppercase;
-      color: #bbb;
+      color: #aaa;
     }
     .total-amount {
       font-family: "Times New Roman", serif;
-      font-size: 1.65rem;
+      font-size: 2.2rem;
       letter-spacing: 3px;
       color: #111;
     }
@@ -200,61 +196,63 @@
     .meas-groups {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0 3.5rem;
+      gap: 0 4rem;
     }
-    .meas-group { margin-bottom: 1.8rem; }
+    .meas-group { margin-bottom: 2.2rem; }
     .meas-group-title {
       font-family: "Times New Roman", serif;
       font-size: 1rem;
-      letter-spacing: 6px;
+      letter-spacing: 7px;
       text-transform: uppercase;
       color: #bbb;
-      margin: 0 0 0.9rem;
-      padding-bottom: 0.45rem;
-      border-bottom: 1px solid #f0f0f0;
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e8e8e8;
     }
     .meas-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 0.5rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid #f5f5f5;
     }
     .meas-key {
       font-family: "Times New Roman", serif;
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       letter-spacing: 1px;
-      color: #999;
+      color: #888;
     }
     .meas-val {
       font-family: "Times New Roman", serif;
-      font-size: 1.05rem;
-      letter-spacing: 1px;
-      color: #222;
+      font-size: 1.15rem;
+      letter-spacing: 1.5px;
+      color: #111;
+      font-weight: 400;
     }
     .meas-none {
       font-family: "Times New Roman", serif;
-      font-size: 1.05rem;
+      font-size: 1.2rem;
       letter-spacing: 2px;
-      color: #bbb;
+      color: #ccc;
     }
 
     /* ── Address ── */
     .address-block {
       font-family: "Times New Roman", serif;
-      font-size: 1.05rem;
+      font-size: 1.3rem;
       letter-spacing: 1.5px;
       color: #333;
-      line-height: 1.9;
+      line-height: 2;
       margin: 0;
     }
 
     /* ── Notes ── */
     .notes-block {
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       letter-spacing: 1px;
       color: #666;
-      line-height: 1.9;
+      line-height: 2;
       font-style: italic;
       margin: 0;
     }
@@ -262,63 +260,63 @@
     /* ── Loading / error ── */
     .brief-loading {
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       letter-spacing: 6px;
       text-transform: uppercase;
       color: #bbb;
       text-align: center;
-      padding: 5rem 0;
+      padding: 6rem 0;
       margin: 0;
     }
     .brief-error {
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       letter-spacing: 2px;
       color: #c0392b;
       text-align: center;
-      padding: 5rem 0;
+      padding: 6rem 0;
       margin: 0;
     }
 
     /* ── Footer ── */
     .brief-footer {
-      margin-top: 4rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid #efefef;
+      margin-top: 5rem;
+      border-top: 1px solid #e8e8e8;
+      padding-top: 3rem;
       text-align: center;
     }
     .brief-footer-note {
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
-      letter-spacing: 2.5px;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
       color: #bbb;
-      line-height: 2.6;
-      margin: 0 0 2rem;
+      line-height: 2.8;
+      margin: 0 0 2.5rem;
     }
     .brief-seal {
       display: block;
-      width: 80px;
-      margin: 0 auto 2rem;
-      opacity: 0.5;
+      width: 90px;
+      margin: 0 auto 2.4rem;
+      opacity: 0.4;
     }
     .return-link {
       display: inline-block;
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
+      font-size: 1.1rem;
       letter-spacing: 5px;
       text-transform: uppercase;
       color: #bbb;
       text-decoration: none;
       transition: color 0.2s;
     }
-    .return-link:hover { color: #666; }
+    .return-link:hover { color: #444; }
 
     /* ── Print ── */
     @media print {
-      header, .print-btn, .return-link, .footer, .brief-seal { display: none !important; }
+      header, .print-btn, .return-link, .footer, .brief-seal, .brief-footer { display: none !important; }
       .brief-wrap { padding: 0; max-width: 100%; }
       html, body { background: #fff; }
-      .brief-header { border-top: none; padding-top: 0; }
+      .brief-header { border-top: 2px solid #111; padding-top: 0; margin-bottom: 2rem; }
     }
   </style>
 </head>
@@ -468,31 +466,23 @@
         const fabricType = fabricTypeFromId(fabricId);
         const price      = Number(item.unitPrice ?? 0) * (item.quantity ?? 1);
 
-        const fabricBlockHtml = (fabricName || fabricId || fabricType) ? `
-          <div class="garment-fabric-block">
-            ${fabricName ? `<div class="garment-fabric-row">
-              <span class="garment-fabric-key">Name</span>
-              <span class="garment-fabric-val">${fabricName}</span>
-            </div>` : ''}
-            ${fabricType ? `<div class="garment-fabric-row">
-              <span class="garment-fabric-key">Type</span>
-              <span class="garment-fabric-val">${fabricType}</span>
-            </div>` : ''}
-            ${fabricId ? `<div class="garment-fabric-row">
-              <span class="garment-fabric-key">Ref.</span>
-              <span class="garment-fabric-val mono">${fabricId}</span>
-            </div>` : ''}
-          </div>` : '';
+        const metaRows = [];
+        if (designRef)  metaRows.push(`<span class="garment-meta-key">Design</span><span class="garment-meta-val code">${designRef}</span>`);
+        if (fabricName) metaRows.push(`<span class="garment-meta-key">Fabric</span><span class="garment-meta-val">${fabricName}</span>`);
+        if (fabricType) metaRows.push(`<span class="garment-meta-key">Type</span><span class="garment-meta-val">${fabricType}</span>`);
+        if (fabricId)   metaRows.push(`<span class="garment-meta-key">Ref.</span><span class="garment-meta-val code">${fabricId}</span>`);
+
+        const metaHtml = metaRows.length
+          ? `<div class="garment-meta">${metaRows.join('')}</div>`
+          : '';
 
         itemsHtml += `
           <div class="garment-item">
-            <div class="garment-row">
+            <div class="garment-main-row">
               <p class="garment-name">${name}</p>
-              <span class="garment-row-fill"></span>
               <p class="garment-price">${fmt(price)}</p>
             </div>
-            ${designRef ? `<p class="garment-design-ref">Design Ref. ${designRef}</p>` : ''}
-            ${fabricBlockHtml}
+            ${metaHtml}
             ${(item.quantity ?? 1) > 1 ? `<p class="garment-qty">Qty ${item.quantity}</p>` : ''}
           </div>`;
       });
@@ -509,13 +499,22 @@
         : '';
 
       const dateStr = fmtDate(order.createdAt);
+      const refStr  = order.id ?? orderId ?? '—';
 
       wrap.innerHTML = `
         <div class="brief-header">
           <div>
             <h2 class="brief-heading">Order Brief</h2>
-            <p class="brief-ref">Ref. ${order.id ?? orderId ?? '—'}</p>
-            ${dateStr ? `<p class="brief-date">${dateStr}</p>` : ''}
+            <div class="brief-meta-row">
+              <div>
+                <p class="brief-meta-label">Reference</p>
+                <p class="brief-ref">${refStr}</p>
+              </div>
+              ${dateStr ? `<div>
+                <p class="brief-meta-label">Date</p>
+                <p class="brief-date">${dateStr}</p>
+              </div>` : ''}
+            </div>
           </div>
           <button class="print-btn" onclick="window.print()">Print</button>
         </div>

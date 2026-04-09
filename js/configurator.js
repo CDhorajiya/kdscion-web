@@ -17,9 +17,10 @@ let selectedFabricId = null;  // value id e.g. "linen-1"
 // ── Init ─────────────────────────────────────────────────────────────────────
 
 export async function initConfigurator(sku) {
-  // Render fabric catalog immediately — local data, no API needed
+  // Render fabric catalog and design price immediately — local data, no API needed
   const fabricListEl = document.querySelector('.fabric-list');
   if (fabricListEl) renderFabricList(fabricListEl, sku);
+  renderPriceForSku(sku);
 
   const { data: products } = await getProducts(1, 50);
   product = products.find(p => p.sku === sku) ?? null;
@@ -48,6 +49,16 @@ function getSelectedValue() {
 // ── Price display ─────────────────────────────────────────────────────────────
 
 function fmt(n) { return `$${Number(n).toLocaleString()}`; }
+
+function renderPriceForSku(sku) {
+  const label = document.querySelector('.cfg-price-label');
+  if (!label) return;
+  const designPrice = getDesignPrice(sku);
+  label.innerHTML = `
+    <span class="cfg-price-part">Design&nbsp;<strong id="cfg-price">${fmt(designPrice)}</strong></span>
+    <span class="cfg-price-hint">+ select fabric for total</span>
+  `;
+}
 
 function renderPrice() {
   const el = document.getElementById('cfg-price');

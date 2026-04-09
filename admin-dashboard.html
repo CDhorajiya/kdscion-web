@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/KD_monogram.png" type="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop Dashboard — King Dhorajiya</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── PIN Gate ── */
+    #pin-gate {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    #pin-gate.hidden { display: none; }
+    .pin-monogram {
+      width: 96px;
+      opacity: 1;
+    }
+    .pin-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1.6rem;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: #111;
+      margin: 0;
+      font-weight: 400;
+    }
+    .pin-input {
+      font-family: "Courier New", monospace;
+      font-size: 2.6rem;
+      letter-spacing: 0.5rem;
+      text-align: center;
+      width: 13rem;
+      border: none;
+      border-bottom: 2px solid #111;
+      outline: none;
+      background: transparent;
+      color: #111;
+      padding: 0.4rem 0;
+      transition: border-color 0.2s;
+      -webkit-text-security: disc;
+    }
+    .pin-input:focus { border-bottom-color: #111; }
+    .pin-error {
+      font-family: "Times New Roman", serif;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: #c0392b;
+      min-height: 1.2rem;
+      margin: 0;
+    }
+    .pin-hint {
+      font-family: "Times New Roman", serif;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #888;
+      margin: 0;
+    }
+  </style>
+  <style>
+    html, body {
+      background: #f4f3f0;
+      color: #111;
+      min-height: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+    .monogram img { filter: none; }
+    .nav .brand-name h1 { color: #1a1a1a; }
+
+    /* ── Wrap ── */
+    .dash-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 8rem;
+    }
+
+    /* ── Header bar ── */
+    .dash-titlebar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 2px solid #111;
+      padding-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    .dash-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1.55rem;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: #111;
+      font-weight: 400;
+      margin: 0 0 0.3rem;
+    }
+    .dash-subtitle {
+      font-family: "Times New Roman", serif;
+      font-size: 1.05rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #888;
+      margin: 0;
+    }
+    .dash-badge {
+      font-family: "Courier New", monospace;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: #888;
+      padding: 0.4rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+    /* ── Loading / error ── */
+    .dash-loading, .dash-error {
+      font-family: "Times New Roman", serif;
+      font-size: 1.3rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #999;
+      text-align: center;
+      padding: 6rem 0;
+      margin: 0;
+    }
+    .dash-error { color: #c0392b; }
+
+    /* ── Tabs ── */
+    .dash-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid #e0e0e0;
+      margin-bottom: 2.5rem;
+    }
+    .dash-tab {
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #aaa;
+      padding: 0.7rem 2rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -2px;
+      transition: color 0.2s;
+    }
+    .dash-tab:hover { color: #555; }
+    .dash-tab.active { color: #111; border-bottom-color: #111; }
+
+    .dash-pane { display: none; }
+    .dash-pane.active { display: block; }
+
+    /* ── Prices panel ── */
+    .prices-section { margin-bottom: 2.5rem; }
+    .prices-section-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin: 0 0 1.2rem;
+      font-weight: 400;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .prices-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .prices-table th {
+      font-family: "Times New Roman", serif;
+      font-size: 0.9rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #bbb;
+      text-align: left;
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid #e8e8e8;
+      font-weight: 400;
+    }
+    .prices-table td {
+      padding: 0.55rem 0.8rem;
+      border-bottom: 1px solid #f4f4f4;
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: #333;
+    }
+    .prices-table td:first-child {
+      font-family: "Courier New", monospace;
+      font-size: 0.92rem;
+      color: #555;
+    }
+    .price-input {
+      width: 100px;
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      padding: 0.35rem 0.6rem;
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: #111;
+      background: #fafafa;
+      outline: none;
+      transition: border-color 0.2s;
+      text-align: right;
+    }
+    .price-input:focus { border-color: #888; background: #fff; }
+    .save-prices-btn {
+      margin-top: 1.4rem;
+      padding: 0.8rem 2.5rem;
+      background: #111;
+      border: 1px solid #111;
+      color: #fff;
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .save-prices-btn:hover { background: #444; border-color: #444; }
+    .prices-saved-msg {
+      display: inline-block;
+      margin-left: 1rem;
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      color: #388e3c;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .prices-saved-msg.show { opacity: 1; }
+
+    /* ── Divider ── */
+    .dash-divider {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 3rem 0;
+    }
+
+    /* ── Order card ── */
+    .order-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 3px;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+    }
+
+    /* ── Card header ── */
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 2rem;
+      border-bottom: 1px solid #e8e8e8;
+      background: #fafaf9;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .order-card-id {
+      font-family: "Courier New", monospace;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      color: #111;
+      margin: 0;
+    }
+    .order-card-date {
+      font-family: "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      color: #888;
+      margin: 0;
+    }
+    .order-card-status {
+      display: inline-block;
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 2px;
+      border: 1px solid #c8e6c9;
+      background: #f1f8f1;
+      color: #388e3c;
+    }
+    .order-card-status.status-pending {
+      border-color: #ffe0b2;
+      background: #fff8f0;
+      color: #e65100;
+    }
+    .order-email-btn {
+      padding: 0.6rem 1.6rem;
+      background: #111;
+      border: 1px solid #111;
+      color: #fff;
+      font-family: "Times New Roman", serif;
+      font-size: 1.05rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, color 0.2s;
+    }
+    .order-email-btn:hover {
+      background: #444;
+      border-color: #444;
+    }
+
+    /* ── Card body ── */
+    .order-card-body {
+      padding: 2rem 2rem 1.6rem;
+    }
+
+    /* ── Two-column top section ── */
+    .order-top-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin: 0 0 1.2rem;
+      font-weight: 400;
+    }
+
+    /* ── Design / fabric block ── */
+    .design-fabric-block {
+      display: flex;
+      gap: 1.4rem;
+      align-items: flex-start;
+    }
+    .df-image {
+      width: 100px;
+      height: 120px;
+      object-fit: cover;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      flex-shrink: 0;
+      background: #f4f4f4;
+    }
+    .df-placeholder {
+      width: 100px;
+      height: 120px;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      flex-shrink: 0;
+      background: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 1.8rem;
+    }
+    .df-details { flex: 1; }
+    .df-name {
+      font-family: "Times New Roman", serif;
+      font-size: 1.35rem;
+      letter-spacing: 1.5px;
+      color: #111;
+      margin: 0 0 0.5rem;
+      font-weight: 400;
+    }
+    .df-row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: baseline;
+      margin-bottom: 0.3rem;
+    }
+    .df-key {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #aaa;
+      min-width: 3.5rem;
+    }
+    .df-val {
+      font-family: "Courier New", monospace;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      color: #333;
+    }
+    .df-val.plain {
+      font-family: "Times New Roman", serif;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      color: #333;
+    }
+
+    /* ── Customer block ── */
+    .customer-block {
+      font-family: "Times New Roman", serif;
+      font-size: 1.25rem;
+      letter-spacing: 1.5px;
+      color: #111;
+      line-height: 2.1;
+    }
+    .customer-block .cust-label {
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+
+    /* ── Price row ── */
+    .order-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-top: 2px solid #111;
+      padding-top: 1.4rem;
+      margin-top: 1.4rem;
+    }
+    .price-label {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+    .price-amount {
+      font-family: "Times New Roman", serif;
+      font-size: 1.7rem;
+      letter-spacing: 3px;
+      color: #111;
+    }
+
+    /* ── Measurements ── */
+    .meas-section { margin-top: 1.6rem; }
+    .meas-divider {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 1.6rem 0;
+    }
+    .meas-groups {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 3.5rem;
+    }
+    .meas-group { margin-bottom: 1.8rem; }
+    .meas-group-title {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #bbb;
+      margin: 0 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #eee;
+    }
+    .meas-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.28rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .meas-key {
+      font-family: "Times New Roman", serif;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      color: #555;
+    }
+    .meas-val {
+      font-family: "Times New Roman", serif;
+      font-size: 1.2rem;
+      letter-spacing: 1.5px;
+      color: #111;
+      font-weight: 400;
+    }
+    .meas-none {
+      font-family: "Times New Roman", serif;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      color: #bbb;
+      font-style: italic;
+    }
+
+    /* ── Notes ── */
+    .notes-text {
+      font-family: "Times New Roman", serif;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      color: #555;
+      font-style: italic;
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    /* ── Empty state ── */
+    .dash-empty {
+      text-align: center;
+      padding: 5rem 0;
+      font-family: "Times New Roman", serif;
+      font-size: 1.3rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #ccc;
+    }
+
+    /* ── Refresh button ── */
+    .dash-refresh {
+      background: none;
+      border: 1px solid #ccc;
+      padding: 0.5rem 1.4rem;
+      font-family: "Times New Roman", serif;
+      font-size: 1.05rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #888;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .dash-refresh:hover { border-color: #888; color: #333; }
+
+    /* ── Summary bar ── */
+    .dash-summary {
+      display: flex;
+      gap: 2rem;
+      margin: 1.8rem 0 2.5rem;
+      flex-wrap: wrap;
+    }
+    .summary-stat {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 3px;
+      padding: 1rem 1.6rem;
+      flex: 1;
+      min-width: 160px;
+    }
+    .summary-stat-num {
+      font-family: "Times New Roman", serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: #111;
+      margin: 0 0 0.2rem;
+    }
+    .summary-stat-label {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin: 0;
+    }
+
+    @media (max-width: 700px) {
+      .order-top-cols { grid-template-columns: 1fr; }
+      .meas-groups { grid-template-columns: 1fr; }
+      .dash-wrap { padding: 2rem 1.2rem 6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── PIN Gate ── -->
+  <div id="pin-gate">
+    <img src="images/KD_monogram.png" alt="KD" class="pin-monogram">
+    <p class="pin-title">Workshop Access</p>
+    <input
+      type="tel"
+      id="pin-input"
+      class="pin-input"
+      maxlength="6"
+      placeholder="· · · · · ·"
+      autocomplete="off"
+      autofocus
+    >
+    <p class="pin-error" id="pin-error"></p>
+    <p class="pin-hint">Enter PIN to continue</p>
+    <a href="index.html" style="position:absolute;bottom:2rem;right:2.5rem;font-family:'Times New Roman',serif;font-size:1.1rem;letter-spacing:4px;text-transform:uppercase;color:#111;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#111'" onmouseout="this.style.color='#111'">← Home</a>
+  </div>
+
+  <header>
+    <nav class="nav collapsible">
+      <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+      <svg class="icon nav__toggler">
+        <use xlink:href="images/sprite.svg#menu"></use>
+      </svg>
+      <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+    </nav>
+  </header>
+
+  <div class="dash-wrap">
+    <div class="dash-titlebar">
+      <div>
+        <h2 class="dash-title">Workshop Dashboard</h2>
+        <p class="dash-subtitle">Order briefs for production team</p>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:center;">
+        <span class="dash-badge" id="order-count">—</span>
+        <button class="dash-refresh" id="refresh-btn" onclick="loadOrders()">Refresh</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dash-tabs">
+      <button class="dash-tab active" onclick="switchTab('orders')">Orders</button>
+      <button class="dash-tab" onclick="switchTab('prices')">Prices</button>
+    </div>
+
+    <!-- Orders pane -->
+    <div id="pane-orders" class="dash-pane active">
+      <!-- Summary stats -->
+      <div class="dash-summary" id="dash-summary" style="display:none">
+        <div class="summary-stat">
+          <p class="summary-stat-num" id="stat-total">0</p>
+          <p class="summary-stat-label">Total Orders</p>
+        </div>
+        <div class="summary-stat">
+          <p class="summary-stat-num" id="stat-revenue">$0</p>
+          <p class="summary-stat-label">Total Revenue</p>
+        </div>
+      </div>
+      <div id="orders-container">
+        <p class="dash-loading" id="dash-loading">Loading orders…</p>
+      </div>
+    </div>
+
+    <!-- Prices pane -->
+    <div id="pane-prices" class="dash-pane">
+      <div style="background:#fff;border:1px solid #e0e0e0;border-radius:3px;padding:2rem 2.5rem;">
+
+        <!-- Designs -->
+        <div class="prices-section">
+          <p class="prices-section-title">Design Prices</p>
+          <table class="prices-table">
+            <thead><tr>
+              <th>SKU</th>
+              <th>Design Name</th>
+              <th style="text-align:right">Price ($)</th>
+            </tr></thead>
+            <tbody id="design-prices-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Fabrics -->
+        <div class="prices-section">
+          <p class="prices-section-title">Fabric Prices</p>
+          <table class="prices-table">
+            <thead><tr>
+              <th>Fabric ID</th>
+              <th>Fabric Name</th>
+              <th style="text-align:right">Price ($)</th>
+            </tr></thead>
+            <tbody id="fabric-prices-tbody"></tbody>
+          </table>
+        </div>
+
+        <button class="save-prices-btn" onclick="savePricesFromUI()">Save Prices</button>
+        <span class="prices-saved-msg" id="prices-saved-msg">✓ Saved — prices are live</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    // ── PIN Gate ─────────────────────────────────────────────────────────────
+    // Change this PIN to whatever you want
+    const ADMIN_PIN = '1108';
+    const SESSION_KEY = 'kd_admin_unlocked';
+
+    const gate     = document.getElementById('pin-gate');
+    const pinInput = document.getElementById('pin-input');
+    const pinError = document.getElementById('pin-error');
+
+    function unlock() {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      gate.classList.add('hidden');
+    }
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      unlock();
+    }
+
+    pinInput.addEventListener('input', () => {
+      pinError.textContent = '';
+      if (pinInput.value.length === ADMIN_PIN.length) {
+        if (pinInput.value === ADMIN_PIN) {
+          unlock();
+        } else {
+          pinError.textContent = 'Incorrect PIN';
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+    });
+    // ─────────────────────────────────────────────────────────────────────────
+
+    import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
+    import { openAuthModal } from './js/auth-modal.js';
+    import { getAllPrices, savePrices } from './js/prices.js';
+
+    // ── Tab switching ─────────────────────────────────────────────────────────
+    window.switchTab = function(tab) {
+      document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.dash-pane').forEach(p => p.classList.remove('active'));
+      document.querySelector(`.dash-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+      document.getElementById(`pane-${tab}`).classList.add('active');
+    };
+
+    // ── Price metadata ────────────────────────────────────────────────────────
+    const DESIGN_META = {
+      'KD-P1-FSS':  'Full Sleeve Classic Shirt',
+      'KD-P2-HOD':  'Half Sleeve Overall Dress',
+      'KD-P6-SLD':  'Sleeveless Dress',
+      'KD-P8-SHD':  'Sleeveless Sheath Dress',
+      'KD-P11-HAD': 'Half Sleeve A-line Dress',
+      'KD-P12-FAD': 'Full Sleeve A-line Dress',
+      'KD-P32-QAD': 'Quarter Sleeve A-line Dress',
+      'KD-P34-SMX': 'Sleeveless Maxi Dress',
+      'KD-P37-SFD': 'Sleeveless Shift Dress',
+      'KD-P40-SBC': 'Sleeveless Bodycon Dress',
+      'KD-P48-FWT': 'Full Sleeve Wrap Top',
+      'KD-P49-SAD': 'Sleeveless A-line Dress',
+      'KD-P57-FA2': 'Full Sleeve A-line Dress 2',
+      'KD-P62-FQB': 'Full Sleeve Quarter Button A-line Dress',
+    };
+    const FABRIC_META = {
+      'cotton-1':       'Cotton Plain 1',
+      'cotton-2':       'Cotton Plain 2',
+      'linen-1':        'Linen Plain 1',
+      'linen-2':        'Linen Plain 2',
+      'wool-1':         'Wool 1',
+      'wool-2':         'Wool 2',
+      'cotton-linen-1': 'Cotton-Linen Blend 1',
+      'cotton-linen-2': 'Cotton-Linen Blend 2',
+      'cotton-wool-1':  'Cotton-Wool Blend 1',
+    };
+
+    // ── Render price tables ───────────────────────────────────────────────────
+    function renderPriceTables() {
+      const { designs, fabrics } = getAllPrices();
+
+      const dTbody = document.getElementById('design-prices-tbody');
+      dTbody.innerHTML = Object.entries(DESIGN_META).map(([sku, name]) => `
+        <tr>
+          <td>${sku}</td>
+          <td>${name}</td>
+          <td style="text-align:right">
+            <input type="number" min="0" step="1" class="price-input" data-type="design" data-key="${sku}" value="${designs[sku] ?? 0}">
+          </td>
+        </tr>`).join('');
+
+      const fTbody = document.getElementById('fabric-prices-tbody');
+      fTbody.innerHTML = Object.entries(FABRIC_META).map(([id, name]) => `
+        <tr>
+          <td>${id}</td>
+          <td>${name}</td>
+          <td style="text-align:right">
+            <input type="number" min="0" step="1" class="price-input" data-type="fabric" data-key="${id}" value="${fabrics[id] ?? 0}">
+          </td>
+        </tr>`).join('');
+    }
+
+    // ── Save prices ───────────────────────────────────────────────────────────
+    window.savePricesFromUI = function() {
+      const designs = {}, fabrics = {};
+      document.querySelectorAll('.price-input[data-type="design"]').forEach(inp => {
+        designs[inp.dataset.key] = Number(inp.value) || 0;
+      });
+      document.querySelectorAll('.price-input[data-type="fabric"]').forEach(inp => {
+        fabrics[inp.dataset.key] = Number(inp.value) || 0;
+      });
+      savePrices(designs, fabrics);
+      const msg = document.getElementById('prices-saved-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 3000);
+    };
+
+    renderPriceTables();
+
+    if (!isLoggedIn()) {
+      openAuthModal(() => window.location.reload());
+    }
+
+    const WORKSHOP_EMAIL = 'chirag.dhorajiya116@gmail.com';
+
+    // ── Design image map ──────────────────────────────────────────────────────
+    const DESIGN_IMAGES = {
+      '1':  'images/KDscion-p1-full sleeve classic shirt.png',
+      '2':  'images/KDscion-p2-half sleeve overall dress.png',
+      '6':  'images/KDscion-p6-sleeveless dress.png',
+      '8':  'images/KDscion-p8-sleeveless sheath dress.png',
+      '11': 'images/KDscion-p11-half sleeve A-line dress.png',
+      '12': 'images/KDscion-p12-full sleeve A-line dress.png',
+      '32': 'images/KDscion-p32-quarter sleeve A-line dress.png',
+      '34': 'images/KDscion-p34-sleeveless maxi dress.png',
+      '37': 'images/KDscion-p37-sleeveless-shift dress.png',
+      '40': 'images/KDscion-p40-sleeveless bodycon dress.png',
+      '48': 'images/KDscion-p48-full sleeve wrap top.png',
+      '49': 'images/KDscion-p49-sleeveless A-line dress.png',
+      '57': 'images/KDscion-p57-full sleeve A-line dress.png',
+      '62': 'images/KDscion-p62-full sleeve quarter button A-line dress.png',
+    };
+
+    function getDesignImage(sku) {
+      if (!sku) return null;
+      const m = sku.match(/KD-P(\d+)-/i) || sku.match(/P(\d+)/i);
+      if (!m) return null;
+      return DESIGN_IMAGES[m[1]] || null;
+    }
+
+    // ── Fabric image map ──────────────────────────────────────────────────────
+    function getFabricImage(fabricId) {
+      if (!fabricId) return null;
+      const id = fabricId.toLowerCase();
+      if (id.includes('cotton-linen') || id.includes('cotton_linen')) return 'images/cotton-linen blend-1.webp';
+      if (id.includes('cotton-wool') || id.includes('wool-blend') || id.includes('wool_blend')) return 'images/wool-blend-2.avif';
+      if (id.includes('cotton')) return 'images/cotton-1.jpg';
+      if (id.includes('linen')) return 'images/linen-1.jpg';
+      if (id.includes('wool')) return 'images/wool-1.jpg';
+      return null;
+    }
+
+    function fabricTypeFromId(id) {
+      if (!id) return '';
+      const i = id.toLowerCase();
+      if (i.includes('cotton-linen') || i.includes('cotton_linen')) return 'Cotton-Linen Blend';
+      if (i.includes('cotton-wool') || i.includes('wool-blend')) return 'Cotton-Wool Blend';
+      if (i.includes('cotton')) return 'Cotton';
+      if (i.includes('linen')) return 'Linen';
+      if (i.includes('wool')) return 'Wool';
+      return id;
+    }
+
+    // ── Measurement groups ────────────────────────────────────────────────────
+    const MEAS_GROUPS = [
+      {
+        title: 'General',
+        fields: [
+          { key: 'height', label: 'Height', unit: 'cm' },
+          { key: 'weight', label: 'Weight', unit: 'kg' },
+        ],
+      },
+      {
+        title: 'Upper Body',
+        fields: [
+          { key: 'neck',       label: 'Neck',        unit: 'cm' },
+          { key: 'shoulder',   label: 'Shoulder',    unit: 'cm' },
+          { key: 'chest',      label: 'Chest',       unit: 'cm' },
+          { key: 'underbust',  label: 'Under Bust',  unit: 'cm' },
+          { key: 'waist',      label: 'Waist',       unit: 'cm' },
+          { key: 'highhip',    label: 'High Hip',    unit: 'cm' },
+          { key: 'hip',        label: 'Full Hip',    unit: 'cm' },
+          { key: 'backlength', label: 'Back Length', unit: 'cm' },
+        ],
+      },
+      {
+        title: 'Arms',
+        fields: [
+          { key: 'armlength', label: 'Arm Length', unit: 'cm' },
+          { key: 'bicep',     label: 'Bicep',      unit: 'cm' },
+          { key: 'wrist',     label: 'Wrist',      unit: 'cm' },
+        ],
+      },
+      {
+        title: 'Lower Body',
+        fields: [
+          { key: 'inseam',       label: 'Inseam',      unit: 'cm' },
+          { key: 'outseam',      label: 'Outseam',     unit: 'cm' },
+          { key: 'knee',         label: 'Knee',        unit: 'cm' },
+          { key: 'calf',         label: 'Calf',        unit: 'cm' },
+          { key: 'ankle',        label: 'Ankle',       unit: 'cm' },
+          { key: 'waisttoankle', label: 'Waist–Ankle', unit: 'cm' },
+        ],
+      },
+    ];
+
+    function buildMeasHtml(meas) {
+      if (!meas || Object.keys(meas).length === 0) {
+        return `<p class="meas-none">No measurements on file for this customer.</p>`;
+      }
+      const cols = [MEAS_GROUPS.slice(0, 2), MEAS_GROUPS.slice(2)];
+      let html = `<div class="meas-groups">`;
+      cols.forEach(groups => {
+        html += `<div>`;
+        groups.forEach(group => {
+          const rows = group.fields.filter(f => meas[f.key] != null);
+          if (!rows.length) return;
+          html += `<div class="meas-group"><p class="meas-group-title">${group.title}</p>`;
+          rows.forEach(f => {
+            html += `<div class="meas-row">
+              <span class="meas-key">${f.label}</span>
+              <span class="meas-val">${meas[f.key]} ${f.unit}</span>
+            </div>`;
+          });
+          html += `</div>`;
+        });
+        html += `</div>`;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function fmt(n) { return `$${Number(n).toLocaleString()}`; }
+
+    function fmtDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function addrStr(a) {
+      if (!a) return '—';
+      return [a.line1, a.line2, a.city, a.state, a.postalCode, a.country].filter(Boolean).join(', ');
+    }
+
+    function imgOrPlaceholder(src, alt, cssClass) {
+      if (src) {
+        return `<img src="${src}" alt="${alt}" class="${cssClass}" loading="lazy">`;
+      }
+      return `<div class="df-placeholder">✦</div>`;
+    }
+
+    // ── Build mailto: link ────────────────────────────────────────────────────
+    function buildMailto(order, items, meas) {
+      const orderId  = order.id ?? '—';
+      const dateStr  = fmtDate(order.createdAt);
+      const custName = [order.user?.firstName, order.user?.lastName].filter(Boolean).join(' ') || order.customer?.name || '—';
+      const custEmail = order.user?.email || order.customer?.email || '—';
+      const addr     = addrStr(order.shippingAddress);
+      const total    = items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
+
+      let body = `KING DHORAJIYA — WORKSHOP ORDER BRIEF\n`;
+      body += `${'='.repeat(50)}\n\n`;
+      body += `ORDER #: ${orderId}\n`;
+      body += `DATE: ${dateStr}\n\n`;
+
+      body += `CUSTOMER\n${'-'.repeat(30)}\n`;
+      body += `Name: ${custName}\n`;
+      body += `Email: ${custEmail}\n`;
+      body += `Delivery Address: ${addr}\n`;
+      if (order.notes) body += `Notes: ${order.notes}\n`;
+      body += `\n`;
+
+      items.forEach((item, idx) => {
+        const name       = item.displayName ?? item.product?.name ?? 'Bespoke Garment';
+        const sku        = item.product?.sku ?? item.product?.id ?? '—';
+        const selections = item.configuratorSession?.selections ?? {};
+        const selValues  = Object.values(selections);
+        const fabricVal  = selValues[0] ?? null;
+        const fabricName = fabricVal?.label ?? '—';
+        const fabricId   = fabricVal?.id ?? '—';
+        const fabricType = fabricTypeFromId(fabricId);
+        const price      = Number(item.unitPrice ?? 0) * (item.quantity ?? 1);
+
+        body += `GARMENT ${idx + 1}: ${name}\n${'-'.repeat(30)}\n`;
+        body += `Design #: ${sku}\n`;
+        body += `Design Name: ${name}\n`;
+        body += `Fabric #: ${fabricId}\n`;
+        body += `Fabric Name: ${fabricName}\n`;
+        body += `Fabric Type: ${fabricType}\n`;
+        body += `Price: ${fmt(price)}\n`;
+        if ((item.quantity ?? 1) > 1) body += `Qty: ${item.quantity}\n`;
+        body += `\n`;
+      });
+
+      body += `ORDER TOTAL: ${fmt(total)}\n\n`;
+
+      body += `MEASUREMENTS\n${'-'.repeat(30)}\n`;
+      const m = meas?.measurements ?? meas;
+      if (m && Object.keys(m).length > 0) {
+        MEAS_GROUPS.forEach(group => {
+          const rows = group.fields.filter(f => m[f.key] != null);
+          if (!rows.length) return;
+          body += `${group.title}:\n`;
+          rows.forEach(f => { body += `  ${f.label}: ${m[f.key]} ${f.unit}\n`; });
+        });
+      } else {
+        body += `No measurements on file.\n`;
+      }
+
+      body += `\n${'='.repeat(50)}\n`;
+      body += `Crafted by King Dhorajiya — The House of Scion\n`;
+
+      const subject = `Workshop Order Brief #${orderId} — ${items[0] ? (items[0].displayName ?? items[0].product?.name ?? 'Bespoke Garment') : 'Order'}`;
+
+      return `mailto:${WORKSHOP_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    // ── Render one order card ─────────────────────────────────────────────────
+    function renderOrderCard(order, meas) {
+      const items   = order.items ?? order.cartItems ?? [];
+      const total   = items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
+      const orderId = order.id ?? '—';
+      const dateStr = fmtDate(order.createdAt);
+      const addr    = order.shippingAddress;
+      const custName  = [order.user?.firstName, order.user?.lastName].filter(Boolean).join(' ') || order.customer?.name || '—';
+      const custEmail = order.user?.email || order.customer?.email || '—';
+      const status    = (order.status ?? 'pending').toLowerCase();
+      const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+      const statusClass = (status === 'paid' || status === 'completed' || status === 'confirmed') ? '' : 'status-pending';
+
+      // Build items HTML
+      let itemsHtml = '';
+      items.forEach(item => {
+        const name       = item.displayName ?? item.product?.name ?? 'Bespoke Garment';
+        const sku        = item.product?.sku ?? item.product?.id ?? '';
+        const selections = item.configuratorSession?.selections ?? {};
+        const selValues  = Object.values(selections);
+        const fabricVal  = selValues[0] ?? null;
+        const fabricName = fabricVal?.label ?? '—';
+        const fabricId   = fabricVal?.id ?? '';
+        const fabricType = fabricTypeFromId(fabricId);
+        const price      = Number(item.unitPrice ?? 0) * (item.quantity ?? 1);
+
+        const designImg  = getDesignImage(sku);
+        const fabricImg  = getFabricImage(fabricId);
+
+        itemsHtml += `
+          <div style="margin-bottom:2rem; padding-bottom:2rem; border-bottom:1px solid #f0f0f0;">
+            <div class="order-top-cols">
+              <!-- Design -->
+              <div>
+                <p class="section-label">Design</p>
+                <div class="design-fabric-block">
+                  ${imgOrPlaceholder(designImg, name, 'df-image')}
+                  <div class="df-details">
+                    <p class="df-name">${name}</p>
+                    ${sku ? `<div class="df-row"><span class="df-key">Ref</span><span class="df-val">${sku}</span></div>` : ''}
+                    ${(item.quantity ?? 1) > 1 ? `<div class="df-row"><span class="df-key">Qty</span><span class="df-val plain">${item.quantity}</span></div>` : ''}
+                    <div class="df-row" style="margin-top:0.5rem">
+                      <span class="df-key">Price</span><span class="df-val plain">${fmt(price)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fabric -->
+              <div>
+                <p class="section-label">Fabric</p>
+                <div class="design-fabric-block">
+                  ${imgOrPlaceholder(fabricImg, fabricName, 'df-image')}
+                  <div class="df-details">
+                    <p class="df-name">${fabricName !== '—' ? fabricName : 'Not specified'}</p>
+                    ${fabricId ? `<div class="df-row"><span class="df-key">Ref</span><span class="df-val">${fabricId}</span></div>` : ''}
+                    ${fabricType ? `<div class="df-row"><span class="df-key">Type</span><span class="df-val plain">${fabricType}</span></div>` : ''}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+
+      if (!itemsHtml) {
+        itemsHtml = `<p class="meas-none">No garment items found.</p>`;
+      }
+
+      // Measurements
+      const measData = meas?.measurements ?? meas ?? {};
+      const measHtml = buildMeasHtml(measData);
+
+      // Notes
+      const notesHtml = order.notes
+        ? `<hr class="meas-divider">
+           <p class="section-label">Notes</p>
+           <p class="notes-text">${order.notes}</p>`
+        : '';
+
+      // Mailto
+      const mailtoHref = buildMailto(order, items, meas);
+
+      const card = document.createElement('div');
+      card.className = 'order-card';
+      card.innerHTML = `
+        <!-- Card header -->
+        <div class="order-card-header">
+          <div>
+            <p class="order-card-id">Order # ${orderId}</p>
+            ${dateStr ? `<p class="order-card-date">${dateStr}</p>` : ''}
+          </div>
+          <div style="display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap;">
+            <span class="order-card-status ${statusClass}">${statusLabel}</span>
+            <a href="${mailtoHref}" class="order-email-btn">
+              ✉ Email to Workshop
+            </a>
+          </div>
+        </div>
+
+        <!-- Card body -->
+        <div class="order-card-body">
+
+          <!-- Garments (design + fabric) -->
+          ${itemsHtml}
+
+          <!-- Customer + Delivery -->
+          <div class="order-top-cols" style="margin-bottom:1.6rem;">
+            <div>
+              <p class="section-label">Customer</p>
+              <div class="customer-block">
+                ${custName !== '—' ? `<div><span class="cust-label">Name</span><br>${custName}</div>` : ''}
+                ${custEmail !== '—' ? `<div><span class="cust-label">Email</span><br>${custEmail}</div>` : ''}
+              </div>
+            </div>
+            <div>
+              <p class="section-label">Delivery Address</p>
+              <div class="customer-block">
+                ${addr ? addrStr(addr).split(', ').map(l => `<div>${l}</div>`).join('') : '<div style="color:#bbb">—</div>'}
+              </div>
+            </div>
+          </div>
+
+          <!-- Measurements -->
+          <hr class="meas-divider">
+          <p class="section-label">Measurements on File</p>
+          <div class="meas-section">${measHtml}</div>
+
+          ${notesHtml}
+
+          <!-- Total -->
+          <div class="order-price-row">
+            <span class="price-label">Order Total</span>
+            <span class="price-amount">${fmt(total)}</span>
+          </div>
+        </div>
+      `;
+
+      return card;
+    }
+
+    // ── Load all orders ───────────────────────────────────────────────────────
+    window.loadOrders = async function loadOrders() {
+      const container = document.getElementById('orders-container');
+      container.innerHTML = `<p class="dash-loading" id="dash-loading">Loading orders…</p>`;
+      document.getElementById('order-count').textContent = '—';
+
+      try {
+        const raw    = await getOrders();
+        const orders = Array.isArray(raw) ? raw : (raw?.data ?? raw?.orders ?? []);
+
+        document.getElementById('order-count').textContent =
+          `${orders.length} order${orders.length !== 1 ? 's' : ''}`;
+
+        if (!orders.length) {
+          container.innerHTML = `<div class="dash-empty">No orders yet.</div>`;
+          return;
+        }
+
+        // Summary stats
+        const totalRevenue = orders.reduce((sum, o) => {
+          const items = o.items ?? o.cartItems ?? [];
+          return sum + items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
+        }, 0);
+        document.getElementById('stat-total').textContent = orders.length;
+        document.getElementById('stat-revenue').textContent = `$${totalRevenue.toLocaleString()}`;
+        document.getElementById('dash-summary').style.display = 'flex';
+
+        // Fetch measurements once (logged-in user's measurements)
+        let meas = null;
+        try { meas = await getMeasurements(); } catch (_) {}
+
+        container.innerHTML = '';
+
+        // Sort newest first
+        const sorted = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        sorted.forEach(order => {
+          const card = renderOrderCard(order, meas);
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        container.innerHTML = `<p class="dash-error">${err.message ?? 'Failed to load orders.'}</p>`;
+      }
+    };
+
+    loadOrders();
+  </script>
+
+</body>
+</html>

@@ -1059,3 +1059,44 @@ a {
   width: 100%;
   height: 100%;
 }
+
+/* ── Configurator price breakdown ── */
+.cfg-price-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.cfg-price-part {
+  font-family: "Times New Roman", serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  opacity: 0.65;
+}
+.cfg-price-part strong {
+  font-weight: 400;
+  opacity: 1;
+}
+.cfg-price-sep {
+  font-family: "Times New Roman", serif;
+  font-size: 1rem;
+  opacity: 0.35;
+  padding: 0 0.1rem;
+}
+.cfg-price-total {
+  font-family: "Times New Roman", serif;
+  font-size: 1.15rem;
+  letter-spacing: 3px;
+}
+.cfg-price-total strong {
+  font-weight: 400;
+}
+.cfg-price-hint {
+  font-family: "Times New Roman", serif;
+  font-size: 0.88rem;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  font-style: italic;
+  text-transform: none;
+}

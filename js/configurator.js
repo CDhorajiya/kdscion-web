@@ -7,6 +7,7 @@ import {
   isLoggedIn,
 } from './api.js';
 import { openAuthModal } from './auth-modal.js';
+import { getDesignPrice, getFabricPrice } from './prices.js';
 
 let product = null;   // { id, sku, name, basePrice, ... }
 let options = null;   // [ { id, label, values: [...] } ]
@@ -41,14 +42,31 @@ function getSelectedValue() {
 
 // ── Price display ─────────────────────────────────────────────────────────────
 
+function fmt(n) { return `$${Number(n).toLocaleString()}`; }
+
 function renderPrice() {
   const el = document.getElementById('cfg-price');
   if (!el || !product) return;
-  const base = Number(product.basePrice);
-  const selected = getSelectedValue();
-  const modifier = selected ? Number(selected.value.priceModifier) : 0;
-  const total = base + modifier;
-  el.textContent = `$${total.toLocaleString()}`;
+
+  const designPrice = getDesignPrice(product.sku);
+  const label = el.closest('.cfg-price-label') || el.parentElement;
+
+  if (selectedFabricId) {
+    const fabricPrice = getFabricPrice(selectedFabricId);
+    const total = designPrice + fabricPrice;
+    label.innerHTML = `
+      <span class="cfg-price-part">Design&nbsp;<strong>${fmt(designPrice)}</strong></span>
+      <span class="cfg-price-sep">+</span>
+      <span class="cfg-price-part">Fabric&nbsp;<strong>${fmt(fabricPrice)}</strong></span>
+      <span class="cfg-price-sep">=</span>
+      <span class="cfg-price-total">Total&nbsp;<strong id="cfg-price">${fmt(total)}</strong></span>
+    `;
+  } else {
+    label.innerHTML = `
+      <span class="cfg-price-part">Design&nbsp;<strong id="cfg-price">${fmt(designPrice)}</strong></span>
+      <span class="cfg-price-hint">+ select fabric for total</span>
+    `;
+  }
 }
 
 // ── Add to cart ───────────────────────────────────────────────────────────────

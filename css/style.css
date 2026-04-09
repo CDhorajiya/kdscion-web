@@ -1072,31 +1072,40 @@ a {
   font-family: "Times New Roman", serif;
   font-size: 1.3rem;
   letter-spacing: 2px;
-  opacity: 0.65;
+  color: rgba(255,255,255,0.9);
+  opacity: 1;
 }
 .cfg-price-part strong {
   font-weight: 400;
-  opacity: 1;
+  color: #fff;
 }
 .cfg-price-sep {
   font-family: "Times New Roman", serif;
   font-size: 1.3rem;
-  opacity: 0.35;
+  color: rgba(255,255,255,0.6);
   padding: 0 0.1rem;
 }
 .cfg-price-total {
   font-family: "Times New Roman", serif;
   font-size: 1.5rem;
   letter-spacing: 3px;
+  color: #fff;
 }
 .cfg-price-total strong {
   font-weight: 400;
+  color: #fff;
 }
 .cfg-price-hint {
   font-family: "Times New Roman", serif;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   letter-spacing: 2px;
-  opacity: 0.4;
+  color: rgba(255,255,255,0.8);
   font-style: italic;
   text-transform: none;
 }
+
+/* Light mode override (order-brief, checkout etc.) */
+.cfg-price-label--light .cfg-price-part,
+.cfg-price-label--light .cfg-price-total,
+.cfg-price-label--light .cfg-price-hint { color: #111; }
+.cfg-price-label--light .cfg-price-sep  { color: #888; }

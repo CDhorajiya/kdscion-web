@@ -23,9 +23,9 @@ export async function initConfigurator(sku) {
 
   options = await getProductOptions(product.id);
 
-  // Render global fabric catalog into this page's fabric-list
+  // Render fabric catalog for this specific product SKU
   const fabricListEl = document.querySelector('.fabric-list');
-  if (fabricListEl) renderFabricList(fabricListEl);
+  if (fabricListEl) renderFabricList(fabricListEl, product.sku);
 
   renderPrice();
 }

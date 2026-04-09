@@ -119,13 +119,30 @@ export function loadFabricOverrides() {
   return loadOverrides();
 }
 
-// visibility key helpers
-function typeKey(typeId)               { return `t:${typeId}`; }
-function collKey(typeId, collId)       { return `c:${typeId}:${collId}`; }
-function swatchKey(swatchId)           { return `s:${swatchId}`; }
+// ── Visibility key helpers ────────────────────────────────────────────────────
+// Per-product keys:  p:SKU:t:typeId   /  p:SKU:c:typeId:collId
+// Global swatch key: s:swatchId
 
-function isVisible(key, overrides, defaultVal = true) {
-  return overrides.visibility?.[key] ?? defaultVal;
+function productTypeKey(sku, typeId)           { return `p:${sku}:t:${typeId}`; }
+function productCollKey(sku, typeId, collId)   { return `p:${sku}:c:${typeId}:${collId}`; }
+function swatchKey(swatchId)                   { return `s:${swatchId}`; }
+
+/**
+ * Is this fabric type visible for the given product SKU?
+ * Default: true (visible).
+ */
+export function isTypeVisible(sku, typeId, overrides) {
+  const vis = overrides.visibility || {};
+  return vis[productTypeKey(sku, typeId)] ?? true;
+}
+
+/**
+ * Is this collection visible for the given product SKU + type?
+ * Default: true — but only relevant when the parent type is already visible.
+ */
+export function isCollectionVisible(sku, typeId, collId, overrides) {
+  const vis = overrides.visibility || {};
+  return vis[productCollKey(sku, typeId, collId)] ?? true;
 }
 
 // ── Build merged catalog (default + localStorage extras) ─────────────────────
@@ -136,7 +153,7 @@ export function getMergedCatalog() {
   return FABRIC_CATALOG.map(type => ({
     ...type,
     collections: type.collections.map(coll => {
-      const extraKey    = `${type.id}:${coll.id}`;
+      const extraKey      = `${type.id}:${coll.id}`;
       const extraSwatches = extras[extraKey] || [];
       return {
         ...coll,
@@ -146,23 +163,29 @@ export function getMergedCatalog() {
   }));
 }
 
-// ── Renderer ──────────────────────────────────────────────────────────────────
-export function renderFabricList(containerEl) {
+// ── Renderer (per-product) ────────────────────────────────────────────────────
+// sku: the product SKU string, e.g. 'KD-P1-FSS' — controls which types/collections show.
+export function renderFabricList(containerEl, sku) {
   const overrides = loadOverrides();
+  const vis       = overrides.visibility || {};
   const catalog   = getMergedCatalog();
+
+  function typeOn(typeId)           { return vis[productTypeKey(sku, typeId)]         ?? true; }
+  function collOn(typeId, collId)   { return vis[productCollKey(sku, typeId, collId)] ?? true; }
+  function swatchOn(swatchId)       { return vis[swatchKey(swatchId)]                 ?? true; }
 
   let html = '';
   catalog.forEach(type => {
-    if (!isVisible(typeKey(type.id), overrides)) return;
+    if (!typeOn(type.id)) return;
 
     const wreathImgs = type.wreaths.map(w => `<img src="${w}" alt="${type.label}">`).join('');
 
     let collectionsHtml = '';
     type.collections.forEach(coll => {
-      if (!isVisible(collKey(type.id, coll.id), overrides)) return;
+      if (!collOn(type.id, coll.id)) return;
 
-      const visibleSwatches = coll.swatches.filter(s => isVisible(swatchKey(s.id), overrides));
-      if (coll.swatches.length > 0 && visibleSwatches.length === 0) return; // hide if all swatches hidden
+      const visibleSwatches = coll.swatches.filter(s => swatchOn(s.id));
+      if (coll.swatches.length > 0 && visibleSwatches.length === 0) return;
 
       const swatchCards = visibleSwatches.map(s => `
         <div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}">

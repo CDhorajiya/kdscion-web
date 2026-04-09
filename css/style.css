@@ -1070,7 +1070,7 @@ a {
 }
 .cfg-price-part {
   font-family: "Times New Roman", serif;
-  font-size: 1rem;
+  font-size: 1.3rem;
   letter-spacing: 2px;
   opacity: 0.65;
 }
@@ -1080,13 +1080,13 @@ a {
 }
 .cfg-price-sep {
   font-family: "Times New Roman", serif;
-  font-size: 1rem;
+  font-size: 1.3rem;
   opacity: 0.35;
   padding: 0 0.1rem;
 }
 .cfg-price-total {
   font-family: "Times New Roman", serif;
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   letter-spacing: 3px;
 }
 .cfg-price-total strong {
@@ -1094,7 +1094,7 @@ a {
 }
 .cfg-price-hint {
   font-family: "Times New Roman", serif;
-  font-size: 0.88rem;
+  font-size: 1.1rem;
   letter-spacing: 2px;
   opacity: 0.4;
   font-style: italic;

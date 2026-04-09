@@ -568,6 +568,153 @@
       margin: 0;
     }
 
+    /* ── Fabrics panel ── */
+    .fab-type-block {
+      margin-bottom: 2.2rem;
+      border: 1px solid #e8e8e8;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .fab-type-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.4rem;
+      background: #fafaf9;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .fab-type-name {
+      font-family: "Times New Roman", serif;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: #111;
+      margin: 0;
+      font-weight: 400;
+    }
+    .fab-coll-block {
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid #f4f4f4;
+    }
+    .fab-coll-block:last-child { border-bottom: none; }
+    .fab-coll-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+    .fab-coll-name {
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin: 0;
+    }
+    .fab-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+    .fab-swatch-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.7rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      background: #fafafa;
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      color: #333;
+    }
+    .fab-swatch-item img {
+      width: 28px;
+      height: 28px;
+      object-fit: cover;
+      border-radius: 2px;
+      border: 1px solid #ddd;
+    }
+    .fab-swatch-del {
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 0 0 0.4rem;
+      transition: color 0.2s;
+    }
+    .fab-swatch-del:hover { color: #c0392b; }
+    .fab-toggle {
+      position: relative;
+      display: inline-block;
+      width: 42px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .fab-toggle input { opacity: 0; width: 0; height: 0; }
+    .fab-slider {
+      position: absolute;
+      inset: 0;
+      background: #ccc;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .fab-slider:before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .fab-toggle input:checked + .fab-slider { background: #111; }
+    .fab-toggle input:checked + .fab-slider:before { transform: translateX(20px); }
+    .fab-add-form {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .fab-add-input {
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      padding: 0.35rem 0.7rem;
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      color: #111;
+      background: #fafafa;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .fab-add-input:focus { border-color: #888; background: #fff; }
+    .fab-add-btn {
+      padding: 0.35rem 1.2rem;
+      background: #111;
+      border: 1px solid #111;
+      color: #fff;
+      font-family: "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .fab-add-btn:hover { background: #444; border-color: #444; }
+    .fab-save-bar {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
     @media (max-width: 700px) {
       .order-top-cols { grid-template-columns: 1fr; }
       .meas-groups { grid-template-columns: 1fr; }
@@ -621,6 +768,7 @@
     <div class="dash-tabs">
       <button class="dash-tab active" onclick="switchTab('orders')">Orders</button>
       <button class="dash-tab" onclick="switchTab('prices')">Prices</button>
+      <button class="dash-tab" onclick="switchTab('fabrics')">Fabrics</button>
     </div>
 
     <!-- Orders pane -->
@@ -676,6 +824,13 @@
       </div>
     </div>
 
+    <!-- Fabrics pane -->
+    <div id="pane-fabrics" class="dash-pane">
+      <div id="fabrics-panel" style="background:#fff;border:1px solid #e0e0e0;border-radius:3px;padding:2rem 2.5rem;">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
   </div>
 
   <script type="module">
@@ -714,6 +869,7 @@
     import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
+    import { FABRIC_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog } from './js/fabrics.js';
 
     // ── Tab switching ─────────────────────────────────────────────────────────
     window.switchTab = function(tab) {
@@ -793,6 +949,122 @@
     };
 
     renderPriceTables();
+
+    // ── Fabrics tab ───────────────────────────────────────────────────────────
+    function renderFabricsPanel() {
+      const panel    = document.getElementById('fabrics-panel');
+      const overrides = loadFabricOverrides();
+      const vis      = overrides.visibility || {};
+      const catalog  = getMergedCatalog();
+
+      function isOn(key, def = true) { return vis[key] ?? def; }
+
+      let html = `<p class="section-label" style="margin-bottom:1.8rem">Fabric Catalog — toggle visibility · add swatches</p>`;
+
+      catalog.forEach(type => {
+        const tKey   = `t:${type.id}`;
+        const tOn    = isOn(tKey);
+        const wreaths = type.wreaths.map(w => `<img src="${w}" style="width:28px;height:28px;object-fit:contain;margin-right:4px">`).join('');
+
+        let collHtml = '';
+        type.collections.forEach(coll => {
+          const cKey = `c:${type.id}:${coll.id}`;
+          const cOn  = isOn(cKey);
+
+          const swatchItems = coll.swatches.map(s => {
+            const sKey = `s:${s.id}`;
+            const sOn  = isOn(sKey);
+            return `<div class="fab-swatch-item">
+              <img src="${s.image}" alt="${s.label}">
+              <span>${s.label}</span>
+              <label class="fab-toggle" title="Show/hide this swatch">
+                <input type="checkbox" ${sOn ? 'checked' : ''}
+                  onchange="toggleVisibility('${sKey}', this.checked)">
+                <span class="fab-slider"></span>
+              </label>
+              <button class="fab-swatch-del" title="Delete swatch"
+                onclick="deleteSwatch('${type.id}','${coll.id}','${s.id}')">✕</button>
+            </div>`;
+          }).join('');
+
+          collHtml += `
+            <div class="fab-coll-block">
+              <div class="fab-coll-header">
+                <p class="fab-coll-name">${coll.label}</p>
+                <label class="fab-toggle" title="Show/hide collection">
+                  <input type="checkbox" ${cOn ? 'checked' : ''}
+                    onchange="toggleVisibility('${cKey}', this.checked)">
+                  <span class="fab-slider"></span>
+                </label>
+              </div>
+              <div class="fab-swatches">${swatchItems || '<span style="color:#ccc;font-family:Times New Roman,serif;font-size:1rem;letter-spacing:2px">No swatches</span>'}</div>
+              <div class="fab-add-form">
+                <input class="fab-add-input" placeholder="Label (e.g. Cotton 3)"
+                  id="lbl-${type.id}-${coll.id}" style="width:140px">
+                <input class="fab-add-input" placeholder="images/filename.jpg"
+                  id="img-${type.id}-${coll.id}" style="width:200px">
+                <button class="fab-add-btn"
+                  onclick="addSwatch('${type.id}','${coll.id}')">Add</button>
+              </div>
+            </div>`;
+        });
+
+        html += `
+          <div class="fab-type-block">
+            <div class="fab-type-header">
+              <p class="fab-type-name">${wreaths}${type.label}</p>
+              <label class="fab-toggle" title="Show/hide entire fabric type">
+                <input type="checkbox" ${tOn ? 'checked' : ''}
+                  onchange="toggleVisibility('${tKey}', this.checked)">
+                <span class="fab-slider"></span>
+              </label>
+            </div>
+            ${collHtml}
+          </div>`;
+      });
+
+      panel.innerHTML = html;
+    }
+
+    window.toggleVisibility = function(key, on) {
+      const overrides = loadFabricOverrides();
+      if (!overrides.visibility) overrides.visibility = {};
+      overrides.visibility[key] = on;
+      saveFabricOverrides(overrides);
+    };
+
+    window.addSwatch = function(typeId, collId) {
+      const lblEl = document.getElementById(`lbl-${typeId}-${collId}`);
+      const imgEl = document.getElementById(`img-${typeId}-${collId}`);
+      const label = lblEl.value.trim();
+      const image = imgEl.value.trim();
+      if (!label || !image) { alert('Enter both a label and an image path.'); return; }
+
+      const id = `${typeId}-${collId}-${Date.now()}`;
+      const overrides = loadFabricOverrides();
+      if (!overrides.extras) overrides.extras = {};
+      const key = `${typeId}:${collId}`;
+      if (!overrides.extras[key]) overrides.extras[key] = [];
+      overrides.extras[key].push({ id, label, image });
+      saveFabricOverrides(overrides);
+
+      lblEl.value = '';
+      imgEl.value = '';
+      renderFabricsPanel();
+    };
+
+    window.deleteSwatch = function(typeId, collId, swatchId) {
+      // Only extra (user-added) swatches can be deleted
+      const overrides = loadFabricOverrides();
+      const key = `${typeId}:${collId}`;
+      if (overrides.extras?.[key]) {
+        overrides.extras[key] = overrides.extras[key].filter(s => s.id !== swatchId);
+        saveFabricOverrides(overrides);
+        renderFabricsPanel();
+      }
+    };
+
+    renderFabricsPanel();
 
     if (!isLoggedIn()) {
       openAuthModal(() => window.location.reload());

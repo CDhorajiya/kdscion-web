@@ -8,6 +8,7 @@ import {
 } from './api.js';
 import { openAuthModal } from './auth-modal.js';
 import { getDesignPrice, getFabricPrice } from './prices.js';
+import { renderFabricList } from './fabrics.js';
 
 let product = null;   // { id, sku, name, basePrice, ... }
 let options = null;   // [ { id, label, values: [...] } ]
@@ -21,6 +22,11 @@ export async function initConfigurator(sku) {
   if (!product) { console.error('Product not found for SKU:', sku); return; }
 
   options = await getProductOptions(product.id);
+
+  // Render global fabric catalog into this page's fabric-list
+  const fabricListEl = document.querySelector('.fabric-list');
+  if (fabricListEl) renderFabricList(fabricListEl);
+
   renderPrice();
 }
 

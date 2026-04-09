@@ -17,16 +17,15 @@ let selectedFabricId = null;  // value id e.g. "linen-1"
 // ── Init ─────────────────────────────────────────────────────────────────────
 
 export async function initConfigurator(sku) {
+  // Render fabric catalog immediately — local data, no API needed
+  const fabricListEl = document.querySelector('.fabric-list');
+  if (fabricListEl) renderFabricList(fabricListEl, sku);
+
   const { data: products } = await getProducts(1, 50);
   product = products.find(p => p.sku === sku) ?? null;
   if (!product) { console.error('Product not found for SKU:', sku); return; }
 
   options = await getProductOptions(product.id);
-
-  // Render fabric catalog for this specific product SKU
-  const fabricListEl = document.querySelector('.fabric-list');
-  if (fabricListEl) renderFabricList(fabricListEl, product.sku);
-
   renderPrice();
 }
 

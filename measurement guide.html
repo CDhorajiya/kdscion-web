@@ -689,6 +689,7 @@
         let renderer, scene, camera, controls;
         let activeTape = null;
         let currentModel = null;
+        let activeGender = 'woman';
 
         /* ── Per-gender annotation positions ── */
         const ANN_POSITIONS = {
@@ -711,12 +712,12 @@
                 calf:          new THREE.Vector3( 0.07, -0.42,  0.04),
                 ankle:         new THREE.Vector3( 0.09, -0.74,  0.03),
                 waisttoankle:  new THREE.Vector3(-0.18,  0.00,  0.04),
-                height:        new THREE.Vector3( 0.00,  1.00,  0.00),
+                height:        new THREE.Vector3( 0.00,  1.00,  0.05),
             },
             man: {
                 neck:          new THREE.Vector3( 0.00,  0.77,  0.08),
                 shoulder:      new THREE.Vector3( 0.27,  0.72,  0.00),
-                chest:         new THREE.Vector3( 0.16,  0.52,  0.10),
+                chest:         new THREE.Vector3( 0.16,  0.57,  0.10),
                 underbust:     new THREE.Vector3( 0.13,  0.37,  0.08),
                 waist:         new THREE.Vector3(-0.11,  0.18,  0.06),
                 highhip:       new THREE.Vector3(-0.12,  0.04,  0.06),
@@ -732,7 +733,7 @@
                 calf:          new THREE.Vector3( 0.07, -0.42,  0.04),
                 ankle:         new THREE.Vector3( 0.09, -0.74,  0.03),
                 waisttoankle:  new THREE.Vector3(-0.18,  0.00,  0.04),
-                height:        new THREE.Vector3( 0.00,  1.00,  0.00),
+                height:        new THREE.Vector3( 0.00,  1.04,  0.05),
             },
             boy: {
                 neck:          new THREE.Vector3( 0.00,  0.62,  0.08),
@@ -756,25 +757,25 @@
                 height:        new THREE.Vector3( 0.00,  0.85,  0.00),
             },
             girl: {
-                neck:          new THREE.Vector3( 0.00,  0.62,  0.08),
-                shoulder:      new THREE.Vector3( 0.21,  0.57,  0.00),
-                chest:         new THREE.Vector3( 0.12,  0.37,  0.09),
-                underbust:     new THREE.Vector3( 0.11,  0.22,  0.07),
-                waist:         new THREE.Vector3(-0.08,  0.03,  0.06),
-                highhip:       new THREE.Vector3(-0.10, -0.11,  0.06),
-                highhipsingle: new THREE.Vector3( 0.14, -0.11,  0.05),
-                hip:           new THREE.Vector3(-0.14, -0.27,  0.06),
-                backlength:    new THREE.Vector3(-0.06,  0.33, -0.09),
-                armlength:     new THREE.Vector3( 0.26,  0.13,  0.00),
-                bicep:         new THREE.Vector3( 0.19,  0.35,  0.00),
-                wrist:         new THREE.Vector3( 0.34,  0.03,  0.00),
-                inseam:        new THREE.Vector3(-0.05, -0.37,  0.04),
-                outseam:       new THREE.Vector3(-0.12, -0.45,  0.04),
-                knee:          new THREE.Vector3( 0.07, -0.45,  0.04),
-                calf:          new THREE.Vector3( 0.06, -0.57,  0.04),
-                ankle:         new THREE.Vector3( 0.07, -0.89,  0.03),
-                waisttoankle:  new THREE.Vector3(-0.15, -0.15,  0.04),
-                height:        new THREE.Vector3( 0.00,  0.85,  0.00),
+                neck:          new THREE.Vector3( 0.07,  0.60,  0.00),  // circ right edge (cx+rx)
+                shoulder:      new THREE.Vector3( 0.21,  0.57,  0.00),  // line right endpoint
+                chest:         new THREE.Vector3( 0.18,  0.39,  0.00),  // circ right edge (rx=0.18)
+                underbust:     new THREE.Vector3( 0.15,  0.22,  0.00),  // circ right edge (rx=0.15)
+                waist:         new THREE.Vector3(-0.18,  0.09,  0.00),  // circ left edge (rx=0.18)
+                highhip:       new THREE.Vector3(-0.18, -0.04,  0.00),  // circ left edge (rx=0.18)
+                highhipsingle: new THREE.Vector3( 0.19, -0.04,  0.00),  // circ right edge (cx+rx=0.10+0.09)
+                hip:           new THREE.Vector3(-0.15, -0.14,  0.00),  // circ left edge (rx=0.15)
+                backlength:    new THREE.Vector3( 0.02,  0.30, -0.08),  // line midpoint
+                armlength:     new THREE.Vector3( 0.28,  0.00,  0.00),  // line lower third
+                bicep:         new THREE.Vector3( 0.27,  0.35, -0.01),  // circ right edge (cx+rx=0.22+0.053)
+                wrist:         new THREE.Vector3( 0.42,  0.07,  0.00),  // circ right edge (cx+rx=0.37+0.05)
+                inseam:        new THREE.Vector3( 0.05, -0.37,  0.02),  // line top point
+                outseam:       new THREE.Vector3( 0.09, -0.10,  0.02),  // line top point
+                knee:          new THREE.Vector3( 0.18, -0.29, -0.03),  // circ right edge (cx+rx=0.10+0.078)
+                calf:          new THREE.Vector3( 0.21, -0.40, -0.06),  // circ right edge (cx+rx=0.13+0.078)
+                ankle:         new THREE.Vector3( 0.18, -0.65, -0.03),  // circ right edge (cx+rx=0.12+0.055)
+                waisttoankle:  new THREE.Vector3(-0.09, -0.28,  0.04),  // line midpoint
+                height:        new THREE.Vector3( 0.00,  0.88,  0.05),  // line top endpoint
             },
         };
 
@@ -808,39 +809,115 @@
             });
         }
 
-        /* ── Tape measure definitions ──
+        /* ── Per-model tape measure definitions ──
            circ = tape wrapped around body (horizontal ellipse)
            line = tape from point A to point B with tick marks
-           cx/cz = horizontal centre offset for arms/legs             ── */
+           y    = vertical world position
+           cx/cz = horizontal centre offset (arms/legs)
+           rx/rz = ellipse radii                                       ── */
         const V3 = (x,y,z) => new THREE.Vector3(x,y,z);
-        const TAPE_DEFS = {
-            neck:       { type:'circ', y: 0.77,  rx:0.09,  rz:0.09,  cx:0,    cz:-0.03 },
-            chest:      { type:'circ', y: 0.52,  rx:0.18,  rz:0.14,  cx:0,    cz:0  },
-            underbust:  { type:'circ', y: 0.37,  rx:0.15,  rz:0.12,  cx:0,    cz:0  },
-            waist:      { type:'circ', y: 0.18,  rx:0.20,  rz:0.15,  cx:0,    cz:0  },
-            highhip:    { type:'circ', y: 0.04,  rx:0.19,  rz:0.14,  cx:0,    cz:0  },
-            highhipsingle: { type:'circ', y: 0.04,  rx:0.11,  rz:0.09,  cx:0.09, cz:0  },
-            hip:        { type:'circ', y:-0.12,  rx:0.18,  rz:0.14,  cx:0,    cz:0  },
-            bicep:      { type:'circ', y: 0.50,  rx:0.065, rz:0.065, cx:0.22, cz:-0.03 },
-            wrist:      { type:'circ', y: 0.18,  rx:0.052, rz:0.052, cx:0.40, cz:0  },
-            knee:       { type:'circ', y:-0.30,  rx:0.085, rz:0.07,  cx:0.08, cz:-0.03 },
-            calf:       { type:'circ', y:-0.42,  rx:0.095, rz:0.08,  cx:0.11, cz:-0.04 },
-            ankle:      { type:'circ', y:-0.74,  rx:0.062, rz:0.052, cx:0.09, cz:-0.03 },
-            waisttoankle: { type:'line', from: V3(-0.14,  0.18,  0.04), to: V3(-0.10, -0.74,  0.04) },
-            height:     { type:'line', from: V3( 0.00,  1.12,  0.05), to: V3( 0.00, -1.12,  0.05) },
-            shoulder:   { type:'line', from: V3(-0.24,  0.72,  0.00), to: V3( 0.24,  0.72,  0.00) },
-            backlength: { type:'line', from: V3( 0.02,  0.72, -0.08), to: V3( 0.02,  0.18, -0.10) },
-            armlength:  { type:'line', from: V3( 0.24,  0.72,  0.00), to: V3( 0.36, -0.10,  0.00) },
-            inseam:     { type:'line', from: V3( 0.06, -0.16,  0.02), to: V3( 0.06, -1.10,  0.02) },
-            outseam:    { type:'line', from: V3( 0.12,  0.04,  0.02), to: V3( 0.12, -1.10,  0.02) },
-            weight:     null,
+        const TAPE_DEFS_BY_MODEL = {
+
+            woman: {
+                neck:          { type:'circ', y: 0.77,  rx:0.09,  rz:0.09,  cx:0,    cz:-0.03 },
+                chest:         { type:'circ', y: 0.52,  rx:0.18,  rz:0.14,  cx:0,    cz:0     },
+                underbust:     { type:'circ', y: 0.37,  rx:0.15,  rz:0.12,  cx:0,    cz:0     },
+                waist:         { type:'circ', y: 0.18,  rx:0.20,  rz:0.15,  cx:0,    cz:0     },
+                highhip:       { type:'circ', y: 0.04,  rx:0.19,  rz:0.14,  cx:0,    cz:0     },
+                highhipsingle: { type:'circ', y: 0.04,  rx:0.11,  rz:0.09,  cx:0.09, cz:0     },
+                hip:           { type:'circ', y:-0.12,  rx:0.18,  rz:0.14,  cx:0,    cz:0     },
+                bicep:         { type:'circ', y: 0.50,  rx:0.065, rz:0.065, cx:0.22, cz:-0.03 },
+                wrist:         { type:'circ', y: 0.18,  rx:0.052, rz:0.052, cx:0.40, cz:0     },
+                knee:          { type:'circ', y:-0.30,  rx:0.085, rz:0.07,  cx:0.08, cz:-0.03 },
+                calf:          { type:'circ', y:-0.42,  rx:0.095, rz:0.08,  cx:0.11, cz:-0.04 },
+                ankle:         { type:'circ', y:-0.74,  rx:0.062, rz:0.052, cx:0.09, cz:-0.03 },
+                waisttoankle:  { type:'line', from: V3(-0.14,  0.18,  0.04), to: V3(-0.10, -0.74,  0.04) },
+                height:        { type:'line', from: V3( 0.00,  1.00,  0.05), to: V3( 0.00, -0.88,  0.05) },
+                shoulder:      { type:'line', from: V3(-0.24,  0.72,  0.00), to: V3( 0.24,  0.72,  0.00) },
+                backlength:    { type:'line', from: V3( 0.02,  0.72, -0.08), to: V3( 0.02,  0.18, -0.10) },
+                armlength:     { type:'line', from: V3( 0.24,  0.72,  0.00), to: V3( 0.36, -0.10,  0.00) },
+                inseam:        { type:'line', from: V3( 0.06, -0.16,  0.02), to: V3( 0.06, -1.10,  0.02) },
+                outseam:       { type:'line', from: V3( 0.12,  0.04,  0.02), to: V3( 0.12, -1.10,  0.02) },
+                weight:        null,
+            },
+
+            man: {
+                neck:          { type:'circ', y: 0.77,  rx:0.10,  rz:0.10,  cx:0,    cz:-0.03 },
+                chest:         { type:'circ', y: 0.57,  rx:0.20,  rz:0.16,  cx:0,    cz:-0.04 },
+                underbust:     { type:'circ', y: 0.37,  rx:0.17,  rz:0.13,  cx:0,    cz:0     },
+                waist:         { type:'circ', y: 0.18,  rx:0.22,  rz:0.17,  cx:0,    cz:0     },
+                highhip:       { type:'circ', y: 0.04,  rx:0.21,  rz:0.15,  cx:0,    cz:0     },
+                highhipsingle: { type:'circ', y: 0.04,  rx:0.12,  rz:0.10,  cx:0.10, cz:0     },
+                hip:           { type:'circ', y:-0.12,  rx:0.20,  rz:0.15,  cx:0,    cz:0     },
+                bicep:         { type:'circ', y: 0.50,  rx:0.075, rz:0.075, cx:0.27, cz:-0.07 },
+                wrist:         { type:'circ', y: 0.18,  rx:0.058, rz:0.058, cx:0.45, cz:-0.11 },
+                knee:          { type:'circ', y:-0.30,  rx:0.092, rz:0.077, cx:0.09, cz:-0.03 },
+                calf:          { type:'circ', y:-0.42,  rx:0.105, rz:0.088, cx:0.12, cz:-0.04 },
+                ankle:         { type:'circ', y:-0.74,  rx:0.068, rz:0.058, cx:0.10, cz:-0.03 },
+                waisttoankle:  { type:'line', from: V3(-0.15,  0.18,  0.04), to: V3(-0.11, -0.74,  0.04) },
+                height:        { type:'line', from: V3( 0.00,  1.04,  0.05), to: V3( 0.00, -0.88,  0.05) },
+                shoulder:      { type:'line', from: V3(-0.27,  0.72,  0.00), to: V3( 0.27,  0.72,  0.00) },
+                backlength:    { type:'line', from: V3( 0.02,  0.72, -0.08), to: V3( 0.02,  0.18, -0.10) },
+                armlength:     { type:'line', from: V3( 0.27,  0.72,  0.00), to: V3( 0.39, -0.10,  0.00) },
+                inseam:        { type:'line', from: V3( 0.06, -0.16,  0.02), to: V3( 0.06, -1.10,  0.02) },
+                outseam:       { type:'line', from: V3( 0.13,  0.04,  0.02), to: V3( 0.13, -1.10,  0.02) },
+                weight:        null,
+            },
+
+            boy: {
+                neck:          { type:'circ', y: 0.68,  rx:0.07,  rz:0.07,  cx:0,    cz:-0.03 },
+                chest:         { type:'circ', y: 0.34,  rx:0.14,  rz:0.11,  cx:0,    cz:0     },
+                underbust:     { type:'circ', y: 0.22,  rx:0.12,  rz:0.09,  cx:0,    cz:0     },
+                waist:         { type:'circ', y: 0.05,  rx:0.17,  rz:0.15,  cx:0,    cz:0     },
+                highhip:       { type:'circ', y:-0.5,  rx:0.14,  rz:0.11,  cx:0,    cz:0     },
+                highhipsingle: { type:'circ', y:-0.11,  rx:0.09,  rz:0.07,  cx:0.07, cz:0     },
+                hip:           { type:'circ', y:-0.18,  rx:0.14,  rz:0.11,  cx:0,    cz:0     },
+                bicep:         { type:'circ', y: 0.35,  rx:0.050, rz:0.050, cx:0.18, cz:-0.03 },
+                wrist:         { type:'circ', y: 0.03,  rx:0.038, rz:0.038, cx:0.33, cz:0     },
+                knee:          { type:'circ', y:-0.45,  rx:0.065, rz:0.055, cx:0.07, cz:-0.03 },
+                calf:          { type:'circ', y:-0.57,  rx:0.072, rz:0.062, cx:0.09, cz:-0.04 },
+                ankle:         { type:'circ', y:-0.78,  rx:0.048, rz:0.040, cx:0.07, cz:-0.03 },
+                waisttoankle:  { type:'line', from: V3(-0.10,  0.03,  0.04), to: V3(-0.08, -0.78,  0.04) },
+                height:        { type:'line', from: V3( 0.00,  0.95,  0.05), to: V3( 0.00, -1.00,  0.05) },
+                shoulder:      { type:'line', from: V3(-0.20,  0.57,  0.00), to: V3( 0.20,  0.57,  0.00) },
+                backlength:    { type:'line', from: V3( 0.02,  0.57, -0.07), to: V3( 0.02,  0.03, -0.08) },
+                armlength:     { type:'line', from: V3( 0.20,  0.57,  0.00), to: V3( 0.30, -0.15,  0.00) },
+                inseam:        { type:'line', from: V3( 0.05, -0.37,  0.02), to: V3( 0.05, -0.92,  0.02) },
+                outseam:       { type:'line', from: V3( 0.09, -0.10,  0.02), to: V3( 0.09, -0.92,  0.02) },
+                weight:        null,
+            },
+
+            girl: {
+                neck:          { type:'circ', y: 0.60,  rx:0.07,  rz:0.07,  cx:0,    cz:0     },
+                chest:         { type:'circ', y: 0.39,  rx:0.18,  rz:0.15,  cx:0,    cz:0     },
+                underbust:     { type:'circ', y: 0.22,  rx:0.15,  rz:0.13,  cx:0,    cz:0     },
+                waist:         { type:'circ', y: 0.09,  rx:0.18,  rz:0.15,  cx:0,    cz:0     },
+                highhip:       { type:'circ', y:-0.04,  rx:0.18,  rz:0.15,  cx:0,    cz:0     },
+                highhipsingle: { type:'circ', y:-0.04,  rx:0.09,  rz:0.07,  cx:0.10, cz:0     },
+                hip:           { type:'circ', y:-0.14,  rx:0.15,  rz:0.11,  cx:0,    cz:0     },
+                bicep:         { type:'circ', y: 0.35,  rx:0.053, rz:0.053, cx:0.22, cz:-0.01 },
+                wrist:         { type:'circ', y: 0.07,  rx:0.050, rz:0.050, cx:0.37, cz:0     },
+                knee:          { type:'circ', y:-0.29,  rx:0.078, rz:0.072, cx:0.10, cz:-0.03 },
+                calf:          { type:'circ', y:-0.40,  rx:0.078, rz:0.070, cx:0.13, cz:-0.06 },
+                ankle:         { type:'circ', y:-0.65,  rx:0.055, rz:0.050, cx:0.12, cz:-0.03 },
+                waisttoankle:  { type:'line', from: V3(-0.10,  0.09,  0.04), to: V3(-0.08, -0.65,  0.04) },
+                height:        { type:'line', from: V3( 0.00,  0.88,  0.05), to: V3( 0.00, -0.88,  0.05) },
+                shoulder:      { type:'line', from: V3(-0.21,  0.57,  0.00), to: V3( 0.21,  0.57,  0.00) },
+                backlength:    { type:'line', from: V3( 0.02,  0.57, -0.07), to: V3( 0.02,  0.03, -0.08) },
+                armlength:     { type:'line', from: V3( 0.21,  0.57,  0.00), to: V3( 0.31, -0.15,  0.00) },
+                inseam:        { type:'line', from: V3( 0.05, -0.37,  0.02), to: V3( 0.05, -0.92,  0.02) },
+                outseam:       { type:'line', from: V3( 0.09, -0.10,  0.02), to: V3( 0.09, -0.92,  0.02) },
+                weight:        null,
+            },
+
         };
 
         /* ── Build a Three.js tape-measure group ──
            Uses TubeGeometry instead of LineBasicMaterial so thickness is
            visible in WebGL (linewidth > 1 is ignored by the browser).        ── */
         function buildTape(annId) {
-            const def = TAPE_DEFS[annId];
+            const modelDefs = TAPE_DEFS_BY_MODEL[activeGender] || TAPE_DEFS_BY_MODEL.woman;
+            const def = modelDefs[annId];
             if (!def) return null;
             const group = new THREE.Group();
 
@@ -1153,6 +1230,7 @@
                 document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const gender = btn.dataset.gender;
+                activeGender = gender;
                 applyAnnotationPositions(gender);
                 loadBodyModel(GLB_MAP[gender], MODEL_CONFIG[gender]);
             });

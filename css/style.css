@@ -14,6 +14,7 @@
 
 html {
   font-size: 62.5%; /* by default is 16px but now 62.5% of 16 is 10, so default is 10px now */
+  scroll-behavior: smooth;
 }
 body {
   font-family:
@@ -33,6 +34,7 @@ body {
   font-size: 2.4rem;
   line-height: 1.5;
   color: var(--color-body);
+  background: white;
 }
 
 body {

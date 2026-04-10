@@ -87,6 +87,35 @@ export const FABRIC_CATALOG = [
     ],
   },
   {
+    id: 'silk',
+    label: '100% Silk',
+    wreaths: ['images/SILK WREATH.png'],
+    collections: [
+      {
+        id: 'plain',
+        label: 'Plain Collection',
+        swatches: [],
+      },
+      { id: 'lining', label: 'Lining Collection', swatches: [] },
+      { id: 'print',  label: 'Print Collection',  swatches: [] },
+      { id: 'satin',  label: 'Satin Collection',  swatches: [] },
+    ],
+  },
+  {
+    id: 'leather',
+    label: 'Premium Leather',
+    wreaths: ['images/LEATHER WREATH.png'],
+    collections: [
+      {
+        id: 'plain',
+        label: 'Plain Collection',
+        swatches: [],
+      },
+      { id: 'suede',  label: 'Suede Collection',  swatches: [] },
+      { id: 'patent', label: 'Patent Collection', swatches: [] },
+    ],
+  },
+  {
     id: 'cotton-wool',
     label: 'Cotton Wool Blend',
     wreaths: ['images/cotton-wreath-final.png', 'images/wool-wreath-1-final.png'],

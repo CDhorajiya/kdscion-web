@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="" >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Business House that designs and custom tailor outfits that represents Custom | Premium | Unique characteristics.">
+    <title>KD: The House of Scion</title>
+    <link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/style.css">
+<style>
+        em {
+            color:rgb(6, 70, 6);
+            font-style: normal;
+            opacity: 1;
+        }
+        #earth-wrapper {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 2rem auto 0;
+        }
+        #earth-canvas {
+            width: 400px;
+            height: 400px;
+            display: block;
+        }
+        #ann-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .ann-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .ann-line {
+            position: absolute;
+            height: 1px;
+            pointer-events: none;
+        }
+        .ann-label {
+            position: absolute;
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #111;
+            white-space: nowrap;
+            pointer-events: none;
+            line-height: 1.3;
+        }
+        .ann-label.right { transform: translateY(-50%); }
+        .ann-label.left  { transform: translate(-100%, -50%); }
+        .ann-fabric {
+            display: block;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: #7a1a1a;
+        }
+        .globequote {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .globequote__content {
+            padding-bottom: 0;
+        }
+        .foundermessage h4 {
+            color: rgb(6, 70, 6);
+        }
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
+        }
+        .footer {
+            margin-top: -2rem;
+        }
+
+        /* Five-wreath triputy */
+        .triputy-five {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            max-width: 960px;
+            width: 90%;
+            margin: 0 auto 14rem;
+            gap: 0.5rem;
+        }
+        .triputy-five .wreath-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        .triputy-five .wreath-item img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+        }
+
+        /* Silk feature */
+        .feature4__content h3 {
+            letter-spacing: 25px;
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 4rem;
+        }
+        .feature4__content h4 {
+            letter-spacing: 6px;
+            opacity: 0.85;
+            font-size: 2rem;
+            text-align: left;
+        }
+
+        /* Leather feature */
+        .feature5__content h3 {
+            letter-spacing: 25px;
+            margin-left: 5%;
+            margin-top: 2rem;
+            font-size: 4rem;
+            text-align: center;
+        }
+        .feature5__content h4 {
+            letter-spacing: 6px;
+            opacity: 0.85;
+            font-size: 2rem;
+            text-align: left;
+            margin-left: 5%;
+        }
+
+        /* All feature grid wreaths — proper sizing, no scale hack */
+        .cotton-wreath, .linen-wreath, .wool-wreath,
+        .silk-wreath, .leather-wreath {
+            max-width: 380px;
+            width: 80%;
+            scale: 1;
+            justify-self: center;
+            align-self: center;
+        }
+        .cotton-wreath img, .linen-wreath img, .wool-wreath img,
+        .silk-wreath img, .leather-wreath img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Center content and wreath vertically in each feature row */
+        .feature1, .feature2, .feature3, .feature4, .feature5 {
+            align-items: center;
+            margin: 10rem 6rem;
+            gap: 6rem;
+        }
+
+        /* Fix heading top margins for features 1–3 (overrides style.css) */
+        .feature1__content h3,
+        .feature2__content h3,
+        .feature3__content h3 {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class=" nav collapsible">
+        <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+        <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+
+    </nav>
+    <header class="block__header">
+        <div class="autoShow">
+        <h2>THE HOUSE OF SCION</h2>
+        <h3>CUSTOM |  PREMIUM |  UNIQUE  </h3>
+        </div>
+       </header>
+
+    <!-- Five Wreaths Inline -->
+    <figure class="triputy-five">
+        <div class="wreath-item">
+            <img src="images/COTTON%20WREATH.png" alt="Cotton Wreath" class="autoRotate">
+        </div>
+        <div class="wreath-item">
+            <img src="images/LINEN%20WREATH.png" alt="Linen Wreath" class="autoRotate">
+        </div>
+        <div class="wreath-item">
+            <img src="images/WOOLEN%20WREATH.png" alt="Woolen Wreath" class="autoRotate">
+        </div>
+        <div class="wreath-item">
+            <img src="images/SILK%20WREATH.png" alt="Silk Wreath" class="autoRotate">
+        </div>
+        <div class="wreath-item">
+            <img src="images/LEATHER%20WREATH.png" alt="Leather Wreath" class="autoRotate">
+        </div>
+    </figure>
+
+    <!-- Feature 1: CUSTOM — Cotton -->
+    <div class="autoShow">
+    <article class="grid grid--1x2 feature1">
+        <div class="feature1__content">
+
+              <h3 class="feature__heading">CUSTOM</h3>
+              <h4 class="details">| A <em>CUSTOM</em> TOUCH TO THE PERSONALITY, THAT FITS JUST PERFECT AND BECOMES THE TRUE COMPANION, DAY IN AND DAY OUT. |</h4>
+
+        </div>
+        <picture class="cotton-wreath">
+            <img src="images/COTTON%20WREATH.png" alt="Cotton Wreath" class="autoRotate">
+        </picture>
+    </article>
+    </div>
+
+    <!-- Feature 2: PREMIUM — Linen -->
+    <div class="autoShow">
+    <article class="grid grid--1x2 feature2">
+        <picture class="linen-wreath">
+            <img src="images/LINEN%20WREATH.png" alt="Linen Wreath" class="autoRotate">
+        </picture>
+        <div class="feature2__content">
+
+            <h3 class="feature__heading">PREMIUM</h3>
+            <h4 class="details">| A <em>PREMIUM</em> TOUCH WITH THE USE OF NATURAL THREADS, THAT CONTRIBUTES IN THE SHEAR ELEGANCE AND SHINES THE PERSONALITY INSIDE OUT. |</h4>
+        </div>
+    </article>
+    </div>
+
+    <!-- Feature 3: UNIQUE — Wool -->
+    <div class="autoShow">
+    <article class="grid grid--1x2 feature3">
+        <div class="feature3__content">
+
+              <h3 class="feature__heading">UNIQUE</h3>
+              <h4 class="details">| A <em>UNIQUE</em> TOUCH WITH THE TIMELESS CLASSIC CHARACTERISTICS, ABSOLUTELY DEDICATED TO THE UNIQUE PERSONALITY. |</h4>
+
+        </div>
+        <picture class="wool-wreath">
+            <img src="images/WOOLEN%20WREATH.png" alt="Woolen Wreath" class="autoRotate">
+        </picture>
+    </article>
+    </div>
+
+    <!-- Feature 4: REFINED — Silk -->
+    <div class="autoShow">
+    <article class="grid grid--1x2 feature4">
+        <picture class="silk-wreath">
+            <img src="images/SILK%20WREATH.png" alt="Silk Wreath" class="autoRotate">
+        </picture>
+        <div class="feature4__content">
+
+            <h3 class="feature__heading">REFINED</h3>
+            <h4 class="details">| A <em>REFINED</em> TOUCH OF SILK, WHERE EVERY THREAD WHISPERS ELEGANCE AND ADORNS THE WEARER WITH UNMATCHED GRACE AND DISTINCTION. |</h4>
+        </div>
+    </article>
+    </div>
+
+    <!-- Feature 5: ENDURING — Leather -->
+    <div class="autoShow">
+    <article class="grid grid--1x2 feature5">
+        <div class="feature5__content">
+
+              <h3 class="feature__heading">ENDURING</h3>
+              <h4 class="details">| AN <em>ENDURING</em> TOUCH OF LEATHER, WHERE NATURE'S FINEST IS SHAPED INTO A BOLD STATEMENT THAT STANDS APART IN EVERY STEP. |</h4>
+
+        </div>
+        <picture class="leather-wreath">
+            <img src="images/LEATHER%20WREATH.png" alt="Leather Wreath" class="autoRotate">
+        </picture>
+    </article>
+    </div>
+
+    <div class="autoShow">
+        <article class="globequote">
+            <div class="container globequote__content">
+                <h3 class="feature__heading">OUR HOME</h3>
+                <a href="foundermessage.html" class="foundermessage"><h4 class="details">| CONTRIBUTING PLANET <em>GREEN</em>, ONE STEP AT A TIME<em>. . .</em> |</h4></a>
+                <div id="earth-wrapper">
+                    <canvas id="earth-canvas"></canvas>
+                    <div id="ann-layer"></div>
+                    <script type="module" src="./js/earth.js"></script>
+                </div>
+            </div>
+        </article>
+    </div>
+
+
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="contacthouse.html"><h5>Contact House</h5></a>
+        <a href=""><h5>Career</h5></a>
+        <a href=""><h5>Account</h5></a>
+
+        </div>
+    <div class="footer_branding">
+    <div class="monogram"><a href="index.html" id="kd-monogram-link"><img src="images/KD_monogram.png" alt="KD monogram home page link"></a></div>
+    <p>Copyright 2024 KING DHORAJIYA</p>
+    <script>
+      (function() {
+        var clicks = 0, timer = null;
+        document.getElementById('kd-monogram-link').addEventListener('click', function(e) {
+          e.preventDefault();
+          clicks++;
+          clearTimeout(timer);
+          if (clicks === 3) {
+            clicks = 0;
+            window.location.href = 'admin-dashboard.html';
+          } else {
+            timer = setTimeout(function() { clicks = 0; }, 500);
+          }
+        });
+      })();
+    </script>
+    </div>
+
+</div>
+</body>
+
+</html>

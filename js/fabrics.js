@@ -68,6 +68,21 @@ export const FABRIC_CATALOG = [
     ],
   },
   {
+    id: 'silk',
+    label: '100% Silk',
+    wreaths: ['images/Silk Wreath.webp'],
+    collections: [
+      {
+        id: 'plain',
+        label: 'Plain Collection',
+        swatches: [],
+      },
+      { id: 'lining', label: 'Lining Collection', swatches: [] },
+      { id: 'print',  label: 'Print Collection',  swatches: [] },
+      { id: 'satin',  label: 'Satin Collection',  swatches: [] },
+    ],
+  },
+  {
     id: 'cotton-linen',
     label: 'Cotton Linen Blend',
     wreaths: ['images/Cotton Wreath.webp', 'images/Linen Wreath.webp'],
@@ -87,35 +102,6 @@ export const FABRIC_CATALOG = [
     ],
   },
   {
-    id: 'silk',
-    label: '100% Silk',
-    wreaths: ['images/Silk Wreath.webp'],
-    collections: [
-      {
-        id: 'plain',
-        label: 'Plain Collection',
-        swatches: [],
-      },
-      { id: 'lining', label: 'Lining Collection', swatches: [] },
-      { id: 'print',  label: 'Print Collection',  swatches: [] },
-      { id: 'satin',  label: 'Satin Collection',  swatches: [] },
-    ],
-  },
-  {
-    id: 'leather',
-    label: 'Premium Leather',
-    wreaths: ['images/Leather Wreath.webp'],
-    collections: [
-      {
-        id: 'plain',
-        label: 'Plain Collection',
-        swatches: [],
-      },
-      { id: 'suede',  label: 'Suede Collection',  swatches: [] },
-      { id: 'patent', label: 'Patent Collection', swatches: [] },
-    ],
-  },
-  {
     id: 'cotton-wool',
     label: 'Cotton Wool Blend',
     wreaths: ['images/Cotton Wreath.webp', 'images/Wool Wreath.webp'],
@@ -131,6 +117,20 @@ export const FABRIC_CATALOG = [
       { id: 'lining', label: 'Lining Collection',  swatches: [] },
       { id: 'chex',   label: 'Chex Collection',    swatches: [] },
       { id: 'print',  label: 'Print Collection',   swatches: [] },
+    ],
+  },
+  {
+    id: 'leather',
+    label: 'Premium Leather',
+    wreaths: ['images/Leather Wreath.webp'],
+    collections: [
+      {
+        id: 'plain',
+        label: 'Plain Collection',
+        swatches: [],
+      },
+      { id: 'suede',  label: 'Suede Collection',  swatches: [] },
+      { id: 'patent', label: 'Patent Collection', swatches: [] },
     ],
   },
 ];

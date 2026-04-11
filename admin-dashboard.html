@@ -995,7 +995,7 @@
             collsHtml += `
               <div style="display:flex;align-items:center;justify-content:space-between;
                           padding:0.4rem 0.8rem 0.4rem 1.6rem;border-bottom:1px solid #f8f8f8;">
-                <span style="font-family:'Times New Roman',serif;font-size:1rem;
+                <span style="font-family:'Times New Roman',serif;font-size:1.3rem;
                              letter-spacing:2px;color:#111;">${coll.label}</span>
                 <label class="fab-toggle">
                   <input type="checkbox" ${collVisible ? 'checked' : ''}
@@ -1063,7 +1063,7 @@
               <div class="fab-coll-header">
                 <p class="fab-coll-name">${coll.label}</p>
               </div>
-              <div class="fab-swatches">${swatchItems || '<span style="color:#111;font-family:Times New Roman,serif;font-size:1rem;letter-spacing:2px">No swatches</span>'}</div>
+              <div class="fab-swatches">${swatchItems || '<span style="color:#111;font-family:Times New Roman,serif;font-size:1.3rem;letter-spacing:2px">No swatches</span>'}</div>
               <div class="fab-add-form">
                 <input class="fab-add-input" placeholder="Label (e.g. Cotton 3)"
                   id="lbl-${type.id}-${coll.id}" style="width:140px">
@@ -1089,7 +1089,7 @@
       panel.innerHTML = `
         <!-- Per-product visibility -->
         <p class="section-label" style="margin-bottom:1.4rem">Per-Design Fabric Visibility</p>
-        <p style="font-family:'Times New Roman',serif;font-size:1rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
+        <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
           Click a design to expand · toggle fabric types and collections on/off per design
         </p>
         ${productsHtml}
@@ -1098,7 +1098,7 @@
 
         <!-- Global swatch catalog -->
         <p class="section-label" style="margin-bottom:1.4rem">Global Swatch Catalog</p>
-        <p style="font-family:'Times New Roman',serif;font-size:1rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
+        <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
           Add new swatches here · they appear in all designs where that fabric type is ON
         </p>
         ${swatchMgmtHtml}

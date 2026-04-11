@@ -119,7 +119,7 @@ function injectStyles() {
       flex-direction: column;
       gap: 0.5rem;
       font-family: "Times New Roman", serif;
-      font-size: 1rem;
+      font-size: 1.3rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.45);
@@ -131,7 +131,7 @@ function injectStyles() {
       padding: 0.8rem 1rem;
       color: rgba(255,255,255,0.9);
       font-family: "Times New Roman", serif;
-      font-size: 1.1rem;
+      font-size: 1.4rem;
       letter-spacing: 1px;
       outline: none;
       transition: border-color .2s;
@@ -142,7 +142,7 @@ function injectStyles() {
       margin: 0;
       min-height: 1.4rem;
       font-family: "Times New Roman", serif;
-      font-size: 0.95rem;
+      font-size: 1.2rem;
       letter-spacing: 1px;
       color: rgba(220,140,140,0.9);
     }

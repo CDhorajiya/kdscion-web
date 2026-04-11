@@ -736,25 +736,25 @@
                 height:        new THREE.Vector3( 0.00,  1.04,  0.05),
             },
             boy: {
-                neck:          new THREE.Vector3( 0.00,  0.62,  0.08),
-                shoulder:      new THREE.Vector3( 0.20,  0.57,  0.00),
-                chest:         new THREE.Vector3( 0.12,  0.37,  0.09),
-                underbust:     new THREE.Vector3( 0.10,  0.22,  0.07),
-                waist:         new THREE.Vector3(-0.08,  0.03,  0.06),
-                highhip:       new THREE.Vector3(-0.10, -0.11,  0.06),
-                highhipsingle: new THREE.Vector3( 0.13, -0.11,  0.05),
-                hip:           new THREE.Vector3(-0.13, -0.27,  0.06),
-                backlength:    new THREE.Vector3(-0.06,  0.33, -0.09),
-                armlength:     new THREE.Vector3( 0.25,  0.13,  0.00),
-                bicep:         new THREE.Vector3( 0.18,  0.35,  0.00),
-                wrist:         new THREE.Vector3( 0.33,  0.03,  0.00),
-                inseam:        new THREE.Vector3(-0.05, -0.37,  0.04),
-                outseam:       new THREE.Vector3(-0.12, -0.45,  0.04),
-                knee:          new THREE.Vector3( 0.07, -0.45,  0.04),
-                calf:          new THREE.Vector3( 0.06, -0.57,  0.04),
-                ankle:         new THREE.Vector3( 0.07, -0.89,  0.03),
-                waisttoankle:  new THREE.Vector3(-0.15, -0.15,  0.04),
-                height:        new THREE.Vector3( 0.00,  0.85,  0.00),
+                neck:          new THREE.Vector3( 0.07,  0.68,  0.00),  // circ right edge (cx+rx=0.07), y=tape.y
+                shoulder:      new THREE.Vector3( 0.20,  0.57,  0.00),  // line right endpoint
+                chest:         new THREE.Vector3( 0.14,  0.34,  0.00),  // circ right edge (rx=0.14)
+                underbust:     new THREE.Vector3( 0.12,  0.22,  0.00),  // circ right edge (rx=0.12)
+                waist:         new THREE.Vector3(-0.17,  0.05,  0.00),  // circ left edge (rx=0.17)
+                highhip:       new THREE.Vector3(-0.14, -0.11,  0.00),  // circ left edge (rx=0.14)
+                highhipsingle: new THREE.Vector3( 0.16, -0.11,  0.00),  // circ right edge (cx+rx=0.07+0.09)
+                hip:           new THREE.Vector3(-0.14, -0.18,  0.00),  // circ left edge (rx=0.14)
+                backlength:    new THREE.Vector3( 0.02,  0.30, -0.08),  // line midpoint
+                armlength:     new THREE.Vector3( 0.28,  0.00,  0.00),  // line at y=0 crossing
+                bicep:         new THREE.Vector3( 0.23,  0.35, -0.01),  // circ right edge (cx+rx=0.18+0.05)
+                wrist:         new THREE.Vector3( 0.37,  0.03,  0.00),  // circ right edge (cx+rx=0.33+0.038)
+                inseam:        new THREE.Vector3( 0.05, -0.37,  0.02),  // line top point
+                outseam:       new THREE.Vector3( 0.09, -0.10,  0.02),  // line top point
+                knee:          new THREE.Vector3( 0.14, -0.45, -0.03),  // circ right edge (cx+rx=0.07+0.065)
+                calf:          new THREE.Vector3( 0.16, -0.57, -0.04),  // circ right edge (cx+rx=0.09+0.072)
+                ankle:         new THREE.Vector3( 0.12, -0.78, -0.03),  // circ right edge (cx+rx=0.07+0.048)
+                waisttoankle:  new THREE.Vector3(-0.09, -0.38,  0.04),  // line midpoint
+                height:        new THREE.Vector3( 0.00,  0.95,  0.05),  // line top endpoint
             },
             girl: {
                 neck:          new THREE.Vector3( 0.07,  0.60,  0.00),  // circ right edge (cx+rx)
@@ -869,7 +869,7 @@
                 chest:         { type:'circ', y: 0.34,  rx:0.14,  rz:0.11,  cx:0,    cz:0     },
                 underbust:     { type:'circ', y: 0.22,  rx:0.12,  rz:0.09,  cx:0,    cz:0     },
                 waist:         { type:'circ', y: 0.05,  rx:0.17,  rz:0.15,  cx:0,    cz:0     },
-                highhip:       { type:'circ', y:-0.5,  rx:0.14,  rz:0.11,  cx:0,    cz:0     },
+                highhip:       { type:'circ', y:-0.11, rx:0.14,  rz:0.11,  cx:0,    cz:0     },
                 highhipsingle: { type:'circ', y:-0.11,  rx:0.09,  rz:0.07,  cx:0.07, cz:0     },
                 hip:           { type:'circ', y:-0.18,  rx:0.14,  rz:0.11,  cx:0,    cz:0     },
                 bicep:         { type:'circ', y: 0.35,  rx:0.050, rz:0.050, cx:0.18, cz:-0.03 },

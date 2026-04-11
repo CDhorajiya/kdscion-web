@@ -12,7 +12,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'cotton',
     label: '100% Cotton',
-    wreaths: ['images/cotton-wreath-final.png'],
+    wreaths: ['images/Cotton Wreath.webp'],
     collections: [
       {
         id: 'plain',
@@ -31,7 +31,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'linen',
     label: '100% Linen',
-    wreaths: ['images/linen-wreath-final.png'],
+    wreaths: ['images/Linen Wreath.webp'],
     collections: [
       {
         id: 'plain',
@@ -50,7 +50,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'wool',
     label: '100% Wool',
-    wreaths: ['images/wool-wreath-1-final.png'],
+    wreaths: ['images/Wool Wreath.webp'],
     collections: [
       {
         id: 'plain',
@@ -70,7 +70,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'cotton-linen',
     label: 'Cotton Linen Blend',
-    wreaths: ['images/cotton-wreath-final.png', 'images/linen-wreath-final.png'],
+    wreaths: ['images/Cotton Wreath.webp', 'images/Linen Wreath.webp'],
     collections: [
       {
         id: 'plain',
@@ -89,7 +89,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'silk',
     label: '100% Silk',
-    wreaths: ['images/SILK WREATH.png'],
+    wreaths: ['images/Silk Wreath.webp'],
     collections: [
       {
         id: 'plain',
@@ -104,7 +104,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'leather',
     label: 'Premium Leather',
-    wreaths: ['images/LEATHER WREATH.png'],
+    wreaths: ['images/Leather Wreath.webp'],
     collections: [
       {
         id: 'plain',
@@ -118,7 +118,7 @@ export const FABRIC_CATALOG = [
   {
     id: 'cotton-wool',
     label: 'Cotton Wool Blend',
-    wreaths: ['images/cotton-wreath-final.png', 'images/wool-wreath-1-final.png'],
+    wreaths: ['images/Cotton Wreath.webp', 'images/Wool Wreath.webp'],
     collections: [
       {
         id: 'plain',

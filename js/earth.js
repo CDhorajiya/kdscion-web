@@ -49,28 +49,32 @@ function latLon(lat, lon) {
 }
 
 const FABRIC_COLOR = {
-    WOOL:   '#c4a85e',
-    LINEN:  '#7aab6a',
-    COTTON: '#6aafc4',
+    WOOL:    '#c4a85e',
+    LINEN:   '#7aab6a',
+    COTTON:  '#6aafc4',
+    SILK:    '#b57bde',
+    LEATHER: '#9b7240',
 };
 
 // ao: fan the label direction (degrees) away from the straight outward vector.
 // Endpoint is always placed at GLOBE_R + LABEL_PAD from canvas centre → always outside.
+// fabrics: array — multiple entries render as stacked rows in the label.
 const PINS = [
-    { label: 'AUSTRALIA',   fabric: 'WOOL',   lat: -25, lon:  133, ao:   0 },
-    { label: 'NEW ZEALAND',  fabric: 'WOOL',   lat: -41, lon:  174, ao:   0 },
-    { label: 'NETHERLANDS',  fabric: 'LINEN',  lat:  52, lon:    5, ao: -40 },
-    { label: 'BELGIUM',      fabric: 'LINEN',  lat:  50, lon:    4, ao:   0 },
-    { label: 'FRANCE',       fabric: 'LINEN',  lat:  46, lon:    2, ao:  40 },
-    { label: 'EGYPT',        fabric: 'COTTON', lat:  26, lon:   30, ao:  80 },
-    { label: 'USA',          fabric: 'COTTON', lat:  38, lon:  -97, ao:   0 },
-    { label: 'INDIA',        fabric: 'COTTON', lat:  20, lon:   77, ao:   0 },
+    { label: 'AUSTRALIA',   fabrics: ['WOOL'],             lat: -25, lon:  133, ao:   0 },
+    { label: 'NEW ZEALAND',  fabrics: ['WOOL'],             lat: -41, lon:  174, ao:   0 },
+    { label: 'NETHERLANDS',  fabrics: ['LINEN'],            lat:  52, lon:    5, ao: -40 },
+    { label: 'BELGIUM',      fabrics: ['LINEN'],            lat:  50, lon:    4, ao:   0 },
+    { label: 'FRANCE',       fabrics: ['LINEN', 'LEATHER'], lat:  46, lon:    2, ao:  40 },
+    { label: 'ITALY',        fabrics: ['LEATHER'],          lat:  42, lon:   12, ao: -20 },
+    { label: 'EGYPT',        fabrics: ['COTTON'],           lat:  26, lon:   30, ao:  80 },
+    { label: 'USA',          fabrics: ['COTTON'],           lat:  38, lon:  -97, ao:   0 },
+    { label: 'INDIA',        fabrics: ['COTTON', 'SILK', 'LEATHER'], lat:  20, lon:   77, ao:   0 },
 ];
 
 // Build annotation DOM elements
 const annLayer = document.getElementById('ann-layer');
 const pins = PINS.map(p => {
-    const color = FABRIC_COLOR[p.fabric];
+    const color = FABRIC_COLOR[p.fabrics[0]];
     const vec = latLon(p.lat, p.lon);
 
     const dot = document.createElement('div');
@@ -86,7 +90,10 @@ const pins = PINS.map(p => {
 
     const lbl = document.createElement('div');
     lbl.className = 'ann-label';
-    lbl.innerHTML = `${p.label}<span class="ann-fabric">${p.fabric}</span>`;
+    const fabricSpans = p.fabrics.map(f =>
+        `<span class="ann-fabric" style="color:${FABRIC_COLOR[f]}">${f}</span>`
+    ).join('');
+    lbl.innerHTML = `${p.label}${fabricSpans}`;
     annLayer.appendChild(lbl);
 
     return { ...p, vec, color, dot, line, lbl };

@@ -62,6 +62,7 @@ const FABRIC_COLOR = {
 const PINS = [
     { label: 'AUSTRALIA',   fabrics: ['WOOL'],             lat: -25, lon:  133, ao:   0 },
     { label: 'NEW ZEALAND',  fabrics: ['WOOL'],             lat: -41, lon:  174, ao:   0 },
+    { label: 'IRELAND',      fabrics: ['LINEN'],            lat:  53, lon:   -8, ao: -60 },
     { label: 'NETHERLANDS',  fabrics: ['LINEN'],            lat:  52, lon:    5, ao: -40 },
     { label: 'BELGIUM',      fabrics: ['LINEN'],            lat:  50, lon:    4, ao:   0 },
     { label: 'FRANCE',       fabrics: ['LINEN', 'LEATHER'], lat:  46, lon:    2, ao:  40 },

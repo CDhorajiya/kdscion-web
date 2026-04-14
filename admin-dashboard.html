@@ -871,7 +871,7 @@
     import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
-    import { FABRIC_CATALOG, TWOTONE_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
+    import { FABRIC_CATALOG, TWOTONE_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
 
     // ── Tab switching ─────────────────────────────────────────────────────────
     window.switchTab = function(tab) {
@@ -1037,7 +1037,7 @@
         // p32 only: Two Tone Zone — type toggles + individual swatch toggles (no collection row)
         let twoToneHtml = '';
         if (isP32) {
-          TWOTONE_CATALOG.forEach(type => {
+          getMergedTwotoneCatalog().forEach(type => {
             const typeKey     = zoneTypeKey(P32_SKU, 'two-tone', type.id);
             const typeVisible = vis[typeKey] ?? true;
             const prefix      = `${P32_SKU}-two-tone`;
@@ -1113,7 +1113,7 @@
           </div>`;
       });
 
-      // ── Section 2: global swatch catalog (add/manage swatches) ─────────────
+      // ── Section 2: global swatch catalog — Main Design ────────────────────────
       let swatchMgmtHtml = '';
       catalog.forEach(type => {
         let collsHtml = '';
@@ -1161,6 +1161,48 @@
           </div>`;
       });
 
+      // ── Section 3: global swatch catalog — Two Tone ───────────────────────────
+      const ttCatalog = getMergedTwotoneCatalog();
+      let ttSwatchMgmtHtml = '';
+      ttCatalog.forEach(type => {
+        // Collect all swatches from the single Plain collection
+        const plainColl  = type.collections[0];
+        const swatchItems = plainColl.swatches.map(s => {
+          const visible  = sOn(s.id);
+          const isExtra  = !!(overrides.ttExtras?.[type.id]?.find(e => e.id === s.id));
+          return `<div class="fab-swatch-item">
+            <img src="${s.image}" alt="${s.label}">
+            <span>${s.label}</span>
+            <label class="fab-toggle" title="Show/hide globally">
+              <input type="checkbox" ${visible ? 'checked' : ''}
+                onchange="setVisibility('s:${s.id}', this.checked)">
+              <span class="fab-slider"></span>
+            </label>
+            ${isExtra ? `<button class="fab-swatch-del" onclick="deleteTTSwatch('${type.id}','${s.id}')">✕</button>` : ''}
+          </div>`;
+        }).join('');
+
+        const wreaths = type.wreaths.map(w =>
+          `<img src="${w}" style="width:28px;height:28px;object-fit:contain;margin-right:4px">`
+        ).join('');
+        ttSwatchMgmtHtml += `
+          <div class="fab-type-block">
+            <div class="fab-type-header">
+              <p class="fab-type-name">${wreaths}${type.label}</p>
+            </div>
+            <div class="fab-coll-block">
+              <div class="fab-swatches">${swatchItems || '<span style="color:#111;font-family:Times New Roman,serif;font-size:1.3rem;letter-spacing:2px">No swatches</span>'}</div>
+              <div class="fab-add-form">
+                <input class="fab-add-input" placeholder="Label (e.g. tt-cotton-2)"
+                  id="tt-lbl-${type.id}" style="width:160px">
+                <input class="fab-add-input" placeholder="images/tt-filename.jpg"
+                  id="tt-img-${type.id}" style="width:200px">
+                <button class="fab-add-btn" onclick="addTTSwatch('${type.id}')">+ Add</button>
+              </div>
+            </div>
+          </div>`;
+      });
+
       panel.innerHTML = `
         <!-- Per-product visibility -->
         <p class="section-label" style="margin-bottom:1.4rem">Per-Design Fabric Visibility</p>
@@ -1171,12 +1213,21 @@
 
         <hr style="border:none;border-top:2px solid #e0e0e0;margin:2.5rem 0;">
 
-        <!-- Global swatch catalog -->
-        <p class="section-label" style="margin-bottom:1.4rem">Global Swatch Catalog</p>
+        <!-- Global swatch catalog — Main Design -->
+        <p class="section-label" style="margin-bottom:1.4rem">Global Swatch Catalog — Main Design</p>
         <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
           Add new swatches here · they appear in all designs where that fabric type is ON
         </p>
         ${swatchMgmtHtml}
+
+        <hr style="border:none;border-top:2px solid #e0e0e0;margin:2.5rem 0;">
+
+        <!-- Global swatch catalog — Two Tone -->
+        <p class="section-label" style="margin-bottom:1.4rem">Global Swatch Catalog — Two Tone</p>
+        <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
+          Add two-tone swatches here · Plain collection only · label and image filename should match
+        </p>
+        ${ttSwatchMgmtHtml}
       `;
     }
 
@@ -1229,6 +1280,37 @@
       const key = `${typeId}:${collId}`;
       if (overrides.extras?.[key]) {
         overrides.extras[key] = overrides.extras[key].filter(s => s.id !== swatchId);
+        saveFabricOverrides(overrides);
+        renderFabricsPanel();
+      }
+    };
+
+    window.addTTSwatch = function(typeId) {
+      const lblEl = document.getElementById(`tt-lbl-${typeId}`);
+      const imgEl = document.getElementById(`tt-img-${typeId}`);
+      const label = lblEl.value.trim();
+      const image = imgEl.value.trim();
+      if (!label || !image) { alert('Enter both a label and an image path.'); return; }
+
+      const id        = label;   // id = label = filename stem for consistency
+      const overrides = loadFabricOverrides();
+      if (!overrides.ttExtras) overrides.ttExtras = {};
+      if (!overrides.ttExtras[typeId]) overrides.ttExtras[typeId] = [];
+      if (overrides.ttExtras[typeId].some(s => s.id === id)) {
+        alert('A swatch with that name already exists.'); return;
+      }
+      overrides.ttExtras[typeId].push({ id, label, image });
+      saveFabricOverrides(overrides);
+
+      lblEl.value = '';
+      imgEl.value = '';
+      renderFabricsPanel();
+    };
+
+    window.deleteTTSwatch = function(typeId, swatchId) {
+      const overrides = loadFabricOverrides();
+      if (overrides.ttExtras?.[typeId]) {
+        overrides.ttExtras[typeId] = overrides.ttExtras[typeId].filter(s => s.id !== swatchId);
         saveFabricOverrides(overrides);
         renderFabricsPanel();
       }

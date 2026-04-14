@@ -710,14 +710,18 @@
                 <div class="fabric-panel" data-sku="KD-P32-QAD">
                 <p class="fabric-panel-title">Select Fabric</p>
 
+                <div id="zone-main">
                 <p class="fabric-zone-label">Main Design</p>
                 <div class="fabric-list" id="fabric-list-top">
                 </div>
+                </div>
 
-                <div class="fabric-zone-divider"></div>
+                <div class="fabric-zone-divider" id="zone-divider"></div>
 
+                <div id="zone-twotone">
                 <p class="fabric-zone-label">Two Tone</p>
                 <div class="fabric-list" id="fabric-list-bottom">
+                </div>
                 </div>
 
                 <!-- Price + Add to Cart -->
@@ -735,7 +739,7 @@
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
-        import { renderFabricList, TWOTONE_CATALOG } from './js/fabrics.js';
+        import { renderFabricList, getMergedTwotoneCatalog } from './js/fabrics.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
@@ -744,7 +748,7 @@
         const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
         if (sku) {
             initConfigurator(sku);  // renders first .fabric-list (top)
-            renderFabricList(document.getElementById('fabric-list-bottom'), sku, 'two-tone', TWOTONE_CATALOG);
+            renderFabricList(document.getElementById('fabric-list-bottom'), sku, 'two-tone', getMergedTwotoneCatalog());
         }
         document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
         document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
@@ -1073,7 +1077,16 @@
         const fabricListTop    = document.getElementById('fabric-list-top');
         const fabricListBottom = document.getElementById('fabric-list-bottom');
 
-        function attachFabricHandler(listEl, getMeshSet) {
+        const zoneMain    = document.getElementById('zone-main');
+        const zoneDivider = document.getElementById('zone-divider');
+        const zoneTwoTone = document.getElementById('zone-twotone');
+
+        function showEl(el, show) { el.style.display = show ? '' : 'none'; }
+        function restoreZones() {
+            showEl(zoneMain, true); showEl(zoneDivider, true); showEl(zoneTwoTone, true);
+        }
+
+        function attachFabricHandler(listEl, getMeshSet, otherZoneEls) {
             listEl.addEventListener('click', (e) => {
                 // Category card toggle
                 const card = e.target.closest('.category-card');
@@ -1082,8 +1095,14 @@
                     const cat    = card.closest('.fabric-category');
                     const isOpen = cat.classList.contains('open');
                     listEl.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
-                    if (!isOpen) { cat.classList.add('open'); listEl.classList.add('has-open'); }
-                    else         { listEl.classList.remove('has-open'); }
+                    if (!isOpen) {
+                        cat.classList.add('open');
+                        listEl.classList.add('has-open');
+                        otherZoneEls.forEach(el => showEl(el, false));
+                    } else {
+                        listEl.classList.remove('has-open');
+                        restoreZones();
+                    }
                     return;
                 }
                 // Sub-category header toggle
@@ -1110,16 +1129,18 @@
             });
         }
 
-        attachFabricHandler(fabricListTop,    () => topMeshes);
-        attachFabricHandler(fabricListBottom, () => bottomMeshes);
+        // Opening a top category hides the two-tone zone (and divider); vice versa
+        attachFabricHandler(fabricListTop,    () => topMeshes,    [zoneTwoTone, zoneDivider]);
+        attachFabricHandler(fabricListBottom, () => bottomMeshes, [zoneMain,    zoneDivider]);
 
-        /* ── Click outside: collapse both zones ── */
+        /* ── Click outside: collapse both zones and restore visibility ── */
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.fabric-category')) {
                 [fabricListTop, fabricListBottom].forEach(listEl => {
                     listEl.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
                     listEl.classList.remove('has-open');
                 });
+                restoreZones();
             }
         });
 

@@ -137,7 +137,7 @@ export const FABRIC_CATALOG = [
 
 // ── Two Tone catalog ─────────────────────────────────────────────────────────
 // 100% fabric types only (no blends). Each type has a single Plain collection.
-// Individual two-tone swatches; no sub-collections beyond Plain.
+// Swatch id, label, and image filename are kept identical for clarity.
 export const TWOTONE_CATALOG = [
   {
     id: 'cotton',
@@ -148,7 +148,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-c-00', label: 'TT Cotton 1', image: 'images/tt-c-00.jpg' },
+          { id: 'tt-cotton-1', label: 'tt-cotton-1', image: 'images/tt-cotton-1.jpg' },
         ],
       },
     ],
@@ -162,7 +162,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-li-00', label: 'TT Linen 1', image: 'images/tt-li-00.webp' },
+          { id: 'tt-linen-1', label: 'tt-linen-1', image: 'images/tt-linen-1.webp' },
         ],
       },
     ],
@@ -176,7 +176,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-w-00', label: 'TT Wool 1', image: 'images/tt-w-00.webp' },
+          { id: 'tt-wool-1', label: 'tt-wool-1', image: 'images/tt-wool-1.webp' },
         ],
       },
     ],
@@ -190,7 +190,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-s-00', label: 'TT Silk 1', image: 'images/tt-s-00.jpg' },
+          { id: 'tt-silk-1', label: 'tt-silk-1', image: 'images/tt-silk-1.jpg' },
         ],
       },
     ],
@@ -204,7 +204,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-le-00', label: 'TT Leather 1', image: 'images/tt-le-00.jpg' },
+          { id: 'tt-leather-1', label: 'tt-leather-1', image: 'images/tt-leather-1.jpg' },
         ],
       },
     ],
@@ -269,6 +269,21 @@ export function getMergedCatalog() {
         swatches: [...coll.swatches, ...extraSwatches],
       };
     }),
+  }));
+}
+
+// ── Build merged two-tone catalog (base + localStorage ttExtras) ─────────────
+// ttExtras stored as: { 'cotton': [{id,label,image}], 'linen': [...], ... }
+export function getMergedTwotoneCatalog() {
+  const overrides = loadOverrides();
+  const ttExtras  = overrides.ttExtras || {};
+
+  return TWOTONE_CATALOG.map(type => ({
+    ...type,
+    collections: type.collections.map(coll => ({
+      ...coll,
+      swatches: [...coll.swatches, ...(ttExtras[type.id] || [])],
+    })),
   }));
 }
 

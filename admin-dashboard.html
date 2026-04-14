@@ -871,7 +871,7 @@
     import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
-    import { FABRIC_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog } from './js/fabrics.js';
+    import { FABRIC_CATALOG, TWOTONE_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
 
     // ── Tab switching ─────────────────────────────────────────────────────────
     window.switchTab = function(tab) {
@@ -980,20 +980,21 @@
       function cOn(sku, typeId, collId)   { return vis[`p:${sku}:c:${typeId}:${collId}`] ?? true; }
       function sOn(swatchId)              { return vis[`s:${swatchId}`]                   ?? true; }
 
-      // ── Section 1: per-product visibility ──────────────────────────────────
-      let productsHtml = '';
-      ALL_DESIGNS.forEach(design => {
-        let typesHtml = '';
+      // ── Builds a fabric-type toggle list for a given SKU + optional zone ──────
+      function buildTypesHtml(sku, zone) {
+        const prefix = zone ? `${sku}-${zone}` : sku;
+        let html = '';
         catalog.forEach(type => {
-          const typeVisible = tOn(design.sku, type.id);
+          const typeKey     = zone ? zoneTypeKey(sku, zone, type.id) : `p:${sku}:t:${type.id}`;
+          const typeVisible = vis[typeKey] ?? true;
           const wreaths = type.wreaths.map(w =>
             `<img src="${w}" style="width:22px;height:22px;object-fit:contain;margin-right:3px">`
           ).join('');
 
-          // Collections (only shown when type is ON)
           let collsHtml = '';
           type.collections.forEach(coll => {
-            const collVisible = cOn(design.sku, type.id, coll.id);
+            const collKey     = zone ? zoneCollKey(sku, zone, type.id, coll.id) : `p:${sku}:c:${type.id}:${coll.id}`;
+            const collVisible = vis[collKey] ?? true;
             collsHtml += `
               <div style="display:flex;align-items:center;justify-content:space-between;
                           padding:0.4rem 0.8rem 0.4rem 1.6rem;border-bottom:1px solid #f8f8f8;">
@@ -1001,27 +1002,98 @@
                              letter-spacing:2px;color:#111;">${coll.label}</span>
                 <label class="fab-toggle">
                   <input type="checkbox" ${collVisible ? 'checked' : ''}
-                    onchange="setVisibility('p:${design.sku}:c:${type.id}:${coll.id}', this.checked)">
+                    onchange="setVisibility('${collKey}', this.checked)">
                   <span class="fab-slider"></span>
                 </label>
               </div>`;
           });
 
-          typesHtml += `
+          html += `
             <div class="fab-type-block" style="margin-bottom:0;border-radius:0;border-left:none;border-right:none;border-top:none;">
               <div class="fab-type-header" style="padding:0.8rem 1.2rem;">
                 <p class="fab-type-name" style="font-size:1.05rem;">${wreaths}${type.label}</p>
                 <label class="fab-toggle">
                   <input type="checkbox" ${typeVisible ? 'checked' : ''}
-                    onchange="setVisibility('p:${design.sku}:t:${type.id}', this.checked); rerenderTypeCollections(this, '${design.sku}','${type.id}')">
+                    onchange="setVisibility('${typeKey}', this.checked); rerenderTypeCollections(this, '${prefix}','${type.id}')">
                   <span class="fab-slider"></span>
                 </label>
               </div>
-              <div id="colls-${design.sku}-${type.id}" style="${typeVisible ? '' : 'display:none'}">
+              <div id="colls-${prefix}-${type.id}" style="${typeVisible ? '' : 'display:none'}">
                 ${collsHtml}
               </div>
             </div>`;
         });
+        return html;
+      }
+
+      // ── Section 1: per-product visibility ──────────────────────────────────
+      const P32_SKU = 'KD-P32-QAD';
+      let productsHtml = '';
+      ALL_DESIGNS.forEach(design => {
+        const isP32 = design.sku === P32_SKU;
+
+        const mainTypesHtml = buildTypesHtml(design.sku, null);
+
+        // p32 only: Two Tone Zone — type toggles + individual swatch toggles (no collection row)
+        let twoToneHtml = '';
+        if (isP32) {
+          TWOTONE_CATALOG.forEach(type => {
+            const typeKey     = zoneTypeKey(P32_SKU, 'two-tone', type.id);
+            const typeVisible = vis[typeKey] ?? true;
+            const prefix      = `${P32_SKU}-two-tone`;
+            const wreaths     = type.wreaths.map(w =>
+              `<img src="${w}" style="width:22px;height:22px;object-fit:contain;margin-right:3px">`
+            ).join('');
+
+            // Individual swatch toggles (flat list, no collection sub-header)
+            let swatchToggles = '';
+            type.collections.forEach(coll => {
+              coll.swatches.forEach(s => {
+                const sOn = vis[`s:${s.id}`] ?? true;
+                swatchToggles += `
+                  <div style="display:flex;align-items:center;gap:0.9rem;
+                              padding:0.45rem 0.8rem 0.45rem 1.6rem;border-bottom:1px solid #f8f8f8;">
+                    <img src="${s.image}" alt="${s.label}"
+                         style="width:36px;height:36px;object-fit:cover;border-radius:2px;border:1px solid #e0e0e0;">
+                    <span style="flex:1;font-family:'Times New Roman',serif;font-size:1.3rem;
+                                 letter-spacing:2px;color:#111;">${s.label}</span>
+                    <label class="fab-toggle">
+                      <input type="checkbox" ${sOn ? 'checked' : ''}
+                        onchange="setVisibility('s:${s.id}', this.checked)">
+                      <span class="fab-slider"></span>
+                    </label>
+                  </div>`;
+              });
+            });
+
+            twoToneHtml += `
+              <div class="fab-type-block" style="margin-bottom:0;border-radius:0;border-left:none;border-right:none;border-top:none;">
+                <div class="fab-type-header" style="padding:0.8rem 1.2rem;">
+                  <p class="fab-type-name" style="font-size:1.05rem;">${wreaths}${type.label}</p>
+                  <label class="fab-toggle">
+                    <input type="checkbox" ${typeVisible ? 'checked' : ''}
+                      onchange="setVisibility('${typeKey}', this.checked); rerenderTypeCollections(this, '${prefix}','${type.id}')">
+                    <span class="fab-slider"></span>
+                  </label>
+                </div>
+                <div id="colls-${prefix}-${type.id}" style="${typeVisible ? '' : 'display:none'}">
+                  ${swatchToggles}
+                </div>
+              </div>`;
+          });
+        }
+
+        const twoToneSection = isP32 ? `
+          <div style="padding:0.7rem 1.2rem 0.4rem;background:#fafaf9;border-top:1px solid #e8e8e8;">
+            <p style="font-family:'Times New Roman',serif;font-size:1.1rem;letter-spacing:3px;
+                      text-transform:uppercase;color:#666;margin:0;font-style:italic;">Two Tone Zone</p>
+          </div>
+          ${twoToneHtml}
+          <div style="border-top:2px solid #e8e8e8;"></div>
+          <div style="padding:0.7rem 1.2rem 0.4rem;background:#fafaf9;">
+            <p style="font-family:'Times New Roman',serif;font-size:1.1rem;letter-spacing:3px;
+                      text-transform:uppercase;color:#666;margin:0;font-style:italic;">Main Design Zone</p>
+          </div>` : '';
 
         productsHtml += `
           <div style="margin-bottom:1.6rem;border:1px solid #e0e0e0;border-radius:3px;overflow:hidden;">
@@ -1035,7 +1107,8 @@
               <span id="arrow-${design.sku}" style="font-size:0.9rem;color:#111;transition:transform 0.2s">&#9654;</span>
             </div>
             <div id="acc-${design.sku}" style="display:none;">
-              ${typesHtml}
+              ${twoToneSection}
+              ${mainTypesHtml}
             </div>
           </div>`;
       });

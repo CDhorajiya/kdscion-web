@@ -550,7 +550,7 @@
         .product-tagline { color: #999; }
 
         .viewer-panel {
-            background: #f5f5f5;
+            background: #ffffff;
             border-color: #e0e0e0;
             box-shadow: 0 2px 16px rgba(0,0,0,0.08);
         }
@@ -794,8 +794,9 @@
             const panel = canvas.parentElement;
             const W = panel.clientWidth  || 800;
             const H = panel.clientHeight || 700;
-            rendererS = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            rendererS = new THREE.WebGLRenderer({ canvas, antialias: window.devicePixelRatio < 2 });
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            rendererS.setClearColor(0xffffff, 1);
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -829,7 +830,6 @@
                 preSampleAll();
                 currentModel.traverse((node) => {
                     if (node.isMesh) {
-                        console.log('[mesh]', node.name);
                         if (isBodyMesh(node) && !SKIP_PARTS.some(kw => node.name.toLowerCase().includes(kw)))
                             origBodyMats.set(node.uuid, node.material.clone());
                     }

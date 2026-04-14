@@ -4,7 +4,7 @@
     <link rel="icon" href="images/KD_monogram.png" type="">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KDscion-p32 — Quarter Sleeve A-Line Dress</title>
+    <title>KDscion-p32 — Quarter Sleeve A-Line Dress - Two Tone</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
@@ -550,7 +550,7 @@
         .product-tagline { color: #999; }
 
         .viewer-panel {
-            background: #f5f5f5;
+            background: #ffffff;
             border-color: #e0e0e0;
             box-shadow: 0 2px 16px rgba(0,0,0,0.08);
         }
@@ -627,6 +627,39 @@
         .skin-btn:hover { background: #eee; border-color: #bbb; color: #1a1a1a; }
         .skin-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
 
+        /* ── Two-tone zone labels ── */
+        .fabric-zone-label {
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0.6rem 0 0.4rem 0;
+            text-align: center;
+        }
+        .fabric-zone-divider {
+            flex-shrink: 0;
+            height: 1px;
+            background: #999;
+            margin: 1.6rem 0 0 0;
+        }
+
+        /* ── Two-tone note above Design Details button ── */
+        .two-tone-note {
+            position: absolute;
+            bottom: 4.8rem;
+            right: 1.4rem;
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(100,70,0,0.65);
+            margin: 0;
+            pointer-events: none;
+            z-index: 5;
+            text-align: right;
+        }
+
     </style>
 </head>
 <body>
@@ -643,7 +676,7 @@
 
         <div class="product-title-row">
             <div>
-                <h2>Quarter Sleeve A-Line Dress</h2>
+                <h2>Quarter Sleeve A-Line Dress - Two Tone</h2>
                 <p><a href="poolofdesigns-productdescription.html" class="product-home-link">Pool of Designs</a> &nbsp;·&nbsp; KDscion-p32 &nbsp;·&nbsp; The House of Scion
                     <span class="skin-toggle">
                         <button class="skin-btn active" data-skin="">Fair</button>
@@ -664,6 +697,7 @@
                 <canvas id="viewer-canvas"></canvas>
                 <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
                                 <div id="detail-layer"></div>
+                <p class="two-tone-note">Two Tone</p>
                 <button class="design-details-btn" id="design-details-btn">Design Details</button>
                 <div id="fabric-preview" class="fabric-preview">
                     <img id="fabric-preview-img" src="" alt="Fabric Preview">
@@ -676,8 +710,14 @@
                 <div class="fabric-panel" data-sku="KD-P32-QAD">
                 <p class="fabric-panel-title">Select Fabric</p>
 
-                <div class="fabric-list">
+                <p class="fabric-zone-label">Main Design</p>
+                <div class="fabric-list" id="fabric-list-top">
+                </div>
 
+                <div class="fabric-zone-divider"></div>
+
+                <p class="fabric-zone-label">Two Tone</p>
+                <div class="fabric-list" id="fabric-list-bottom">
                 </div>
 
                 <!-- Price + Add to Cart -->
@@ -695,13 +735,17 @@
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
+        import { renderFabricList, TWOTONE_CATALOG } from './js/fabrics.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
         const canvas = document.getElementById('viewer-canvas');
 
         const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
-        if (sku) initConfigurator(sku);
+        if (sku) {
+            initConfigurator(sku);  // renders first .fabric-list (top)
+            renderFabricList(document.getElementById('fabric-list-bottom'), sku, 'two-tone', TWOTONE_CATALOG);
+        }
         document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
         document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
         initGoToCollection();
@@ -794,8 +838,9 @@
             const panel = canvas.parentElement;
             const W = panel.clientWidth  || 800;
             const H = panel.clientHeight || 700;
-            rendererS = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            rendererS = new THREE.WebGLRenderer({ canvas, antialias: window.devicePixelRatio < 2 });
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            rendererS.setClearColor(0xffffff, 1);
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -814,8 +859,6 @@
             controlsS = new OrbitControls(cameraS, rendererS.domElement);
             controlsS.enableDamping = true;
             controlsS.dampingFactor = 0.08;
-            controlsS.autoRotate = true;
-            controlsS.autoRotateSpeed = 1.2;
             controlsS.target.set(0, 0, 0);
             controlsS.update();
 
@@ -829,11 +872,11 @@
                 preSampleAll();
                 currentModel.traverse((node) => {
                     if (node.isMesh) {
-                        console.log('[mesh]', node.name);
                         if (isBodyMesh(node) && !SKIP_PARTS.some(kw => node.name.toLowerCase().includes(kw)))
                             origBodyMats.set(node.uuid, node.material.clone());
                     }
                 });
+                splitMeshes();
             }, undefined, (err) => console.error(err));
 
             (function animate() {
@@ -842,6 +885,8 @@
                 rendererS.render(sceneS, cameraS);
                 updateDetailAnnotations();
             })();
+
+
         }
 
         /* ── Keywords that identify body/avatar/shoe meshes to skip ── */
@@ -864,15 +909,107 @@
         let uvNormCache = null;
         let origGeometries = new Map();
 
-        function initFabricData() {
-            if (uvNormCache) return;
-            let gMinU = Infinity, gMaxU = -Infinity, gMinV = Infinity, gMaxV = -Infinity;
+        /* ── Two-tone mesh groups (split by Y midpoint after model load) ── */
+        let topMeshes    = [];
+        let bottomMeshes = [];
+
+        /* ── Anchor + Y-level sweep ──────────────────────────────────────────────
+           For each two-tone annotation dot:
+             1. ANCHOR  — find the cloth mesh whose centre is nearest to the dot
+             2. SWEEP   — collect every cloth mesh whose centre Y is within
+                          Y_TOLERANCE of that anchor's Y (captures front + back)
+           All swept meshes → Two Tone.  Everything else → Main Design.
+           To adjust which panels are Two Tone, move the annotation dots in
+           DETAIL_ANNS (lines ~1076 / ~1094). Y_TOLERANCE widens/narrows the band.
+        ─────────────────────────────────────────────────────────────────────── */
+        const Y_TOLERANCE = 0.12;   // world-units; raise if back panels are missed
+
+        // CLO3D panel name regex that marks Two Tone zones.
+        // Name any pattern piece with "two tone", "twotone", or "two-tone" (case-insensitive)
+        // anywhere in the name → it's picked up automatically.
+        // e.g. "Two Tone_FrontSkirt", "TwoTone_BackSkirt", "two-tone waistband"
+        const TWOTONE_RE = /two[\s-]?tone/i;
+
+        function splitMeshes() {
+            const cloth = [];
             currentModel.traverse((node) => {
                 if (!node.isMesh || isBodyMesh(node)) return;
-                if (!origGeometries.has(node.uuid)) {
+                const box    = new THREE.Box3().setFromObject(node);
+                const center = box.getCenter(new THREE.Vector3());
+                cloth.push({ node, center });
+                if (!origGeometries.has(node.uuid))
                     origGeometries.set(node.uuid, node.geometry.clone());
+            });
+
+            const twoToneSet = new Set();
+            let strategyUsed = 'anchor+sweep';
+
+            // ── Strategy A: CLO3D panel names ──────────────────────────────────
+            // Any pattern piece whose name contains "two tone", "twotone", or
+            // "two-tone" (case-insensitive) is treated as a Two Tone panel.
+            cloth.forEach(({ node }) => {
+                if (TWOTONE_RE.test(node.name || ''))
+                    twoToneSet.add(node);
+            });
+
+            if (twoToneSet.size > 0) {
+                strategyUsed = 'CLO3D names';
+            }
+
+            // ── Strategy B: minority material (CLO3D merged-mesh exports) ──────
+            // CLO3D often merges all pattern pieces into one node with multiple
+            // primitives. Two-tone pieces get a separate material ("Copy" variant).
+            // Identify the PRIMARY material (most-used) and treat every primitive
+            // that uses a different material as a two-tone piece.
+            if (twoToneSet.size === 0) {
+                const matCount = new Map();
+                cloth.forEach(({ node }) => {
+                    const name = node.material?.name || '';
+                    matCount.set(name, (matCount.get(name) || 0) + 1);
+                });
+                if (matCount.size > 1) {
+                    const primaryMat = [...matCount.entries()].sort((a, b) => b[1] - a[1])[0][0];
+                    cloth.forEach(({ node }) => {
+                        const name = node.material?.name || '';
+                        if (name && name !== primaryMat) twoToneSet.add(node);
+                    });
+                    if (twoToneSet.size > 0) strategyUsed = 'material groups';
                 }
-                const uv = node.geometry.attributes.uv;
+            }
+
+            // ── Strategy C: anchor + Y-level sweep (last resort) ───────────────
+            // Used only when neither names nor distinct materials are found.
+            if (twoToneSet.size === 0) {
+                ['two-tone-top', 'two-tone-bottom'].forEach(id => {
+                    const ann = DETAIL_ANNS.find(a => a.id === id);
+                    if (!ann) return;
+                    let anchor = null, minDist = Infinity;
+                    cloth.forEach(({ node, center }) => {
+                        const dist = ann.pos.distanceTo(center);
+                        if (dist < minDist) { minDist = dist; anchor = { node, center }; }
+                    });
+                    if (!anchor) return;
+                    cloth.forEach(({ node, center }) => {
+                        if (Math.abs(center.y - anchor.center.y) <= Y_TOLERANCE)
+                            twoToneSet.add(node);
+                    });
+                });
+            }
+
+            bottomMeshes = [...twoToneSet];
+            topMeshes    = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
+
+            console.log('[two-tone]', strategyUsed,
+                '| main (' + topMeshes.length + '):', topMeshes.map(n => `${n.name}[${n.material?.name}]`),
+                '| two-tone (' + bottomMeshes.length + '):', bottomMeshes.map(n => `${n.name}[${n.material?.name}]`));
+        }
+
+        function initFabricData() {
+            if (uvNormCache) return;
+            // origGeometries already seeded in splitMeshes; just compute UV bounds
+            let gMinU = Infinity, gMaxU = -Infinity, gMinV = Infinity, gMaxV = -Infinity;
+            origGeometries.forEach((geo) => {
+                const uv = geo.attributes.uv;
                 if (!uv) return;
                 for (let i = 0; i < uv.count; i++) {
                     const u = uv.getX(i), v = uv.getY(i);
@@ -884,7 +1021,8 @@
             uvNormCache = { gMinU, gMinV, gScale };
         }
 
-        function applyFabric(texturePath) {
+        function applyFabricToMeshSet(texturePath, meshSet) {
+            if (!texturePath || !meshSet.length) return;
             texLoader.load(texturePath, (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -896,8 +1034,7 @@
                 initFabricData();
                 const { gMinU, gMinV, gScale } = uvNormCache;
 
-                currentModel.traverse((node) => {
-                    if (!node.isMesh || isBodyMesh(node)) return;
+                meshSet.forEach((node) => {
                     const orig = origGeometries.get(node.uuid);
                     if (!orig) return;
                     const geo = orig.clone();
@@ -920,7 +1057,7 @@
                         side: THREE.DoubleSide,
                     });
                 });
-                console.log('[fabric] applied:', texturePath);
+                console.log('[fabric] applied to', meshSet.length, 'meshes:', texturePath);
             }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
         }
 
@@ -932,54 +1069,86 @@
             fabricPreview.classList.remove('visible');
         });
 
-        /* ── Delegated listeners on fabric-list (works after dynamic render) ── */
-        const fabricList = document.querySelector('.fabric-list');
-        fabricList.addEventListener('click', (e) => {
-            // Category card toggle
-            const card = e.target.closest('.category-card');
-            if (card) {
-                e.stopPropagation();
-                const cat = card.closest('.fabric-category');
-                const isOpen = cat.classList.contains('open');
-                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
-                if (!isOpen) { cat.classList.add('open'); fabricList.classList.add('has-open'); }
-                else         { fabricList.classList.remove('has-open'); }
-                return;
-            }
-            // Sub-category header toggle
-            const header = e.target.closest('.subcategory-header');
-            if (header) {
-                e.stopPropagation();
-                const sub    = header.closest('.fabric-subcategory');
-                const isOpen = sub.classList.contains('open');
-                sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
-                if (!isOpen) sub.classList.add('open');
-                return;
-            }
-            // Swatch click
-            const swatch = e.target.closest('.swatch-card');
-            if (swatch) {
-                e.stopPropagation();
-                fabricList.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
-                swatch.classList.add('active');
-                applyFabric(swatch.dataset.texture);
-                if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
-                fabricPreviewImg.src = swatch.dataset.texture;
-                fabricPreview.classList.add('visible');
-            }
-        });
+        /* ── Delegated listeners for each two-tone fabric zone ── */
+        const fabricListTop    = document.getElementById('fabric-list-top');
+        const fabricListBottom = document.getElementById('fabric-list-bottom');
 
-        /* ── Click outside: collapse ── */
+        function attachFabricHandler(listEl, getMeshSet) {
+            listEl.addEventListener('click', (e) => {
+                // Category card toggle
+                const card = e.target.closest('.category-card');
+                if (card) {
+                    e.stopPropagation();
+                    const cat    = card.closest('.fabric-category');
+                    const isOpen = cat.classList.contains('open');
+                    listEl.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                    if (!isOpen) { cat.classList.add('open'); listEl.classList.add('has-open'); }
+                    else         { listEl.classList.remove('has-open'); }
+                    return;
+                }
+                // Sub-category header toggle
+                const header = e.target.closest('.subcategory-header');
+                if (header) {
+                    e.stopPropagation();
+                    const sub    = header.closest('.fabric-subcategory');
+                    const isOpen = sub.classList.contains('open');
+                    sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
+                    if (!isOpen) sub.classList.add('open');
+                    return;
+                }
+                // Swatch click
+                const swatch = e.target.closest('.swatch-card');
+                if (swatch) {
+                    e.stopPropagation();
+                    listEl.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
+                    swatch.classList.add('active');
+                    applyFabricToMeshSet(swatch.dataset.texture, getMeshSet());
+                    if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
+                    fabricPreviewImg.src = swatch.dataset.texture;
+                    fabricPreview.classList.add('visible');
+                }
+            });
+        }
+
+        attachFabricHandler(fabricListTop,    () => topMeshes);
+        attachFabricHandler(fabricListBottom, () => bottomMeshes);
+
+        /* ── Click outside: collapse both zones ── */
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.fabric-category')) {
-                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
-                fabricList.classList.remove('has-open');
+                [fabricListTop, fabricListBottom].forEach(listEl => {
+                    listEl.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                    listEl.classList.remove('has-open');
+                });
             }
         });
 
         /* ── Design Details annotations ── */
         const DETAIL_ANNS = [
-            // Leaders to be added per product
+            {
+                id:    'sleeve-shirring',
+                pos:   new THREE.Vector3(-0.16, 0.58, -0.11),  // x y z — nudge x/y to reposition dot
+                side:  'left',
+                label: 'Shirring at<br>sleeve end'
+            },
+            {
+                id:    'waist-shirring',
+                pos:   new THREE.Vector3(0.10, 0.40, 0.06),   // x y z — nudge x/y to reposition dot
+                side:  'right',
+                label: 'Flex shirring<br>at waist —<br>elegance &amp;<br>comfort'
+            },
+            {
+                id:    'two-tone-top',
+                pos:   new THREE.Vector3(-0.2, 0.08, 0.14),    // x y z — nudge x/y to reposition dot
+                side:  'right',
+                label: 'Two tone —<br>upper fabric'
+            },
+            {
+                id:    'two-tone-bottom',
+                pos:   new THREE.Vector3(-0.2, -0.24, 0.14),
+                side:  'left',
+                label: 'Two tone —<br>lower fabric'
+            },
         ];
 
         const detailLayer    = document.getElementById('detail-layer');

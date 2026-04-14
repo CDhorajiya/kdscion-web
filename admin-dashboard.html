@@ -1213,21 +1213,41 @@
 
         <hr style="border:none;border-top:2px solid #e0e0e0;margin:2.5rem 0;">
 
-        <!-- Global swatch catalog — Main Design -->
-        <p class="section-label" style="margin-bottom:1.4rem">Global Swatch Catalog — Main Design</p>
-        <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
-          Add new swatches here · they appear in all designs where that fabric type is ON
-        </p>
-        ${swatchMgmtHtml}
+        <!-- Global swatch catalog — Main Design (collapsible) -->
+        <div style="margin-bottom:1.6rem;border:1px solid #e0e0e0;border-radius:3px;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;
+                      padding:1rem 1.4rem;background:#fafaf9;border-bottom:1px solid #e8e8e8;
+                      cursor:pointer;" onclick="toggleProductAccordion('acc-catalog-main')">
+            <div>
+              <p class="section-label" style="margin:0 0 0.2rem">Global Swatch Catalog — Main Design</p>
+              <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#666;margin:0;">
+                Add new swatches · appear in all designs where that fabric type is ON
+              </p>
+            </div>
+            <span id="arrow-catalog-main" style="font-size:0.9rem;color:#111;transition:transform 0.2s">&#9654;</span>
+          </div>
+          <div id="acc-catalog-main" style="display:none;">
+            ${swatchMgmtHtml}
+          </div>
+        </div>
 
-        <hr style="border:none;border-top:2px solid #e0e0e0;margin:2.5rem 0;">
-
-        <!-- Global swatch catalog — Two Tone -->
-        <p class="section-label" style="margin-bottom:1.4rem">Global Swatch Catalog — Two Tone</p>
-        <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#111;margin:0 0 1.6rem;">
-          Add two-tone swatches here · Plain collection only · label and image filename should match
-        </p>
-        ${ttSwatchMgmtHtml}
+        <!-- Global swatch catalog — Two Tone (collapsible) -->
+        <div style="margin-bottom:1.6rem;border:1px solid #e0e0e0;border-radius:3px;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;
+                      padding:1rem 1.4rem;background:#fafaf9;border-bottom:1px solid #e8e8e8;
+                      cursor:pointer;" onclick="toggleProductAccordion('acc-catalog-tt')">
+            <div>
+              <p class="section-label" style="margin:0 0 0.2rem">Global Swatch Catalog — Two Tone</p>
+              <p style="font-family:'Times New Roman',serif;font-size:1.3rem;letter-spacing:2px;color:#666;margin:0;">
+                Add two-tone swatches · Plain collection only · label and filename should match
+              </p>
+            </div>
+            <span id="arrow-catalog-tt" style="font-size:0.9rem;color:#111;transition:transform 0.2s">&#9654;</span>
+          </div>
+          <div id="acc-catalog-tt" style="display:none;">
+            ${ttSwatchMgmtHtml}
+          </div>
+        </div>
       `;
     }
 

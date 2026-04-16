@@ -304,7 +304,7 @@
       <p class="confirmation__sub">Your bespoke order has been received.</p>
       <p class="confirmation__id" id="conf-order-id"></p>
       <a href="orders.html" class="confirmation__link" style="margin-right:1rem">View Orders</a>
-      <a href="poolofdesigns-productdescription.html" class="confirmation__link">Continue Shopping</a>
+      <a href="poolofdesigns-woman.html" class="confirmation__link">Continue Shopping</a>
     </div>
 
     <!-- Payment step (shown after order created, hidden until then) -->
@@ -433,7 +433,7 @@
 
       list.innerHTML = items.map(item => {
         const skuMatch = item.product?.sku?.match(/KD-P(\d+)-/i);
-        const productPage = skuMatch ? `p${skuMatch[1]}-product.html` : 'poolofdesigns-productdescription.html';
+        const productPage = skuMatch ? `p${skuMatch[1]}-product.html` : 'poolofdesigns-woman.html';
         return `
         <div class="cart-item" data-id="${item.id}">
           <div>

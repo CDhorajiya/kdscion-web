@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDscion-p279+p280 — Full Sleeve Classic Shirt and Classic Trouser</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Gallery iframe background ── */
+        .bg-frame {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Dark blur overlay between gallery and content ── */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.52);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ── Breadcrumb ── */
+        .product-breadcrumb {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 1rem;
+        }
+        .product-breadcrumb a {
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .product-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
+        .product-breadcrumb span { margin: 0 1rem; }
+
+        /* ── Page layout ── */
+        .product-page-wrap {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            min-height: 0;
+            padding: 1.6rem 4rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title-row {
+            margin-bottom: 1.4rem;
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        .product-title-row h2 {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            margin: 0 0 0.4rem 0;
+        }
+        .product-title-row p {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.85);
+            margin: 0;
+        }
+        .product-home-link {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .product-home-link:hover { color: rgba(255,255,255,0.9); }
+
+        /* ── Main split layout ── */
+        .product-split {
+            display: flex;
+            gap: 2.4rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* ── Fabric full-preview overlay ── */
+        .fabric-preview {
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: rgb(18,18,20);
+            border-radius: 4px;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+        }
+        .fabric-preview.visible { display: flex; }
+        .fabric-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .fabric-preview-back {
+            position: absolute;
+            top: 1.1rem;
+            left: 1.1rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.28);
+            color: rgba(255,255,255,0.82);
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.56rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            padding: 0.76rem 1.7rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .fabric-preview-back:hover {
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+        }
+
+        /* ── 3D Viewer panel ── */
+        .viewer-panel {
+            position: relative;
+            flex: 1.4;
+            background: rgb(18,18,20);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            min-height: 0;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.35);
+        }
+        #viewer-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+        .viewer-label {
+            position: absolute;
+            bottom: 1.8rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.35);
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        /* ── Part select buttons (top-right of viewer) ── */
+        .part-btn-group {
+            position: absolute;
+            top: 1.4rem;
+            right: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            z-index: 5;
+        }
+        .part-select-btn {
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.72);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 0.52rem 1.1rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+            text-align: center;
+            min-width: 160px;
+        }
+        .part-select-btn:hover {
+            background: rgba(0,0,0,0.65);
+            border-color: rgba(255,255,255,0.5);
+            color: #fff;
+        }
+        .part-select-btn.active {
+            background: rgba(255,220,150,0.12);
+            border-color: rgba(255,220,150,0.45);
+            color: rgba(255,220,150,0.9);
+        }
+
+        /* ── Fabric column (tagline + panel) ── */
+        .fabric-col {
+            flex: 0 0 280px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        /* ── Fabric panel ── */
+        .fabric-panel {
+            flex: 1;
+            background: rgb(18,18,20);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 2rem 1.8rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            overflow-y: auto;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.35);
+        }
+        .product-tagline {
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            text-align: right;
+            margin: 0 0 0.8rem 0;
+            flex-shrink: 0;
+        }
+        .fabric-panel-title {
+            font-family: "Times New Roman", serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin: 0 0 2rem 0;
+            text-align: center;
+        }
+
+        /* ── Fabric flat list ── */
+        .fabric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .fabric-list.has-open .fabric-category:not(.open) {
+            display: none;
+        }
+
+        /* ── Fabric category container ── */
+        .fabric-category {
+            border: 2px solid transparent;
+            border-radius: 3px;
+            transition: border-color 0.2s;
+            overflow: hidden;
+        }
+        .fabric-category.open {
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        /* ── Category header (wreath card) ── */
+        .category-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fabric-category:not(.open):hover {
+            border-color: rgba(255,255,255,0.4);
+        }
+        .category-card:hover { transform: scale(1.01); }
+        .category-card .wreath-preview {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0.5rem 0.3rem;
+            background: rgba(0,0,0,0.18);
+            overflow: hidden;
+        }
+        .category-card .wreath-preview img {
+            height: 72px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.25s ease;
+        }
+        .category-card:hover .wreath-preview img { transform: scale(1.1); }
+        .category-card p {
+            margin: 0;
+            padding: 0.55rem 0.8rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.85);
+            background: rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        .fabric-category.open .category-card p {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.38);
+        }
+
+        /* ── Sub-swatch grid (hidden until open) ── */
+        .swatch-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem;
+            background: rgba(0,0,0,0.15);
+        }
+        .fabric-category.open .swatch-grid { display: grid; }
+
+        /* ── Individual square swatch card ── */
+        .swatch-card {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 3px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .swatch-card:hover { border-color: rgba(255,255,255,0.5); }
+        .swatch-card.active { border-color: #ffffff; }
+        .swatch-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease 0s;
+        }
+        .swatch-card:hover img {
+            transform: scale(3);
+            transition: transform 0.4s ease 3s;
+        }
+        .swatch-card span {
+            display: block;
+            padding: 0.3rem 0.2rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.8);
+            background: rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        .swatch-card.active span {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.45);
+        }
+
+        /* ── Sub-category (collection) within a fabric type ── */
+        .fabric-subcategory {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.4rem;
+        }
+        .fabric-subcategory:last-child { margin-bottom: 0; }
+        .subcategory-header {
+            cursor: pointer;
+            padding: 0.42rem 0.8rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.65);
+            background: rgba(0,0,0,0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .subcategory-header:hover {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,1);
+        }
+        .fabric-subcategory.open .subcategory-header {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.35);
+        }
+        .subcategory-header .sub-arrow {
+            font-size: 0.6rem;
+            transition: transform 0.2s;
+            opacity: 0.5;
+        }
+        .fabric-subcategory.open .subcategory-header .sub-arrow {
+            transform: rotate(90deg);
+        }
+        .sub-swatch-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.1);
+        }
+        .fabric-subcategory.open .sub-swatch-grid { display: grid; }
+
+        /* ── Cart actions ── */
+        .cfg-actions {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .cfg-price-label {
+            text-align: right;
+        }
+        .cfg-add-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.85);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .cfg-add-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.16);
+            border-color: rgba(255,255,255,0.6);
+            color: #fff;
+        }
+        .cfg-add-btn:disabled { opacity: 0.5; cursor: default; }
+        .cfg-status {
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .cfg-status--ok    { color: rgba(180,220,180,0.9); }
+        .cfg-status--warn  { color: rgba(220,200,140,0.9); }
+        .cfg-status--error { color: rgba(220,140,140,0.9); }
+
+        /* ── White theme overrides ── */
+        html, body { background: #fff; color: #1a1a1a; }
+        .bg-frame, .bg-overlay { display: none; }
+
+        .monogram img { filter: none; }
+
+        .product-breadcrumb { color: #888; }
+        .product-breadcrumb a { color: #888; }
+        .product-breadcrumb a:hover { color: #1a1a1a; }
+
+        .product-title-row h2 { color: #1a1a1a; }
+        .product-title-row p  { color: #888; }
+        .product-home-link:hover { color: #1a1a1a; }
+        .product-tagline { color: #999; }
+
+        .viewer-panel {
+            background: #f5f5f5;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .viewer-label { color: #bbb; }
+
+        .part-select-btn {
+            background: rgba(255,255,255,0.82);
+            border-color: #ccc;
+            color: #666;
+        }
+        .part-select-btn:hover { background: #fff; border-color: #999; color: #1a1a1a; }
+        .part-select-btn.active {
+            background: rgba(100,70,0,0.08);
+            border-color: rgba(100,70,0,0.45);
+            color: rgba(100,70,0,0.85);
+        }
+
+        .fabric-preview { background: #fff; }
+        .fabric-preview-back {
+            background: rgba(255,255,255,0.9);
+            border-color: #ccc;
+            color: #333;
+        }
+        .fabric-preview-back:hover { background: #fff; color: #1a1a1a; }
+
+        .fabric-panel {
+            background: #fff;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .fabric-panel-title { color: #1a1a1a; }
+
+        .fabric-category.open { border-color: #ccc; }
+        .fabric-category:not(.open):hover { border-color: #bbb; }
+        .category-card .wreath-preview { background: #f5f5f5; }
+        .category-card p { color: #555; background: #f0f0f0; }
+        .fabric-category.open .category-card p { color: #1a1a1a; background: #e8e8e8; }
+
+        .swatch-grid { background: #fafafa; }
+        .swatch-card:hover { border-color: #999; }
+        .swatch-card.active { border-color: #1a1a1a; }
+        .swatch-card span { color: #666; background: #f0f0f0; }
+        .swatch-card.active span { color: #1a1a1a; background: #e0e0e0; }
+
+        .fabric-subcategory { border-color: #e0e0e0; }
+        .subcategory-header { color: #555; background: #f5f5f5; }
+        .subcategory-header:hover { background: #eee; color: #1a1a1a; }
+        .fabric-subcategory.open .subcategory-header { color: #1a1a1a; background: #e8e8e8; }
+        .sub-swatch-grid { background: #fafafa; }
+
+        .cfg-add-btn {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .cfg-add-btn:hover:not(:disabled) {
+            background: #333;
+            border-color: #333;
+            color: #fff;
+        }
+        .cfg-status--ok    { color: #2a6e2a; }
+        .cfg-status--warn  { color: #7a6000; }
+        .cfg-status--error { color: #8a1a1a; }
+
+    </style>
+</head>
+<body>
+
+    <!-- ── Men's Pool of Designs gallery as background ── -->
+    <iframe class="bg-frame" src="poolofdesigns-man.html" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="bg-overlay"></div>
+
+    <div class="product-page-wrap">
+
+        <div class="product-breadcrumb">
+            <a href="index.html">King Dhorajiya</a>
+        </div>
+
+        <div class="product-title-row">
+            <div>
+                <h2>Full Sleeve Classic Shirt and Classic Trouser</h2>
+                <p>
+                    <a href="poolofdesigns-man.html" class="product-home-link">Pool of Designs</a> &nbsp;·&nbsp; KDscion-p279+p280 &nbsp;·&nbsp; The House of Scion
+                </p>
+            </div>
+            <p class="product-tagline">Custom &nbsp;|&nbsp; Premium &nbsp;|&nbsp; Unique</p>
+        </div>
+
+        <!-- ── Main split: 3D viewer + Fabric panel ── -->
+        <div class="product-split">
+
+            <!-- Left: 3D canvas -->
+            <div class="viewer-panel">
+                <canvas id="viewer-canvas"></canvas>
+                <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
+
+                <!-- Part select buttons — top right of viewer -->
+                <div class="part-btn-group">
+                    <button class="part-select-btn active" id="btn-shirt">Shirt Fabric</button>
+                    <button class="part-select-btn" id="btn-trouser">Trouser Fabric</button>
+                </div>
+
+                <div id="fabric-preview" class="fabric-preview">
+                    <img id="fabric-preview-img" src="" alt="Fabric Preview">
+                    <button class="fabric-preview-back" id="fabric-preview-back">← 3D View</button>
+                </div>
+            </div>
+
+            <!-- Right: fabric panel -->
+            <div class="fabric-col">
+                <div class="fabric-panel" data-sku="KD-P279P280-FSCT">
+                    <p class="fabric-panel-title">Select Fabric</p>
+
+                    <div class="fabric-list">
+                    </div>
+
+                    <!-- Price + Add to Cart -->
+                    <div class="cfg-actions">
+                        <span class="cfg-price-label">Total &nbsp;<strong id="cfg-price">—</strong></span>
+                        <button id="cfg-add-btn" class="cfg-add-btn">ADD TO COLLECTION</button>
+                        <button id="cfg-goto-btn" class="cfg-add-btn" disabled>GO TO COLLECTION</button>
+                        <p id="cfg-status" class="cfg-status"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'https://esm.sh/three@0.169.0';
+        import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+        import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
+
+        const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
+        if (sku) initConfigurator(sku);
+        document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
+        document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
+        initGoToCollection();
+
+        const canvas = document.getElementById('viewer-canvas');
+        let rendererS, sceneS, cameraS, controlsS, animIdS, currentModel;
+
+        /* ── Active fabric target: 'shirt' or 'trouser' ── */
+        let activeTarget = 'shirt';
+
+        const btnShirt   = document.getElementById('btn-shirt');
+        const btnTrouser = document.getElementById('btn-trouser');
+        btnShirt.addEventListener('click', () => {
+            activeTarget = 'shirt';
+            btnShirt.classList.add('active');
+            btnTrouser.classList.remove('active');
+        });
+        btnTrouser.addEventListener('click', () => {
+            activeTarget = 'trouser';
+            btnTrouser.classList.add('active');
+            btnShirt.classList.remove('active');
+        });
+
+        /* ── Body mesh filter ── */
+        const BODY_KEYWORDS = ['body', 'skin', 'avatar', 'head', 'face', 'hair',
+                               'hand', 'feet', 'foot', 'eye',
+                               'teeth', 'tooth', 'tongue', 'torso', 'human',
+                               'shoe', 'boot', 'heel', 'sole', 'footwear', 'sandal',
+                               'figure', 'mannequin', 'character'];
+
+        function isBodyMesh(node) {
+            const name = (node.name || '').toLowerCase();
+            return BODY_KEYWORDS.some(kw => name.includes(kw));
+        }
+
+        /* ── Garment mesh sets (populated after model loads) ── */
+        let shirtMeshes   = [];
+        let trouserMeshes = [];
+        let origGeometries = new Map(); // uuid → original geometry clone
+
+        /* ── Single combined UV normalization cache ── */
+        let uvNormCache = null;
+
+        /* ── splitMeshes ──────────────────────────────────────────────────────
+           Cloth_mesh has 39 GLTF primitives. Three.js expands each primitive
+           into its own child Mesh with its own material, giving us reliable
+           classification by material name alone.
+
+           WHY NOT Y-position:
+             Shirt tails and lower panels dip well below the model centroid,
+             and trouser waist/rise extends above it — Y-split mislabels
+             ~11 shirt prims as trouser and ~7 trouser prims as shirt.
+
+           Classification (after skipping decorations):
+             material name contains 'shirt'           → shirtMeshes   (18 prims)
+             material name contains 'buttonhole'
+               or 'button'                            → skip
+             anything else (trouser fabric placeholder)→ trouserMeshes (10 prims)
+        ─────────────────────────────────────────────────────────────────────── */
+        function splitMeshes() {
+            shirtMeshes    = [];
+            trouserMeshes  = [];
+            origGeometries = new Map();
+            uvNormCache    = null;
+
+            currentModel.traverse((node) => {
+                if (!node.isMesh || isBodyMesh(node)) return;
+
+                const matName = (node.material?.name || '').toLowerCase();
+
+                // Skip button and buttonhole decorations — not fabric targets
+                if (matName.includes('buttonhole') || matName.includes('button')) return;
+
+                origGeometries.set(node.uuid, node.geometry.clone());
+
+                if (matName.includes('shirt')) {
+                    shirtMeshes.push(node);
+                } else {
+                    // Everything that is not shirt fabric and not a decoration
+                    // is trouser fabric (the trouser material has no keyword)
+                    trouserMeshes.push(node);
+                }
+            });
+
+            console.log('[part-split] shirt ('   + shirtMeshes.length   + ' prims)');
+            console.log('[part-split] trouser (' + trouserMeshes.length + ' prims)');
+        }
+
+        /* ── UV normalization — single combined cache across all cloth meshes ── */
+        function initFabricData() {
+            if (uvNormCache) return;
+            let gMinU = Infinity, gMaxU = -Infinity, gMinV = Infinity, gMaxV = -Infinity;
+            origGeometries.forEach((geo) => {
+                const uv = geo.attributes.uv;
+                if (!uv) return;
+                for (let i = 0; i < uv.count; i++) {
+                    const u = uv.getX(i), v = uv.getY(i);
+                    if (u < gMinU) gMinU = u; if (u > gMaxU) gMaxU = u;
+                    if (v < gMinV) gMinV = v; if (v > gMaxV) gMaxV = v;
+                }
+            });
+            const gScale = Math.max(gMaxU - gMinU, gMaxV - gMinV) || 1;
+            uvNormCache = { gMinU, gMinV, gScale };
+            console.log('[fabric] UV cache:', uvNormCache);
+        }
+
+        /* ── Apply a fabric texture to a specific set of meshes ── */
+        const texLoader = new THREE.TextureLoader();
+
+        function applyFabricToMeshSet(texturePath, meshSet) {
+            if (!texturePath || !meshSet.length) return;
+            texLoader.load(texturePath, (tex) => {
+                tex.colorSpace = THREE.SRGBColorSpace;
+                tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                tex.repeat.set(1, 1);
+                tex.anisotropy = rendererS.capabilities.getMaxAnisotropy();
+                tex.needsUpdate = true;
+                if (!currentModel) return;
+
+                initFabricData();
+                const { gMinU, gMinV, gScale } = uvNormCache;
+
+                meshSet.forEach((node) => {
+                    const orig = origGeometries.get(node.uuid);
+                    if (!orig) return;
+                    // Always clone from stored original — prevents UV compound on repeated clicks
+                    const geo = orig.clone();
+                    const uv  = geo.attributes.uv;
+                    if (uv) {
+                        for (let i = 0; i < uv.count; i++) {
+                            uv.setXY(i,
+                                (uv.getX(i) - gMinU) / gScale,
+                                (uv.getY(i) - gMinV) / gScale
+                            );
+                        }
+                        uv.needsUpdate = true;
+                    }
+                    node.geometry = geo;
+                    const t = tex.clone();
+                    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+                    t.needsUpdate = true;
+                    node.material = new THREE.MeshBasicMaterial({ map: t, side: THREE.DoubleSide });
+                });
+                console.log('[fabric] applied to', meshSet.length, 'meshes:', texturePath);
+            }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
+        }
+
+        /* ── Fabric preview overlay ── */
+        const fabricPreview    = document.getElementById('fabric-preview');
+        const fabricPreviewImg = document.getElementById('fabric-preview-img');
+        document.getElementById('fabric-preview-back').addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabricPreview.classList.remove('visible');
+        });
+
+        /* ── Delegated listeners on fabric-list ── */
+        const fabricList = document.querySelector('.fabric-list');
+        fabricList.addEventListener('click', (e) => {
+            const card = e.target.closest('.category-card');
+            if (card) {
+                e.stopPropagation();
+                const cat    = card.closest('.fabric-category');
+                const isOpen = cat.classList.contains('open');
+                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                if (!isOpen) { cat.classList.add('open'); fabricList.classList.add('has-open'); }
+                else         { fabricList.classList.remove('has-open'); }
+                return;
+            }
+            const header = e.target.closest('.subcategory-header');
+            if (header) {
+                e.stopPropagation();
+                const sub    = header.closest('.fabric-subcategory');
+                const isOpen = sub.classList.contains('open');
+                sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
+                if (!isOpen) sub.classList.add('open');
+                return;
+            }
+            const swatch = e.target.closest('.swatch-card');
+            if (swatch) {
+                e.stopPropagation();
+                fabricList.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
+                swatch.classList.add('active');
+                const target = activeTarget === 'shirt' ? shirtMeshes : trouserMeshes;
+                applyFabricToMeshSet(swatch.dataset.texture, target);
+                if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
+                fabricPreviewImg.src = swatch.dataset.texture;
+                fabricPreview.classList.add('visible');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.fabric-category')) {
+                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                fabricList.classList.remove('has-open');
+            }
+        });
+
+        /* ── 3D viewer initialization ── */
+        function initViewer() {
+            const panel = canvas.parentElement;
+            const W = panel.clientWidth  || 800;
+            const H = panel.clientHeight || 700;
+            rendererS = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            rendererS.setSize(W, H, false);
+            rendererS.outputColorSpace = THREE.SRGBColorSpace;
+
+            sceneS  = new THREE.Scene();
+            cameraS = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+            cameraS.position.set(0, 0, 3);
+
+            sceneS.add(new THREE.AmbientLight(0xffffff, 1.8));
+            const key = new THREE.DirectionalLight(0xffffff, 1.4);
+            key.position.set(5, 8, 5); sceneS.add(key);
+            const fill = new THREE.DirectionalLight(0xffffff, 0.8);
+            fill.position.set(-5, 2, -5); sceneS.add(fill);
+            const back = new THREE.DirectionalLight(0xffffff, 0.5);
+            back.position.set(0, 4, -8); sceneS.add(back);
+
+            controlsS = new OrbitControls(cameraS, rendererS.domElement);
+            controlsS.enableDamping = true;
+            controlsS.dampingFactor = 0.08;
+            controlsS.autoRotate = true;
+            controlsS.autoRotateSpeed = 1.2;
+            controlsS.target.set(0, 0, 0);
+            controlsS.update();
+
+            new GLTFLoader().load(
+                '3d/p279+p280 full sleeve classic shirt + classic trouser.glb',
+                (gltf) => {
+                    currentModel = gltf.scene;
+                    const box = new THREE.Box3().setFromObject(currentModel);
+                    currentModel.position.sub(box.getCenter(new THREE.Vector3()));
+                    currentModel.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
+                    sceneS.add(currentModel);
+                    splitMeshes();
+                },
+                undefined,
+                (err) => console.error(err)
+            );
+
+            (function animate() {
+                animIdS = requestAnimationFrame(animate);
+                controlsS.update();
+                rendererS.render(sceneS, cameraS);
+            })();
+        }
+
+        requestAnimationFrame(initViewer);
+
+        window.addEventListener('resize', () => {
+            if (!rendererS) return;
+            const W = canvas.parentElement.clientWidth;
+            const H = canvas.parentElement.clientHeight;
+            cameraS.aspect = W / H;
+            cameraS.updateProjectionMatrix();
+            rendererS.setSize(W, H, false);
+        });
+    </script>
+
+</body>
+</html>

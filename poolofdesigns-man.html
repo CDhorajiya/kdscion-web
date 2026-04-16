@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pool of Designs — Men</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
+        }
+
+        /* ── Product gallery ── */
+        .product-gallery {
+            display: flex;
+            gap: 8rem;
+            margin-top: 0;
+        }
+
+        /* ── Each product column ── */
+        .product-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8rem;
+            flex: 1;
+        }
+
+        /* ── Each product card ── */
+        .product-item {
+            position: relative;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.4s ease;
+        }
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+        .product-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* ── Description popup ── */
+        .product-desc {
+            position: absolute;
+            top: 50%;
+            left: calc(100% + 2rem);
+            transform: translateY(-50%) translateX(-16px);
+            width: 28rem;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid #d9d1c5;
+            padding: 2.8rem 3.2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.9s ease, transform 0.9s ease;
+            z-index: 300;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+        .product-column:last-child .product-desc {
+            left: auto;
+            right: calc(100% + 2rem);
+            transform: translateY(-50%) translateX(16px);
+        }
+        .product-item.popup-active .product-desc {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+            pointer-events: auto;
+        }
+        .product-column:last-child .product-item.popup-active .product-desc {
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .product-desc__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #000;
+            margin: 0 0 1.4rem 0;
+            line-height: 1.8;
+            word-break: break-word;
+        }
+        .product-desc__divider {
+            width: 3rem;
+            height: 1px;
+            background: #000;
+            margin-bottom: 1.4rem;
+        }
+        .product-desc__sub {
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: #5c5577;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* ── Blur overlay ── */
+        .blur-overlay {
+            position: fixed;
+            inset: 0;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            background: rgba(255, 255, 255, 0);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease, backdrop-filter 0.7s ease;
+        }
+        body.gallery-blur-active .blur-overlay {
+            opacity: 1;
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            background: rgba(255, 255, 255, 0.15);
+            pointer-events: auto;
+        }
+        body.gallery-blur-active .product-item.popup-active {
+            z-index: 400;
+        }
+        header {
+            position: relative;
+            z-index: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blur-overlay" id="blurOverlay"></div>
+
+    <header>
+        <nav class="nav collapsible">
+            <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+            <svg class="icon icon--white nav__toggler">
+                <use xlink:href="images/sprite.svg#menu"></use>
+            </svg>
+            <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+        </nav>
+    </header>
+
+    <div class="container-snaps">
+        <h3 class="title">POOL OF DESIGNS</h3>
+
+        <div class="product-gallery snap-gallery">
+
+            <!-- ── Column 1 ── -->
+            <div class="product-column column column1">
+
+                <div class="product-item has-3d"
+                     data-model="3d/p279+p280 full sleeve classic shirt + classic trouser.glb"
+                     data-product-url="p279+p280-product.html">
+                    <img src="images/p279+p280-full sleeve classic shirt and classic trouser_Colorway A (1).png"
+                         alt="KDscion-p279+p280 full sleeve classic shirt and classic trouser">
+                    <div class="product-desc">
+                        <p class="product-desc__title">KDscion-p279+p280 full sleeve classic shirt and classic trouser</p>
+                        <div class="product-desc__divider"></div>
+                        <p class="product-desc__sub">King Dhorajiya</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── Column 2 ── -->
+            <div class="product-column column column2"></div>
+
+            <!-- ── Column 3 ── -->
+            <div class="product-column column column3"></div>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer_details">
+            <a href="foundermessage.html"><h5>About House</h5></a>
+            <a href="contacthouse.html"><h5>Contact House</h5></a>
+            <a href=""><h5>Career</h5></a>
+            <a href=""><h5>Account</h5></a>
+        </div>
+        <div class="footer_branding">
+            <div class="monogram">
+                <a href="index.html">
+                    <img src="/images/KD_monogram.png" alt="KD monogram home page link">
+                </a>
+            </div>
+            <p>Copyright 2024 KING DHORAJIYA</p>
+        </div>
+    </div>
+
+    <!-- ── Navigate to product page on click ── -->
+    <script>
+        document.querySelectorAll('.product-item[data-model]').forEach(item => {
+            item.addEventListener('click', () => {
+                const url = item.dataset.productUrl;
+                if (url) {
+                    window.location.href = url;
+                } else {
+                    const match = item.dataset.model.match(/p(\d+)-/);
+                    if (match) window.location.href = 'p' + match[1] + '-product.html';
+                }
+            });
+        });
+    </script>
+
+    <!-- ── Hover popup + background blur ── -->
+    <script>
+        const items = document.querySelectorAll('.product-item');
+        const blurOverlay = document.getElementById('blurOverlay');
+        const hoverTimers = new Map();
+
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const timer = setTimeout(() => {
+                    items.forEach(el => el.classList.remove('popup-active'));
+                    item.classList.add('popup-active');
+                    document.body.classList.add('gallery-blur-active');
+                }, 1500);
+                hoverTimers.set(item, timer);
+            });
+            item.addEventListener('mouseleave', () => {
+                clearTimeout(hoverTimers.get(item));
+                hoverTimers.delete(item);
+                item.classList.remove('popup-active');
+                document.body.classList.remove('gallery-blur-active');
+            });
+        });
+
+        blurOverlay.addEventListener('click', () => {
+            items.forEach(el => el.classList.remove('popup-active'));
+            document.body.classList.remove('gallery-blur-active');
+        });
+    </script>
+
+</body>
+</html>

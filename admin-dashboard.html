@@ -955,21 +955,28 @@
 
     // ── Fabrics tab ───────────────────────────────────────────────────────────
     const ALL_DESIGNS = [
-      { sku: 'KD-P1-FSS',  name: 'Full Sleeve Classic Shirt' },
-      { sku: 'KD-P2-HOD',  name: 'Half Sleeve Overall Dress' },
-      { sku: 'KD-P6-SLD',  name: 'Sleeveless Dress' },
-      { sku: 'KD-P8-SHD',  name: 'Sleeveless Sheath Dress' },
-      { sku: 'KD-P11-HAD', name: 'Half Sleeve A-line Dress' },
-      { sku: 'KD-P12-FAD', name: 'Full Sleeve A-line Dress' },
-      { sku: 'KD-P32-QAD', name: 'Quarter Sleeve A-line Dress' },
-      { sku: 'KD-P34-SMX', name: 'Sleeveless Maxi Dress' },
-      { sku: 'KD-P37-SFD', name: 'Sleeveless Shift Dress' },
-      { sku: 'KD-P40-SBC', name: 'Sleeveless Bodycon Dress' },
-      { sku: 'KD-P48-FWT', name: 'Full Sleeve Wrap Top' },
-      { sku: 'KD-P49-SAD', name: 'Sleeveless A-line Dress' },
-      { sku: 'KD-P57-FA2', name: 'Full Sleeve A-line Dress 2' },
-      { sku: 'KD-P62-FQB',      name: 'Full Sleeve Quarter Button A-line Dress' },
-      { sku: 'KD-P279P280-FSCT', name: 'Full Sleeve Classic Shirt and Classic Trouser' },
+      { sku: 'KD-P1-FSS',       name: 'Full Sleeve Classic Shirt',                    group: 'woman' },
+      { sku: 'KD-P2-HOD',       name: 'Half Sleeve Overall Dress',                    group: 'woman' },
+      { sku: 'KD-P6-SLD',       name: 'Sleeveless Dress',                             group: 'woman' },
+      { sku: 'KD-P8-SHD',       name: 'Sleeveless Sheath Dress',                      group: 'woman' },
+      { sku: 'KD-P11-HAD',      name: 'Half Sleeve A-line Dress',                     group: 'woman' },
+      { sku: 'KD-P12-FAD',      name: 'Full Sleeve A-line Dress',                     group: 'woman' },
+      { sku: 'KD-P32-QAD',      name: 'Quarter Sleeve A-line Dress',                  group: 'woman' },
+      { sku: 'KD-P34-SMX',      name: 'Sleeveless Maxi Dress',                        group: 'woman' },
+      { sku: 'KD-P37-SFD',      name: 'Sleeveless Shift Dress',                       group: 'woman' },
+      { sku: 'KD-P40-SBC',      name: 'Sleeveless Bodycon Dress',                     group: 'woman' },
+      { sku: 'KD-P48-FWT',      name: 'Full Sleeve Wrap Top',                         group: 'woman' },
+      { sku: 'KD-P49-SAD',      name: 'Sleeveless A-line Dress',                      group: 'woman' },
+      { sku: 'KD-P57-FA2',      name: 'Full Sleeve A-line Dress 2',                   group: 'woman' },
+      { sku: 'KD-P62-FQB',      name: 'Full Sleeve Quarter Button A-line Dress',      group: 'woman' },
+      { sku: 'KD-P279P280-FSCT', name: 'Full Sleeve Classic Shirt and Classic Trouser', group: 'man' },
+    ];
+
+    const DESIGN_GROUPS = [
+      { key: 'woman', label: 'Pool of Designs — Woman' },
+      { key: 'man',   label: 'Pool of Designs — Man'   },
+      { key: 'boy',   label: 'Pool of Designs — Boy'   },
+      { key: 'girl',  label: 'Pool of Designs — Girl'  },
     ];
 
     function renderFabricsPanel() {
@@ -1031,7 +1038,30 @@
       // ── Section 1: per-product visibility ──────────────────────────────────
       const P32_SKU = 'KD-P32-QAD';
       let productsHtml = '';
-      ALL_DESIGNS.forEach(design => {
+
+      DESIGN_GROUPS.forEach(group => {
+        const groupDesigns = ALL_DESIGNS.filter(d => d.group === group.key);
+
+        // Group section header
+        productsHtml += `
+          <div style="padding:0.9rem 1.4rem;margin:1.6rem 0 0.8rem;
+                      border-left:3px solid #1a1a1a;background:#fafaf9;">
+            <p style="font-family:'Times New Roman',serif;font-size:1.15rem;
+                      letter-spacing:4px;text-transform:uppercase;color:#1a1a1a;margin:0;">
+              ${group.label}
+            </p>
+          </div>`;
+
+        if (groupDesigns.length === 0) {
+          productsHtml += `
+            <div style="padding:1.2rem 1.4rem;border:1px solid #e0e0e0;border-radius:3px;
+                        font-family:'Times New Roman',serif;font-size:1.2rem;
+                        letter-spacing:2px;color:#aaa;font-style:italic;">
+              No designs yet.
+            </div>`;
+        }
+
+        groupDesigns.forEach(design => {
         const isP32 = design.sku === P32_SKU;
 
         const mainTypesHtml = buildTypesHtml(design.sku, null);
@@ -1113,7 +1143,8 @@
               ${mainTypesHtml}
             </div>
           </div>`;
-      });
+        }); // end groupDesigns.forEach
+      }); // end DESIGN_GROUPS.forEach
 
       // ── Section 2: global swatch catalog — Main Design ────────────────────────
       let swatchMgmtHtml = '';

@@ -1,0 +1,54 @@
+#!/bin/bash
+# Auto-compress GLBs (Draco) and convert JPG/PNG → WebP before every commit.
+# Skips KD_monogram.png (used as favicon).
+
+GLTF_TRANSFORM="./node_modules/.bin/gltf-transform"
+
+# ── GLB: Draco compression ────────────────────────────────────────────────────
+STAGED_GLBS=$(git diff --cached --name-only --diff-filter=AM | grep -i '\.glb$' || true)
+
+if [ -n "$STAGED_GLBS" ]; then
+  echo "[pre-commit] Draco-compressing GLBs..."
+  while IFS= read -r glb; do
+    [ -f "$glb" ] || continue
+    "$GLTF_TRANSFORM" draco "$glb" "${glb}.tmp.glb" 2>/dev/null && mv "${glb}.tmp.glb" "$glb"
+    git add "$glb"
+    echo "  compressed: $glb"
+  done <<< "$STAGED_GLBS"
+fi
+
+# ── Images: JPG/PNG → WebP ────────────────────────────────────────────────────
+STAGED_IMGS=$(git diff --cached --name-only --diff-filter=AM | grep -iE '\.(jpg|jpeg|png)$' | grep -v 'KD_monogram\.png' || true)
+
+if [ -n "$STAGED_IMGS" ]; then
+  echo "[pre-commit] Converting images to WebP..."
+  while IFS= read -r img; do
+    [ -f "$img" ] || continue
+
+    webp="${img%.*}.webp"
+    base=$(basename "$img")
+    ext="${base##*.}"
+    base_noext="${base%.*}"
+
+    cwebp -q 85 "$img" -o "$webp" -quiet
+
+    # Escape special regex chars in filename for sed
+    escaped=$(printf '%s' "$base_noext" | sed 's/[[\.*^$(){}+?|/]/\\&/g; s/&/\\&/g')
+
+    # Update references in all HTML/JS files
+    find . -maxdepth 2 \( -name "*.html" -o -name "*.js" \) | grep -v node_modules | while IFS= read -r f; do
+      sed -i '' "s/${escaped}\\.${ext}/${escaped}.webp/g" "$f" 2>/dev/null || true
+    done
+
+    git add "$webp"
+    git rm --cached -- "$img" 2>/dev/null || true
+    rm "$img"
+
+    # Re-stage any HTML/JS files that had references updated
+    git add -u 2>/dev/null || true
+
+    echo "  converted: $img → $webp"
+  done <<< "$STAGED_IMGS"
+fi
+
+exit 0

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 const monkeyUrl = new URL('/3d/Earth_1_12756.glb', import.meta.url);
 
@@ -30,7 +31,7 @@ scene.add (light)
 /*const grid = new THREE.GridHelper (30, 30);
 scene.add (grid);*/
 
-const assetLoader = new GLTFLoader();
+const assetLoader = (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })();
 
 
 assetLoader.load(monkeyUrl.href, function(gltf) {

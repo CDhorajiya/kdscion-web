@@ -696,6 +696,7 @@
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
         const canvas = document.getElementById('viewer-canvas');
@@ -744,7 +745,7 @@
 
         function preSampleAll() {
             TONE_DEFS.forEach(({ key, glb, darken }) => {
-                new GLTFLoader().load(glb, (refGltf) => {
+                (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(glb, (refGltf) => {
                     let color = null;
                     refGltf.scene.traverse((node) => {
                         if (color || !node.isMesh || !node.material) return;
@@ -817,7 +818,7 @@
             controlsS.target.set(0, 0, 0);
             controlsS.update();
 
-            new GLTFLoader().load('3d/p37-sleeveless-shift dress.glb', (gltf) => {
+            (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load('3d/p37-sleeveless-shift dress.glb', (gltf) => {
                 currentModel = gltf.scene;
                 const box = new THREE.Box3().setFromObject(currentModel);
                 currentModel.position.sub(box.getCenter(new THREE.Vector3()));

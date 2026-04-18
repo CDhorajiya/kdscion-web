@@ -693,6 +693,7 @@
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
         import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
 
@@ -923,7 +924,7 @@
             controlsS.target.set(0, 0, 0);
             controlsS.update();
 
-            new GLTFLoader().load(
+            (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(
                 '3d/p279&p280 full sleeve classic shirt & classic trouser.glb',
                 (gltf) => {
                     currentModel = gltf.scene;

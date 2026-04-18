@@ -502,6 +502,7 @@
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
         /* ─────────────────────────────────────────
@@ -532,7 +533,7 @@
             controls.dampingFactor = 0.08;
             controls.autoRotate = true;
             controls.autoRotateSpeed = 1.2;
-            new GLTFLoader().load(modelPath, (gltf) => {
+            (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(modelPath, (gltf) => {
                 const model = gltf.scene;
                 const box   = new THREE.Box3().setFromObject(model);
                 model.position.sub(box.getCenter(new THREE.Vector3()));
@@ -582,7 +583,7 @@
             controlsS.dampingFactor = 0.08;
             controlsS.autoRotate = true;
             controlsS.autoRotateSpeed = 1.2;
-            new GLTFLoader().load(modelPath, (gltf) => {
+            (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(modelPath, (gltf) => {
                 currentModel = gltf.scene;
                 const box = new THREE.Box3().setFromObject(currentModel);
                 currentModel.position.sub(box.getCenter(new THREE.Vector3()));

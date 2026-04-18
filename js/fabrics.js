@@ -18,8 +18,8 @@ export const FABRIC_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'cotton-1', label: 'Cotton 1', image: 'images/cotton-1.jpg' },
-          { id: 'cotton-2', label: 'Cotton 2', image: 'images/cotton-2.jpg' },
+          { id: 'cotton-1', label: 'Cotton 1', image: 'images/cotton-1.webp' },
+          { id: 'cotton-2', label: 'Cotton 2', image: 'images/cotton-2.webp' },
         ],
       },
       { id: 'dobies', label: 'Dobies Collection',  swatches: [] },
@@ -37,7 +37,7 @@ export const FABRIC_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'linen-1', label: 'Linen 1', image: 'images/linen-1.jpg' },
+          { id: 'linen-1', label: 'Linen 1', image: 'images/linen-1.webp' },
           { id: 'linen-2', label: 'Linen 2', image: 'images/linen-2.webp' },
         ],
       },
@@ -56,8 +56,8 @@ export const FABRIC_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'wool-1', label: 'Wool 1',  image: 'images/wool-1.jpg' },
-          { id: 'wool-2', label: 'Wool 2',  image: 'images/woolen fabric.jpg' },
+          { id: 'wool-1', label: 'Wool 1',  image: 'images/wool-1.webp' },
+          { id: 'wool-2', label: 'Wool 2',  image: 'images/woolen fabric.webp' },
         ],
       },
       { id: 'dobies', label: 'Dobies Collection',  swatches: [] },
@@ -92,7 +92,7 @@ export const FABRIC_CATALOG = [
         label: 'Plain Collection',
         swatches: [
           { id: 'cotton-linen-1', label: 'Blend 1', image: 'images/cotton-linen blend-1.webp' },
-          { id: 'cotton-linen-2', label: 'Blend 2', image: 'images/cotton-linen blend-2.jpg' },
+          { id: 'cotton-linen-2', label: 'Blend 2', image: 'images/cotton-linen blend-2.webp' },
         ],
       },
       { id: 'dobies', label: 'Dobies Collection',  swatches: [] },
@@ -148,7 +148,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-cotton-1', label: 'tt-cotton-1', image: 'images/tt-cotton-1.jpg' },
+          { id: 'tt-cotton-1', label: 'tt-cotton-1', image: 'images/tt-cotton-1.webp' },
         ],
       },
     ],
@@ -190,7 +190,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-silk-1', label: 'tt-silk-1', image: 'images/tt-silk-1.jpg' },
+          { id: 'tt-silk-1', label: 'tt-silk-1', image: 'images/tt-silk-1.webp' },
         ],
       },
     ],
@@ -204,7 +204,7 @@ export const TWOTONE_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'tt-leather-1', label: 'tt-leather-1', image: 'images/tt-leather-1.jpg' },
+          { id: 'tt-leather-1', label: 'tt-leather-1', image: 'images/tt-leather-1.webp' },
         ],
       },
     ],

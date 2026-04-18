@@ -28,7 +28,7 @@ oceanLight.position.set(-3, 2, 4);
 scene.add(oceanLight);
 
 // --- Earth ---
-const texture = new THREE.TextureLoader().load('./images/earth_atmos_4096.jpg');
+const texture = new THREE.TextureLoader().load('./images/earth_atmos_4096.webp');
 texture.colorSpace = THREE.SRGBColorSpace;
 
 // Enhancement 3: slightly higher metalness + lower roughness for ocean shimmer

@@ -20,7 +20,7 @@ const fill = new THREE.DirectionalLight(0xffffff, 1.2);
 fill.position.set(-5, -2, 3);
 scene.add(fill);
 
-const texture = new THREE.TextureLoader().load('./images/earth_atmos_4096.jpg');
+const texture = new THREE.TextureLoader().load('./images/earth_atmos_4096.webp');
 texture.colorSpace = THREE.SRGBColorSpace;
 const earth = new THREE.Mesh(
     new THREE.SphereGeometry(1, 64, 64),

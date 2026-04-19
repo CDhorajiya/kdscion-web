@@ -683,8 +683,6 @@
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
-        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
-        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
         const canvas   = document.getElementById('viewer-canvas');
@@ -1129,7 +1127,11 @@
                 });
                 currentModel = null;
             }
-            (() => { const _l = (() => { const _l = (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(glbPath, (gltf) => {
+            const loader = new GLTFLoader();
+            const draco = new DRACOLoader();
+            draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+            loader.setDRACOLoader(draco);
+            loader.load(glbPath, (gltf) => {
                 const model = gltf.scene;
                 const box   = new THREE.Box3().setFromObject(model);
                 model.position.sub(box.getCenter(new THREE.Vector3()));
@@ -1223,9 +1225,9 @@
         /* ── Gender toggle ── */
         const GLB_MAP = {
             woman: '3d/p1-full sleeve classic shirt.glb',
-            man:   'man.glb',
-            boy:   'boy.glb',
-            girl:  'girl.glb',
+            man:   '3d/man.glb',
+            boy:   '3d/boy.glb',
+            girl:  '3d/girl.glb',
         };
 
         document.querySelectorAll('.gender-btn').forEach(btn => {

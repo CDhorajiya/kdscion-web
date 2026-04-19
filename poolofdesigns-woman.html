@@ -40,86 +40,70 @@
             display: block;
         }
 
-        /* ── Description popup ── */
+        /* ── Pointer annotation ── */
         .product-desc {
             position: absolute;
             top: 50%;
-            left: calc(100% + 2rem);
-            transform: translateY(-50%) translateX(-16px);
-            width: 28rem;
-            background: rgba(255, 255, 255, 0.98);
-            border: 1px solid #d9d1c5;
-            padding: 2.8rem 3.2rem;
+            left: calc(100% - 20px);
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 14px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.9s ease, transform 0.9s ease;
+            transition: opacity 0.12s ease;
             z-index: 300;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
         }
         .product-column:last-child .product-desc {
             left: auto;
-            right: calc(100% + 2rem);
-            transform: translateY(-50%) translateX(16px);
+            right: calc(100% - 20px);
+            align-items: flex-end;
+            padding-left: 0;
+            padding-right: 14px;
         }
-        .product-item.popup-active .product-desc {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
-            pointer-events: auto;
+        .product-desc::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            box-shadow: 0 0 4px rgba(40,25,5,0.4);
         }
-        .product-column:last-child .product-item.popup-active .product-desc {
-            transform: translateY(-50%) translateX(0);
+        .product-column:last-child .product-desc::before {
+            left: auto;
+            right: 0;
         }
+        .product-desc::after { display: none; }
+        .product-item.popup-active .product-desc { opacity: 1; }
         .product-desc__title {
             font-family: "Times New Roman", Times, serif;
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             font-weight: 400;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            color: #000;
-            margin: 0 0 1.4rem 0;
-            line-height: 1.8;
-            word-break: break-word;
-        }
-        .product-desc__divider {
-            width: 3rem;
-            height: 1px;
-            background: #000;
-            margin-bottom: 1.4rem;
-        }
-        .product-desc__sub {
-            font-size: 1.3rem;
-            letter-spacing: 2px;
-            color: #5c5577;
-            text-transform: uppercase;
+            color: rgba(30,20,5,0.9);
             margin: 0;
+            white-space: nowrap;
         }
-
-        /* ── Blur overlay ── */
-        .blur-overlay {
-            position: fixed;
-            inset: 0;
-            backdrop-filter: blur(0px);
-            -webkit-backdrop-filter: blur(0px);
-            background: rgba(255, 255, 255, 0);
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.7s ease, backdrop-filter 0.7s ease;
+        .product-desc__divider { display: none; }
+        .product-desc__sub {
+            display: block;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: rgba(30,20,5,0.7);
+            text-transform: uppercase;
+            margin: 0.5rem 0 0 0;
+            white-space: normal;
+            max-width: 160px;
         }
-        body.gallery-blur-active .blur-overlay {
-            opacity: 1;
-            backdrop-filter: blur(7px);
-            -webkit-backdrop-filter: blur(7px);
-            background: rgba(255, 255, 255, 0.15);
-            pointer-events: auto;
-        }
-        body.gallery-blur-active .product-item.popup-active {
-            z-index: 400;
-        }
-        header {
-            position: relative;
-            z-index: 500;
-        }
+        .product-column:last-child .product-desc__title,
+        .product-column:last-child .product-desc__sub { text-align: right; }
 
 
         /* ── 3D Viewer modal base ── */
@@ -262,8 +246,6 @@
     </style>
 </head>
 <body>
-
-    <div class="blur-overlay" id="blurOverlay"></div>
 
     <header>
         <nav class="nav collapsible">
@@ -430,6 +412,16 @@
                          alt="KDscion-p62-full sleeve quarter button A-line dress">
                     <div class="product-desc">
                         <p class="product-desc__title">KDscion-p62-full sleeve quarter button A-line dress</p>
+                        <div class="product-desc__divider"></div>
+                        <p class="product-desc__sub">King Dhorajiya</p>
+                    </div>
+                </div>
+
+                <div class="product-item has-3d" data-model="3d/p22-sleeveless classic shirt.glb">
+                    <img src="images/KDscion-p22-sleeveless classic shirt.webp"
+                         alt="KDscion-p22-sleeveless classic shirt">
+                    <div class="product-desc">
+                        <p class="product-desc__title">KDscion-p22-sleeveless classic shirt</p>
                         <div class="product-desc__divider"></div>
                         <p class="product-desc__sub">King Dhorajiya</p>
                     </div>
@@ -737,29 +729,37 @@
 
     <script>
         const items = document.querySelectorAll('.product-item');
-        const blurOverlay = document.getElementById('blurOverlay');
-        const hoverTimers = new Map();
 
         items.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                const timer = setTimeout(() => {
-                    items.forEach(el => el.classList.remove('popup-active'));
-                    item.classList.add('popup-active');
-                    document.body.classList.add('gallery-blur-active');
-                }, 1500);
-                hoverTimers.set(item, timer);
-            });
-            item.addEventListener('mouseleave', () => {
-                clearTimeout(hoverTimers.get(item));
-                hoverTimers.delete(item);
-                item.classList.remove('popup-active');
-                document.body.classList.remove('gallery-blur-active');
+            const titleEl = item.querySelector('.product-desc__title');
+            const subEl   = item.querySelector('.product-desc__sub');
+            if (titleEl && subEl) {
+                const full  = titleEl.textContent.trim();
+                const idx   = full.indexOf('-');
+                if (idx !== -1) {
+                    const brand = full.slice(0, idx);
+                    titleEl.textContent = brand.startsWith('KD') ? 'KD ' + brand.slice(2) : brand;
+                    subEl.textContent   = full.slice(idx + 1);
+                }
+            }
+        });
+
+        requestAnimationFrame(() => {
+            items.forEach(item => {
+                const titleEl   = item.querySelector('.product-desc__title');
+                const dividerEl = item.querySelector('.product-desc__divider');
+                if (titleEl && dividerEl) dividerEl.style.width = titleEl.offsetWidth + 'px';
             });
         });
 
-        blurOverlay.addEventListener('click', () => {
-            items.forEach(el => el.classList.remove('popup-active'));
-            document.body.classList.remove('gallery-blur-active');
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                items.forEach(el => el.classList.remove('popup-active'));
+                item.classList.add('popup-active');
+            });
+            item.addEventListener('mouseleave', () => {
+                item.classList.remove('popup-active');
+            });
         });
     </script>
 

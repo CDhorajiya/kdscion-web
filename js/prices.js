@@ -19,6 +19,7 @@ export const DESIGN_PRICES = {
   'KD-P49-SAD': 0,   // Sleeveless A-line Dress
   'KD-P57-FA2': 0,   // Full Sleeve A-line Dress 2
   'KD-P62-FQB': 0,   // Full Sleeve Quarter Button A-line Dress
+  'KD-P22-SCS': 0,   // Sleeveless Classic Shirt
 };
 
 export const FABRIC_PRICES = {

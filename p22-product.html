@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDscion-p22 — Sleeveless Classic Shirt</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Gallery iframe background ── */
+        .bg-frame {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Dark blur overlay between gallery and content ── */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.52);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ── Breadcrumb ── */
+        .product-breadcrumb {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 1rem;
+        }
+        .product-breadcrumb a {
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .product-breadcrumb a:hover { color: rgba(255,255,255,0.9); }
+        .product-breadcrumb span { margin: 0 1rem; }
+
+        /* ── Page layout ── */
+        .product-page-wrap {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            min-height: 0;
+            padding: 1.6rem 4rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title-row {
+            margin-bottom: 1.4rem;
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        .product-title-row h2 {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            margin: 0 0 0.4rem 0;
+        }
+        .product-title-row p {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.85);
+            margin: 0;
+        }
+        .product-home-link {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .product-home-link:hover { color: rgba(255,255,255,0.9); }
+
+        /* ── Main split layout ── */
+        .product-split {
+            display: flex;
+            gap: 2.4rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* ── Fabric full-preview overlay ── */
+        .fabric-preview {
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: rgb(18,18,20);
+            border-radius: 4px;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+        }
+        .fabric-preview.visible { display: flex; }
+        .fabric-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .fabric-preview-back {
+            position: absolute;
+            top: 1.1rem;
+            left: 1.1rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.28);
+            color: rgba(255,255,255,0.82);
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.56rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            padding: 0.76rem 1.7rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .fabric-preview-back:hover {
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+        }
+
+        /* ── 3D Viewer panel ── */
+        .viewer-panel {
+            position: relative;
+            flex: 1.4;
+            background: rgb(18,18,20);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            min-height: 0;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.35);
+        }
+        #viewer-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+        .viewer-label {
+            position: absolute;
+            bottom: 1.8rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.35);
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        /* ── Fabric column (tagline + panel) ── */
+        .fabric-col {
+            flex: 0 0 280px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        /* ── Fabric panel ── */
+        .fabric-panel {
+            flex: 1;
+            background: rgb(18,18,20);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 2rem 1.8rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            overflow-y: auto;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.35);
+        }
+        .product-tagline {
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            text-align: right;
+            margin: 0 0 0.8rem 0;
+            flex-shrink: 0;
+        }
+        .fabric-panel-title {
+            font-family: "Times New Roman", serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin: 0 0 2rem 0;
+            text-align: center;
+        }
+
+        /* ── Fabric flat list ── */
+        .fabric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .fabric-list.has-open .fabric-category:not(.open) {
+            display: none;
+        }
+
+        /* ── Fabric category container ── */
+        .fabric-category {
+            border: 2px solid transparent;
+            border-radius: 3px;
+            transition: border-color 0.2s;
+            overflow: hidden;
+        }
+        .fabric-category.open {
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        /* ── Category header (wreath card) ── */
+        .category-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fabric-category:not(.open):hover {
+            border-color: rgba(255,255,255,0.4);
+        }
+        .category-card:hover { transform: scale(1.01); }
+        .category-card .wreath-preview {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0.5rem 0.3rem;
+            background: rgba(0,0,0,0.18);
+            overflow: hidden;
+        }
+        .category-card .wreath-preview img {
+            height: 72px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.25s ease;
+        }
+        .category-card:hover .wreath-preview img { transform: scale(1.1); }
+        .category-card p {
+            margin: 0;
+            padding: 0.55rem 0.8rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.85);
+            background: rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        .fabric-category.open .category-card p {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.38);
+        }
+
+        /* ── Sub-swatch grid (hidden until open) ── */
+        .swatch-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem;
+            background: rgba(0,0,0,0.15);
+        }
+        .fabric-category.open .swatch-grid { display: grid; }
+
+        /* ── Individual square swatch card ── */
+        .swatch-card {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 3px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .swatch-card:hover { border-color: rgba(255,255,255,0.5); }
+        .swatch-card.active { border-color: #ffffff; }
+        .swatch-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease 0s;
+        }
+        .swatch-card:hover img {
+            transform: scale(3);
+            transition: transform 0.4s ease 3s;
+        }
+        .swatch-card span {
+            display: block;
+            padding: 0.3rem 0.2rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.8);
+            background: rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        .swatch-card.active span {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.45);
+        }
+
+        /* ── Sub-category (collection) within a fabric type ── */
+        .fabric-subcategory {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.4rem;
+        }
+        .fabric-subcategory:last-child { margin-bottom: 0; }
+        .subcategory-header {
+            cursor: pointer;
+            padding: 0.42rem 0.8rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(180,160,200,0.65);
+            background: rgba(0,0,0,0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .subcategory-header:hover {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,1);
+        }
+        .fabric-subcategory.open .subcategory-header {
+            color: rgba(180,160,200,1);
+            background: rgba(0,0,0,0.35);
+        }
+        .subcategory-header .sub-arrow {
+            font-size: 0.6rem;
+            transition: transform 0.2s;
+            opacity: 0.5;
+        }
+        .fabric-subcategory.open .subcategory-header .sub-arrow {
+            transform: rotate(90deg);
+        }
+        .sub-swatch-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.1);
+        }
+        .fabric-subcategory.open .sub-swatch-grid { display: grid; }
+
+        /* ── Cart actions ── */
+        .cfg-actions {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .cfg-price-label {
+            text-align: right;
+        }
+        .cfg-add-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.85);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .cfg-add-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.16);
+            border-color: rgba(255,255,255,0.6);
+            color: #fff;
+        }
+        .cfg-add-btn:disabled { opacity: 0.5; cursor: default; }
+        .cfg-status {
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .cfg-status--ok    { color: rgba(180,220,180,0.9); }
+        .cfg-status--warn  { color: rgba(220,200,140,0.9); }
+        .cfg-status--error { color: rgba(220,140,140,0.9); }
+
+        /* ── Skin tone toggle ── */
+        .skin-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-left: 1.2rem;
+            vertical-align: middle;
+        }
+        .skin-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: rgba(255,255,255,0.45);
+            font-family: "Times New Roman", serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.9rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .skin-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.8);
+        }
+        .skin-btn.active {
+            background: rgba(255,255,255,0.14);
+            border-color: rgba(255,255,255,0.7);
+            color: #fff;
+        }
+
+        /* ── Design Details button ── */
+        .design-details-btn {
+            position: absolute;
+            bottom: 1.8rem;
+            right: 1.4rem;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.72);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 0.52rem 1.1rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        .design-details-btn:hover {
+            background: rgba(0,0,0,0.65);
+            border-color: rgba(255,255,255,0.5);
+            color: #fff;
+        }
+        .design-details-btn.active {
+            background: rgba(255,220,150,0.12);
+            border-color: rgba(255,220,150,0.45);
+            color: rgba(255,220,150,0.9);
+        }
+
+        /* ── Design details annotation layer ── */
+        #detail-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 4;
+        }
+        #detail-layer.visible { opacity: 1; }
+        .dann-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255,220,150,0.95);
+            box-shadow: 0 0 6px rgba(255,200,80,0.8);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .dann-label {
+            position: absolute;
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,220,150,0.9);
+            white-space: normal;
+            max-width: 140px;
+            pointer-events: none;
+            line-height: 1.35;
+        }
+        .dann-label.right { transform: translateY(-50%); }
+        .dann-label.left  { transform: translate(-100%, -50%); }
+        .dann-line {
+            position: absolute;
+            height: 1px;
+            background: rgba(255,200,80,0.45);
+            pointer-events: none;
+            transform-origin: left center;
+        }
+
+        /* ── White theme overrides ── */
+        html, body { background: #fff; color: #1a1a1a; }
+        .bg-frame, .bg-overlay { display: none; }
+
+        .monogram img { filter: none; }
+
+        .product-breadcrumb { color: #888; }
+        .product-breadcrumb a { color: #888; }
+        .product-breadcrumb a:hover { color: #1a1a1a; }
+
+        .product-title-row h2 { color: #1a1a1a; }
+        .product-title-row p  { color: #888; }
+        .product-home-link:hover { color: #1a1a1a; }
+        .product-tagline { color: #999; }
+
+        .viewer-panel {
+            background: #f5f5f5;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .viewer-label { color: #bbb; }
+
+        .design-details-btn {
+            background: rgba(255,255,255,0.82);
+            border-color: #ccc;
+            color: #666;
+        }
+        .design-details-btn:hover { background: #fff; border-color: #999; color: #1a1a1a; }
+        .design-details-btn.active {
+            background: rgba(100,70,0,0.08);
+            border-color: rgba(100,70,0,0.45);
+            color: rgba(100,70,0,0.85);
+        }
+        .dann-dot  { background: rgba(80,60,10,0.85); box-shadow: 0 0 6px rgba(80,60,10,0.5); }
+        .dann-label { color: rgba(80,60,10,0.85); }
+        .dann-line  { background: rgba(100,80,10,0.4); }
+
+        .fabric-preview { background: #fff; }
+        .fabric-preview-back {
+            background: rgba(255,255,255,0.9);
+            border-color: #ccc;
+            color: #333;
+        }
+        .fabric-preview-back:hover { background: #fff; color: #1a1a1a; }
+
+        .fabric-panel {
+            background: #fff;
+            border-color: #e0e0e0;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+        .fabric-panel-title { color: #1a1a1a; }
+
+        .fabric-category.open { border-color: #ccc; }
+        .fabric-category:not(.open):hover { border-color: #bbb; }
+        .category-card .wreath-preview { background: #f5f5f5; }
+        .category-card p { color: #555; background: #f0f0f0; }
+        .fabric-category.open .category-card p { color: #1a1a1a; background: #e8e8e8; }
+
+        .swatch-grid { background: #fafafa; }
+        .swatch-card:hover { border-color: #999; }
+        .swatch-card.active { border-color: #1a1a1a; }
+        .swatch-card span { color: #666; background: #f0f0f0; }
+        .swatch-card.active span { color: #1a1a1a; background: #e0e0e0; }
+
+        .fabric-subcategory { border-color: #e0e0e0; }
+        .subcategory-header { color: #555; background: #f5f5f5; }
+        .subcategory-header:hover { background: #eee; color: #1a1a1a; }
+        .fabric-subcategory.open .subcategory-header { color: #1a1a1a; background: #e8e8e8; }
+        .sub-swatch-grid { background: #fafafa; }
+
+
+        .cfg-add-btn {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .cfg-add-btn:hover:not(:disabled) {
+            background: #333;
+            border-color: #333;
+            color: #fff;
+        }
+        .cfg-status--ok    { color: #2a6e2a; }
+        .cfg-status--warn  { color: #7a6000; }
+        .cfg-status--error { color: #8a1a1a; }
+
+        .skin-btn {
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #555;
+        }
+        .skin-btn:hover { background: #eee; border-color: #bbb; color: #1a1a1a; }
+        .skin-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <!-- ── Pool of Designs gallery as background ── -->
+    <iframe class="bg-frame" src="poolofdesigns-woman.html" tabindex="-1" aria-hidden="true"></iframe>
+    <div class="bg-overlay"></div>
+
+    <div class="product-page-wrap">
+
+        <div class="product-breadcrumb">
+            <a href="index.html">King Dhorajiya</a>
+        </div>
+
+        <div class="product-title-row">
+            <div>
+                <h2>Sleeveless Classic Shirt</h2>
+                <p>
+                    <a href="poolofdesigns-woman.html" class="product-home-link">Pool of Designs</a> &nbsp;·&nbsp; KDscion-p22 &nbsp;·&nbsp; The House of Scion
+                    <span class="skin-toggle">
+                        <button class="skin-btn active" data-skin="">Fair</button>
+                        <button class="skin-btn" data-skin="medium">Medium</button>
+                        <button class="skin-btn" data-skin="tan">Tan</button>
+                        <button class="skin-btn" data-skin="dark">Dark</button>
+                    </span>
+                </p>
+            </div>
+            <p class="product-tagline">Custom &nbsp;|&nbsp; Premium &nbsp;|&nbsp; Unique</p>
+        </div>
+
+        <!-- ── Main split: 3D viewer + Fabric panel ── -->
+        <div class="product-split">
+
+            <!-- Left: 3D canvas -->
+            <div class="viewer-panel">
+                <canvas id="viewer-canvas"></canvas>
+                <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
+                <div id="detail-layer"></div>
+                <button class="design-details-btn" id="design-details-btn">Design Details</button>
+                <div id="fabric-preview" class="fabric-preview">
+                    <img id="fabric-preview-img" src="" alt="Fabric Preview">
+                    <button class="fabric-preview-back" id="fabric-preview-back">← 3D View</button>
+                </div>
+            </div>
+
+            <!-- Right: fabric panel -->
+            <div class="fabric-col">
+                <div class="fabric-panel" data-sku="KD-P22-SCS">
+                <p class="fabric-panel-title">Select Fabric</p>
+
+                <div class="fabric-list">
+
+                </div>
+
+                <!-- Price + Add to Cart -->
+                <div class="cfg-actions">
+                    <span class="cfg-price-label">Total &nbsp;<strong id="cfg-price">—</strong></span>
+                    <button id="cfg-add-btn" class="cfg-add-btn">ADD TO COLLECTION</button>
+                    <button id="cfg-goto-btn" class="cfg-add-btn" disabled>GO TO COLLECTION</button>
+                    <p id="cfg-status" class="cfg-status"></p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import * as THREE from 'https://esm.sh/three@0.169.0';
+        import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
+        import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+        import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
+
+        // Load product + options from API
+        const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
+        if (sku) initConfigurator(sku);
+
+        // Wire up Add to Cart button
+        document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
+        document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
+        initGoToCollection();
+
+        const canvas = document.getElementById('viewer-canvas');
+        let rendererS, sceneS, cameraS, controlsS, animIdS, currentModel;
+
+        /* ── Skin tone system ── */
+        const origBodyMats = new Map();
+        const skinPalette  = new Map();
+
+        const SKIP_PARTS = ['hair', 'eye', 'lash', 'brow', 'teeth', 'tooth', 'tongue',
+                            'nail', 'shoe', 'boot', 'heel', 'sole', 'sandal', 'footwear',
+                            'glass', 'lens', 'button'];
+
+        const TONE_DEFS = [
+            { key: 'medium', glb: 'medium woman.glb', darken: 1    },
+            { key: 'tan',    glb: 'Tan woman.glb',    darken: 0.78 },
+            { key: 'dark',   glb: 'Dark woman.glb',   darken: 1    },
+        ];
+
+        const NON_SKIN = ['hair', 'eye', 'lash', 'brow', 'teeth', 'tooth', 'tongue',
+                          'nail', 'shoe', 'boot', 'heel', 'sole', 'sandal', 'footwear',
+                          'cloth', 'shirt', 'pant', 'dress', 'jacket', 'fabric',
+                          'collar', 'button', 'cuff', 'sleeve', 'skirt', 'top'];
+
+        function sampleTextureColor(texture) {
+            if (!texture || !texture.image) return null;
+            try {
+                const cvs = document.createElement('canvas');
+                cvs.width = 16; cvs.height = 16;
+                const ctx = cvs.getContext('2d');
+                ctx.drawImage(texture.image, 0, 0, 16, 16);
+                const d = ctx.getImageData(0, 0, 16, 16).data;
+                let r = 0, g = 0, b = 0, n = 0;
+                for (let i = 0; i < d.length; i += 4) {
+                    if (d[i + 3] > 0) { r += d[i]; g += d[i+1]; b += d[i+2]; n++; }
+                }
+                return n ? new THREE.Color(r/(n*255), g/(n*255), b/(n*255)) : null;
+            } catch(e) { return null; }
+        }
+
+        function preSampleAll() {
+            TONE_DEFS.forEach(({ key, glb, darken }) => {
+                (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(glb, (refGltf) => {
+                    let color = null;
+                    refGltf.scene.traverse((node) => {
+                        if (color || !node.isMesh || !node.material) return;
+                        const n = (node.name || '').toLowerCase();
+                        if (NON_SKIN.some(kw => n.includes(kw))) return;
+                        const m = node.material;
+                        const isWhite = m.color.r > 0.95 && m.color.g > 0.95 && m.color.b > 0.95;
+                        const c = new THREE.Color();
+                        if (!isWhite) c.copy(m.color);
+                        else if (m.map) { const s = sampleTextureColor(m.map); if (s) c.copy(s); else c.copy(m.color); }
+                        else c.copy(m.color);
+                        if (darken !== 1) c.multiplyScalar(darken);
+                        color = c;
+                    });
+                    if (color) {
+                        skinPalette.set(key, color);
+                        console.log('[skin] pre-sampled', key, '→ #' + color.getHexString());
+                    }
+                    refGltf.scene.traverse((node) => { if (node.isMesh) node.geometry.dispose(); });
+                }, undefined, () => {});
+            });
+        }
+
+        function applySkinTone(toneKey) {
+            if (!currentModel) return;
+            currentModel.traverse((node) => {
+                if (!node.isMesh || !isBodyMesh(node)) return;
+                if (SKIP_PARTS.some(kw => node.name.toLowerCase().includes(kw))) return;
+                const orig = origBodyMats.get(node.uuid);
+                if (!orig) return;
+                if (!toneKey) {
+                    node.material = orig.clone();
+                    return;
+                }
+                const skinColor = skinPalette.get(toneKey);
+                if (!skinColor) return;
+                const newMat = orig.clone();
+                newMat.color.copy(skinColor);
+                newMat.needsUpdate = true;
+                node.material = newMat;
+            });
+        }
+
+        /* ── Skin toggle buttons ── */
+        document.querySelectorAll('.skin-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.skin-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applySkinTone(btn.dataset.skin);
+            });
+        });
+
+        function initViewer() {
+            const panel = canvas.parentElement;
+            const W = panel.clientWidth  || 800;
+            const H = panel.clientHeight || 700;
+            rendererS = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            rendererS.setSize(W, H, false);
+            rendererS.outputColorSpace = THREE.SRGBColorSpace;
+
+            sceneS  = new THREE.Scene();
+            cameraS = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+            cameraS.position.set(0, 0, 3);
+
+            sceneS.add(new THREE.AmbientLight(0xffffff, 1.8));
+            const key = new THREE.DirectionalLight(0xffffff, 1.4);
+            key.position.set(5, 8, 5); sceneS.add(key);
+            const fill = new THREE.DirectionalLight(0xffffff, 0.8);
+            fill.position.set(-5, 2, -5); sceneS.add(fill);
+            const back = new THREE.DirectionalLight(0xffffff, 0.5);
+            back.position.set(0, 4, -8); sceneS.add(back);
+
+            controlsS = new OrbitControls(cameraS, rendererS.domElement);
+            controlsS.enableDamping = true;
+            controlsS.dampingFactor = 0.08;
+            controlsS.target.set(0, 0, 0);
+            controlsS.update();
+
+            preSampleAll();
+
+            (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load('3d/p22-sleeveless classic shirt.glb', (gltf) => {
+                currentModel = gltf.scene;
+                const box = new THREE.Box3().setFromObject(currentModel);
+                currentModel.position.sub(box.getCenter(new THREE.Vector3()));
+                currentModel.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
+                sceneS.add(currentModel);
+                currentModel.traverse((node) => {
+                    if (node.isMesh) {
+                        console.log('[mesh]', node.name);
+                        if (isBodyMesh(node) && !SKIP_PARTS.some(kw => node.name.toLowerCase().includes(kw)))
+                            origBodyMats.set(node.uuid, node.material.clone());
+                    }
+                });
+            }, undefined, (err) => console.error(err));
+
+            (function animate() {
+                animIdS = requestAnimationFrame(animate);
+                controlsS.update();
+                rendererS.render(sceneS, cameraS);
+                updateDetailAnnotations();
+            })();
+        }
+
+        const BODY_KEYWORDS = ['body', 'skin', 'avatar', 'head', 'face', 'hair',
+                               'hand', 'feet', 'foot', 'leg', 'arm', 'eye',
+                               'teeth', 'tooth', 'tongue', 'neck', 'torso', 'human',
+                               'shoe', 'boot', 'heel', 'sole', 'footwear', 'sandal'];
+
+        function isBodyMesh(node) {
+            const name = (node.name || '').toLowerCase();
+            return BODY_KEYWORDS.some(kw => name.includes(kw));
+        }
+
+        const texLoader = new THREE.TextureLoader();
+        let uvNormCache = null;
+        let origGeometries = new Map();
+
+        function initFabricData() {
+            if (uvNormCache) return;
+            let gMinU = Infinity, gMaxU = -Infinity, gMinV = Infinity, gMaxV = -Infinity;
+            currentModel.traverse((node) => {
+                if (!node.isMesh || isBodyMesh(node)) return;
+                if (!origGeometries.has(node.uuid)) {
+                    origGeometries.set(node.uuid, node.geometry.clone());
+                }
+                const uv = node.geometry.attributes.uv;
+                if (!uv) return;
+                for (let i = 0; i < uv.count; i++) {
+                    const u = uv.getX(i), v = uv.getY(i);
+                    if (u < gMinU) gMinU = u; if (u > gMaxU) gMaxU = u;
+                    if (v < gMinV) gMinV = v; if (v > gMaxV) gMaxV = v;
+                }
+            });
+            const gScale = Math.max(gMaxU - gMinU, gMaxV - gMinV) || 1;
+            uvNormCache = { gMinU, gMinV, gScale };
+        }
+
+        function applyFabric(texturePath) {
+            texLoader.load(texturePath, (tex) => {
+                tex.colorSpace = THREE.SRGBColorSpace;
+                tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                tex.repeat.set(1, 1);
+                tex.anisotropy = rendererS.capabilities.getMaxAnisotropy();
+                tex.needsUpdate = true;
+                if (!currentModel) return;
+
+                initFabricData();
+                const { gMinU, gMinV, gScale } = uvNormCache;
+
+                currentModel.traverse((node) => {
+                    if (!node.isMesh || isBodyMesh(node)) return;
+                    const orig = origGeometries.get(node.uuid);
+                    if (!orig) return;
+                    const geo = orig.clone();
+                    const uv  = geo.attributes.uv;
+                    if (uv) {
+                        for (let i = 0; i < uv.count; i++) {
+                            uv.setXY(i,
+                                (uv.getX(i) - gMinU) / gScale,
+                                (uv.getY(i) - gMinV) / gScale
+                            );
+                        }
+                        uv.needsUpdate = true;
+                    }
+                    node.geometry = geo;
+                    const t = tex.clone();
+                    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+                    t.needsUpdate = true;
+                    node.material = new THREE.MeshBasicMaterial({
+                        map: t,
+                        side: THREE.DoubleSide,
+                    });
+                });
+                console.log('[fabric] applied:', texturePath);
+            }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
+        }
+
+        /* ── Fabric preview overlay ── */
+        const fabricPreview    = document.getElementById('fabric-preview');
+        const fabricPreviewImg = document.getElementById('fabric-preview-img');
+        document.getElementById('fabric-preview-back').addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabricPreview.classList.remove('visible');
+        });
+
+        /* ── Delegated listeners on fabric-list ── */
+        const fabricList = document.querySelector('.fabric-list');
+        fabricList.addEventListener('click', (e) => {
+            const card = e.target.closest('.category-card');
+            if (card) {
+                e.stopPropagation();
+                const cat = card.closest('.fabric-category');
+                const isOpen = cat.classList.contains('open');
+                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                if (!isOpen) { cat.classList.add('open'); fabricList.classList.add('has-open'); }
+                else         { fabricList.classList.remove('has-open'); }
+                return;
+            }
+            const header = e.target.closest('.subcategory-header');
+            if (header) {
+                e.stopPropagation();
+                const sub    = header.closest('.fabric-subcategory');
+                const isOpen = sub.classList.contains('open');
+                sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
+                if (!isOpen) sub.classList.add('open');
+                return;
+            }
+            const swatch = e.target.closest('.swatch-card');
+            if (swatch) {
+                e.stopPropagation();
+                fabricList.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
+                swatch.classList.add('active');
+                applyFabric(swatch.dataset.texture);
+                if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
+                fabricPreviewImg.src = swatch.dataset.texture;
+                fabricPreview.classList.add('visible');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.fabric-category')) {
+                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                fabricList.classList.remove('has-open');
+            }
+        });
+
+        /* ── Design Details annotations ── */
+        const DETAIL_ANNS = [
+            { id: 'collar',  label: 'Classic Collar<br>- Spread Collar Neckline',               pos: new THREE.Vector3( 0.02,  0.72,  0.01), side: 'right' },
+            { id: 'button',  label: 'Button according to fabric color / best match',             pos: new THREE.Vector3( 0.02,  0.26,  0.09), side: 'right' },
+            { id: 'dart',    label: 'Front and back dart for classic fitting',                   pos: new THREE.Vector3(-0.04,  0.32, -0.07), side: 'left'  },
+            { id: 'armhole', label: 'Clean Armhole<br>- Sleeveless Cut',                        pos: new THREE.Vector3( 0.15,  0.60,  0.01), side: 'right' },
+        ];
+
+        const detailLayer    = document.getElementById('detail-layer');
+        const detailBtn      = document.getElementById('design-details-btn');
+        let   detailsVisible = false;
+
+        const detailEls = {};
+        DETAIL_ANNS.forEach(a => {
+            const dot  = document.createElement('div');  dot.className = 'dann-dot';
+            const line = document.createElement('div');  line.className = 'dann-line';
+            const lbl  = document.createElement('div');  lbl.className = `dann-label ${a.side}`;
+            lbl.innerHTML = a.label;
+            detailLayer.appendChild(dot);
+            detailLayer.appendChild(line);
+            detailLayer.appendChild(lbl);
+            detailEls[a.id] = { dot, line, lbl };
+        });
+
+        detailBtn.addEventListener('click', () => {
+            detailsVisible = !detailsVisible;
+            detailBtn.classList.toggle('active', detailsVisible);
+            detailLayer.classList.toggle('visible', detailsVisible);
+        });
+
+        const _dVec    = new THREE.Vector3();
+        const D_LINE   = 95;
+
+        function updateDetailAnnotations() {
+            if (!detailsVisible || !cameraS) return;
+            const rect = canvas.getBoundingClientRect();
+            if (!rect.width) return;
+            DETAIL_ANNS.forEach(a => {
+                const els = detailEls[a.id];
+                _dVec.copy(a.pos);
+                _dVec.project(cameraS);
+                const px = ( _dVec.x * 0.5 + 0.5) * rect.width;
+                const py = (-_dVec.y * 0.5 + 0.5) * rect.height;
+                const behind = _dVec.z > 1;
+                [els.dot, els.line, els.lbl].forEach(el => { el.style.display = behind ? 'none' : ''; });
+                if (behind) return;
+                els.dot.style.left = `${px}px`;
+                els.dot.style.top  = `${py}px`;
+                const off = 6;
+                if (a.side === 'right') {
+                    els.line.style.left  = `${px + off}px`;
+                    els.line.style.top   = `${py}px`;
+                    els.line.style.width = `${D_LINE}px`;
+                    els.lbl.style.left   = `${px + off + D_LINE + 5}px`;
+                    els.lbl.style.top    = `${py}px`;
+                } else {
+                    els.line.style.left  = `${px - off - D_LINE}px`;
+                    els.line.style.top   = `${py}px`;
+                    els.line.style.width = `${D_LINE}px`;
+                    els.lbl.style.left   = `${px - off - D_LINE - 5}px`;
+                    els.lbl.style.top    = `${py}px`;
+                }
+            });
+        }
+
+        /* ── Start viewer on page load ── */
+        requestAnimationFrame(initViewer);
+
+        /* ── Resize handling ── */
+        window.addEventListener('resize', () => {
+            if (!rendererS) return;
+            const W = canvas.parentElement.clientWidth;
+            const H = canvas.parentElement.clientHeight;
+            cameraS.aspect = W / H;
+            cameraS.updateProjectionMatrix();
+            rendererS.setSize(W, H, false);
+        });
+    </script>
+
+</body>
+</html>

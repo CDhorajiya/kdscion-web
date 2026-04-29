@@ -295,6 +295,36 @@
         </div>
     <div class="footer_branding">
     <div class="monogram"><a href="index.html" id="kd-monogram-link"><img src="images/KD_monogram.png" alt="KD monogram home page link"></a></div>
+
+    <!-- Flag Ticker -->
+    <div style="overflow-x:clip;overflow-y:visible;padding:28px 0" id="flag-ticker-wrap">
+      <div id="flag-ticker-inner" style="display:flex;width:max-content"></div>
+    </div>
+    <script>
+      (function(){
+        var codes=["AD","AE","AF","AG","AL","AM","AO","AR","AT","AU","AZ","BA","BB","BD","BE","BF","BG","BH","BI","BJ","BN","BO","BR","BS","BT","BW","BY","BZ","CA","CD","CF","CG","CH","CI","CL","CM","CN","CO","CR","CU","CV","CY","CZ","DE","DJ","DK","DM","DO","DZ","EC","EE","EG","ER","ES","ET","FI","FJ","FM","FR","GA","GB","GD","GE","GH","GM","GN","GQ","GR","GT","GW","GY","HN","HR","HT","HU","ID","IE","IL","IN","IQ","IR","IS","IT","JM","JO","JP","KE","KG","KH","KI","KM","KN","KP","KR","KW","KZ","LA","LB","LC","LI","LK","LR","LS","LT","LU","LV","LY","MA","MC","MD","ME","MG","MH","ML","MM","MN","MR","MT","MU","MV","MW","MX","MY","MZ","NA","NE","NG","NI","NL","NO","NP","NR","NZ","OM","PA","PE","PG","PH","PK","PL","PT","PW","PY","QA","RO","RS","RU","RW","SA","SB","SC","SD","SE","SG","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SY","SZ","TD","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TZ","UA","UG","US","UY","UZ","VA","VC","VE","VN","VU","WS","YE","ZA","ZM","ZW"];
+        var names=new Intl.DisplayNames(["en"],{type:"region"});
+        function toFlag(c){return c.split("").map(function(l){return String.fromCodePoint(0x1F1E6+l.charCodeAt(0)-65);}).join("");}
+        var inner=document.getElementById("flag-ticker-inner");
+        [].concat(codes,codes).forEach(function(code){
+          var s=document.createElement("span");
+          s.className="flag-item";
+          s.setAttribute("data-country",names.of(code)||code);
+          s.textContent=toFlag(code);
+          inner.appendChild(s);
+        });
+      })();
+    </script>
+    <style>
+      @keyframes flagTicker{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+      #flag-ticker-inner{animation:flagTicker 120s linear infinite;}
+      #flag-ticker-wrap:hover #flag-ticker-inner{animation-play-state:paused;}
+      .flag-item{font-size:2.5rem;padding:0 8px;display:inline-block;position:relative;cursor:default;transition:transform 0.2s ease;transform-origin:bottom center;}
+      .flag-item:hover{transform:scale(2.2);z-index:100;}
+      .flag-item::after{content:attr(data-country);position:absolute;bottom:115%;left:50%;transform:translateX(-50%);color:#8B1A1A;font-size:0.75rem;letter-spacing:0.1em;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s ease;font-family:"Times New Roman",Times,serif;text-transform:uppercase;background:rgba(255,255,255,0.92);padding:2px 6px;border-radius:3px;}
+      .flag-item:hover::after{opacity:1;}
+    </style>
+
     <p>Copyright 2024 KING DHORAJIYA</p>
     <script>
       (function() {

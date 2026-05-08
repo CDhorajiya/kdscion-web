@@ -455,6 +455,35 @@
             color: #fff;
         }
 
+        /* ── Design Only button ── */
+        .design-only-btn {
+            position: absolute;
+            bottom: 5.5rem;
+            right: 1.4rem;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.72);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 0.52rem 1.1rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        .design-only-btn:hover {
+            background: rgba(0,0,0,0.65);
+            border-color: rgba(255,255,255,0.5);
+            color: #fff;
+        }
+        .design-only-btn.active {
+            background: rgba(255,220,150,0.12);
+            border-color: rgba(255,220,150,0.45);
+            color: rgba(255,220,150,0.9);
+        }
+
         /* ── Design Details button ── */
         .design-details-btn {
             position: absolute;
@@ -548,13 +577,13 @@
         }
         .viewer-label { color: #bbb; }
 
-        .design-details-btn {
+        .design-details-btn, .design-only-btn {
             background: rgba(255,255,255,0.82);
             border-color: #ccc;
             color: #666;
         }
-        .design-details-btn:hover { background: #fff; border-color: #999; color: #1a1a1a; }
-        .design-details-btn.active {
+        .design-details-btn:hover, .design-only-btn:hover { background: #fff; border-color: #999; color: #1a1a1a; }
+        .design-details-btn.active, .design-only-btn.active {
             background: rgba(100,70,0,0.08);
             border-color: rgba(100,70,0,0.45);
             color: rgba(100,70,0,0.85);
@@ -657,6 +686,7 @@
                 <canvas id="viewer-canvas"></canvas>
                 <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
                 <div id="detail-layer"></div>
+                <button class="design-only-btn" id="design-only-btn">Design Only</button>
                 <button class="design-details-btn" id="design-details-btn">Design Details</button>
                 <div id="fabric-preview" class="fabric-preview">
                     <img id="fabric-preview-img" src="" alt="Fabric Preview">
@@ -998,6 +1028,28 @@
             detailsVisible = !detailsVisible;
             detailBtn.classList.toggle('active', detailsVisible);
             detailLayer.classList.toggle('visible', detailsVisible);
+        });
+        /* ── Match Design Only button width to Design Details button ── */
+        window.addEventListener('load', () => {
+            const detBtn = document.getElementById('design-details-btn');
+            const doBtn  = document.getElementById('design-only-btn');
+            if (detBtn && doBtn) doBtn.style.width = detBtn.offsetWidth + 'px';
+        });
+
+        /* ── Design Only toggle ── */
+        const designOnlyBtn = document.getElementById('design-only-btn');
+        let designOnlyActive = false;
+
+        designOnlyBtn.addEventListener('click', () => {
+            designOnlyActive = !designOnlyActive;
+            designOnlyBtn.classList.toggle('active', designOnlyActive);
+            if (currentModel) {
+                currentModel.traverse((node) => {
+                    if (node.isMesh && isBodyMesh(node)) {
+                        node.visible = !designOnlyActive;
+                    }
+                });
+            }
         });
 
         const _dVec    = new THREE.Vector3();

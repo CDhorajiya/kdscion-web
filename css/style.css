@@ -716,7 +716,7 @@ a {
 .details {
   font-weight: 300;
   text-transform: uppercase;
-  font-size: 1.6rem;
+  font-size: 1.7rem !important;
 }
 
 /*feature*/
@@ -776,7 +776,7 @@ a {
 
 /*footer*/
 .footer {
-  margin-top: 20%;
+  margin-top: 90%;
 }
 .footer_details {
   padding-left: 22%;
@@ -978,9 +978,10 @@ a {
 }
 
 .founder_submessage1 h5 {
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   opacity: 0.85;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
+  font-weight: 300;
   margin-left: 5%;
   margin-right: 5%;
   text-align: left;
@@ -1004,7 +1005,8 @@ a {
 .founder_submessage2 h5 {
   letter-spacing: 4px;
   opacity: 0.8;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
+  font-weight: 300;
   margin-left: 5%;
   text-align: left;
 }
@@ -1028,7 +1030,8 @@ a {
 .founder_submessage3 h5 {
   letter-spacing: 4px;
   opacity: 0.8;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
+  font-weight: 300;
   margin-left: 5%;
   margin-right: 5%;
   text-align: left;
@@ -1041,12 +1044,16 @@ a {
 }
 
 .emblom_content h4 {
-  letter-spacing: 20px;
+  letter-spacing: 16px;
   margin-top: 15%;
+  margin-bottom: 0;
   text-align: center;
-
-  font-size: 3rem;
+  font-size: 2.55rem !important;
+  font-weight: 300;
   color: black;
+}
+.emblom_content h4 + h4 {
+  margin-top: 3.5rem;
 }
 /*bespoke boutique page*/
 .nav men-dropdown li {

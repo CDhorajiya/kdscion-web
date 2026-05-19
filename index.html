@@ -54,7 +54,7 @@
             position: relative;
             width: 400px;
             height: 400px;
-            margin: 2rem auto 0;
+            margin: 8rem auto 0;
         }
         #earth-canvas {
             width: 400px;
@@ -112,7 +112,7 @@
             filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
         }
         .footer {
-            margin-top: -2rem;
+            margin-top: 15%;
         }
 
         /* Five-wreath triputy */
@@ -323,17 +323,19 @@
 
     <!-- Email Capture -->
     <div class="autoShow" style="margin: 8rem auto 4rem; max-width: 680px; text-align: center; padding: 0 3rem;">
-        <h3 style="letter-spacing: 20px; font-size: 3rem; color: #000; margin-bottom: 1rem;">JOIN THE HOUSE</h3>
-        <h5 style="letter-spacing: 4px; font-size: 1.5rem; opacity: 0.6; margin-bottom: 3rem;">| FIRST TO KNOW. NEW DESIGNS. PRIVATE ACCESS. |</h5>
-        <form id="email-capture-form" style="display: flex; gap: 0; max-width: 560px; margin: 0 auto;">
+        <hr style="border: none; border-top: 1px solid #ccc; margin-bottom: 3rem;">
+        <h3 style="letter-spacing: 15px; font-size: 1.8rem; font-weight: 300; color: #000; margin-bottom: 1.5rem;">JOIN THE ELITE LEAGUE</h3>
+        <h5 style="letter-spacing: 3px; font-size: 1.3rem; font-weight: 300; opacity: 0.65; margin-bottom: 3rem;">ACCESS OF OUR NEW COLLECTION WITHOUT MISSING A MOMENT</h5>
+        <form id="email-capture-form" style="display: flex; gap: 1.5rem; max-width: 560px; margin: 0 auto; justify-content: center; align-items: center;">
             <input type="email" id="capture-email" placeholder="YOUR EMAIL ADDRESS" required
-                   style="flex: 1; padding: 1.6rem 2.5rem; border: 1px solid #000; border-right: none; font-family: 'Times New Roman', serif; font-size: 1.5rem; letter-spacing: 2px; outline: none; background: white; color: #000; min-width: 0;">
+                   style="flex: 1; padding: 1.4rem 2rem; border: none; border-bottom: 1px solid #bbb; font-family: 'Times New Roman', serif; font-size: 1.4rem; letter-spacing: 2px; outline: none; background: transparent; color: #000; min-width: 0;">
             <button type="submit"
-                    style="padding: 1.6rem 3rem; background: rgb(6, 70, 6); color: white; border: 1px solid rgb(6,70,6); cursor: pointer; font-family: 'Times New Roman', serif; font-size: 1.5rem; letter-spacing: 3px; white-space: nowrap; transition: background 0.3s;">
-                ENTER
+                    style="padding: 1.4rem 2.5rem; background: rgb(6, 70, 6); color: white; border: none; cursor: pointer; font-family: 'Times New Roman', serif; font-size: 1.3rem; letter-spacing: 3px; white-space: nowrap; transition: background 0.3s; font-weight: 300;">
+                JOIN
             </button>
         </form>
-        <p id="capture-msg" style="font-size: 1.4rem; letter-spacing: 3px; color: rgb(6, 70, 6); margin-top: 1.5rem; min-height: 2rem;"></p>
+        <p id="capture-msg" style="font-size: 1.3rem; letter-spacing: 3px; color: rgb(6, 70, 6); margin-top: 1.5rem; min-height: 2rem;"></p>
+        <hr style="border: none; border-top: 1px solid #ccc; margin-top: 3rem;">
     </div>
     <script>
       document.getElementById('email-capture-form').addEventListener('submit', async function(e) {

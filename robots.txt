@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin-dashboard.html
+Disallow: /order-brief.html
+Disallow: /backup/
+
+Sitemap: https://kdscion.com/sitemap.xml

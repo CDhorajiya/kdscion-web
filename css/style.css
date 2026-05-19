@@ -836,14 +836,17 @@ a {
 .house_phone p {
   font-size: 1.8rem;
   letter-spacing: 0.5rem;
+  font-weight: 300;
 }
 .house_text p {
   font-size: 1.8rem;
   letter-spacing: 0.5rem;
+  font-weight: 300;
 }
 .house_email p {
   font-size: 1.8rem;
   letter-spacing: 0.5rem;
+  font-weight: 300;
 }
 
 /*Custom features */

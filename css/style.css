@@ -782,11 +782,11 @@ a {
   color: #000000;
   font-size: 1.8rem;
   letter-spacing: 1rem;
+  font-weight: 400;
 }
 .footer_details h5:hover {
   color: #066408;
-  letter-spacing: 1.8rem;
-  transition: 0.5s;
+  transition: color 0.3s;
 }
 .monogram {
   scale: 0.6;

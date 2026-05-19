@@ -712,6 +712,11 @@ a {
   }
 }
 
+/*feature descriptions*/
+.details {
+  font-weight: 300;
+}
+
 /*feature*/
 .feature {
   gap: 4rem;

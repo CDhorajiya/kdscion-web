@@ -715,6 +715,7 @@ a {
 /*feature descriptions*/
 .details {
   font-weight: 300;
+  text-transform: uppercase;
 }
 
 /*feature*/

@@ -780,9 +780,10 @@ a {
 .footer_details h5 {
   padding: 3rem;
   color: #000000;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   letter-spacing: 1rem;
   font-weight: 400;
+  text-transform: uppercase;
 }
 .footer_details h5:hover {
   color: #066408;

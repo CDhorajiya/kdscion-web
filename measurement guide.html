@@ -410,6 +410,59 @@
             text-decoration: underline;
         }
 
+        /* ── Validation panel ── */
+        .validation-panel {
+            display: none;
+            margin-bottom: 1rem;
+            padding: 1rem 1.2rem;
+            background: #fff8f0;
+            border: 1px solid #e8b87a;
+            border-radius: 3px;
+        }
+        .validation-panel-title {
+            font-family: "Times New Roman", serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #7a4500;
+            margin: 0 0 0.7rem 0;
+            font-weight: 600;
+        }
+        .validation-error-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 0.9rem 0;
+        }
+        .validation-error-list li {
+            font-family: "Times New Roman", serif;
+            font-size: 0.95rem;
+            color: #5a3000;
+            padding: 0.35rem 0;
+            border-bottom: 1px solid rgba(232,184,122,0.3);
+            line-height: 1.55;
+        }
+        .validation-error-list li:last-child { border-bottom: none; }
+        .validation-override {
+            font-family: "Times New Roman", serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #7a4500;
+            background: none;
+            border: 1px solid rgba(232,184,122,0.7);
+            border-radius: 2px;
+            padding: 0.45rem 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+            width: 100%;
+        }
+        .validation-override:hover { background: rgba(232,184,122,0.18); color: #5a3000; }
+        .field input[type="number"].field-error {
+            border-color: #e8a44a !important;
+            background: #fffaf2 !important;
+        }
+
         /* ── White theme overrides ── */
         .title-row h2 { color: #1a1a1a; }
         .title-row p  { color: #888; }
@@ -699,6 +752,13 @@
                             <span class="field-unit unit-label">cm</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Validation panel -->
+                <div id="validation-panel" class="validation-panel">
+                    <p class="validation-panel-title">⚠ Please Re-Check</p>
+                    <ul class="validation-error-list" id="validation-error-list"></ul>
+                    <button class="validation-override" onclick="saveMeasurements(true)">I'm Certain — Save Anyway</button>
                 </div>
 
                 <!-- Buttons -->
@@ -1301,6 +1361,66 @@
             document.querySelectorAll('.form-panel input[type="number"]').forEach(i => i.value = '');
         };
 
+        /* ── Validation logic ── */
+        const ABSOLUTE_RANGES = {
+            height:   { min: 50,  max: 250, label: 'Height' },
+            neck:     { min: 20,  max: 65,  label: 'Neck' },
+            shoulder: { min: 25,  max: 72,  label: 'Shoulder Width' },
+            chest:    { min: 55,  max: 175, label: 'Chest / Bust' },
+            waist:    { min: 38,  max: 170, label: 'Waist' },
+            hip:      { min: 60,  max: 185, label: 'Full Hip' },
+            bicep:    { min: 15,  max: 80,  label: 'Bicep' },
+            wrist:    { min: 10,  max: 35,  label: 'Wrist' },
+            inseam:   { min: 40,  max: 115, label: 'Inseam' },
+        };
+
+        const RATIO_RULES = [
+            { a: 'inseam',     b: 'height',  min: 0.40, max: 0.54, msg: 'Inseam is typically 44–50% of Height — please re-measure both.' },
+            { a: 'shoulder',   b: 'chest',   min: 0.34, max: 0.57, msg: 'Shoulder Width is typically 38–50% of Chest circumference — please re-measure both.' },
+            { a: 'neck',       b: 'chest',   min: 0.26, max: 0.51, msg: 'Neck is typically 30–45% of Chest circumference — please re-measure both.' },
+            { a: 'waist',      b: 'chest',   min: 0.50, max: 1.16, msg: 'Waist relative to Chest looks unusual — please re-measure both.' },
+            { a: 'hip',        b: 'chest',   min: 0.74, max: 1.46, msg: 'Full Hip relative to Chest looks unusual — please re-measure both.' },
+            { a: 'hip',        b: 'waist',   min: 0.84, max: 1.68, msg: 'Full Hip and Waist ratio looks unusual — please re-measure both.' },
+            { a: 'wrist',      b: 'bicep',   min: 0.31, max: 0.82, msg: 'Wrist relative to Bicep looks unusual — please re-measure both.' },
+            { a: 'armlength',  b: 'height',  min: 0.24, max: 0.47, msg: 'Arm Length is typically 30–38% of Height — please re-measure both.' },
+            { a: 'backlength', b: 'height',  min: 0.19, max: 0.39, msg: 'Back Length is typically 25–33% of Height — please re-measure both.' },
+            { a: 'underbust',  b: 'chest',   min: 0.74, max: 1.02, msg: 'Under Bust should be close to but not larger than Chest — please re-measure both.' },
+        ];
+
+        function toCm(val, unit) { return unit === 'in' ? val * 2.54 : val; }
+
+        function runValidation(data) {
+            const errors = [];
+            const errorFields = new Set();
+            const unit = data.unit || 'cm';
+            const cm = {};
+            Object.entries(data).forEach(([k, v]) => {
+                if (k !== 'unit' && k !== 'weight' && typeof v === 'number') {
+                    cm[k] = toCm(v, unit);
+                }
+            });
+
+            Object.entries(ABSOLUTE_RANGES).forEach(([field, rule]) => {
+                if (cm[field] != null && (cm[field] < rule.min || cm[field] > rule.max)) {
+                    errors.push(`${rule.label} (${data[field]}${unit === 'in' ? '"' : ' cm'}) is outside a normal human range — please re-measure.`);
+                    errorFields.add(field);
+                }
+            });
+
+            RATIO_RULES.forEach(rule => {
+                if (cm[rule.a] != null && cm[rule.b] != null) {
+                    const ratio = cm[rule.a] / cm[rule.b];
+                    if (ratio < rule.min || ratio > rule.max) {
+                        errors.push(rule.msg);
+                        errorFields.add(rule.a);
+                        errorFields.add(rule.b);
+                    }
+                }
+            });
+
+            return { errors, errorFields };
+        }
+
         /* ── Pre-fill existing measurements ── */
         async function loadExisting() {
             try {
@@ -1315,15 +1435,37 @@
         }
         loadExisting();
 
-        /* ── Save to backend ── */
-        window.saveMeasurements = async function() {
+        /* ── Save to backend (with validation) ── */
+        window.saveMeasurements = async function(override = false) {
             const btn = document.getElementById('save-measurements-btn');
-            btn.disabled = true;
-            btn.textContent = 'Saving…';
+            const panel = document.getElementById('validation-panel');
+            const errorList = document.getElementById('validation-error-list');
+
             const data = { unit: currentUnit };
             document.querySelectorAll('.form-panel input[type="number"]').forEach(input => {
                 if (input.value) data[input.id.replace('f-', '')] = parseFloat(input.value);
             });
+
+            // Clear previous error highlights
+            document.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+
+            if (!override) {
+                const { errors, errorFields } = runValidation(data);
+                if (errors.length > 0) {
+                    errorList.innerHTML = errors.map(e => `<li>· ${e}</li>`).join('');
+                    panel.style.display = 'block';
+                    errorFields.forEach(field => {
+                        const el = document.getElementById(`f-${field}`);
+                        if (el) el.classList.add('field-error');
+                    });
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    return;
+                }
+            }
+
+            panel.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Saving…';
             try {
                 await apiSave(data);
                 btn.textContent = 'Saved ✓';

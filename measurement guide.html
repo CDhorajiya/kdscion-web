@@ -458,6 +458,46 @@
             width: 100%;
         }
         .validation-override:hover { background: rgba(232,184,122,0.18); color: #5a3000; }
+        .verify-prompt {
+            font-family: "Times New Roman", serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #6a3a00;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.5;
+        }
+        .unusual-note-input {
+            width: 100%;
+            box-sizing: border-box;
+            font-family: "Times New Roman", serif;
+            font-size: 0.9rem;
+            color: #3a2000;
+            background: #fffdf8;
+            border: 1px solid #e0b070;
+            border-radius: 2px;
+            padding: 0.6rem 0.8rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+        .unusual-note-input:focus { border-color: #c08030; }
+        .unusual-note-input::placeholder { color: #cca060; }
+        .validation-confirm {
+            flex: 1;
+            font-family: "Times New Roman", serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            background: #7a4500;
+            border: 1px solid #7a4500;
+            border-radius: 2px;
+            padding: 0.45rem 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .validation-confirm:hover { background: #5a3000; border-color: #5a3000; }
+        .validation-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
         .field input[type="number"].field-error {
             border-color: #e8a44a !important;
             background: #fffaf2 !important;
@@ -754,11 +794,26 @@
                     </div>
                 </div>
 
-                <!-- Validation panel -->
+                <!-- Validation panel — State 1: errors -->
                 <div id="validation-panel" class="validation-panel">
-                    <p class="validation-panel-title">⚠ Please Re-Check</p>
-                    <ul class="validation-error-list" id="validation-error-list"></ul>
-                    <button class="validation-override" onclick="saveMeasurements(true)">I'm Certain — Save Anyway</button>
+                    <div id="val-state-errors">
+                        <p class="validation-panel-title">⚠ Please Re-Check</p>
+                        <ul class="validation-error-list" id="validation-error-list"></ul>
+                        <button class="validation-override" onclick="showVerifyForm()">I'm Certain — Save Anyway</button>
+                    </div>
+
+                    <!-- State 2: double verify -->
+                    <div id="val-state-verify" style="display:none;">
+                        <p class="validation-panel-title">⚠ Double Verify</p>
+                        <p class="verify-prompt">These measurements still triggered our checks:</p>
+                        <ul class="validation-error-list" id="verify-error-list"></ul>
+                        <p class="verify-prompt">Briefly describe why they are accurate for you:</p>
+                        <textarea id="unusual-note" class="unusual-note-input" placeholder="e.g. Professional athlete build, unusually long torso, child with large frame…" rows="3"></textarea>
+                        <div style="display:flex;gap:0.6rem;margin-top:0.8rem;">
+                            <button class="validation-override" style="flex:1" onclick="cancelVerify()">← Go Back</button>
+                            <button class="validation-confirm" id="verify-save-btn" onclick="confirmSave()">Confirm &amp; Save</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Buttons -->
@@ -1435,8 +1490,34 @@
         }
         loadExisting();
 
+        /* ── Verify-form helpers ── */
+        window.showVerifyForm = function() {
+            // Copy error list into verify panel
+            const src = document.getElementById('validation-error-list').innerHTML;
+            document.getElementById('verify-error-list').innerHTML = src;
+            document.getElementById('val-state-errors').style.display = 'none';
+            document.getElementById('val-state-verify').style.display = 'block';
+            document.getElementById('unusual-note').value = '';
+        };
+
+        window.cancelVerify = function() {
+            document.getElementById('val-state-verify').style.display = 'none';
+            document.getElementById('val-state-errors').style.display = 'block';
+        };
+
+        window.confirmSave = function() {
+            const note = document.getElementById('unusual-note').value.trim();
+            if (!note) {
+                document.getElementById('unusual-note').focus();
+                document.getElementById('unusual-note').style.borderColor = '#c0392b';
+                return;
+            }
+            document.getElementById('unusual-note').style.borderColor = '';
+            window.saveMeasurements(true, note);
+        };
+
         /* ── Save to backend (with validation) ── */
-        window.saveMeasurements = async function(override = false) {
+        window.saveMeasurements = async function(override = false, unusualNote = '') {
             const btn = document.getElementById('save-measurements-btn');
             const panel = document.getElementById('validation-panel');
             const errorList = document.getElementById('validation-error-list');
@@ -1464,6 +1545,7 @@
             }
 
             panel.style.display = 'none';
+            if (unusualNote) data.unusual_note = unusualNote;
             btn.disabled = true;
             btn.textContent = 'Saving…';
             try {

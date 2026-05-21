@@ -172,23 +172,29 @@
         .bb-panel { display: none; }
 
         @media (max-width: 768px) {
-            /* Nav: just logo + hamburger, no wrapping list */
+            /* Nav floats over the family photo — no vertical space consumed */
             .navigation {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
                 flex-wrap: nowrap;
                 align-items: center;
                 padding: 1rem 4%;
                 justify-content: space-between;
+                background: transparent;
+                z-index: 100;
             }
             /* Hide desktop nav list */
             .navigation > ul { display: none !important; }
 
-            /* ── Hamburger button ── */
+            /* ── Hamburger button (smaller, white bars for photo contrast) ── */
             .bb-hamburger {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                width: 28px;
-                height: 20px;
+                width: 20px;
+                height: 14px;
                 background: none;
                 border: none;
                 cursor: pointer;
@@ -200,7 +206,7 @@
                 display: block;
                 width: 100%;
                 height: 2px;
-                background: rgba(0,0,0,0.7);
+                background: rgba(255,255,255,0.9);
                 border-radius: 1px;
             }
 
@@ -250,13 +256,13 @@
                 margin: 0;
             }
 
-            /* Family photo: full viewport height */
+            /* Family photo: full viewport, nav overlays it so no top gap */
             .family_shot {
                 margin: 0 !important;
                 width: 100%;
                 display: block;
             }
-            .family_shot img { width: 100%; height: 100vh; object-fit: cover; display: block; }
+            .family_shot img { width: 100%; height: 100svh; object-fit: contain; object-position: center center; display: block; }
         }
     </style>
 </head>

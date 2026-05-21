@@ -163,19 +163,6 @@
             display: block;
             border-radius: 4px;
         }
-        .viewer-label {
-            position: absolute;
-            bottom: 1.8rem;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: rgba(255,255,255,0.35);
-            font-family: "Times New Roman", serif;
-            font-size: 1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            pointer-events: none;
-        }
 
         /* ── Fabric column (tagline + panel) ── */
         .fabric-col {
@@ -661,7 +648,6 @@
             border-color: #e0e0e0;
             box-shadow: 0 2px 16px rgba(0,0,0,0.08);
         }
-        .viewer-label { color: #bbb; }
 
         .design-details-btn, .design-only-btn {
             background: rgba(255,255,255,0.82);
@@ -770,7 +756,6 @@
             <!-- Left: 3D canvas -->
             <div class="viewer-panel">
                 <canvas id="viewer-canvas"></canvas>
-                <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
                                 <div id="detail-layer"></div>
                 <button class="design-only-btn" id="design-only-btn">Design Only</button>
                 <button class="design-details-btn" id="design-details-btn">Design Details</button>

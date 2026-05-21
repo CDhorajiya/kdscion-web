@@ -233,30 +233,30 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 2.8rem;
+                gap: 1.4rem;
             }
             .bb-panel-nav a {
                 font-family: "Times New Roman", Times, serif;
-                font-size: 1.8rem;
-                letter-spacing: 5px;
+                font-size: 1.25rem;
+                letter-spacing: 4px;
                 text-transform: uppercase;
                 color: rgba(0,0,0,0.82);
                 text-decoration: none;
             }
             .bb-panel-divider {
-                width: 40%;
+                width: 50%;
                 border: none;
                 border-top: 1px solid rgba(0,0,0,0.15);
                 margin: 0;
             }
 
-            /* Family photo: full-bleed, tall */
+            /* Family photo: full viewport height */
             .family_shot {
                 margin: 0 !important;
                 width: 100%;
                 display: block;
             }
-            .family_shot img { width: 100%; height: 72vh; object-fit: cover; display: block; }
+            .family_shot img { width: 100%; height: 100vh; object-fit: cover; display: block; }
         }
     </style>
 </head>
@@ -404,10 +404,16 @@
         <button class="bb-panel-close" id="bb-panel-close" aria-label="Close menu">&#x2715;</button>
         <nav class="bb-panel-nav">
             <a href="skinprofile.html">Skin Profile</a>
-            <a href="measurement guide.html">Measurement</a>
             <hr class="bb-panel-divider">
-            <a href="poolofdesigns-man.html">Pool of Designs — Men</a>
-            <a href="poolofdesigns-woman.html">Pool of Designs — Women</a>
+            <a href="measurement guide.html">Measurement Guide</a>
+            <hr class="bb-panel-divider">
+            <a href="poolofdesigns-man.html">Men</a>
+            <hr class="bb-panel-divider">
+            <a href="poolofdesigns-woman.html">Women</a>
+            <hr class="bb-panel-divider">
+            <a href="">Boy</a>
+            <hr class="bb-panel-divider">
+            <a href="">Girl</a>
         </nav>
     </div>
 

@@ -203,7 +203,8 @@
         @media (max-width: 768px) {
             /* Globe: JS reads wrapper size via getBoundingClientRect(), so setting
                the wrapper here controls both the canvas render size and annotation coords. */
-            #earth-wrapper { width: min(90vw, 400px); height: min(90vw, 400px); margin: 2rem auto; overflow: visible; }
+            #earth-wrapper { width: min(90vw, 400px); height: min(90vw, 400px); overflow: visible; display: block; position: relative; left: 50%; transform: translateX(-50%); margin: 2rem 0; }
+            .globequote { overflow-x: clip; }
             /* Scale annotation labels down on mobile */
             .ann-label { font-size: 0.72rem !important; letter-spacing: 1px !important; }
             .ann-fabric { font-size: 0.65rem !important; letter-spacing: 1px !important; }
@@ -243,7 +244,7 @@
                 flex-wrap: nowrap;
                 justify-content: center;
                 gap: 0.4rem;
-                margin-bottom: 6rem;
+                margin-bottom: 14rem;
                 width: 100%;
                 padding: 0 2%;
                 box-sizing: border-box;

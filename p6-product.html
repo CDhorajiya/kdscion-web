@@ -152,7 +152,7 @@
             background: rgb(18,18,20);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 4px;
-            min-height: 0;
+            min-height: 520px;
             box-shadow: 0 8px 48px rgba(0,0,0,0.35);
         }
         #viewer-canvas {
@@ -894,7 +894,8 @@
             const panel = canvas.parentElement;
             const W = panel.clientWidth  || 800;
             const H = panel.clientHeight || 700;
-            rendererS = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            rendererS = new THREE.WebGLRenderer({ canvas, antialias: true });
+            rendererS.setClearColor(0xe8e8e8, 1);
             rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;

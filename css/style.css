@@ -1039,7 +1039,7 @@ a {
 
 .ashokchakra {
   margin-top: 5%;
-  scale: 0.3;
+  scale: 0.24;
   opacity: 0.7;
 }
 
@@ -1269,8 +1269,8 @@ a {
   .emblom_content h4 + h4 { margin-top: 0.8rem; }
   /* Bring THE HOUSE heading above HOW WE FUNCTION on single-column mobile layout */
   .founder_message2 { order: -1; }
-  /* Ashok Chakra: center and increase size on mobile */
-  .ashokchakra { display: flex !important; justify-content: center !important; scale: 0.55 !important; margin: 0 auto !important; }
+  /* Ashok Chakra: center on mobile */
+  .ashokchakra { display: flex !important; justify-content: center !important; scale: 0.44 !important; margin: 0 auto !important; }
 
   /* ── Pool of designs ─────────────── */
   .container-snaps h3 { letter-spacing: 4px; font-size: 2.2rem; }

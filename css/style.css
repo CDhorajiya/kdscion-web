@@ -1156,8 +1156,8 @@ a {
   .nav .brand-name,
   .navigation .brand-name {
     display: block;
-    width: 72px;
-    height: 72px;
+    width: 82px;
+    height: 82px;
     background: url('../images/KD_monogram.png') no-repeat center/contain;
     flex-shrink: 0;
     align-self: center;
@@ -1227,11 +1227,11 @@ a {
   .feature1__content h4,
   .feature2__content h4,
   .feature3__content h4 {
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
     margin-left: 0;
     text-align: center;
-    padding: 0 6%;
+    padding: 0 8%;
   }
   /* Globe description: smaller + wrap so it doesn't overflow screen width */
   .globequote__content h4 {

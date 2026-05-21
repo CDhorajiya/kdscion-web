@@ -1146,135 +1146,111 @@ a {
   /* ── Global safety ───────────────── */
   body { overflow-x: hidden; }
 
-  /* ── Navigation ──────────────────── */
-  /* Keep horizontal flex; just shrink sizes and kill desktop margins */
+  /* ── Navigation: swap brand text for KD logo on mobile ── */
+  /* Hide the text, show monogram as background on the anchor itself */
+  .nav .brand-name h1,
+  .navigation .brand-name h1 { display: none; }
+  .nav .brand-name,
+  .navigation .brand-name {
+    display: block;
+    width: 44px;
+    height: 44px;
+    background: url('../images/KD_monogram.png') no-repeat center/contain;
+    flex-shrink: 0;
+    align-self: center;
+  }
   .nav {
-    padding: 2rem 4%;
+    padding: 1.5rem 4%;
     white-space: normal;
     overflow: visible;
     align-items: center;
   }
-  .nav h1 {
-    font-size: 1.6rem;
-    letter-spacing: 3px;
-    margin-left: 0;
-    margin-top: 0;
-  }
-  .bb {
-    margin-right: 0;
-    margin-bottom: 0;
-    align-self: center;
-  }
-  .bb img { width: 8rem; }
+  /* Bespoke boutique logo: scale up now that it's not competing with text */
+  .bb { margin-right: 0; margin-bottom: 0; align-self: center; }
+  .bb img { width: 12rem; }
 
-  /* ── Footer ──────────────────────── */
-  /* 90% in style.css is desktop-only — tighten on mobile */
+  /* ── Footer: single row ──────────── */
   .footer { margin-top: 6rem; }
   .footer_details {
-    padding-left: 0;
-    flex-wrap: wrap;
+    padding: 0.4rem 0.5rem;
+    flex-wrap: nowrap;
     justify-content: center;
-    padding: 0.5rem 2rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .footer_details h5 {
-    padding: 0.8rem 1rem;
-    font-size: 1.2rem;
-    letter-spacing: 3px;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
   }
-  /* Monogram: use img max-width instead of broken CSS scale trick */
-  .monogram {
-    padding-left: 0;
-    scale: 1;
-    display: flex;
-    justify-content: center;
-  }
-  .monogram img { max-width: 180px; }
-  .footer_branding {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .footer_branding p { letter-spacing: 4px; }
+  .monogram { padding-left: 0; scale: 1; display: flex; justify-content: center; }
+  .monogram img { max-width: 160px; }
+  .footer_branding { display: flex; flex-direction: column; align-items: center; }
+  .footer_branding p { letter-spacing: 4px; font-size: 1.1rem; }
 
-  /* ── Contact House ───────────────── */
-  .footer_contacthouse h4 {
-    font-size: 2rem;
-    letter-spacing: 4px;
-    white-space: normal;
-    padding: 0 4%;
-  }
-  .contact_modes {
-    flex-direction: column;
-    align-items: center;
-    gap: 4rem;
-    padding: 0 6%;
-    text-align: center;
-  }
-  .house_phone,
-  .house_text,
-  .house_email {
-    margin-left: 0;
-    white-space: normal;
-  }
+  /* ── Contact House page ───────────── */
+  .footer_contacthouse h4 { font-size: 2rem; letter-spacing: 4px; white-space: normal; padding: 0 4%; }
+  .contact_modes { flex-direction: column; align-items: center; gap: 4rem; padding: 0 6%; text-align: center; }
+  .house_phone, .house_text, .house_email { margin-left: 0; white-space: normal; }
 
-  /* ── Typography: scale letter-spacing for mobile screens ── */
+  /* ── Index hero header ───────────── */
+  .block__header { margin-top: 2rem; margin-bottom: 1rem; }
+  .block__header h2 { letter-spacing: 3px; font-size: 1.9rem; padding-top: 1.5rem; }
+  .block__header h3 { letter-spacing: 2px; font-size: 1.4rem; }
+
+  /* ── Feature grid: reorder so wreath is always on top ── */
+  /* cotton/wool/leather are 2nd in DOM — pull them to top with order:-1 */
+  .cotton-wreath  { order: -1; }
+  .wool-wreath    { order: -1; }
+  .leather-wreath { order: -1; }
+  /* Scale down all grid wreaths on mobile */
+  .cotton-wreath, .linen-wreath, .wool-wreath,
+  .silk-wreath,   .leather-wreath {
+    max-width: 130px !important;
+    width: 45% !important;
+    margin: 0 auto !important;
+  }
+  /* Feature headings: CUSTOM, PREMIUM, UNIQUE, REFINED, ENDURING, OUR HOME */
   .feature1__content h3,
   .feature2__content h3,
   .feature3__content h3,
   .globequote__content h3 {
-    letter-spacing: 5px;
-    font-size: 2.8rem;
-    margin-top: 6%;
-  }
-  /* Index hero header — 25px letter-spacing on desktop is too wide on phone */
-  .block__header {
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-  }
-  .block__header h2 {
-    letter-spacing: 5px;
-    font-size: 2.6rem;
-    padding-top: 2rem;
-  }
-  .block__header h3 {
     letter-spacing: 3px;
-    font-size: 2rem;
+    font-size: 2.2rem;
+    margin-top: 1rem;
+    text-align: center;
   }
-  .founder_message1 h3,
-  .founder_message2 h3,
-  .founder_message3 h3 {
-    letter-spacing: 5px;
-    font-size: 2.8rem;
-    margin-top: 10%;
+  /* Feature descriptions */
+  .feature1__content h4,
+  .feature2__content h4,
+  .feature3__content h4,
+  .globequote__content h4 {
+    font-size: 1.4rem;
+    letter-spacing: 1.5px;
+    margin-left: 0;
   }
-  .founder_submessage1 h4,
-  .founder_submessage2 h4,
-  .founder_submessage3 h4 {
-    letter-spacing: 4px;
-    font-size: 2rem;
-    margin-top: 5%;
+  /* Feature row margins */
+  .feature { margin: 2rem 4%; gap: 1.5rem; }
+
+  /* ── Globe (Our Home) ────────────── */
+  .globequote { margin-top: 3rem; }
+
+  /* ── Hero header (index only) ────── */
+  /* .block__header rules above cover this */
+
+  /* ── Founder page ────────────────── */
+  .founder_message1 h3, .founder_message2 h3, .founder_message3 h3 {
+    letter-spacing: 5px; font-size: 2.6rem; margin-top: 8%;
   }
-  .emblom_content h4 {
-    letter-spacing: 4px !important;
-    font-size: 1.8rem !important;
+  .founder_submessage1 h4, .founder_submessage2 h4, .founder_submessage3 h4 {
+    letter-spacing: 3px; font-size: 1.9rem; margin-top: 4%;
   }
+  .emblom_content h4 { letter-spacing: 4px !important; font-size: 1.8rem !important; }
   .emblom_content h4 + h4 { margin-top: 1.5rem; }
-  .container-snaps h3 {
-    letter-spacing: 4px;
-    font-size: 2.4rem;
-  }
-
-  /* ── Globe section ───────────────── */
-  .globequote { margin-top: 5rem; }
-
-  /* ── Feature rows (already 1-col below 1024px via grid) ── */
-  .feature { margin: 3rem 4%; gap: 2rem; }
 
   /* ── Pool of designs ─────────────── */
-  .snap-gallery {
-    flex-direction: column;
-    gap: 3rem;
-    padding: 0 4%;
-  }
+  .container-snaps h3 { letter-spacing: 4px; font-size: 2.2rem; }
+  .snap-gallery { flex-direction: column; gap: 3rem; padding: 0 4%; }
   .column { gap: 2rem; }
 }

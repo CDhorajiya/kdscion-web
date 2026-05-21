@@ -166,6 +166,44 @@
             display: grid;
             animation: dropFade 0.25s ease forwards;
         }
+
+        @media (max-width: 768px) {
+            /* Nav wraps: brand logo (from global CSS) + nav items below */
+            .navigation {
+                flex-wrap: wrap;
+                align-items: center;
+                padding: 1rem 4%;
+                gap: 0.5rem;
+                justify-content: space-between;
+            }
+            /* Nav item list: wraps into rows */
+            .navigation > ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.3rem;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+            /* Disable desktop hover dropdowns on touch */
+            .navigation ul li ul.dropdown { display: none !important; }
+            /* Compact nav item links */
+            .navigation ul > li > a {
+                padding: 0.3rem 0.7rem;
+                margin: 0;
+            }
+            .navigation ul > li > a h4 {
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+                font-weight: 500;
+            }
+            /* Family photo: remove negative overlap margins from desktop */
+            .family_shot {
+                margin-top: 2rem !important;
+                margin-bottom: 2rem !important;
+            }
+            .family_shot img { width: 100%; height: auto; display: block; }
+        }
     </style>
 </head>
 <body>

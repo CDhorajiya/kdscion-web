@@ -1136,136 +1136,137 @@ a {
   text-transform: none;
 }
 
-/* ═══════════════════════════════
-   MOBILE — max 768px
-═══════════════════════════════ */
+/* ═══════════════════════════════════════
+   MOBILE  ≤ 768px
+   Design intent: editorial single-column,
+   spacious, luxury feel on small screen.
+═══════════════════════════════════════ */
 @media (max-width: 768px) {
 
-  /* Nav */
+  /* ── Navigation ──────────────────── */
+  /* Keep horizontal flex; just shrink sizes and kill desktop margins */
   .nav {
-    position: relative;
-    flex-wrap: wrap;
-    padding: 1.5rem 4% 1rem;
+    padding: 2rem 4%;
     white-space: normal;
     overflow: visible;
-    align-items: flex-start;
+    align-items: center;
   }
   .nav h1 {
-    font-size: 1.8rem;
-    letter-spacing: 0.4rem;
-    margin-left: 0;
-    margin-top: 1.5rem;
-  }
-  .nav h4 {
-    margin-left: 0;
     font-size: 1.4rem;
-    letter-spacing: 0.4rem;
+    letter-spacing: 2px;
+    margin-left: 0;
+    margin-top: 0;
   }
   .bb {
-    position: absolute;
-    top: 1rem;
-    right: 3%;
     margin-right: 0;
     margin-bottom: 0;
-    align-self: auto;
+    align-self: center;
   }
-  .bb img { width: 10rem; }
+  .bb img { width: 8rem; }
 
-  /* Footer */
+  /* ── Footer ──────────────────────── */
+  /* 90% in style.css is desktop-only — tighten on mobile */
   .footer { margin-top: 6rem; }
   .footer_details {
     padding-left: 0;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 1rem 2%;
-    gap: 0;
+    padding: 0.5rem 2rem;
   }
   .footer_details h5 {
     padding: 0.8rem 1rem;
-    font-size: 1rem;
-    letter-spacing: 0.3rem;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
   }
+  /* Monogram: use img max-width instead of broken CSS scale trick */
   .monogram {
     padding-left: 0;
-    scale: 0.5;
+    scale: 1;
+    display: flex;
+    justify-content: center;
   }
+  .monogram img { max-width: 180px; }
   .footer_branding {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+  .footer_branding p { letter-spacing: 4px; }
 
-  /* Contact house page */
+  /* ── Contact House ───────────────── */
+  .footer_contacthouse h4 {
+    font-size: 2.2rem;
+    letter-spacing: 5px;
+    white-space: normal;
+    padding: 0 4%;
+  }
   .contact_modes {
     flex-direction: column;
     align-items: center;
-    padding: 0 5%;
+    gap: 4rem;
+    padding: 0 6%;
     text-align: center;
   }
   .house_phone,
   .house_text,
   .house_email {
     margin-left: 0;
-    margin-bottom: 3rem;
     white-space: normal;
-    text-wrap: wrap;
-  }
-  .footer_contacthouse h4 {
-    font-size: 2rem;
-    letter-spacing: 0.5rem;
-    white-space: normal;
-    margin-bottom: 5%;
   }
 
-  /* Headings — kill huge letter-spacing */
+  /* ── Typography: kill 25px letter-spacing ── */
   .feature1__content h3,
   .feature2__content h3,
   .feature3__content h3,
-  .globequote__content h3,
-  .container-snaps h3 {
-    letter-spacing: 4px;
-    font-size: 2.6rem;
-    margin-top: 8%;
-  }
-  .block__header h2 {
+  .globequote__content h3 {
     letter-spacing: 6px;
     font-size: 3rem;
+    margin-top: 6%;
+  }
+  .block__header h2 {
+    letter-spacing: 8px;
+    font-size: 3.2rem;
     padding-top: 4rem;
   }
   .block__header h3 {
-    letter-spacing: 3px;
-    font-size: 2.2rem;
+    letter-spacing: 4px;
+    font-size: 2.4rem;
   }
   .founder_message1 h3,
   .founder_message2 h3,
   .founder_message3 h3 {
-    letter-spacing: 4px;
-    font-size: 2.6rem;
-    margin-top: 10%;
+    letter-spacing: 6px;
+    font-size: 3rem;
+    margin-top: 12%;
   }
   .founder_submessage1 h4,
   .founder_submessage2 h4,
   .founder_submessage3 h4 {
-    letter-spacing: 3px;
-    font-size: 2rem;
+    letter-spacing: 4px;
+    font-size: 2.2rem;
     margin-top: 6%;
   }
   .emblom_content h4 {
-    letter-spacing: 3px !important;
-    font-size: 1.6rem !important;
+    letter-spacing: 4px !important;
+    font-size: 1.8rem !important;
   }
   .emblom_content h4 + h4 { margin-top: 1.5rem; }
+  .container-snaps h3 {
+    letter-spacing: 6px;
+    font-size: 2.8rem;
+  }
 
-  /* Globe */
+  /* ── Globe section ───────────────── */
   .globequote { margin-top: 5rem; }
 
-  /* Feature rows */
-  .feature { margin: 2rem 2%; gap: 2rem; }
+  /* ── Feature rows (already 1-col below 1024px via grid) ── */
+  .feature { margin: 3rem 4%; gap: 2rem; }
 
-  /* Pool of designs gallery */
+  /* ── Pool of designs ─────────────── */
   .snap-gallery {
     flex-direction: column;
-    gap: 2rem;
-    padding: 0 3%;
+    gap: 3rem;
+    padding: 0 4%;
   }
+  .column { gap: 2rem; }
 }

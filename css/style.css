@@ -1267,7 +1267,7 @@ a {
     margin-left: 0; margin-right: 0; text-align: center; padding: 0 4%;
   }
   .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; margin-top: 4% !important; }
-  .emblom_content h4 + h4 { margin-top: 0.8rem; }
+  .emblom_content h4 + h4 { margin-top: 0.8rem; font-size: 2rem !important; }
   /* Bring THE HOUSE heading above HOW WE FUNCTION on single-column mobile layout */
   .founder_message2 { order: -1; }
   /* Ashok Chakra: center on mobile; negative margins compensate for scale not shrinking layout space */

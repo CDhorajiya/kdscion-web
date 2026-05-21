@@ -209,9 +209,9 @@
                 display: flex;
                 position: fixed;
                 inset: 0;
-                background: rgba(255,255,255,0.78);
-                backdrop-filter: blur(28px) saturate(180%);
-                -webkit-backdrop-filter: blur(28px) saturate(180%);
+                background: rgba(255,255,255,0.93);
+                backdrop-filter: blur(32px) saturate(200%);
+                -webkit-backdrop-filter: blur(32px) saturate(200%);
                 z-index: 2000;
                 flex-direction: column;
                 align-items: center;
@@ -219,12 +219,12 @@
             }
             .bb-panel-close {
                 position: absolute;
-                top: 1.5rem;
-                right: 1.8rem;
+                top: 2rem;
+                right: 2rem;
                 background: none;
                 border: none;
-                font-size: 2.6rem;
-                color: rgba(0,0,0,0.45);
+                font-size: 3rem;
+                color: rgba(0,0,0,0.5);
                 cursor: pointer;
                 line-height: 1;
                 padding: 0;
@@ -233,33 +233,30 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 2rem;
+                gap: 2.8rem;
             }
             .bb-panel-nav a {
                 font-family: "Times New Roman", Times, serif;
-                font-size: 1.7rem;
-                letter-spacing: 4px;
+                font-size: 1.8rem;
+                letter-spacing: 5px;
                 text-transform: uppercase;
-                color: rgba(0,0,0,0.78);
+                color: rgba(0,0,0,0.82);
                 text-decoration: none;
             }
-            .bb-panel-cat {
-                font-family: "Times New Roman", Times, serif;
-                font-size: 1.4rem;
-                letter-spacing: 3px;
-                text-transform: uppercase;
-                color: rgba(0,0,0,0.32);
+            .bb-panel-divider {
+                width: 40%;
+                border: none;
+                border-top: 1px solid rgba(0,0,0,0.15);
+                margin: 0;
             }
 
-            /* Family photo: tight margins, full-width centered */
+            /* Family photo: full-bleed, tall */
             .family_shot {
-                margin-top: 1rem !important;
-                margin-bottom: 1rem !important;
+                margin: 0 !important;
                 width: 100%;
-                display: flex;
-                justify-content: center;
+                display: block;
             }
-            .family_shot img { width: 100%; height: auto; display: block; }
+            .family_shot img { width: 100%; height: 72vh; object-fit: cover; display: block; }
         }
     </style>
 </head>
@@ -408,10 +405,7 @@
         <nav class="bb-panel-nav">
             <a href="skinprofile.html">Skin Profile</a>
             <a href="measurement guide.html">Measurement</a>
-            <span class="bb-panel-cat">Men</span>
-            <span class="bb-panel-cat">Women</span>
-            <span class="bb-panel-cat">Boy</span>
-            <span class="bb-panel-cat">Girl</span>
+            <hr class="bb-panel-divider">
             <a href="poolofdesigns-man.html">Pool of Designs — Men</a>
             <a href="poolofdesigns-woman.html">Pool of Designs — Women</a>
         </nav>

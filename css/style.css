@@ -1223,14 +1223,15 @@ a {
     margin-top: 0.8rem;
     text-align: center;
   }
-  /* Feature descriptions — scaled down and centered */
+  /* Feature descriptions — scaled down, centered, contained */
   .feature1__content h4,
   .feature2__content h4,
   .feature3__content h4 {
-    font-size: 1.3rem;
-    letter-spacing: 1px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
     margin-left: 0;
     text-align: center;
+    padding: 0 6%;
   }
   /* Globe description: smaller + wrap so it doesn't overflow screen width */
   .globequote__content h4 {
@@ -1245,8 +1246,8 @@ a {
   /* Feature row margins */
   .feature { margin: 2rem 4%; gap: 1.5rem; }
 
-  /* ── Globe (Our Home): padding-bottom so JOIN section clears overflowing labels ── */
-  .globequote { margin-top: 3rem; padding-bottom: 14rem !important; }
+  /* ── Globe (Our Home): padding-bottom keeps labels from overlapping JOIN ── */
+  .globequote { margin-top: 3rem; padding-bottom: 6rem !important; }
 
   /* ── Hero header (index only) ────── */
   /* .block__header rules above cover this */

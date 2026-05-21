@@ -2,7 +2,8 @@ import * as THREE from 'https://esm.sh/three@0.169.0';
 
 const canvas = document.getElementById('earth-canvas');
 const wrapper = document.getElementById('earth-wrapper');
-const W = Math.round(wrapper.getBoundingClientRect().width) || 400;
+// Match CSS: min(90vw, 400px) on mobile, 400px on desktop
+const W = window.innerWidth <= 768 ? Math.min(Math.round(window.innerWidth * 0.9), 400) : 400;
 const H = W;
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });

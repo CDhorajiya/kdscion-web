@@ -188,25 +188,27 @@
             /* Hide desktop nav list */
             .navigation > ul { display: none !important; }
 
-            /* ── Hamburger button (smaller, white bars for photo contrast) ── */
+            /* ── Hamburger button ── */
             .bb-hamburger {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                width: 20px;
-                height: 14px;
-                background: none;
+                width: 22px;
+                height: 16px;
+                background: rgba(0,0,0,0.55);
                 border: none;
                 cursor: pointer;
-                padding: 0;
+                padding: 4px 3px;
+                border-radius: 4px;
                 z-index: 1001;
                 flex-shrink: 0;
+                box-sizing: content-box;
             }
             .bb-hamburger span {
                 display: block;
                 width: 100%;
                 height: 2px;
-                background: rgba(255,255,255,0.9);
+                background: #fff;
                 border-radius: 1px;
             }
 
@@ -256,13 +258,55 @@
                 margin: 0;
             }
 
-            /* Family photo: full viewport, nav overlays it so no top gap */
+            /* ── Accordion categories ── */
+            .bb-panel-nav { overflow-y: auto; max-height: 80vh; padding: 0 0 2rem; }
+            .bb-acc { width: 80%; text-align: center; }
+            .bb-acc-hdr {
+                font-family: "Times New Roman", Times, serif;
+                font-size: 1.25rem;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: rgba(0,0,0,0.82);
+                background: none;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0;
+            }
+            .bb-acc-arrow { display: inline-block; transition: transform 0.2s; font-style: normal; font-size: 0.8rem; }
+            .bb-acc.open .bb-acc-arrow { transform: rotate(180deg); }
+            .bb-acc-body {
+                display: none;
+                flex-direction: column;
+                gap: 0.55rem;
+                padding: 0.8rem 0 0.4rem;
+                align-items: center;
+            }
+            .bb-acc.open .bb-acc-body { display: flex; }
+            .bb-acc-body a {
+                font-family: "Times New Roman", Times, serif;
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: rgba(0,0,0,0.6);
+                text-decoration: none;
+            }
+            .bb-acc-body a:last-child { color: rgb(6,70,6); font-size: 0.8rem; letter-spacing: 1.5px; margin-top: 0.3rem; }
+
+            /* Family photo: full viewport, scaled up 2.5× */
             .family_shot {
                 margin: 0 !important;
                 width: 100%;
+                height: 100svh;
+                overflow: hidden;
                 display: block;
             }
-            .family_shot img { width: 100%; height: 100svh; object-fit: contain; object-position: center center; display: block; }
+            .family_shot img { width: 100%; height: 100%; object-fit: cover; transform: scale(2.5); transform-origin: center 30%; display: block; }
         }
     </style>
 </head>
@@ -413,13 +457,123 @@
             <hr class="bb-panel-divider">
             <a href="measurement guide.html">Measurement Guide</a>
             <hr class="bb-panel-divider">
-            <a href="poolofdesigns-man.html">Men</a>
+
+            <div class="bb-acc" id="acc-men">
+                <button class="bb-acc-hdr">Men <span class="bb-acc-arrow">▾</span></button>
+                <div class="bb-acc-body">
+                    <a href="">Formal Shirts</a>
+                    <a href="">Casual Shirts</a>
+                    <a href="">Formal Pants</a>
+                    <a href="">Casual Pants</a>
+                    <a href="">Quarter-Zip Layering</a>
+                    <a href="">Full-Zip Layering</a>
+                    <a href="">Round Neck Layering</a>
+                    <a href="">V-Neck Layering</a>
+                    <a href="">Turtle Necks</a>
+                    <a href="">Jackets</a>
+                    <a href="">Denim Jackets</a>
+                    <a href="">Blazers</a>
+                    <a href="">Three Piece Suits</a>
+                    <a href="">Two Piece Suits</a>
+                    <a href="">Cotton &amp; Cotton</a>
+                    <a href="">Linen &amp; Linen</a>
+                    <a href="">Over Coats</a>
+                    <a href="">Scarves</a>
+                    <a href="">Gloves</a>
+                    <a href="poolofdesigns-man.html">Pool of Designs — Men</a>
+                </div>
+            </div>
             <hr class="bb-panel-divider">
-            <a href="poolofdesigns-woman.html">Women</a>
+
+            <div class="bb-acc" id="acc-women">
+                <button class="bb-acc-hdr">Women <span class="bb-acc-arrow">▾</span></button>
+                <div class="bb-acc-body">
+                    <a href="">Formal Shirts</a>
+                    <a href="">Casual Shirts</a>
+                    <a href="">Formal Pants</a>
+                    <a href="">Casual Pants</a>
+                    <a href="">Quarter-Zip Layering</a>
+                    <a href="">Full-Zip Layering</a>
+                    <a href="">Round Neck Layering</a>
+                    <a href="">V-Neck Layering</a>
+                    <a href="">Turtle Necks</a>
+                    <a href="">Dresses</a>
+                    <a href="">Classic B &amp; W</a>
+                    <a href="">Eastern Style</a>
+                    <a href="">Gowns</a>
+                    <a href="">Blouses</a>
+                    <a href="">Formal Skirts</a>
+                    <a href="">Casual Skirts</a>
+                    <a href="">Jackets</a>
+                    <a href="">Denim Jackets</a>
+                    <a href="">Blazers</a>
+                    <a href="">Three Piece Suits</a>
+                    <a href="">Two Piece Suits</a>
+                    <a href="">Over Coats</a>
+                    <a href="">Scarves</a>
+                    <a href="">Gloves</a>
+                    <a href="">Belts</a>
+                    <a href="poolofdesigns-woman.html">Pool of Designs — Women</a>
+                </div>
+            </div>
             <hr class="bb-panel-divider">
-            <a href="">Boy</a>
+
+            <div class="bb-acc" id="acc-boy">
+                <button class="bb-acc-hdr">Boy <span class="bb-acc-arrow">▾</span></button>
+                <div class="bb-acc-body">
+                    <a href="">Formal Shirts</a>
+                    <a href="">Casual Shirts</a>
+                    <a href="">Formal Pants</a>
+                    <a href="">Casual Pants</a>
+                    <a href="">Quarter-Zip Layering</a>
+                    <a href="">Full-Zip Layering</a>
+                    <a href="">Round Neck Layering</a>
+                    <a href="">V-Neck Layering</a>
+                    <a href="">Turtle Necks</a>
+                    <a href="">Jackets</a>
+                    <a href="">Denim Jackets</a>
+                    <a href="">Blazers</a>
+                    <a href="">Three Piece Suits</a>
+                    <a href="">Two Piece Suits</a>
+                    <a href="">Over Coats</a>
+                    <a href="">Scarves</a>
+                    <a href="">Gloves</a>
+                    <a href="">Pool of Designs — Boy</a>
+                </div>
+            </div>
             <hr class="bb-panel-divider">
-            <a href="">Girl</a>
+
+            <div class="bb-acc" id="acc-girl">
+                <button class="bb-acc-hdr">Girl <span class="bb-acc-arrow">▾</span></button>
+                <div class="bb-acc-body">
+                    <a href="">Formal Shirts</a>
+                    <a href="">Casual Shirts</a>
+                    <a href="">Formal Pants</a>
+                    <a href="">Casual Pants</a>
+                    <a href="">Quarter-Zip Layering</a>
+                    <a href="">Full-Zip Layering</a>
+                    <a href="">Round Neck Layering</a>
+                    <a href="">V-Neck Layering</a>
+                    <a href="">Turtle Necks</a>
+                    <a href="">Dresses</a>
+                    <a href="">Classic B &amp; W</a>
+                    <a href="">Eastern Style</a>
+                    <a href="">Gowns</a>
+                    <a href="">Blouses</a>
+                    <a href="">Formal Skirts</a>
+                    <a href="">Casual Skirts</a>
+                    <a href="">Jackets</a>
+                    <a href="">Denim Jackets</a>
+                    <a href="">Blazers</a>
+                    <a href="">Three Piece Suits</a>
+                    <a href="">Two Piece Suits</a>
+                    <a href="">Over Coats</a>
+                    <a href="">Scarves</a>
+                    <a href="">Gloves</a>
+                    <a href="">Belts</a>
+                    <a href="">Pool of Designs — Girl</a>
+                </div>
+            </div>
         </nav>
     </div>
 
@@ -448,6 +602,16 @@
             bbHamburger.addEventListener('click', () => bbPanel.classList.add('open'));
             bbClose.addEventListener('click', () => bbPanel.classList.remove('open'));
         }
+
+        // Accordion categories
+        document.querySelectorAll('.bb-acc-hdr').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const acc = this.closest('.bb-acc');
+                const isOpen = acc.classList.contains('open');
+                document.querySelectorAll('.bb-acc').forEach(a => a.classList.remove('open'));
+                if (!isOpen) acc.classList.add('open');
+            });
+        });
     </script>
 
     <div class="footer">

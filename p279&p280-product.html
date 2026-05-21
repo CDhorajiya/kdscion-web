@@ -728,6 +728,11 @@
             <!-- Left: 3D canvas -->
             <div class="viewer-panel">
                 <canvas id="viewer-canvas"></canvas>
+                <div id="viewer-loading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;pointer-events:none;z-index:5;">
+                    <div id="viewer-loading-ring" style="width:36px;height:36px;border:3px solid #ccc;border-top-color:#888;border-radius:50%;animation:spin 0.9s linear infinite;"></div>
+                    <span id="viewer-loading-text" style="font-family:'Times New Roman',serif;font-size:0.85rem;letter-spacing:2px;color:#888;text-transform:uppercase;"></span>
+                </div>
+                <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
                 <div id="detail-layer"></div>
                 <button class="design-only-btn" id="design-only-btn">Design Only</button>
                 <button class="design-details-btn" id="design-details-btn">Design Details</button>
@@ -1007,6 +1012,7 @@
                     currentModel.position.sub(box.getCenter(new THREE.Vector3()));
                     currentModel.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
                     sceneS.add(currentModel);
+                if (_vl) _vl.style.display = 'none';
                     splitMeshes();
                 },
                 undefined,

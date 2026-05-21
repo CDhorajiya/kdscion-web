@@ -15,6 +15,7 @@
 html {
   font-size: 62.5%; /* by default is 16px but now 62.5% of 16 is 10, so default is 10px now */
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 body {
   font-family:
@@ -1265,12 +1266,12 @@ a {
     font-size: 0.95rem !important; letter-spacing: 0.3px !important;
     margin-left: 0; margin-right: 0; text-align: center; padding: 0 4%;
   }
-  .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; }
+  .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; margin-top: 4% !important; }
   .emblom_content h4 + h4 { margin-top: 0.8rem; }
   /* Bring THE HOUSE heading above HOW WE FUNCTION on single-column mobile layout */
   .founder_message2 { order: -1; }
-  /* Ashok Chakra: center on mobile */
-  .ashokchakra { display: flex !important; justify-content: center !important; scale: 0.26 !important; margin: 0 auto !important; }
+  /* Ashok Chakra: center on mobile; negative margins compensate for scale not shrinking layout space */
+  .ashokchakra { display: flex !important; justify-content: center !important; scale: 0.22 !important; margin: -9rem auto !important; }
 
   /* ── Pool of designs ─────────────── */
   .container-snaps h3 { letter-spacing: 4px; font-size: 2.2rem; }

@@ -1,8 +1,10 @@
 import * as THREE from 'https://esm.sh/three@0.169.0';
 
-const W = 400, H = 400;
-
 const canvas = document.getElementById('earth-canvas');
+const wrapper = document.getElementById('earth-wrapper');
+const W = Math.round(wrapper.getBoundingClientRect().width) || 400;
+const H = W;
+
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(W, H);
@@ -104,7 +106,7 @@ const _v = new THREE.Vector3();
 
 // Globe screen radius: camera z=3.2, sphere r=1, fov=45 →
 // NDC edge = 1 / (tan(22.5°) * 3.2) ≈ 0.754 → pixel radius = 0.754 * (W/2)
-const GLOBE_R  = 0.754 * (W / 2); // ≈ 151px
+const GLOBE_R  = 0.754 * (W / 2);
 const LABEL_PAD = 26;              // px beyond globe edge where label begins
 
 function updatePins() {

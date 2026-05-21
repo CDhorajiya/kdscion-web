@@ -201,10 +201,12 @@
         }
 
         @media (max-width: 768px) {
-            /* Globe: Three.js sets inline style width/height on the canvas via JS,
-               so !important is required to override it and constrain the display. */
-            #earth-wrapper { width: 55vw; height: 55vw; max-width: 220px; max-height: 220px; margin: 2rem auto; overflow: hidden; }
-            #earth-canvas  { width: 100% !important; height: 100% !important; }
+            /* Globe: JS reads wrapper size via getBoundingClientRect(), so setting
+               the wrapper here controls both the canvas render size and annotation coords. */
+            #earth-wrapper { width: min(90vw, 400px); height: min(90vw, 400px); margin: 2rem auto; overflow: visible; }
+            /* Scale annotation labels down on mobile */
+            .ann-label { font-size: 0.72rem !important; letter-spacing: 1px !important; }
+            .ann-fabric { font-size: 0.65rem !important; letter-spacing: 1px !important; }
 
             /* Feature grid: one column, tight margins */
             .feature1, .feature2, .feature3, .feature4, .feature5 {
@@ -222,8 +224,8 @@
             }
             .feature4__content h4,
             .feature5__content h4 {
-                font-size: 0.95rem;
-                letter-spacing: 0.3px;
+                font-size: 0.95rem !important;
+                letter-spacing: 0.3px !important;
                 margin-left: 0;
                 text-align: center;
                 padding: 0 8%;

@@ -1198,7 +1198,7 @@ a {
 
   /* ── Index hero header ───────────── */
   .block__header { margin-top: 8rem; margin-bottom: 1rem; text-align: center; width: 100%; padding: 0; box-sizing: border-box; }
-  .block__header h2 { letter-spacing: 3px; font-size: 1.9rem; padding-top: 1.5rem; }
+  .block__header h2 { letter-spacing: 3px; font-size: 1.9rem; padding-top: 3.5rem; }
   .block__header h3 { letter-spacing: 2px; font-size: 1.4rem; }
 
   /* ── Feature grid: reorder so wreath is always on top ── */
@@ -1227,8 +1227,8 @@ a {
   .feature1__content h4,
   .feature2__content h4,
   .feature3__content h4 {
-    font-size: 0.95rem;
-    letter-spacing: 0.3px;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.3px !important;
     margin-left: 0;
     text-align: center;
     padding: 0 8%;

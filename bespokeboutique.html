@@ -167,40 +167,97 @@
             animation: dropFade 0.25s ease forwards;
         }
 
+        /* Hamburger + panel: hidden by default (desktop) */
+        .bb-hamburger { display: none; }
+        .bb-panel { display: none; }
+
         @media (max-width: 768px) {
-            /* Nav wraps: brand logo (from global CSS) + nav items below */
+            /* Nav: just logo + hamburger, no wrapping list */
             .navigation {
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 align-items: center;
                 padding: 1rem 4%;
-                gap: 0.5rem;
                 justify-content: space-between;
             }
-            /* Nav item list: wraps into rows */
-            .navigation > ul {
+            /* Hide desktop nav list */
+            .navigation > ul { display: none !important; }
+
+            /* ── Hamburger button ── */
+            .bb-hamburger {
                 display: flex;
-                flex-wrap: wrap;
-                gap: 0.3rem;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 28px;
+                height: 20px;
+                background: none;
+                border: none;
+                cursor: pointer;
                 padding: 0;
-                margin: 0;
+                z-index: 1001;
+                flex-shrink: 0;
+            }
+            .bb-hamburger span {
+                display: block;
                 width: 100%;
+                height: 2px;
+                background: rgba(0,0,0,0.7);
+                border-radius: 1px;
             }
-            /* Disable desktop hover dropdowns on touch */
-            .navigation ul li ul.dropdown { display: none !important; }
-            /* Compact nav item links */
-            .navigation ul > li > a {
-                padding: 0.3rem 0.7rem;
-                margin: 0;
+
+            /* ── Frosted full-screen panel ── */
+            .bb-panel.open {
+                display: flex;
+                position: fixed;
+                inset: 0;
+                background: rgba(255,255,255,0.78);
+                backdrop-filter: blur(28px) saturate(180%);
+                -webkit-backdrop-filter: blur(28px) saturate(180%);
+                z-index: 2000;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
-            .navigation ul > li > a h4 {
-                font-size: 1.1rem;
-                letter-spacing: 2px;
-                font-weight: 500;
+            .bb-panel-close {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.8rem;
+                background: none;
+                border: none;
+                font-size: 2.6rem;
+                color: rgba(0,0,0,0.45);
+                cursor: pointer;
+                line-height: 1;
+                padding: 0;
             }
-            /* Family photo: remove negative overlap margins from desktop */
+            .bb-panel-nav {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+            .bb-panel-nav a {
+                font-family: "Times New Roman", Times, serif;
+                font-size: 1.7rem;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: rgba(0,0,0,0.78);
+                text-decoration: none;
+            }
+            .bb-panel-cat {
+                font-family: "Times New Roman", Times, serif;
+                font-size: 1.4rem;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(0,0,0,0.32);
+            }
+
+            /* Family photo: tight margins, full-width centered */
             .family_shot {
-                margin-top: 2rem !important;
-                margin-bottom: 2rem !important;
+                margin-top: 1rem !important;
+                margin-bottom: 1rem !important;
+                width: 100%;
+                display: flex;
+                justify-content: center;
             }
             .family_shot img { width: 100%; height: auto; display: block; }
         }
@@ -209,6 +266,11 @@
 <body>
     <nav class="navigation">
         <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+        <button class="bb-hamburger" id="bb-hamburger" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
      <ul>
         <li><a href="skinprofile.html" class=""><h4>SKIN PROFILE</h4></a>
             <ul class="dropdown">
@@ -340,6 +402,21 @@
      </ul>
     </nav>
 
+    <!-- Mobile frosted nav panel -->
+    <div class="bb-panel" id="bb-panel">
+        <button class="bb-panel-close" id="bb-panel-close" aria-label="Close menu">&#x2715;</button>
+        <nav class="bb-panel-nav">
+            <a href="skinprofile.html">Skin Profile</a>
+            <a href="measurement guide.html">Measurement</a>
+            <span class="bb-panel-cat">Men</span>
+            <span class="bb-panel-cat">Women</span>
+            <span class="bb-panel-cat">Boy</span>
+            <span class="bb-panel-cat">Girl</span>
+            <a href="poolofdesigns-man.html">Pool of Designs — Men</a>
+            <a href="poolofdesigns-woman.html">Pool of Designs — Women</a>
+        </nav>
+    </div>
+
     <div class="family_shot">
         <img src="images/familypose.webp" alt="Family picture pose">
     </div>
@@ -356,6 +433,15 @@
                 hideTimer = setTimeout(() => item.classList.remove('open'), 200);
             });
         });
+
+        // Mobile hamburger
+        const bbHamburger = document.getElementById('bb-hamburger');
+        const bbPanel = document.getElementById('bb-panel');
+        const bbClose = document.getElementById('bb-panel-close');
+        if (bbHamburger && bbPanel) {
+            bbHamburger.addEventListener('click', () => bbPanel.classList.add('open'));
+            bbClose.addEventListener('click', () => bbPanel.classList.remove('open'));
+        }
     </script>
 
     <div class="footer">

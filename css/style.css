@@ -1136,6 +1136,9 @@ a {
   text-transform: none;
 }
 
+/* ── Bespoke Boutique link on product pages (mobile-only element) ── */
+.product-bb-link { display: none; }
+
 /* ═══════════════════════════════════════
    MOBILE  ≤ 768px
    Design intent: editorial single-column,
@@ -1153,36 +1156,35 @@ a {
   .nav .brand-name,
   .navigation .brand-name {
     display: block;
-    width: 44px;
-    height: 44px;
+    width: 58px;
+    height: 58px;
     background: url('../images/KD_monogram.png') no-repeat center/contain;
     flex-shrink: 0;
     align-self: center;
   }
   .nav {
-    padding: 1.5rem 4%;
+    padding: 1.2rem 4%;
     white-space: normal;
     overflow: visible;
     align-items: center;
   }
   /* Bespoke boutique logo: scale up now that it's not competing with text */
   .bb { margin-right: 0; margin-bottom: 0; align-self: center; }
-  .bb img { width: 12rem; }
+  .bb img { width: 16rem; }
 
-  /* ── Footer: single row ──────────── */
+  /* ── Footer: one link per row ───────── */
   .footer { margin-top: 6rem; }
   .footer_details {
-    padding: 0.4rem 0.5rem;
-    flex-wrap: nowrap;
-    justify-content: center;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.8rem 2rem;
   }
   .footer_details h5 {
-    padding: 0.5rem 0.5rem;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-align: center;
+    white-space: normal;
   }
   .monogram { padding-left: 0; scale: 1; display: flex; justify-content: center; }
   .monogram img { max-width: 160px; }
@@ -1195,7 +1197,7 @@ a {
   .house_phone, .house_text, .house_email { margin-left: 0; white-space: normal; }
 
   /* ── Index hero header ───────────── */
-  .block__header { margin-top: 2rem; margin-bottom: 1rem; }
+  .block__header { margin-top: 2rem; margin-bottom: 1rem; text-align: center; }
   .block__header h2 { letter-spacing: 3px; font-size: 1.9rem; padding-top: 1.5rem; }
   .block__header h3 { letter-spacing: 2px; font-size: 1.4rem; }
 
@@ -1204,30 +1206,30 @@ a {
   .cotton-wreath  { order: -1; }
   .wool-wreath    { order: -1; }
   .leather-wreath { order: -1; }
-  /* Scale down all grid wreaths on mobile */
+  /* Scale up grid wreaths on mobile (user wants them more prominent) */
   .cotton-wreath, .linen-wreath, .wool-wreath,
   .silk-wreath,   .leather-wreath {
-    max-width: 130px !important;
-    width: 45% !important;
+    max-width: 180px !important;
+    width: 60% !important;
     margin: 0 auto !important;
   }
-  /* Feature headings: CUSTOM, PREMIUM, UNIQUE, REFINED, ENDURING, OUR HOME */
+  /* Feature headings: CUSTOM, PREMIUM, UNIQUE, OUR HOME — scaled down */
   .feature1__content h3,
   .feature2__content h3,
   .feature3__content h3,
   .globequote__content h3 {
     letter-spacing: 3px;
-    font-size: 2.2rem;
-    margin-top: 1rem;
+    font-size: 1.8rem;
+    margin-top: 0.8rem;
     text-align: center;
   }
-  /* Feature descriptions */
+  /* Feature descriptions — scaled down */
   .feature1__content h4,
   .feature2__content h4,
   .feature3__content h4,
   .globequote__content h4 {
-    font-size: 1.4rem;
-    letter-spacing: 1.5px;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
     margin-left: 0;
   }
   /* Feature row margins */
@@ -1253,4 +1255,70 @@ a {
   .container-snaps h3 { letter-spacing: 4px; font-size: 2.2rem; }
   .snap-gallery { flex-direction: column; gap: 3rem; padding: 0 4%; }
   .column { gap: 2rem; }
+
+  /* ── Product pages: center header stack ── */
+  .product-breadcrumb { text-align: center !important; }
+  .product-title-row { align-items: center !important; }
+  .product-title-row > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .product-title-row > div > p {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.3rem !important;
+    text-align: center !important;
+  }
+  .product-title-row h2 { text-align: center !important; }
+  .skin-toggle { justify-content: center !important; }
+  /* Show tagline on mobile as own row */
+  .product-tagline { display: block !important; text-align: center !important; }
+  /* Make viewer taller on mobile */
+  .product-split .viewer-panel {
+    height: 60vh !important;
+    max-height: none !important;
+  }
+  /* Bespoke Boutique link: visible + styled on mobile */
+  .product-bb-link {
+    display: block !important;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    text-align: center;
+    margin: 0.2rem 0;
+  }
+
+  /* ── Skinprofile / Measurement: center header stack ── */
+  .title-row { align-items: center !important; }
+  .title-row > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .title-row > div > p {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.3rem !important;
+    text-align: center !important;
+  }
+  .title-row h2 { text-align: center !important; }
+  .title-tagline { text-align: center !important; }
+  .gender-toggle { justify-content: center !important; }
+  /* Make visual panel taller on mobile */
+  .visual-panel {
+    height: 60vh !important;
+    max-height: none !important;
+    min-height: 260px !important;
+  }
+  /* Measurement guide viewer panel */
+  .main-split .viewer-panel {
+    height: 60vh !important;
+    max-height: none !important;
+  }
 }

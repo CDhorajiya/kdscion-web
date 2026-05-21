@@ -201,8 +201,8 @@
         }
 
         @media (max-width: 768px) {
-            /* Globe: scaled down, leave annotation text as-is */
-            #earth-wrapper { width: 75vw; height: 75vw; max-width: 260px; max-height: 260px; margin: 2rem auto 0; }
+            /* Globe: scaled down and centered, with breathing room before JOIN */
+            #earth-wrapper { width: 65vw; height: 65vw; max-width: 220px; max-height: 220px; margin: 2rem auto 3rem; }
             #earth-canvas  { width: 100%; height: 100%; }
 
             /* Feature grid: one column, tight margins */
@@ -215,29 +215,30 @@
             .feature4__content h3,
             .feature5__content h3 {
                 letter-spacing: 3px;
-                font-size: 2.2rem;
-                margin-top: 1rem;
+                font-size: 1.8rem;
+                margin-top: 0.8rem;
                 text-align: center;
             }
             .feature4__content h4,
             .feature5__content h4 {
-                font-size: 1.4rem;
-                letter-spacing: 1.5px;
+                font-size: 1.3rem;
+                letter-spacing: 1px;
                 margin-left: 0;
             }
-            /* Grid wreaths: compact on mobile */
+            /* Grid wreaths: scaled up on mobile */
             .cotton-wreath, .linen-wreath, .wool-wreath,
             .silk-wreath, .leather-wreath {
-                max-width: 130px !important;
-                width: 45% !important;
+                max-width: 180px !important;
+                width: 60% !important;
                 margin: 0 auto !important;
             }
 
-            /* Five wreaths row: same scale, single horizontal row */
+            /* Five wreaths row: centered single horizontal row */
             .triputy-five {
                 flex-wrap: nowrap;
+                justify-content: center;
                 gap: 0.4rem;
-                margin-bottom: 2rem;
+                margin-bottom: 3.5rem;
                 width: 100%;
                 padding: 0 2%;
                 box-sizing: border-box;

@@ -302,7 +302,7 @@
             }
             .bb-acc-body a:last-child { color: rgb(6,70,6); font-size: 0.9rem; letter-spacing: 2px; border-bottom: none; }
 
-            /* Family photo: full viewport, 15% zoom-in to push white margins offscreen */
+            /* Family photo: cover fills screen, position shifted to keep full family in frame */
             .family_shot {
                 margin: 0 !important;
                 width: 100%;
@@ -310,8 +310,8 @@
                 overflow: hidden;
                 display: block;
                 background-image: url('images/familypose.webp');
-                background-size: auto 115%;
-                background-position: center 30%;
+                background-size: cover;
+                background-position: 30% 25%;
             }
             .family_shot img { display: none; }
         }

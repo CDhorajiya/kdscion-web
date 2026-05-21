@@ -1143,6 +1143,9 @@ a {
 ═══════════════════════════════════════ */
 @media (max-width: 768px) {
 
+  /* ── Global safety ───────────────── */
+  body { overflow-x: hidden; }
+
   /* ── Navigation ──────────────────── */
   /* Keep horizontal flex; just shrink sizes and kill desktop margins */
   .nav {
@@ -1152,8 +1155,8 @@ a {
     align-items: center;
   }
   .nav h1 {
-    font-size: 1.4rem;
-    letter-spacing: 2px;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
     margin-left: 0;
     margin-top: 0;
   }
@@ -1175,7 +1178,7 @@ a {
   }
   .footer_details h5 {
     padding: 0.8rem 1rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     letter-spacing: 3px;
   }
   /* Monogram: use img max-width instead of broken CSS scale trick */
@@ -1195,8 +1198,8 @@ a {
 
   /* ── Contact House ───────────────── */
   .footer_contacthouse h4 {
-    font-size: 2.2rem;
-    letter-spacing: 5px;
+    font-size: 2rem;
+    letter-spacing: 4px;
     white-space: normal;
     padding: 0 4%;
   }
@@ -1214,37 +1217,42 @@ a {
     white-space: normal;
   }
 
-  /* ── Typography: kill 25px letter-spacing ── */
+  /* ── Typography: scale letter-spacing for mobile screens ── */
   .feature1__content h3,
   .feature2__content h3,
   .feature3__content h3,
   .globequote__content h3 {
-    letter-spacing: 6px;
-    font-size: 3rem;
+    letter-spacing: 5px;
+    font-size: 2.8rem;
     margin-top: 6%;
   }
+  /* Index hero header — 25px letter-spacing on desktop is too wide on phone */
+  .block__header {
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+  }
   .block__header h2 {
-    letter-spacing: 8px;
-    font-size: 3.2rem;
-    padding-top: 4rem;
+    letter-spacing: 5px;
+    font-size: 2.6rem;
+    padding-top: 2rem;
   }
   .block__header h3 {
-    letter-spacing: 4px;
-    font-size: 2.4rem;
+    letter-spacing: 3px;
+    font-size: 2rem;
   }
   .founder_message1 h3,
   .founder_message2 h3,
   .founder_message3 h3 {
-    letter-spacing: 6px;
-    font-size: 3rem;
-    margin-top: 12%;
+    letter-spacing: 5px;
+    font-size: 2.8rem;
+    margin-top: 10%;
   }
   .founder_submessage1 h4,
   .founder_submessage2 h4,
   .founder_submessage3 h4 {
     letter-spacing: 4px;
-    font-size: 2.2rem;
-    margin-top: 6%;
+    font-size: 2rem;
+    margin-top: 5%;
   }
   .emblom_content h4 {
     letter-spacing: 4px !important;
@@ -1252,8 +1260,8 @@ a {
   }
   .emblom_content h4 + h4 { margin-top: 1.5rem; }
   .container-snaps h3 {
-    letter-spacing: 6px;
-    font-size: 2.8rem;
+    letter-spacing: 4px;
+    font-size: 2.4rem;
   }
 
   /* ── Globe section ───────────────── */

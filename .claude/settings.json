@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(xargs sed -i '' 's|content=\"width=device-width, initial-scale=1.0\"|content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"|g')",
+      "Bash(xargs -0 sed -i '' 's|content=\"width=device-width, initial-scale=1.0\"|content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"|g')"
+    ]
+  }
+}

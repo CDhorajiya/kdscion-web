@@ -201,8 +201,8 @@
         }
 
         @media (max-width: 768px) {
-            /* Globe: scaled down and centered, with breathing room before JOIN */
-            #earth-wrapper { width: 65vw; height: 65vw; max-width: 220px; max-height: 220px; margin: 2rem auto 3rem; }
+            /* Globe: smaller, overflow hidden so labels don't bleed into JOIN */
+            #earth-wrapper { width: 55vw; height: 55vw; max-width: 190px; max-height: 190px; margin: 2rem auto 2rem; overflow: hidden; }
             #earth-canvas  { width: 100%; height: 100%; }
 
             /* Feature grid: one column, tight margins */
@@ -224,16 +224,17 @@
                 font-size: 1.3rem;
                 letter-spacing: 1px;
                 margin-left: 0;
+                text-align: center;
             }
-            /* Grid wreaths: scaled up on mobile */
+            /* Grid wreaths: prominent but not overwhelming */
             .cotton-wreath, .linen-wreath, .wool-wreath,
             .silk-wreath, .leather-wreath {
-                max-width: 180px !important;
-                width: 60% !important;
+                max-width: 140px !important;
+                width: 50% !important;
                 margin: 0 auto !important;
             }
 
-            /* Five wreaths row: centered single horizontal row */
+            /* Five wreaths row: fixed-width items so justify-content: center works */
             .triputy-five {
                 flex-wrap: nowrap;
                 justify-content: center;
@@ -243,7 +244,7 @@
                 padding: 0 2%;
                 box-sizing: border-box;
             }
-            .triputy-five .wreath-item { flex: 1; min-width: 0; }
+            .triputy-five .wreath-item { flex: 0 0 auto; width: 18%; min-width: 0; }
             .triputy-five .wreath-item img { width: 100%; max-width: none; }
             /* Remove the desktop scale(1.6) from the last wreath */
             .triputy-five .wreath-item:last-child img { transform: none; }

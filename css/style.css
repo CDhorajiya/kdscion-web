@@ -1135,3 +1135,137 @@ a {
   font-style: italic;
   text-transform: none;
 }
+
+/* ═══════════════════════════════
+   MOBILE — max 768px
+═══════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Nav */
+  .nav {
+    position: relative;
+    flex-wrap: wrap;
+    padding: 1.5rem 4% 1rem;
+    white-space: normal;
+    overflow: visible;
+    align-items: flex-start;
+  }
+  .nav h1 {
+    font-size: 1.8rem;
+    letter-spacing: 0.4rem;
+    margin-left: 0;
+    margin-top: 1.5rem;
+  }
+  .nav h4 {
+    margin-left: 0;
+    font-size: 1.4rem;
+    letter-spacing: 0.4rem;
+  }
+  .bb {
+    position: absolute;
+    top: 1rem;
+    right: 3%;
+    margin-right: 0;
+    margin-bottom: 0;
+    align-self: auto;
+  }
+  .bb img { width: 10rem; }
+
+  /* Footer */
+  .footer { margin-top: 6rem; }
+  .footer_details {
+    padding-left: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem 2%;
+    gap: 0;
+  }
+  .footer_details h5 {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    letter-spacing: 0.3rem;
+  }
+  .monogram {
+    padding-left: 0;
+    scale: 0.5;
+  }
+  .footer_branding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Contact house page */
+  .contact_modes {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 5%;
+    text-align: center;
+  }
+  .house_phone,
+  .house_text,
+  .house_email {
+    margin-left: 0;
+    margin-bottom: 3rem;
+    white-space: normal;
+    text-wrap: wrap;
+  }
+  .footer_contacthouse h4 {
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
+    white-space: normal;
+    margin-bottom: 5%;
+  }
+
+  /* Headings — kill huge letter-spacing */
+  .feature1__content h3,
+  .feature2__content h3,
+  .feature3__content h3,
+  .globequote__content h3,
+  .container-snaps h3 {
+    letter-spacing: 4px;
+    font-size: 2.6rem;
+    margin-top: 8%;
+  }
+  .block__header h2 {
+    letter-spacing: 6px;
+    font-size: 3rem;
+    padding-top: 4rem;
+  }
+  .block__header h3 {
+    letter-spacing: 3px;
+    font-size: 2.2rem;
+  }
+  .founder_message1 h3,
+  .founder_message2 h3,
+  .founder_message3 h3 {
+    letter-spacing: 4px;
+    font-size: 2.6rem;
+    margin-top: 10%;
+  }
+  .founder_submessage1 h4,
+  .founder_submessage2 h4,
+  .founder_submessage3 h4 {
+    letter-spacing: 3px;
+    font-size: 2rem;
+    margin-top: 6%;
+  }
+  .emblom_content h4 {
+    letter-spacing: 3px !important;
+    font-size: 1.6rem !important;
+  }
+  .emblom_content h4 + h4 { margin-top: 1.5rem; }
+
+  /* Globe */
+  .globequote { margin-top: 5rem; }
+
+  /* Feature rows */
+  .feature { margin: 2rem 2%; gap: 2rem; }
+
+  /* Pool of designs gallery */
+  .snap-gallery {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 3%;
+  }
+}

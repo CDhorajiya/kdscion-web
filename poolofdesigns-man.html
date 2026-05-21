@@ -143,6 +143,12 @@
         }
         .product-column:last-child .product-desc__title,
         .product-column:last-child .product-desc__sub { text-align: right; }
+
+        @media (max-width: 768px) {
+            .product-gallery { flex-direction: column; gap: 2rem; padding: 0 3%; }
+            .product-column { gap: 2rem; }
+            .product-desc { display: none; }
+        }
     </style>
 </head>
 <body>

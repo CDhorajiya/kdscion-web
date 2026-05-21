@@ -1233,10 +1233,10 @@ a {
     text-align: center;
     padding: 0 8%;
   }
-  /* Globe description: small enough to fit on one line on any phone */
+  /* Globe description: one line, scaled up from 0.72 */
   .globequote__content h4 {
-    font-size: 0.72rem !important;
-    letter-spacing: 0px !important;
+    font-size: 0.88rem !important;
+    letter-spacing: 0.2px !important;
     margin-left: 0;
     text-align: center;
     white-space: nowrap !important;

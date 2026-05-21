@@ -1233,15 +1233,14 @@ a {
     text-align: center;
     padding: 0 8%;
   }
-  /* Globe description: smaller + wrap so it doesn't overflow screen width */
+  /* Globe description: small enough to fit on one line on any phone */
   .globequote__content h4 {
-    font-size: 1rem !important;
-    letter-spacing: 0.5px !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0px !important;
     margin-left: 0;
     text-align: center;
-    white-space: normal !important;
-    overflow-wrap: break-word;
-    padding: 0 4%;
+    white-space: nowrap !important;
+    padding: 0 2%;
   }
   /* Feature row margins */
   .feature { margin: 2rem 4%; gap: 1.5rem; }
@@ -1266,8 +1265,12 @@ a {
     font-size: 0.95rem !important; letter-spacing: 0.3px !important;
     margin-left: 0; margin-right: 0; text-align: center; padding: 0 4%;
   }
-  .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.1rem !important; }
+  .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; }
   .emblom_content h4 + h4 { margin-top: 0.8rem; }
+  /* Bring THE HOUSE heading above HOW WE FUNCTION on single-column mobile layout */
+  .founder_message2 { order: -1; }
+  /* Ashok Chakra: center and increase size on mobile */
+  .ashokchakra { display: flex !important; justify-content: center !important; scale: 0.55 !important; margin: 0 auto !important; }
 
   /* ── Pool of designs ─────────────── */
   .container-snaps h3 { letter-spacing: 4px; font-size: 2.2rem; }

@@ -283,30 +283,38 @@
             .bb-acc-body {
                 display: none;
                 flex-direction: column;
-                gap: 0.55rem;
+                gap: 0;
                 padding: 0.8rem 0 0.4rem;
                 align-items: center;
+                width: 100%;
             }
             .bb-acc.open .bb-acc-body { display: flex; }
             .bb-acc-body a {
                 font-family: "Times New Roman", Times, serif;
-                font-size: 0.9rem;
-                letter-spacing: 2px;
+                font-size: 1.05rem;
+                letter-spacing: 2.5px;
                 text-transform: uppercase;
-                color: rgba(0,0,0,0.6);
+                color: rgba(0,0,0,0.65);
                 text-decoration: none;
+                width: 100%;
+                text-align: center;
+                padding: 0.7rem 0;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
             }
-            .bb-acc-body a:last-child { color: rgb(6,70,6); font-size: 0.8rem; letter-spacing: 1.5px; margin-top: 0.3rem; }
+            .bb-acc-body a:last-child { color: rgb(6,70,6); font-size: 0.9rem; letter-spacing: 2px; border-bottom: none; }
 
-            /* Family photo: full viewport, scaled up 2.5× */
+            /* Family photo: full viewport, zoomed in via background-image to skip white top area */
             .family_shot {
                 margin: 0 !important;
                 width: 100%;
                 height: 100svh;
                 overflow: hidden;
                 display: block;
+                background-image: url('images/familypose.webp');
+                background-size: 260%;
+                background-position: center 65%;
             }
-            .family_shot img { width: 100%; height: 100%; object-fit: cover; transform: scale(2.5); transform-origin: center 30%; display: block; }
+            .family_shot img { display: none; }
         }
     </style>
 </head>

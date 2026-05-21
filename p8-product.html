@@ -729,7 +729,8 @@
 <body>
 
     <!-- ── Pool of Designs gallery as background ── -->
-    <iframe class="bg-frame" src="poolofdesigns-woman.html" tabindex="-1" aria-hidden="true"></iframe>
+    <iframe class="bg-frame" id="bg-frame" tabindex="-1" aria-hidden="true"></iframe>
+    <script>if (window.innerWidth > 768) document.getElementById('bg-frame').src = 'poolofdesigns-woman.html';</script>
     <div class="bg-overlay"></div>
 
     <div class="product-page-wrap">
@@ -800,7 +801,6 @@
         import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
-        import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
 
         const canvas = document.getElementById('viewer-canvas');
@@ -847,9 +847,20 @@
             } catch(e) { return null; }
         }
 
-        function preSampleAll() {
-            TONE_DEFS.forEach(({ key, glb, darken }) => {
-                (() => { const _l = (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(glb, (refGltf) => {
+        function makeDracoLoader() {
+            const loader = new GLTFLoader();
+            const draco = new DRACOLoader();
+            draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+            loader.setDRACOLoader(draco);
+            return loader;
+        }
+
+        function ensureSkinTone(toneKey) {
+            if (skinPalette.has(toneKey)) return Promise.resolve();
+            const def = TONE_DEFS.find(d => d.key === toneKey);
+            if (!def) return Promise.resolve();
+            return new Promise((resolve) => {
+                makeDracoLoader().load(def.glb, (refGltf) => {
                     let color = null;
                     refGltf.scene.traverse((node) => {
                         if (color || !node.isMesh || !node.material) return;
@@ -861,12 +872,13 @@
                         if (!isWhite) c.copy(m.color);
                         else if (m.map) { const s = sampleTextureColor(m.map); if (s) c.copy(s); else c.copy(m.color); }
                         else c.copy(m.color);
-                        if (darken !== 1) c.multiplyScalar(darken);
+                        if (def.darken !== 1) c.multiplyScalar(def.darken);
                         color = c;
                     });
-                    if (color) skinPalette.set(key, color);
+                    if (color) skinPalette.set(toneKey, color);
                     refGltf.scene.traverse((node) => { if (node.isMesh) node.geometry.dispose(); });
-                }, undefined, () => {});
+                    resolve();
+                }, undefined, () => resolve());
             });
         }
 
@@ -888,10 +900,12 @@
         }
 
         document.querySelectorAll('.skin-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', async () => {
                 document.querySelectorAll('.skin-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                applySkinTone(btn.dataset.skin);
+                const toneKey = btn.dataset.skin;
+                if (toneKey) await ensureSkinTone(toneKey);
+                applySkinTone(toneKey);
             });
         });
 
@@ -901,7 +915,7 @@
             const H = panel.clientHeight || 700;
             rendererS = new THREE.WebGLRenderer({ canvas, antialias: true });
             rendererS.setClearColor(0xe8e8e8, 1);
-            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -933,8 +947,6 @@
                 currentModel.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
                 sceneS.add(currentModel);
                 if (_vl) _vl.style.display = 'none';
-                // Pre-sample skin tones once — no GLB reload on button click
-                preSampleAll();
                 currentModel.traverse((node) => {
                     if (node.isMesh) {
                         console.log('[mesh]', node.name);

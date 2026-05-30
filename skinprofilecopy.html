@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZJT42EG6J');
+    </script>
+    <title>Skin Profile — King Dhorajiya</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KD: The House of Scion">
+    <meta property="og:title" content="Skin Profile — KD Scion">
+    <meta property="og:description" content="Discover your colour palette. See how our designs complement your skin tone with our interactive skin profile tool.">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-p12-full%20sleeve%20A-line%20dress.webp">
+    <meta property="og:url" content="https://kdscion.com/skinprofile.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Skin Profile — KD Scion">
+    <meta name="twitter:description" content="Discover your colour palette. See how our designs complement your skin tone with our interactive skin profile tool.">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-p12-full%20sleeve%20A-line%20dress.webp">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        html, body { height: 100%; overflow: hidden; background: #000; }
+        body { display: flex; flex-direction: column; }
+
+        .bg-frame { position: fixed; inset: 0; width: 100%; height: 100%; border: none; z-index: 0; pointer-events: none; }
+        .bg-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 1; pointer-events: none; }
+
+        .page-wrap { position: relative; z-index: 2; flex: 1; min-height: 0; padding: 1.6rem 4rem 1.6rem; display: flex; flex-direction: column; }
+
+        .title-row { flex-shrink: 0; display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.4rem; }
+        .title-row h2 { font-family: "Times New Roman", Times, serif; font-size: 2.2rem; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: rgba(255,255,255,0.92); margin: 0 0 0.4rem 0; }
+        .title-row p { font-family: "Times New Roman", Times, serif; font-size: 1.15rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(180,160,200,0.85); margin: 0; }
+        .title-row a { color: inherit; text-decoration: none; transition: color 0.2s; }
+        .title-row a:hover { color: rgba(255,255,255,0.9); }
+        .top-brand { transition: color 0.2s; }
+        .top-brand:hover { color: rgba(255,255,255,0.9) !important; }
+        .title-tagline { font-family: "Times New Roman", serif; font-size: 1.3rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.5); text-align: right; margin: 0; }
+
+        .main-split { display: flex; gap: 2.4rem; flex: 1; min-height: 0; }
+
+        .visual-panel { position: relative; flex: 1.4; background: rgba(255,255,255,0.06); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.13); border-radius: 4px; min-height: 0; box-shadow: 0 8px 48px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.4rem; }
+
+        .skin-orb-wrap { position: relative; width: 200px; height: 200px; margin-bottom: 2.8rem; flex-shrink: 0; }
+        .skin-orb { width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle at 38% 38%, rgba(255,255,255,0.18), rgba(0,0,0,0)); background-color: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); transition: background-color 1.1s cubic-bezier(.4,0,.2,1), box-shadow 1.1s ease; box-shadow: 0 0 60px rgba(0,0,0,0.4); }
+        .skin-orb::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 38% 38%, rgba(255,255,255,0.22) 0%, transparent 65%); pointer-events: none; }
+        .skin-orb-ring { position: absolute; inset: -18px; border-radius: 50%; border: 1px solid rgba(255,220,150,0); transition: border-color 1.1s ease, box-shadow 1.1s ease; }
+        .skin-orb-ring.active { border-color: rgba(255,220,150,0.25); box-shadow: 0 0 28px rgba(255,220,150,0.08); }
+        .skin-orb.fair-light    { background-color: #E8D5C4; box-shadow: 0 0 60px rgba(232,213,196,0.25); }
+        .skin-orb.medium-olive  { background-color: #C4956A; box-shadow: 0 0 60px rgba(196,149,106,0.25); }
+        .skin-orb.tan           { background-color: #9B7250; box-shadow: 0 0 60px rgba(155,114,80,0.22); }
+        .skin-orb.dark-deep     { background-color: #4A2E1E; box-shadow: 0 0 60px rgba(74,46,30,0.4); }
+        .skin-orb .undertone-tint { position: absolute; inset: 0; border-radius: 50%; transition: background 0.9s ease; pointer-events: none; }
+        .undertone-cool  .undertone-tint { background: rgba(140,160,220,0.18); }
+        .undertone-warm  .undertone-tint { background: rgba(220,170,60,0.15); }
+        .undertone-neutral .undertone-tint { background: transparent; }
+
+        .orb-label-skin { font-family: "Times New Roman", serif; font-size: 1.75rem; letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,0.75); text-align: center; margin: 0 0 0.5rem 0; transition: color 0.5s; min-height: 2rem; }
+        .orb-label-under { font-family: "Times New Roman", serif; font-size: 1.25rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,220,150,0.6); text-align: center; margin: 0 0 2.4rem 0; min-height: 1.5rem; transition: color 0.5s; }
+        .test-indicators { display: flex; gap: 1.4rem; align-items: center; margin-bottom: 2.8rem; }
+        .test-dot-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .test-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); transition: background 0.4s, border-color 0.4s, box-shadow 0.4s; }
+        .test-dot.cool    { background: rgba(140,160,220,0.8); border-color: rgba(140,160,220,0.6); box-shadow: 0 0 8px rgba(140,160,220,0.4); }
+        .test-dot.warm    { background: rgba(220,170,60,0.85); border-color: rgba(220,170,60,0.6); box-shadow: 0 0 8px rgba(220,170,60,0.4); }
+        .test-dot.neutral { background: rgba(200,200,200,0.7); border-color: rgba(200,200,200,0.5); box-shadow: 0 0 8px rgba(200,200,200,0.3); }
+        .test-dot-label { font-family: "Times New Roman", serif; font-size: 1.15rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+        .panel-divider { width: 60px; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 2rem; }
+        .panel-desc { font-family: "Times New Roman", serif; font-size: 1.4rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.22); text-align: center; max-width: 280px; line-height: 1.8; }
+
+        .form-panel { flex: 0 0 300px; background: rgba(255,255,255,0.08); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 2rem 2rem 1.6rem; display: flex; flex-direction: column; overflow-y: auto; box-shadow: 0 8px 48px rgba(0,0,0,0.35); }
+        .form-panel::-webkit-scrollbar { width: 3px; }
+        .form-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+        .form-title { font-family: "Times New Roman", serif; font-size: 1.75rem; font-weight: bold; letter-spacing: 6px; text-transform: uppercase; color: rgba(255,255,255,0.65); text-align: center; margin: 0 0 0.4rem 0; }
+        .form-subtitle { font-family: "Times New Roman", serif; font-size: 1.15rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.22); text-align: center; margin: 0 0 1.8rem 0; }
+        .form-section { margin-bottom: 1.6rem; }
+        .form-section-title { font-family: "Times New Roman", serif; font-size: 1.2rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,220,150,0.6); margin: 0 0 0.9rem 0; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(255,220,150,0.15); }
+        .section-note { font-family: "Times New Roman", serif; font-size: 1.35rem; letter-spacing: 2px; color: rgba(255,255,255,0.25); margin: 0 0 0.9rem 0; line-height: 1.6; }
+        .skin-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+        .skin-card { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.75rem 0.5rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; transition: border-color 0.25s, background 0.25s, box-shadow 0.25s; }
+        .skin-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.22); }
+        .skin-card.selected { border-color: rgba(255,220,150,0.5); background: rgba(255,220,150,0.06); box-shadow: 0 0 12px rgba(255,220,150,0.08); }
+        .skin-swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.18); flex-shrink: 0; }
+        .skin-swatch.fair-light   { background: #E8D5C4; }
+        .skin-swatch.medium-olive { background: #C4956A; }
+        .skin-swatch.tan          { background: #9B7250; }
+        .skin-swatch.dark-deep    { background: #4A2E1E; }
+        .skin-card-label { font-family: "Times New Roman", serif; font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); text-align: center; transition: color 0.25s; }
+        .skin-card.selected .skin-card-label { color: rgba(255,220,150,0.85); }
+
+        .test-block { margin-bottom: 2.2rem; padding-bottom: 2.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .test-block:last-child { border-bottom: none; padding-bottom: 0; }
+        .test-question { font-family: "Times New Roman", serif; font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.38); margin: 0 0 0.6rem 0; line-height: 1.6; }
+        .test-options { display: flex; gap: 0.5rem; }
+        .tone-btn { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 2px; color: rgba(255,255,255,0.4); font-family: "Times New Roman", serif; font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.5rem 0.3rem; cursor: pointer; transition: all 0.22s; text-align: center; }
+        .tone-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); }
+        .tone-btn.selected-cool { background: rgba(140,160,220,0.12); border-color: rgba(140,160,220,0.45); color: rgba(180,200,255,0.9); }
+        .tone-btn.selected-warm { background: rgba(220,170,60,0.1); border-color: rgba(220,170,60,0.4); color: rgba(255,210,100,0.9); }
+        .tone-btn.selected-neutral { background: rgba(200,200,200,0.08); border-color: rgba(200,200,200,0.35); color: rgba(220,220,220,0.85); }
+
+        .reveal-wrap { margin-top: auto; padding-top: 1.4rem; }
+        .btn { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; color: rgba(255,255,255,0.5); font-family: "Times New Roman", serif; font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; padding: 0.85rem 1rem; cursor: pointer; transition: all 0.22s; }
+        .btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.28); }
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .btn-primary { background: rgba(255,220,150,0.1); border-color: rgba(255,220,150,0.35); color: rgba(255,220,150,0.8); }
+        .btn-primary:hover:not(:disabled) { background: rgba(255,220,150,0.18); color: rgba(255,220,150,1); border-color: rgba(255,220,150,0.6); }
+
+        /* ── Popup ── */
+        .popup-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; }
+        .popup-overlay.visible { display: flex; pointer-events: all; }
+        .popup-backdrop { position: absolute; inset: 0; background: rgba(255,255,255,0.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+        .popup-card { position: relative; z-index: 1; background: #ffffff; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; box-shadow: 0 12px 56px rgba(0,0,0,0.18); width: 95vw; height: 92vh; display: flex; flex-direction: row; overflow: hidden; }
+
+        /* ── Palette panel (replaces image) ── */
+        .popup-palette-wrap {
+            flex: 1.6;
+            border-right: 1px solid rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            display: flex;
+            flex-direction: column;
+            padding: 1.4rem 2.2rem 1.2rem;
+            gap: 0.6rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Palette header */
+        .pal-header { text-align: center; flex-shrink: 0; }
+        .pal-skin-title { font-family: "Times New Roman", serif; font-size: 1.5rem; font-weight: 400; letter-spacing: 5px; text-transform: uppercase; color: #000000; margin: 0 0 0.15rem 0; }
+        .pal-skin-under { font-family: "Times New Roman", serif; font-size: 1rem; letter-spacing: 7px; text-transform: uppercase; color: #7a5200; margin: 0; }
+
+        /* Section */
+        .pal-section { flex-shrink: 0; }
+        .pal-sec-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+        .sec-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .best-dot { background: #4CAF50; }
+        .ha-dot   { background: #64B5F6; }
+        .sec-label { font-family: "Times New Roman", serif; font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; color: #000000; }
+
+        /* 5-column singles grid */
+        .singles-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
+
+        .swatch-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+
+        /* The coloured box — painted-on-frosted-glass effect */
+        .swatch-box {
+            width: 100%;
+            aspect-ratio: 5/3;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.15);
+        }
+        /* Top glass sheen */
+        .swatch-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 48%; background: linear-gradient(180deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.1) 60%, transparent 100%); pointer-events: none; z-index: 1; }
+        /* Diagonal refraction */
+        .swatch-box::after  { content: ''; position: absolute; inset: 0; background: linear-gradient(130deg, rgba(255,255,255,0.18) 0%, transparent 42%, rgba(0,0,0,0.1) 100%); pointer-events: none; z-index: 1; }
+
+        .swatch-name { font-family: "Times New Roman", serif; font-size: 1.1rem; letter-spacing: 1.5px; text-transform: uppercase; color: #000000; text-align: center; line-height: 1.3; }
+        .swatch-hex  { font-family: "Courier New", monospace; font-size: 1.1rem; color: #000000; letter-spacing: 0.5px; text-align: center; line-height: 1.2; }
+
+        /* Divider between singles and combos sections */
+        .pal-divider { height: 1px; background: rgba(0,0,0,0.1); flex-shrink: 0; margin: 0.05rem 0; }
+
+        /* 5-column combos grid */
+        .combos-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
+
+        .combo-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+
+        .combo-box {
+            width: 100%;
+            aspect-ratio: 5/3;
+            display: flex;
+            gap: 3px;
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(200,205,215,0.6);
+            position: relative;
+        }
+        /* Glass sheen over the whole combo */
+        .combo-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 48%; background: linear-gradient(180deg, rgba(255,255,255,0.36) 0%, rgba(255,255,255,0.08) 60%, transparent 100%); pointer-events: none; z-index: 2; }
+        .combo-box::after  { content: ''; position: absolute; inset: 0; background: linear-gradient(130deg, rgba(255,255,255,0.16) 0%, transparent 42%, rgba(0,0,0,0.08) 100%); pointer-events: none; z-index: 2; }
+
+        .combo-half { flex: 1; }
+
+        .combo-name { font-family: "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 1.3px; text-transform: uppercase; color: #000000; text-align: center; line-height: 1.35; }
+        .combo-hex  { font-family: "Courier New", monospace; font-size: 1.05rem; color: #000000; letter-spacing: 0.5px; text-align: center; line-height: 1.2; }
+
+        /* ── Popup right column ── */
+        .popup-details { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 4rem 3.6rem 3.5rem; }
+        .popup-details-top { display: flex; flex-direction: column; align-items: center; }
+        .popup-details-mid { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 1; width: 100%; }
+        .popup-eyebrow { font-family: "Times New Roman", serif; font-size: 1.15rem; letter-spacing: 6px; text-transform: uppercase; color: #7a5200; margin: 0 0 1.2rem 0; }
+        .popup-title { font-family: "Times New Roman", serif; font-size: 3.5rem; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: #1a1a1a; margin: 0 0 0.6rem 0; line-height: 1.15; }
+        .popup-undertone { font-family: "Times New Roman", serif; font-size: 1.6rem; letter-spacing: 6px; text-transform: uppercase; color: #7a5200; margin: 0 0 3rem 0; }
+        .popup-divider { width: 48px; height: 1px; background: #e0e0e0; margin-bottom: 2.4rem; }
+        .popup-palette-note { font-family: "Times New Roman", serif; font-size: 1.32rem; letter-spacing: 2px; text-transform: uppercase; color: #444; line-height: 2; margin: 0; text-align: left; }
+        .note-brand { color: #2a6b3a; }
+        .popup-close { margin-top: 3rem; background: none; border: 1px solid #ccc; border-radius: 2px; color: #888; font-family: "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 5px; text-transform: uppercase; padding: 0.7rem 3rem; cursor: pointer; transition: all 0.2s; }
+        .popup-close:hover { background: #f5f5f5; color: #1a1a1a; border-color: #bbb; }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            html, body { overflow-y: auto !important; height: auto !important; }
+            body { min-height: 100vh; }
+            .page-wrap { flex: none !important; padding: 1.5rem 4% 3rem; }
+            .title-row { flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-bottom: 1rem; }
+            .title-tagline { text-align: left; }
+            .main-split { flex: none !important; flex-direction: column; gap: 1.5rem; }
+            .visual-panel { flex: none; min-height: 55vw; max-height: 380px; padding: 1.5rem; }
+            .form-panel { flex: none; max-height: none; overflow-y: visible; }
+            .skin-orb-wrap { width: 140px; height: 140px; }
+            .skin-orb { width: 140px; height: 140px; }
+            .popup-card { flex-direction: column !important; height: 96vh !important; }
+            .popup-palette-wrap { flex: none !important; height: 60vh; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1rem 1.2rem; gap: 0.5rem; }
+            .popup-details { padding: 1.8rem 1.5rem !important; overflow-y: auto; }
+            .popup-title { font-size: 2.2rem !important; }
+            .popup-undertone { margin-bottom: 1.5rem !important; }
+            .pal-skin-title { font-size: 1rem !important; }
+            .swatch-name, .combo-name { font-size: 0.68rem !important; }
+        }
+
+        /* ── White theme — page only (popup stays dark glass) ── */
+        html, body { background: #fff; color: #1a1a1a; }
+        .bg-frame, .bg-overlay { display: none; }
+        .top-brand { color: #555 !important; }
+        .top-brand:hover { color: #1a1a1a !important; }
+        .title-row h2 { color: #1a1a1a; }
+        .title-row p  { color: #555; }
+        .title-row a:hover { color: #1a1a1a; }
+        .title-tagline { color: #666; }
+        .visual-panel { background: #f5f5f5; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: #e0e0e0; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+        .skin-orb { border-color: #ddd; box-shadow: 0 0 40px rgba(0,0,0,0.1); }
+        .orb-label-skin { color: #1a1a1a; }
+        .orb-label-under { color: #7a5200; }
+        .test-dot-label { color: #555; }
+        .panel-divider { background: #e0e0e0; }
+        .panel-desc { color: #666; }
+        .form-panel { background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: #e0e0e0; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+        .form-panel::-webkit-scrollbar-thumb { background: #ddd; }
+        .form-title { color: #1a1a1a; }
+        .form-subtitle { color: #555; }
+        .form-section-title { color: #7a5200; border-bottom-color: rgba(120,80,0,0.2); }
+        .section-note { color: #555; }
+        .skin-card { background: #f5f5f5; border-color: #d8d8d8; }
+        .skin-card:hover { background: #ececec; border-color: #aaa; }
+        .skin-card.selected { border-color: rgba(100,70,0,0.55); background: rgba(100,70,0,0.06); box-shadow: 0 0 10px rgba(100,70,0,0.1); }
+        .skin-swatch { border-color: #bbb; }
+        .skin-card-label { color: #444; }
+        .skin-card.selected .skin-card-label { color: #7a5200; }
+        .test-block { border-bottom-color: #e0e0e0; }
+        .test-question { color: #444; }
+        .tone-btn { background: #f5f5f5; border-color: #d8d8d8; color: #444; }
+        .tone-btn:hover { background: #ececec; border-color: #aaa; color: #1a1a1a; }
+        .tone-btn.selected-cool { background: rgba(140,160,220,0.12); border-color: rgba(80,100,180,0.5); color: #3a4fa8; }
+        .tone-btn.selected-warm { background: rgba(180,120,0,0.1); border-color: rgba(140,90,0,0.5); color: #7a5200; }
+        .tone-btn.selected-neutral { background: rgba(150,150,150,0.1); border-color: rgba(100,100,100,0.4); color: #444; }
+        .btn { background: #f5f5f5; border-color: #d8d8d8; color: #444; }
+        .btn:hover:not(:disabled) { background: #eee; color: #1a1a1a; border-color: #aaa; }
+        .btn-primary { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: #333; border-color: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrap">
+        <div style="padding-bottom:0.8rem;"><a href="index.html" class="top-brand" style="font-family:'Times New Roman',Times,serif;font-size:1.15rem;letter-spacing:4px;text-transform:uppercase;color:rgba(180,160,200,0.85);text-decoration:none;">KING DHORAJIYA</a></div>
+        <div class="title-row">
+            <div>
+                <h2>Skin Profile</h2>
+                <p><a href="bespokeboutique.html">Bespoke Boutique</a> &nbsp;·&nbsp; The House of Scion</p>
+            </div>
+            <p class="title-tagline">Custom &nbsp;|&nbsp; Premium &nbsp;|&nbsp; Unique</p>
+        </div>
+
+        <div class="main-split">
+            <div class="visual-panel">
+                <div class="skin-orb-wrap">
+                    <div class="skin-orb" id="skinOrb"><div class="undertone-tint" id="undertone-tint"></div></div>
+                    <div class="skin-orb-ring" id="skinOrbRing"></div>
+                </div>
+                <p class="orb-label-skin" id="orbLabelSkin">—</p>
+                <p class="orb-label-under" id="orbLabelUnder">Select your profile</p>
+                <div class="test-indicators">
+                    <div class="test-dot-wrap"><div class="test-dot" id="dot1"></div><span class="test-dot-label">Vein</span></div>
+                    <div class="test-dot-wrap"><div class="test-dot" id="dot2"></div><span class="test-dot-label">Jewellery</span></div>
+                    <div class="test-dot-wrap"><div class="test-dot" id="dot3"></div><span class="test-dot-label">Fabric</span></div>
+                </div>
+                <div class="panel-divider"></div>
+                <p class="panel-desc">Understanding your skin type and undertone helps us curate colours that enhance your natural radiance.</p>
+            </div>
+
+            <div class="form-panel">
+                <p class="form-title">Skin Profile</p>
+                <p class="form-subtitle">Discover your colour harmony</p>
+                <div class="form-section">
+                    <p class="form-section-title">Skin Type</p>
+                    <p class="section-note">Select the option that best matches your natural skin tone.</p>
+                    <div class="skin-type-grid">
+                        <div class="skin-card" data-skin="fair-light" onclick="selectSkin(this)"><div class="skin-swatch fair-light"></div><span class="skin-card-label">Fair / Light</span></div>
+                        <div class="skin-card" data-skin="medium-olive" onclick="selectSkin(this)"><div class="skin-swatch medium-olive"></div><span class="skin-card-label">Medium / Olive</span></div>
+                        <div class="skin-card" data-skin="tan" onclick="selectSkin(this)"><div class="skin-swatch tan"></div><span class="skin-card-label">Tan</span></div>
+                        <div class="skin-card" data-skin="dark-deep" onclick="selectSkin(this)"><div class="skin-swatch dark-deep"></div><span class="skin-card-label">Dark / Deep</span></div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <p class="form-section-title">Undertone Tests</p>
+                    <p class="section-note">Complete all three tests. Your undertone is confirmed when two results match.</p>
+                    <div class="test-block">
+                        <p class="test-question">1 &nbsp;· Vein Test — Look at the veins on your wrist in natural light. How do they look?</p>
+                        <div class="test-options">
+                            <button class="tone-btn" data-test="1" data-value="cool" onclick="selectTone(this, 1)">Blue / Purple</button>
+                            <button class="tone-btn" data-test="1" data-value="warm" onclick="selectTone(this, 1)">Greenish</button>
+                            <button class="tone-btn" data-test="1" data-value="neutral" onclick="selectTone(this, 1)">Mix / Hard to tell</button>
+                        </div>
+                    </div>
+                    <div class="test-block">
+                        <p class="test-question">2 &nbsp;· Jewellery Test — Which metal tends to suit you better?</p>
+                        <div class="test-options">
+                            <button class="tone-btn" data-test="2" data-value="cool" onclick="selectTone(this, 2)">Silver</button>
+                            <button class="tone-btn" data-test="2" data-value="warm" onclick="selectTone(this, 2)">Gold</button>
+                            <button class="tone-btn" data-test="2" data-value="neutral" onclick="selectTone(this, 2)">Both equally</button>
+                        </div>
+                    </div>
+                    <div class="test-block">
+                        <p class="test-question">3 &nbsp;· Fabric Test — Hold pure white and cream fabric near your face. Which looks better?</p>
+                        <div class="test-options">
+                            <button class="tone-btn" data-test="3" data-value="cool" onclick="selectTone(this, 3)">Bright white</button>
+                            <button class="tone-btn" data-test="3" data-value="warm" onclick="selectTone(this, 3)">Cream / Ivory</button>
+                            <button class="tone-btn" data-test="3" data-value="neutral" onclick="selectTone(this, 3)">Both fine</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal-wrap">
+                    <button class="btn btn-primary" id="revealBtn" disabled onclick="revealProfile()">Reveal My Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-backdrop" onclick="closePopup()"></div>
+        <div class="popup-card">
+            <div class="popup-palette-wrap" id="palettePanel"></div>
+            <div class="popup-details">
+                <div class="popup-details-top">
+                    <p class="popup-eyebrow">Your Skin Profile</p>
+                    <p class="popup-title" id="popupSkinLabel">—</p>
+                    <p class="popup-undertone" id="popupUndertoneLabel">—</p>
+                    <div class="popup-divider"></div>
+                </div>
+                <div class="popup-details-mid">
+                    <p class="popup-palette-note">| &nbsp; A curated colour palette, tailored to your unique skin profile — designed to guide your fabric selections and bring out the finest expression of <span class="note-brand">The House of Scion</span> &nbsp; |</p>
+                </div>
+                <button class="popup-close" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = { skinType: null, tests: [null, null, null] };
+
+        // ── All 12 palettes — colours matched from the reference images ──
+        const PALETTES = {
+            'fair-light': {
+                cool: {
+                    title: 'Fair / Light Skin', under: 'COOL UNDERTONE',
+                    best: [
+                        { c: '#89CFF0', n: 'Icy Blue' },
+                        { c: '#C3B1E1', n: 'Lavender' },
+                        { c: '#F4B8C8', n: 'Rose Pink' },
+                        { c: '#8B2252', n: 'Berry' },
+                        { c: '#0F52BA', n: 'Sapphire' }
+                    ],
+                    acceptable: [
+                        { c: '#9AAAB8', n: 'Cool Gray' },
+                        { c: '#F5F0FF', n: 'Soft White' },
+                        { c: '#D4A0A8', n: 'Dusty Pink' },
+                        { c: '#B4C8E8', n: 'Pale Blue' },
+                        { c: '#B097A8', n: 'Mauve' }
+                    ],
+                    bestCombos: [
+                        { a: '#C3B1E1', al: 'Lavender', b: '#89CFF0', bl: 'Icy Blue' },
+                        { a: '#F4B8C8', al: 'Rose Pink', b: '#9AAAB8', bl: 'Cool Gray' },
+                        { a: '#D4A0A8', al: 'Dusty Pink', b: '#B4C8E8', bl: 'Pale Blue' },
+                        { a: '#8B2252', al: 'Berry', b: '#F5F0FF', bl: 'Soft White' },
+                        { a: '#0F52BA', al: 'Sapphire', b: '#B4C8E8', bl: 'Pale Blue' }
+                    ],
+                    haCombos: [
+                        { a: '#F5F0FF', al: 'Soft White', b: '#9AAAB8', bl: 'Cool Gray' },
+                        { a: '#D4A0A8', al: 'Dusty Pink', b: '#B4C8E8', bl: 'Pale Blue' },
+                        { a: '#B097A8', al: 'Mauve', b: '#C8C8D0', bl: 'Light Gray' },
+                        { a: '#C4C0D8', al: 'Lavender Gray', b: '#FFFFFF', bl: 'White' },
+                        { a: '#B4D0F0', al: 'Powder Blue', b: '#C4C8CC', bl: 'Silver' }
+                    ]
+                },
+                warm: {
+                    title: 'Fair / Light Skin', under: 'WARM UNDERTONE',
+                    best: [
+                        { c: '#E87060', n: 'Coral' },
+                        { c: '#F8B080', n: 'Peach' },
+                        { c: '#C83020', n: 'Warm Red' },
+                        { c: '#D8A020', n: 'Mustard' },
+                        { c: '#F09060', n: 'Apricot' }
+                    ],
+                    acceptable: [
+                        { c: '#FFF0D8', n: 'Cream' },
+                        { c: '#EED8B8', n: 'Warm Beige' },
+                        { c: '#A8A858', n: 'Soft Olive' },
+                        { c: '#E09078', n: 'Light Terra' },
+                        { c: '#C8A880', n: 'Warm Taupe' }
+                    ],
+                    bestCombos: [
+                        { a: '#E87060', al: 'Coral', b: '#FFF0D8', bl: 'Cream' },
+                        { a: '#F8B080', al: 'Peach', b: '#EED8B8', bl: 'Warm Beige' },
+                        { a: '#D8A020', al: 'Mustard', b: '#A07040', bl: 'Soft Brown' },
+                        { a: '#F09060', al: 'Apricot', b: '#EED8B8', bl: 'Beige' },
+                        { a: '#C85038', al: 'Terracotta', b: '#FFF5E8', bl: 'Ivory' }
+                    ],
+                    haCombos: [
+                        { a: '#FFF0D8', al: 'Cream', b: '#FFF5E8', bl: 'Ivory' },
+                        { a: '#A8A858', al: 'Light Olive', b: '#EED8B8', bl: 'Beige' },
+                        { a: '#B0A898', al: 'Warm Gray', b: '#F8B080', bl: 'Peach' },
+                        { a: '#E89070', al: 'Soft Coral', b: '#D4B890', bl: 'Sand' },
+                        { a: '#C89A60', al: 'Camel', b: '#808840', bl: 'Olive' }
+                    ]
+                },
+                neutral: {
+                    title: 'Fair / Light Skin', under: 'NEUTRAL UNDERTONE',
+                    best: [
+                        { c: '#F0B8B8', n: 'Blush' },
+                        { c: '#B8D4B8', n: 'Sage' },
+                        { c: '#98C4E0', n: 'Soft Blue' },
+                        { c: '#B88090', n: 'Rosewood' },
+                        { c: '#B8A8C8', n: 'Muted Lavender' }
+                    ],
+                    acceptable: [
+                        { c: '#F8F5F0', n: 'White' },
+                        { c: '#C8C8C4', n: 'Light Gray' },
+                        { c: '#F0E0D0', n: 'Beige' },
+                        { c: '#F8C8B8', n: 'Soft Peach' },
+                        { c: '#B8D0E8', n: 'Pale Blue' }
+                    ],
+                    bestCombos: [
+                        { a: '#F0B8B8', al: 'Blush', b: '#B8D4B8', bl: 'Sage' },
+                        { a: '#98C4E0', al: 'Soft Blue', b: '#F0E0D0', bl: 'Beige' },
+                        { a: '#B88090', al: 'Rosewood', b: '#F8F4F0', bl: 'Cream' },
+                        { a: '#B8A8C8', al: 'Muted Lavender', b: '#C8C8C4', bl: 'Soft Gray' },
+                        { a: '#F8C8B8', al: 'Peach', b: '#C8E4CC', bl: 'Pale Mint' }
+                    ],
+                    haCombos: [
+                        { a: '#F8F5F0', al: 'White', b: '#C8C8C4', bl: 'Light Gray' },
+                        { a: '#F0E0D0', al: 'Beige', b: '#F4C0C0', bl: 'Soft Pink' },
+                        { a: '#F8F4F0', al: 'Cream', b: '#B8D4B8', bl: 'Sage' },
+                        { a: '#B8D0E8', al: 'Pale Blue', b: '#C0A8B8', bl: 'Mauve' },
+                        { a: '#F8C8B8', al: 'Soft Peach', b: '#C8E4CC', bl: 'Pale Mint' }
+                    ]
+                }
+            },
+            'medium-olive': {
+                cool: {
+                    title: 'Medium / Olive Skin', under: 'COOL UNDERTONE',
+                    best: [
+                        { c: '#009A50', n: 'Emerald' },
+                        { c: '#1A3C9A', n: 'Sapphire' },
+                        { c: '#6A1E90', n: 'Plum' },
+                        { c: '#CA0068', n: 'Magenta' },
+                        { c: '#5C6B80', n: 'Slate' }
+                    ],
+                    acceptable: [
+                        { c: '#9AAAB0', n: 'Cool Gray' },
+                        { c: '#6898C8', n: 'Soft Blue' },
+                        { c: '#D0A0A8', n: 'Dusty Rose' },
+                        { c: '#C0C0CC', n: 'Lavender Gray' },
+                        { c: '#4A7098', n: 'Steel Blue' }
+                    ],
+                    bestCombos: [
+                        { a: '#009A50', al: 'Emerald', b: '#1A2A60', bl: 'Navy' },
+                        { a: '#1A3C9A', al: 'Sapphire', b: '#C8C8C8', bl: 'Light Gray' },
+                        { a: '#6A1E90', al: 'Plum', b: '#F0C0D0', bl: 'Soft Pink' },
+                        { a: '#CA0068', al: 'Magenta', b: '#404048', bl: 'Charcoal' },
+                        { a: '#2A0880', al: 'Indigo', b: '#C0D8F0', bl: 'Pale Blue' }
+                    ],
+                    haCombos: [
+                        { a: '#9AAAB0', al: 'Cool Gray', b: '#B8D0E8', bl: 'Powder Blue' },
+                        { a: '#4A7098', al: 'Steel Blue', b: '#C8C8C8', bl: 'Light Gray' },
+                        { a: '#F5F5FF', al: 'Soft White', b: '#C0C0CC', bl: 'Lavender Gray' },
+                        { a: '#607080', al: 'Slate', b: '#C0D8F0', bl: 'Pale Blue' },
+                        { a: '#D0A0A8', al: 'Dusty Rose', b: '#C0C0CC', bl: 'Lavender Gray' }
+                    ]
+                },
+                warm: {
+                    title: 'Medium / Olive Skin', under: 'WARM UNDERTONE',
+                    best: [
+                        { c: '#7A8830', n: 'Olive' },
+                        { c: '#C05A38', n: 'Terracotta' },
+                        { c: '#A82E1C', n: 'Rust' },
+                        { c: '#E8A818', n: 'Golden Yellow' },
+                        { c: '#1A9080', n: 'Teal' }
+                    ],
+                    acceptable: [
+                        { c: '#DEC898', n: 'Warm Beige' },
+                        { c: '#C89A50', n: 'Camel' },
+                        { c: '#E88868', n: 'Soft Coral' },
+                        { c: '#7A9040', n: 'Moss Green' },
+                        { c: '#D4B890', n: 'Sand' }
+                    ],
+                    bestCombos: [
+                        { a: '#7A8830', al: 'Olive', b: '#C05A38', bl: 'Terracotta' },
+                        { a: '#A82E1C', al: 'Rust', b: '#E8A818', bl: 'Gold' },
+                        { a: '#1A9080', al: 'Teal', b: '#D4B890', bl: 'Sand' },
+                        { a: '#D8A020', al: 'Mustard', b: '#7A5020', bl: 'Brown' },
+                        { a: '#C85028', al: 'Burnt Orange', b: '#FFF0D8', bl: 'Cream' }
+                    ],
+                    haCombos: [
+                        { a: '#C89A50', al: 'Camel', b: '#DEC898', bl: 'Beige' },
+                        { a: '#7A9040', al: 'Moss', b: '#D4B890', bl: 'Sand' },
+                        { a: '#E88868', al: 'Soft Coral', b: '#B0A898', bl: 'Warm Gray' },
+                        { a: '#C89A60', al: 'Tan', b: '#7A8830', bl: 'Olive' },
+                        { a: '#9A7030', al: 'Bronze', b: '#FFF0D8', bl: 'Cream' }
+                    ]
+                },
+                neutral: {
+                    title: 'Medium / Olive Skin', under: 'NEUTRAL UNDERTONE',
+                    best: [
+                        { c: '#287880', n: 'Teal' },
+                        { c: '#C07880', n: 'Rose' },
+                        { c: '#D4B890', n: 'Sand' },
+                        { c: '#B89830', n: 'Muted Gold' },
+                        { c: '#2A6828', n: 'Forest Green' }
+                    ],
+                    acceptable: [
+                        { c: '#D8C0A0', n: 'Beige' },
+                        { c: '#A0A8A8', n: 'Soft Gray' },
+                        { c: '#F5EDDC', n: 'Cream' },
+                        { c: '#D09080', n: 'Muted Coral' },
+                        { c: '#B0B870', n: 'Pale Olive' }
+                    ],
+                    bestCombos: [
+                        { a: '#287880', al: 'Teal', b: '#D4B890', bl: 'Sand' },
+                        { a: '#C07880', al: 'Rose', b: '#F5EDDC', bl: 'Cream' },
+                        { a: '#2A6828', al: 'Forest Green', b: '#D8C0A0', bl: 'Beige' },
+                        { a: '#B89830', al: 'Muted Gold', b: '#7A8040', bl: 'Olive' },
+                        { a: '#D09080', al: 'Coral', b: '#C8B098', bl: 'Soft Clay' }
+                    ],
+                    haCombos: [
+                        { a: '#D8C0A0', al: 'Beige', b: '#F5EDDC', bl: 'Cream' },
+                        { a: '#A0A8A8', al: 'Soft Gray', b: '#C0D0E0', bl: 'Pale Blue' },
+                        { a: '#D4B890', al: 'Sand', b: '#A8B870', bl: 'Sage' },
+                        { a: '#B0B870', al: 'Light Olive', b: '#B0A898', bl: 'Warm Gray' },
+                        { a: '#D09080', al: 'Muted Coral', b: '#A0A8A8', bl: 'Soft Gray' }
+                    ]
+                }
+            },
+            'tan': {
+                cool: {
+                    title: 'Tan Skin', under: 'COOL UNDERTONE',
+                    best: [
+                        { c: '#1F40AE', n: 'Royal Blue' },
+                        { c: '#CC187A', n: 'Fuchsia' },
+                        { c: '#44087A', n: 'Deep Purple' },
+                        { c: '#68D8C0', n: 'Mint' },
+                        { c: '#3A4050', n: 'Charcoal' }
+                    ],
+                    acceptable: [
+                        { c: '#9AAAB0', n: 'Cool Gray' },
+                        { c: '#C8B4D8', n: 'Soft Lilac' },
+                        { c: '#4A7098', n: 'Steel Blue' },
+                        { c: '#D4A0A8', n: 'Dusty Pink' },
+                        { c: '#1A2A60', n: 'Navy' }
+                    ],
+                    bestCombos: [
+                        { a: '#1F40AE', al: 'Royal Blue', b: '#FFFFFF', bl: 'White' },
+                        { a: '#CC187A', al: 'Fuchsia', b: '#3A4050', bl: 'Charcoal' },
+                        { a: '#44087A', al: 'Deep Purple', b: '#C8C8C8', bl: 'Light Gray' },
+                        { a: '#68D8C0', al: 'Mint', b: '#1A2A60', bl: 'Navy' },
+                        { a: '#1A3A9A', al: 'Cobalt', b: '#C0D8F0', bl: 'Pale Blue' }
+                    ],
+                    haCombos: [
+                        { a: '#9AAAB0', al: 'Cool Gray', b: '#FFFFFF', bl: 'White' },
+                        { a: '#4A7098', al: 'Steel Blue', b: '#C8C8C8', bl: 'Light Gray' },
+                        { a: '#D4A0A8', al: 'Dusty Pink', b: '#C0D8F0', bl: 'Pale Blue' },
+                        { a: '#C8B4D8', al: 'Lilac', b: '#9AAAB0', bl: 'Gray' },
+                        { a: '#607888', al: 'Slate', b: '#B4CCE8', bl: 'Powder Blue' }
+                    ]
+                },
+                warm: {
+                    title: 'Tan Skin', under: 'WARM UNDERTONE',
+                    best: [
+                        { c: '#C84A20', n: 'Burnt Orange' },
+                        { c: '#D83828', n: 'Coral Red' },
+                        { c: '#28B8A8', n: 'Turquoise' },
+                        { c: '#E09020', n: 'Honey' },
+                        { c: '#A07030', n: 'Bronze' }
+                    ],
+                    acceptable: [
+                        { c: '#DEC898', n: 'Warm Beige' },
+                        { c: '#F8B898', n: 'Peach' },
+                        { c: '#C8A830', n: 'Soft Gold' },
+                        { c: '#9A9850', n: 'Light Olive' },
+                        { c: '#9A9888', n: 'Warm Gray' }
+                    ],
+                    bestCombos: [
+                        { a: '#C84A20', al: 'Burnt Orange', b: '#28B8A8', bl: 'Turquoise' },
+                        { a: '#D83828', al: 'Coral Red', b: '#E09020', bl: 'Gold' },
+                        { a: '#A07030', al: 'Bronze', b: '#FFF0D8', bl: 'Cream' },
+                        { a: '#E09020', al: 'Honey', b: '#7A5020', bl: 'Brown' },
+                        { a: '#9A9850', al: 'Olive', b: '#C84A20', bl: 'Burnt Orange' }
+                    ],
+                    haCombos: [
+                        { a: '#DEC898', al: 'Warm Beige', b: '#FFF0D8', bl: 'Cream' },
+                        { a: '#F8B898', al: 'Peach', b: '#D4B890', bl: 'Sand' },
+                        { a: '#C8A830', al: 'Soft Gold', b: '#9A9850', bl: 'Olive' },
+                        { a: '#C09050', al: 'Light Brown', b: '#DEC898', bl: 'Beige' },
+                        { a: '#9A9888', al: 'Warm Gray', b: '#E08070', bl: 'Coral' }
+                    ]
+                },
+                neutral: {
+                    title: 'Tan Skin', under: 'NEUTRAL UNDERTONE',
+                    best: [
+                        { c: '#F28482', n: 'Coral' },
+                        { c: '#577590', n: 'Steel Blue' },
+                        { c: '#90A955', n: 'Moss' },
+                        { c: '#FFB703', n: 'Amber' },
+                        { c: '#2A9D8F', n: 'Teal' }
+                    ],
+                    acceptable: [
+                        { c: '#E6CCB2', n: 'Beige' },
+                        { c: '#FAF3DD', n: 'Cream' },
+                        { c: '#B7B7A4', n: 'Soft Gray' },
+                        { c: '#FFCAD4', n: 'Pale Coral' },
+                        { c: '#D8F3DC', n: 'Light Sage' }
+                    ],
+                    bestCombos: [
+                        { a: '#F28482', al: 'Coral', b: '#2A9D8F', bl: 'Teal' },
+                        { a: '#577590', al: 'Steel Blue', b: '#E6CCB2', bl: 'Beige' },
+                        { a: '#90A955', al: 'Moss', b: '#FAEDCD', bl: 'Cream' },
+                        { a: '#FFB703', al: 'Amber', b: '#ADB5BD', bl: 'Gray' },
+                        { a: '#008080', al: 'Teal', b: '#DDB892', bl: 'Sand' }
+                    ],
+                    haCombos: [
+                        { a: '#E6CCB2', al: 'Beige', b: '#FAEDCD', bl: 'Cream' },
+                        { a: '#B7B7A4', al: 'Soft Gray', b: '#FFCAD4', bl: 'Pale Coral' },
+                        { a: '#CCD5AE', al: 'Sage', b: '#DDB892', bl: 'Sand' },
+                        { a: '#BDE0FE', al: 'Light Blue', b: '#EDE0D4', bl: 'Beige' },
+                        { a: '#A5A58D', al: 'Warm Gray', b: '#FFDAB9', bl: 'Soft Peach' }
+                    ]
+                }
+            },
+            'dark-deep': {
+                cool: {
+                    title: 'Dark / Deep Skin', under: 'COOL UNDERTONE',
+                    best: [
+                        { c: '#0047AB', n: 'Cobalt' },
+                        { c: '#8020C8', n: 'Violet' },
+                        { c: '#E81878', n: 'Hot Pink' },
+                        { c: '#A0D0E0', n: 'Ice Blue' },
+                        { c: '#4A1258', n: 'Deep Plum' }
+                    ],
+                    acceptable: [
+                        { c: '#FFFFFF', n: 'Pure White' },
+                        { c: '#9AAAB0', n: 'Cool Gray' },
+                        { c: '#C8B4D8', n: 'Soft Lavender' },
+                        { c: '#B8D4F0', n: 'Light Blue' },
+                        { c: '#404858', n: 'Charcoal' }
+                    ],
+                    bestCombos: [
+                        { a: '#0047AB', al: 'Cobalt', b: '#FFFFFF', bl: 'White' },
+                        { a: '#8020C8', al: 'Violet', b: '#C0C8D0', bl: 'Silver' },
+                        { a: '#E81878', al: 'Hot Pink', b: '#000000', bl: 'Black' },
+                        { a: '#A0D0E0', al: 'Ice Blue', b: '#1A2A60', bl: 'Navy' },
+                        { a: '#4A1258', al: 'Deep Plum', b: '#C8C8C8', bl: 'Light Gray' }
+                    ],
+                    haCombos: [
+                        { a: '#FFFFFF', al: 'White', b: '#9AAAB0', bl: 'Gray' },
+                        { a: '#9AAAB0', al: 'Cool Gray', b: '#6898C8', bl: 'Blue' },
+                        { a: '#C8B4D8', al: 'Lavender', b: '#FFFFFF', bl: 'White' },
+                        { a: '#B8D4F0', al: 'Light Blue', b: '#404858', bl: 'Charcoal' },
+                        { a: '#C0C8D0', al: 'Silver', b: '#1A2A60', bl: 'Navy' }
+                    ]
+                },
+                warm: {
+                    title: 'Dark / Deep Skin', under: 'WARM UNDERTONE',
+                    best: [
+                        { c: '#FFD60A', n: 'Gold' },
+                        { c: '#B87333', n: 'Copper' },
+                        { c: '#8B0000', n: 'Brick Red' },
+                        { c: '#708238', n: 'Olive' },
+                        { c: '#FF8C00', n: 'Amber' }
+                    ],
+                    acceptable: [
+                        { c: '#FFF1D6', n: 'Cream' },
+                        { c: '#EED9C4', n: 'Warm Beige' },
+                        { c: '#A47149', n: 'Soft Brown' },
+                        { c: '#E6BE8A', n: 'Muted Gold' },
+                        { c: '#B08968', n: 'Warm Taupe' }
+                    ],
+                    bestCombos: [
+                        { a: '#FFD60A', al: 'Gold', b: '#000000', bl: 'Black' },
+                        { a: '#B87333', al: 'Copper', b: '#FFF1D6', bl: 'Cream' },
+                        { a: '#8B0000', al: 'Brick Red', b: '#EED9C4', bl: 'Beige' },
+                        { a: '#FF8C00', al: 'Amber', b: '#5C3A21', bl: 'Brown' },
+                        { a: '#708238', al: 'Olive', b: '#E6BE8A', bl: 'Gold' }
+                    ],
+                    haCombos: [
+                        { a: '#FFF1D6', al: 'Cream', b: '#8B5E34', bl: 'Brown' },
+                        { a: '#EED9C4', al: 'Warm Beige', b: '#E6BE8A', bl: 'Gold' },
+                        { a: '#A47149', al: 'Soft Brown', b: '#FAEDCD', bl: 'Cream' },
+                        { a: '#B08968', al: 'Taupe', b: '#EDE0D4', bl: 'Beige' },
+                        { a: '#C19A6B', al: 'Camel', b: '#6B8E23', bl: 'Olive' }
+                    ]
+                },
+                neutral: {
+                    title: 'Dark / Deep Skin', under: 'NEUTRAL UNDERTONE',
+                    best: [
+                        { c: '#FFFFFF', n: 'White' },
+                        { c: '#008080', n: 'Teal' },
+                        { c: '#DC143C', n: 'Crimson' },
+                        { c: '#E6BE8A', n: 'Gold' },
+                        { c: '#3A0CA3', n: 'Indigo' }
+                    ],
+                    acceptable: [
+                        { c: '#EDE0D4', n: 'Beige' },
+                        { c: '#ADB5BD', n: 'Soft Gray' },
+                        { c: '#FAEDCD', n: 'Cream' },
+                        { c: '#E5989B', n: 'Muted Pink' },
+                        { c: '#CCD5AE', n: 'Sage' }
+                    ],
+                    bestCombos: [
+                        { a: '#FFFFFF', al: 'White', b: '#008080', bl: 'Teal' },
+                        { a: '#DC143C', al: 'Crimson', b: '#E6BE8A', bl: 'Gold' },
+                        { a: '#3A0CA3', al: 'Indigo', b: '#ADB5BD', bl: 'Gray' },
+                        { a: '#2ECC71', al: 'Emerald', b: '#000000', bl: 'Black' },
+                        { a: '#4361EE', al: 'Royal Blue', b: '#EDE0D4', bl: 'Beige' }
+                    ],
+                    haCombos: [
+                        { a: '#EDE0D4', al: 'Beige', b: '#FAEDCD', bl: 'Cream' },
+                        { a: '#ADB5BD', al: 'Soft Gray', b: '#FFFFFF', bl: 'White' },
+                        { a: '#CCD5AE', al: 'Sage', b: '#DDB892', bl: 'Sand' },
+                        { a: '#E5989B', al: 'Muted Pink', b: '#FAEDCD', bl: 'Cream' },
+                        { a: '#BDE0FE', al: 'Light Blue', b: '#CED4DA', bl: 'Gray' }
+                    ]
+                }
+            }
+        };
+
+        // ── Render the frosted-glass palette panel ──
+        function renderPalette(skinType, undertone) {
+            const panel = document.getElementById('palettePanel');
+            const p = PALETTES[skinType][undertone];
+
+            const singleHtml = (s) =>
+                `<div class="swatch-item">
+                    <div class="swatch-box" style="background:${s.c}"></div>
+                    <span class="swatch-name">${s.n}</span>
+                    <span class="swatch-hex">${s.c.toUpperCase()}</span>
+                </div>`;
+
+            const comboHtml = (c) =>
+                `<div class="combo-item">
+                    <div class="combo-box">
+                        <div class="combo-half" style="background:${c.a}"></div>
+                        <div class="combo-half" style="background:${c.b}"></div>
+                    </div>
+                    <span class="combo-name">${c.al} · ${c.bl}</span>
+                    <span class="combo-hex">${c.a.toUpperCase()} · ${c.b.toUpperCase()}</span>
+                </div>`;
+
+            panel.innerHTML =
+                `<div class="pal-header">
+                    <p class="pal-skin-title">${p.title}</p>
+                    <p class="pal-skin-under">${p.under}</p>
+                </div>
+
+                <div class="pal-section">
+                    <div class="pal-sec-head"><span class="sec-dot best-dot"></span><span class="sec-label">Best — Single Colors</span></div>
+                    <div class="singles-row">${p.best.map(singleHtml).join('')}</div>
+                </div>
+
+                <div class="pal-section">
+                    <div class="pal-sec-head"><span class="sec-dot ha-dot"></span><span class="sec-label">Highly Acceptable — Single Colors</span></div>
+                    <div class="singles-row">${p.acceptable.map(singleHtml).join('')}</div>
+                </div>
+
+                <div class="pal-divider"></div>
+
+                <div class="pal-section">
+                    <div class="pal-sec-head"><span class="sec-dot best-dot"></span><span class="sec-label">Best — Combinations</span></div>
+                    <div class="combos-row">${p.bestCombos.map(comboHtml).join('')}</div>
+                </div>
+
+                <div class="pal-section">
+                    <div class="pal-sec-head"><span class="sec-dot ha-dot"></span><span class="sec-label">Highly Acceptable — Combinations</span></div>
+                    <div class="combos-row">${p.haCombos.map(comboHtml).join('')}</div>
+                </div>`;
+        }
+
+        // ── Skin type selection ──
+        function selectSkin(el) {
+            document.querySelectorAll('.skin-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            state.skinType = el.dataset.skin;
+            updateOrb();
+            checkReady();
+        }
+
+        // ── Undertone test selection ──
+        function selectTone(el, testIndex) {
+            el.closest('.test-options').querySelectorAll('.tone-btn').forEach(b =>
+                b.classList.remove('selected-cool', 'selected-warm', 'selected-neutral'));
+            const val = el.dataset.value;
+            el.classList.add('selected-' + val);
+            state.tests[testIndex - 1] = val;
+            document.getElementById('dot' + testIndex).className = 'test-dot ' + val;
+            updateOrb();
+            checkReady();
+        }
+
+        function updateOrb() {
+            const orb = document.getElementById('skinOrb');
+            const ring = document.getElementById('skinOrbRing');
+            const labelSkin = document.getElementById('orbLabelSkin');
+            const labelUnder = document.getElementById('orbLabelUnder');
+            orb.className = 'skin-orb';
+            if (state.skinType) {
+                orb.classList.add(state.skinType);
+                ring.classList.add('active');
+                labelSkin.textContent = { 'fair-light': 'Fair / Light', 'medium-olive': 'Medium / Olive', 'tan': 'Tan', 'dark-deep': 'Dark / Deep' }[state.skinType];
+            } else {
+                ring.classList.remove('active');
+                labelSkin.textContent = '—';
+            }
+            const filled = state.tests.filter(t => t !== null);
+            if (filled.length > 0) {
+                const counts = { cool: 0, warm: 0, neutral: 0 };
+                filled.forEach(t => counts[t]++);
+                const dominant = Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+                orb.classList.add('undertone-' + dominant);
+                labelUnder.textContent = { cool: 'Cool Undertone', warm: 'Warm Undertone', neutral: 'Neutral Undertone' }[dominant];
+            } else {
+                labelUnder.textContent = state.skinType ? 'Complete the undertone tests' : 'Select your profile';
+            }
+        }
+
+        function checkReady() {
+            document.getElementById('revealBtn').disabled = !(state.tests.every(t => t !== null) && state.skinType !== null);
+        }
+
+        function computeUndertone() {
+            const counts = { cool: 0, warm: 0, neutral: 0 };
+            state.tests.forEach(t => counts[t]++);
+            return Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+        }
+
+        function revealProfile() {
+            const undertone = computeUndertone();
+            document.getElementById('popupSkinLabel').textContent =
+                { 'fair-light': 'Fair / Light', 'medium-olive': 'Medium / Olive', 'tan': 'Tan', 'dark-deep': 'Dark / Deep' }[state.skinType];
+            document.getElementById('popupUndertoneLabel').textContent =
+                { cool: 'Cool Undertone', warm: 'Warm Undertone', neutral: 'Neutral Undertone' }[undertone];
+            renderPalette(state.skinType, undertone);
+            document.getElementById('popupOverlay').classList.add('visible');
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('visible');
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+    </script>
+</body>
+</html>

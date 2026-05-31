@@ -1303,6 +1303,9 @@ a {
   .product-title-row h2 { text-align: center !important; font-size: 1.1rem !important; }
   .skin-btn { font-size: 1.1rem !important; }
   .skin-toggle { justify-content: center !important; }
+  /* Hide dot + "The House of Scion" on mobile; centre remaining info text */
+  .house-label { display: none !important; }
+  .product-title-row > div > p { text-align: center !important; justify-content: center !important; }
   /* Show tagline on mobile as own row */
   .product-tagline { display: block !important; text-align: center !important; }
   /* Make viewer taller on mobile */

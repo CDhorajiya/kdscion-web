@@ -135,5 +135,17 @@
         <p>Copyright 2024 KING DHORAJIYA</p>
     </div>
 </div>
+
+<script>
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        document.querySelectorAll(
+            '.founder_submessage1 h5, .founder_submessage2 h5, .founder_submessage3 h5'
+        ).forEach(el => {
+            el.innerHTML = el.innerHTML.replace(/[a-zA-Z]/,
+                m => '<span style="text-transform:uppercase">' + m + '</span>'
+            );
+        });
+    }
+</script>
 </body>
 </html>

@@ -1300,7 +1300,8 @@ a {
     gap: 0.3rem !important;
     text-align: center !important;
   }
-  .product-title-row h2 { text-align: center !important; }
+  .product-title-row h2 { text-align: center !important; font-size: 1.1rem !important; }
+  .skin-btn { font-size: 1.1rem !important; }
   .skin-toggle { justify-content: center !important; }
   /* Show tagline on mobile as own row */
   .product-tagline { display: block !important; text-align: center !important; }

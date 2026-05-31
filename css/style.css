@@ -1140,6 +1140,10 @@ a {
 /* ── Bespoke Boutique link on product pages (mobile-only element) ── */
 .product-bb-link { display: none; }
 
+/* ── Design details annotation — sentence case ── */
+.dann-label { text-transform: lowercase !important; }
+.dann-label::first-letter { text-transform: uppercase !important; }
+
 /* ═══════════════════════════════════════
    MOBILE  ≤ 768px
    Design intent: editorial single-column,

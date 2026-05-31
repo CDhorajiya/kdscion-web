@@ -200,7 +200,21 @@
             margin-top: 2rem;
         }
 
+        .mobile-tagline { display: none; }
+
         @media (max-width: 768px) {
+            .mobile-tagline {
+                display: block;
+                font-family: "Times New Roman", Times, serif;
+                font-style: italic;
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+                text-align: center;
+                color: rgba(0,0,0,0.5);
+                line-height: 1.9;
+                margin: 0 auto 2rem;
+                padding: 0 6%;
+            }
             /* Globe: JS reads wrapper size via getBoundingClientRect(), so setting
                the wrapper here controls both the canvas render size and annotation coords. */
             /* Flexbox on parent guarantees the sphere is viewport-centered
@@ -299,6 +313,8 @@
             <img src="images/Leather%20Wreath.webp" alt="Leather Wreath" class="autoRotate">
         </div>
     </figure>
+
+    <p class="mobile-tagline">The world of imagination<br>where choices are infinite</p>
 
     <!-- Feature 1: CUSTOM — Cotton -->
     <div class="autoShow">

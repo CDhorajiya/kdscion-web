@@ -1267,6 +1267,8 @@ a {
     margin-left: 0; margin-right: 0; text-align: center; padding: 0 4%;
     text-transform: lowercase !important;
   }
+  /* Design details annotations — 25% smaller font on mobile */
+  .dann-label { font-size: 0.75rem !important; }
   .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; margin-top: 4% !important; }
   .emblom_content h4 + h4 { margin-top: 0.8rem; font-size: 2rem !important; }
   /* Bring THE HOUSE heading above HOW WE FUNCTION on single-column mobile layout */

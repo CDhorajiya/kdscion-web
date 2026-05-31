@@ -1138,7 +1138,7 @@
         });
 
         const _dVec  = new THREE.Vector3();
-        const D_LINE = 95;
+        const D_LINE = window.innerWidth <= 768 ? 50 : 95;
 
         function updateDetailAnnotations() {
             if (!detailsVisible || !cameraS) return;

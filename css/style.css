@@ -1140,8 +1140,8 @@ a {
 /* ── Bespoke Boutique link on product pages (mobile-only element) ── */
 .product-bb-link { display: none; }
 
-/* ── Design details annotation — sentence case ── */
-.dann-label { text-transform: lowercase !important; }
+/* ── Design details annotation — sentence case, +10% size ── */
+.dann-label { text-transform: lowercase !important; font-size: 1.1rem !important; }
 .dann-label::first-letter { text-transform: uppercase !important; }
 
 /* ═══════════════════════════════════════
@@ -1271,8 +1271,8 @@ a {
     margin-left: 0; margin-right: 0; text-align: center; padding: 0 4%;
     text-transform: lowercase !important;
   }
-  /* Design details annotations — 25% smaller font on mobile */
-  .dann-label { font-size: 0.75rem !important; }
+  /* Design details annotations — 25% smaller font, normalised letter-spacing on mobile */
+  .dann-label { font-size: 0.75rem !important; letter-spacing: 1px !important; }
   .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; margin-top: 4% !important; }
   .emblom_content h4 + h4 { margin-top: 0.8rem; font-size: 2rem !important; }
   /* Bring THE HOUSE heading above HOW WE FUNCTION on single-column mobile layout */

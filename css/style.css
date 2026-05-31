@@ -1263,7 +1263,7 @@ a {
     text-align: center;
   }
   .founder_submessage1 h5, .founder_submessage2 h5, .founder_submessage3 h5 {
-    font-size: 0.95rem !important; letter-spacing: 0.3px !important;
+    font-size: 0.95rem !important; letter-spacing: 3.5px !important;
     margin-left: 0; margin-right: 0; text-align: center; padding: 0 4%;
   }
   .emblom_content h4 { letter-spacing: 3px !important; font-size: 1.45rem !important; margin-top: 4% !important; }

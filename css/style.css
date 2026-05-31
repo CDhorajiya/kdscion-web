@@ -14,6 +14,16 @@
 
 a { color: maroon !important; }
 a:visited { color: maroon !important; }
+/* Product nav dropdowns + mobile accordion keep their original colour */
+.navigation ul > li > a,
+.navigation ul > li > a:visited { color: inherit !important; }
+.navigation ul li ul.dropdown li a,
+.navigation ul li ul.dropdown li a:visited { color: rgba(0,0,0,0.68) !important; }
+.navigation ul li ul.dropdown li a:hover { color: #000000 !important; }
+.bb-acc-body a,
+.bb-acc-body a:visited { color: rgba(0,0,0,0.65) !important; }
+.bb-acc-body a:last-child,
+.bb-acc-body a:last-child:visited { color: rgb(6,70,6) !important; }
 
 html {
   font-size: 62.5%; /* by default is 16px but now 62.5% of 16 is 10, so default is 10px now */
@@ -1340,7 +1350,7 @@ a {
     gap: 0.3rem !important;
     text-align: center !important;
   }
-  .title-row h2 { text-align: center !important; }
+  .title-row h2 { text-align: center !important; font-size: 1.1rem !important; }
   .title-tagline { text-align: center !important; }
   .gender-toggle { justify-content: center !important; }
   /* Make visual panel taller on mobile */

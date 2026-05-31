@@ -1155,6 +1155,9 @@ a {
 /* ── Bespoke Boutique link on product pages (mobile-only element) ── */
 .product-bb-link { display: none; }
 
+/* ── Skin profile test names ── */
+.test-name { color: maroon; }
+
 /* ── Design details annotation — sentence case, +10% size ── */
 .dann-label { text-transform: lowercase !important; font-size: 1.1rem !important; }
 .dann-label::first-letter { text-transform: uppercase !important; }
@@ -1301,7 +1304,7 @@ a {
   .column { gap: 2rem; }
 
   /* ── Product pages: center header stack ── */
-  .product-breadcrumb { text-align: center !important; }
+  .product-breadcrumb { text-align: left !important; }
   .product-title-row { align-items: center !important; }
   .product-title-row > div {
     display: flex !important;

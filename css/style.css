@@ -20,6 +20,8 @@ a:visited { color: maroon !important; }
 .navigation ul li ul.dropdown li a,
 .navigation ul li ul.dropdown li a:visited { color: rgba(0,0,0,0.68) !important; }
 .navigation ul li ul.dropdown li a:hover { color: #000000 !important; }
+.bb-panel-nav a,
+.bb-panel-nav a:visited { color: rgba(0,0,0,0.82) !important; }
 .bb-acc-body a,
 .bb-acc-body a:visited { color: rgba(0,0,0,0.65) !important; }
 .bb-acc-body a:last-child,

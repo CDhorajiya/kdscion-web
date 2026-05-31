@@ -200,23 +200,26 @@
             margin-top: 2rem;
         }
 
-        .mobile-tagline { display: none; }
+        .site-tagline {
+            display: block;
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            text-align: center;
+            color: #000;
+            text-transform: uppercase;
+            line-height: 1.9;
+            margin: 1.5rem auto 2rem;
+            padding: 0 6%;
+        }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         .blink-cursor { animation: blink 1s step-end infinite; }
 
         @media (max-width: 768px) {
-            .mobile-tagline {
-                display: block;
-                font-family: "Times New Roman", Times, serif;
-                font-style: italic;
+            .site-tagline {
                 font-size: 1.1rem;
-                letter-spacing: 2px;
-                text-align: center;
-                color: #000;
-                text-transform: uppercase;
-                line-height: 1.9;
                 margin: -12rem auto 2rem;
-                padding: 0 6%;
             }
             /* Globe: JS reads wrapper size via getBoundingClientRect(), so setting
                the wrapper here controls both the canvas render size and annotation coords. */
@@ -320,7 +323,7 @@
         </div>
     </figure>
 
-    <p class="mobile-tagline">The world of <span style="color:maroon">imagination</span><br>where choices are infinite...<span class="blink-cursor">|</span></p>
+    <p class="site-tagline">The world of <span style="color:maroon">imagination</span><br>where <span style="color:maroon">premium</span> choices are infinite...<span class="blink-cursor">|</span></p>
 
     <!-- Feature 1: CUSTOM — Cotton -->
     <div class="autoShow">
@@ -485,7 +488,7 @@
       @media(max-width:768px){.flag-item{font-size:1.8rem;padding:0 4px;}}
     </style>
 
-    <p>Copyright 2024 KING DHORAJIYA</p>
+    <p>Copyright 2026 KING DHORAJIYA</p>
     <script>
       (function() {
         var clicks = 0, timer = null;

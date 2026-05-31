@@ -1319,7 +1319,7 @@ a {
     text-align: center !important;
   }
   .product-title-row h2 { text-align: center !important; font-size: 1.1rem !important; }
-  .skin-btn { font-size: 1.1rem !important; }
+  .skin-btn { font-size: 0.94rem !important; padding: 0.17rem 0.51rem !important; }
   .skin-toggle { justify-content: center !important; }
   /* Show tagline on mobile as own row */
   .product-tagline { display: block !important; text-align: center !important; }

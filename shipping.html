@@ -23,24 +23,35 @@
     <meta name="twitter:title" content="Shipping Policy — KD Scion">
     <meta name="twitter:description" content="Every garment is made to order. Learn about our production timeline, international shipping, and delivery process.">
     <meta name="twitter:image" content="https://kdscion.com/images/KD_monogram.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        em { color: rgb(6, 70, 6); font-style: normal; }
+        em { color: rgb(128, 0, 0); font-style: normal; }
         .monogram img { filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5); }
+        .autoShow {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
         .legal-header {
             text-align: center;
             margin-top: 12rem;
-            margin-bottom: 8rem;
+            margin-bottom: 6rem;
         }
         .legal-header h2 {
             letter-spacing: 20px;
             font-size: 4rem;
         }
         .legal-header h5 {
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+            font-weight: 300;
             letter-spacing: 4px;
-            font-size: 1.6rem;
-            opacity: 0.6;
+            font-size: 1.84rem;
+            color: rgb(128, 0, 0);
+            opacity: 1;
             margin-top: 1rem;
         }
         .legal-section {
@@ -49,26 +60,42 @@
             padding: 0 4rem;
         }
         .legal-section h3 {
-            letter-spacing: 15px;
-            font-size: 2.8rem;
+            letter-spacing: 12px;
+            font-size: 2.4rem;
             text-align: center;
             margin-bottom: 3rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
         }
         .legal-section h4 {
-            letter-spacing: 6px;
-            font-size: 1.8rem;
-            color: rgb(6, 70, 6);
+            letter-spacing: 5px;
+            font-size: 1.6rem;
+            color: rgb(128, 0, 0);
             margin-top: 3rem;
             margin-bottom: 1rem;
         }
         .legal-section h5 {
-            letter-spacing: 2px;
-            font-size: 1.6rem;
-            line-height: 1.8;
-            opacity: 0.85;
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            font-size: 1.8rem;
+            line-height: 1.9;
+            color: #000;
+            opacity: 1;
             margin-bottom: 1.5rem;
+        }
+        .legal-section a {
+            color: rgb(128, 0, 0) !important;
+            text-decoration: underline;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .legal-header { margin-top: 6rem; margin-bottom: 4rem; }
+            .legal-header h2 { letter-spacing: 6px; font-size: 1.8rem; }
+            .legal-header h5 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 400; }
+            .legal-section { padding: 0 2rem; margin-bottom: 5rem; }
+            .legal-section h3 { letter-spacing: 4px; font-size: 1.3rem; margin-bottom: 2rem; }
+            .legal-section h4 { letter-spacing: 2px; font-size: 1.2rem; }
+            .legal-section h5 { font-size: 1.4rem; }
         }
     </style>
 </head>

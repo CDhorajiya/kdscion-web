@@ -29,37 +29,76 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body { background: #fff; color: #1a1a1a; }
+        html { scroll-padding-top: 40px; }
         em { color: rgb(128, 0, 0); font-style: normal; }
-        .legal-header {
-            text-align: center;
-            margin-top: 12rem;
-            margin-bottom: 6rem;
+
+        .top-bar {
+            padding: 1.6rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .legal-header h2 {
+        .top-bar a.brand {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            font-size: 2.1rem;
+            transition: color 0.2s;
+        }
+        .top-bar a.brand:hover { color: #444; }
+        .top-bar .bb-sm { opacity: 1; transition: opacity 0.5s, scale 0.5s; }
+        .top-bar .bb-sm img { width: 26rem; height: auto; display: block; }
+        .top-bar .bb-sm:hover { opacity: 0.6; scale: 1.05; }
+
+        .page-header {
+            text-align: center;
+            margin-top: 8rem;
+            margin-bottom: 5rem;
+            padding: 0 4%;
+        }
+        .page-header h2 {
+            font-family: "Times New Roman", Times, serif;
             letter-spacing: 20px;
             font-size: 4rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 1.2rem 0;
         }
-        .legal-header h5 {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+        .page-header h5 {
+            font-family: 'Cormorant Garamond', serif;
             font-weight: 300;
-            letter-spacing: 4px;
-            font-size: 1.84rem;
+            letter-spacing: 5px;
+            font-size: 1.8rem;
             color: rgb(128, 0, 0);
-            opacity: 1;
-            margin-top: 1rem;
+            margin: 0 0 0.6rem 0;
+            text-transform: uppercase;
         }
+        .page-header .last-updated {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: 3px;
+            font-size: 1.5rem;
+            color: #888;
+            margin: 0;
+        }
+
+        /* ── Table of Contents (unchanged) ── */
         .legal-toc {
             max-width: 860px;
             margin: 0 auto 6rem;
-            padding: 0 4rem;
+            padding: 3rem 4rem;
             border-top: 1px solid #e0e0e0;
             border-bottom: 1px solid #e0e0e0;
-            padding-top: 3rem;
-            padding-bottom: 3rem;
         }
         .legal-toc h4 {
+            font-family: "Times New Roman", serif;
             letter-spacing: 8px;
             font-size: 1.4rem;
+            font-weight: 400;
             opacity: 0.5;
             margin-bottom: 2rem;
             text-align: center;
@@ -71,313 +110,397 @@
             margin: 0;
         }
         .legal-toc ol li {
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1.5rem;
             letter-spacing: 1.5px;
             line-height: 2.4;
-            opacity: 0.75;
+            color: #2d5a2d;
         }
         .legal-toc ol li a {
             color: inherit !important;
             text-decoration: none;
         }
-        .legal-toc ol li a:hover {
-            color: rgb(128, 0, 0) !important;
-            opacity: 1;
+        .legal-toc ol li a:hover { color: rgb(128, 0, 0) !important; }
+
+        /* ── Two-column rows ── */
+        .page-body {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 4% 6rem;
         }
-        .legal-section {
-            max-width: 860px;
-            margin: 0 auto 8rem;
-            padding: 0 4rem;
+        .page-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7rem;
+            align-items: center;
+            padding: 10rem 0;
         }
-        html {
-            scroll-padding-top: 40px;
-        }
-        .autoShow {
-            animation: none;
-            opacity: 1;
-            transform: none;
-        }
-        .legal-section h3 {
-            letter-spacing: 12px;
-            font-size: 2.4rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .legal-section h4 {
-            letter-spacing: 5px;
-            font-size: 1.6rem;
-            color: rgb(128, 0, 0);
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-        }
-        .legal-section h5,
-        .legal-section ul li {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+
+        .row-heading { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .row-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 6rem;
             font-weight: 300;
+            color: rgba(128, 0, 0, 0.18);
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 1.2rem;
+        }
+        .row-title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 0.8rem 0;
+        }
+        .row-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: #2d5a2d;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .row-body { display: flex; flex-direction: column; padding-top: 0.4rem; }
+        .row-body h4 {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 5px;
+            font-size: 1.4rem;
+            color: rgb(128, 0, 0);
+            margin: 2.8rem 0 1rem 0;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+        .row-body h4:first-child { margin-top: 0; }
+        .row-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 1.85rem;
+            line-height: 1.85;
+            color: #444;
             letter-spacing: 0.5px;
-            font-size: 1.8rem;
-            line-height: 1.9;
-            color: #000;
-            opacity: 1;
-            margin-bottom: 1.5rem;
+            margin: 0 0 0.6rem 0;
         }
-        .legal-section ul {
-            padding-left: 2.5rem;
-            margin: 0 0 1.5rem;
+        .row-body ul {
+            padding-left: 2.2rem;
+            margin: 0.4rem 0 0.8rem;
         }
-        .legal-section ul li {
+        .row-body ul li {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 1.85rem;
             line-height: 2;
-            margin-bottom: 0;
+            color: #444;
+            letter-spacing: 0.5px;
         }
-        .legal-divider {
-            max-width: 860px;
-            margin: 0 auto 8rem;
-            padding: 0 4rem;
+        .row-body a { color: rgb(128, 0, 0) !important; text-decoration: underline; }
+
+        /* ── Footer divider ── */
+        .page-divider {
             text-align: center;
+            padding: 4rem 4%;
+            border-top: 1px solid rgba(0,0,0,0.06);
         }
-        .legal-divider h5 {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+        .page-divider p {
+            font-family: 'Cormorant Garamond', serif;
             font-weight: 300;
             font-size: 1.5rem;
             letter-spacing: 3px;
             color: rgb(128, 0, 0);
-            opacity: 1;
+            margin: 0.4rem 0;
         }
-        @media (max-width: 768px) {
-            .legal-header { margin-top: 6rem; margin-bottom: 4rem; }
-            .legal-header h2 { letter-spacing: 6px; font-size: 1.8rem; }
-            .legal-header h5 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 400; }
+
+        @media (max-width: 1023px) {
+            .page-row { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 0; }
+            .page-header { margin-top: 5rem; margin-bottom: 3rem; }
+            .page-header h2 { font-size: 2.2rem; letter-spacing: 10px; }
+            .page-header h5 { font-size: 1.4rem; }
             .legal-toc { padding: 2.5rem 2rem; }
             .legal-toc ol { columns: 1; }
             .legal-toc ol li { font-size: 1.2rem; line-height: 2.2; }
-            .legal-section { padding: 0 2rem; margin-bottom: 5rem; }
-            .legal-section h3 { letter-spacing: 4px; font-size: 1.3rem; margin-bottom: 2rem; }
-            .legal-section h4 { letter-spacing: 2px; font-size: 1.2rem; }
-            .legal-section h5,
-            .legal-section ul li { font-size: 1.4rem; }
-            .legal-divider { padding: 0 2rem; margin-bottom: 4rem; }
-            .legal-divider h5 { font-size: 1.1rem; letter-spacing: 1.5px; }
+            .row-num { font-size: 4rem; }
+            .row-title { font-size: 1.6rem; letter-spacing: 6px; }
+            .row-tagline { font-size: 1.3rem; }
+            .row-body p, .row-body ul li { font-size: 1.6rem; }
+        }
+        @media (max-width: 768px) {
+            .top-bar { flex-direction: column; gap: 0.4rem; }
+            .page-header h2 { font-size: 1.7rem; letter-spacing: 6px; }
         }
     </style>
 </head>
 <body>
-    <nav class="nav collapsible">
-        <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
-        <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
-    </nav>
 
-    <!-- HEADER -->
-    <div class="legal-header autoShow">
-        <h2>PRIVACY POLICY</h2>
-        <h5>| Your details remain between you and The House |</h5>
-        <h5 style="color: #000;">| Last updated: June 2026 |</h5>
-    </div>
+<div class="top-bar">
+    <a href="index.html" class="brand">King Dhorajiya</a>
+    <a href="bespokeboutique.html" class="bb-sm"><img src="images/Drawing.svg" alt="Bespoke Boutique"></a>
+</div>
 
-    <!-- TABLE OF CONTENTS -->
-    <div class="legal-toc autoShow">
-        <h4>CONTENTS</h4>
-        <ol>
-            <li><a href="#introduction">Introduction</a></li>
-            <li><a href="#what-we-collect">What We Collect</a></li>
-            <li><a href="#how-we-use">How We Use It</a></li>
-            <li><a href="#sharing">Information Sharing</a></li>
-            <li><a href="#cookies">Cookies &amp; Tracking</a></li>
-            <li><a href="#your-rights">Your Rights</a></li>
-            <li><a href="#security">Data Security</a></li>
-            <li><a href="#children">Children's Privacy</a></li>
-            <li><a href="#international">International Transfers</a></li>
-            <li><a href="#changes">Changes to This Policy</a></li>
-            <li><a href="#contact">Contact The House</a></li>
-        </ol>
-    </div>
+<div class="page-header">
+    <h2>Privacy Policy</h2>
+    <h5>Your details remain between you and The House</h5>
+    <p class="last-updated">| Last updated: June 2026 |</p>
+</div>
 
-    <!-- 1. INTRODUCTION -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="introduction">I. INTRODUCTION</h3>
-            <h5>| <em>King Dhorajiya / KD: The House of Scion</em> ("The House", "we", "us", or "our") respects your privacy and is committed to protecting the personal information you share with us. |</h5>
-            <h5>| This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you visit <em>kdscion.com</em> or place an order with us. It applies to all visitors, clients, and individuals who interact with The House through any channel — website, email, or direct communication. |</h5>
-            <h5>| By using our website or placing an order, you acknowledge that you have read and understood this Policy. If you do not agree with any part of it, please do not use our services. |</h5>
-            <h5>| This Policy does not apply to third-party websites or services that may be linked from our site. We encourage you to review the privacy policies of any third-party platforms you visit. |</h5>
+<!-- TABLE OF CONTENTS — unchanged -->
+<div class="legal-toc">
+    <h4>CONTENTS</h4>
+    <ol>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#what-we-collect">What We Collect</a></li>
+        <li><a href="#how-we-use">How We Use It</a></li>
+        <li><a href="#sharing">Information Sharing</a></li>
+        <li><a href="#cookies">Cookies &amp; Tracking</a></li>
+        <li><a href="#your-rights">Your Rights</a></li>
+        <li><a href="#security">Data Security</a></li>
+        <li><a href="#children">Children's Privacy</a></li>
+        <li><a href="#international">International Transfers</a></li>
+        <li><a href="#changes">Changes to This Policy</a></li>
+        <li><a href="#contact">Contact The House</a></li>
+    </ol>
+</div>
+
+<div class="page-body">
+
+    <!-- I. Introduction — heading left, body right -->
+    <div class="page-row" id="introduction">
+        <div class="row-heading">
+            <span class="row-num">I</span>
+            <h3 class="row-title">Introduction</h3>
+            <p class="row-tagline">How we approach your privacy</p>
+        </div>
+        <div class="row-body">
+            <p><em>King Dhorajiya / KD: The House of Scion</em> ("The House", "we", "us", or "our") respects your privacy and is committed to protecting the personal information you share with us.</p>
+            <p>This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you visit <em>kdscion.com</em> or place an order with us. It applies to all visitors, clients, and individuals who interact with The House through any channel — website, email, or direct communication.</p>
+            <p>By using our website or placing an order, you acknowledge that you have read and understood this Policy. If you do not agree with any part of it, please do not use our services.</p>
+            <p>This Policy does not apply to third-party websites or services that may be linked from our site. We encourage you to review the privacy policies of any third-party platforms you visit.</p>
         </div>
     </div>
 
-    <!-- 2. WHAT WE COLLECT -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="what-we-collect">II. WHAT WE COLLECT</h3>
-            <h4>IDENTITY & CONTACT INFORMATION</h4>
-            <h5>| When you create an account or place an order, we collect your <em>full name, email address, phone number</em> (optional), and <em>shipping address</em>. This information is necessary to identify your account and fulfill your order. |</h5>
-            <h4>BODY MEASUREMENTS</h4>
-            <h5>| The creation of your custom garment requires your <em>precise body measurements</em>. This is the most personal category of data we handle. It is stored securely, used solely to craft your piece, and never shared beyond the direct craftsmen responsible for your order. |</h5>
-            <h4>ORDER & DESIGN INFORMATION</h4>
-            <h5>| We retain records of your <em>design selections, fabric choices, and order history</em> to fulfill your orders, resolve disputes, and provide you with continuity of service in future orders. |</h5>
-            <h4>PAYMENT INFORMATION</h4>
-            <h5>| Payments are processed securely by <em>Stripe</em>, a PCI-DSS Level 1 certified payment processor. <em>The House does not store, process, or transmit your card number, CVV, or full payment credentials at any point.</em> Stripe's privacy policy governs the handling of your payment data. |</h5>
-            <h4>TECHNICAL & USAGE DATA</h4>
-            <h5>| When you browse our website, we automatically collect certain technical information, including your <em>IP address, browser type and version, device type, operating system, pages visited, time spent on pages,</em> and <em>referring URLs</em>. This data is collected in aggregate via Google Analytics and is used solely for site performance and improvement. |</h5>
-            <h4>COMMUNICATIONS</h4>
-            <h5>| When you contact us by email or through our contact form, we retain <em>the contents of your correspondence</em> for the purpose of responding to your enquiry and maintaining a record of our interactions. |</h5>
+    <!-- II. What We Collect — body left, heading right -->
+    <div class="page-row" id="what-we-collect">
+        <div class="row-body">
+            <h4>Identity &amp; Contact Information</h4>
+            <p>When you create an account or place an order, we collect your <em>full name, email address, phone number</em> (optional), and <em>shipping address</em>. This information is necessary to identify your account and fulfill your order.</p>
+            <h4>Body Measurements</h4>
+            <p>The creation of your custom garment requires your <em>precise body measurements</em>. This is the most personal category of data we handle. It is stored securely, used solely to craft your piece, and never shared beyond the direct craftsmen responsible for your order.</p>
+            <h4>Order &amp; Design Information</h4>
+            <p>We retain records of your <em>design selections, fabric choices, and order history</em> to fulfill your orders, resolve disputes, and provide you with continuity of service in future orders.</p>
+            <h4>Payment Information</h4>
+            <p>Payments are processed securely by <em>Stripe</em>, a PCI-DSS Level 1 certified payment processor. <em>The House does not store, process, or transmit your card number, CVV, or full payment credentials at any point.</em> Stripe's privacy policy governs the handling of your payment data.</p>
+            <h4>Technical &amp; Usage Data</h4>
+            <p>When you browse our website, we automatically collect certain technical information, including your <em>IP address, browser type and version, device type, operating system, pages visited, time spent on pages,</em> and <em>referring URLs</em>. This data is collected in aggregate via Google Analytics and is used solely for site performance and improvement.</p>
+            <h4>Communications</h4>
+            <p>When you contact us by email or through our contact form, we retain <em>the contents of your correspondence</em> for the purpose of responding to your enquiry and maintaining a record of our interactions.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">II</span>
+            <h3 class="row-title">What We Collect</h3>
+            <p class="row-tagline">Only what is necessary to serve you</p>
         </div>
     </div>
 
-    <!-- 3. HOW WE USE IT -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="how-we-use">III. HOW WE USE IT</h3>
-            <h4>ORDER FULFILLMENT</h4>
-            <h5>| Your identity information, measurements, design selections, and shipping address are used exclusively to <em>create, produce, and deliver your garment</em>. This is the primary and overriding purpose for which we collect personal data. |</h5>
-            <h4>ACCOUNT MANAGEMENT</h4>
-            <h5>| We use your information to <em>manage your account</em>, maintain your order history, and provide you with access to your past orders and measurements for future commissions. |</h5>
-            <h4>COMMUNICATION</h4>
-            <h5>| We use your email address to send <em>order confirmations, production updates, dispatch notifications,</em> and <em>direct responses to your enquiries</em>. We will only send marketing communications if you have explicitly opted in, and you may withdraw this consent at any time. |</h5>
-            <h4>SITE IMPROVEMENT</h4>
-            <h5>| Aggregated, anonymized usage data helps us understand how our community interacts with our website so we can <em>improve the experience, fix issues, and develop new offerings</em>. |</h5>
-            <h4>FRAUD PREVENTION & LEGAL COMPLIANCE</h4>
-            <h5>| We may use your information to <em>detect and prevent fraud</em>, enforce our terms, and comply with applicable legal obligations, including responding to lawful requests from government authorities. |</h5>
-            <h4>NO DATA SALE — A FOUNDING PRINCIPLE</h4>
-            <h5>| <em>The House of Scion does not sell, rent, trade, or license your personal information to any third party for commercial purposes.</em> This is not a legal formality — it is a founding commitment of The House. From Day One, your details remain between you and us. |</h5>
+    <!-- III. How We Use It — heading left, body right -->
+    <div class="page-row" id="how-we-use">
+        <div class="row-heading">
+            <span class="row-num">III</span>
+            <h3 class="row-title">How We Use It</h3>
+            <p class="row-tagline">Purposeful, never exploitative</p>
+        </div>
+        <div class="row-body">
+            <h4>Order Fulfillment</h4>
+            <p>Your identity information, measurements, design selections, and shipping address are used exclusively to <em>create, produce, and deliver your garment</em>. This is the primary and overriding purpose for which we collect personal data.</p>
+            <h4>Account Management</h4>
+            <p>We use your information to <em>manage your account</em>, maintain your order history, and provide you with access to your past orders and measurements for future commissions.</p>
+            <h4>Communication</h4>
+            <p>We use your email address to send <em>order confirmations, production updates, dispatch notifications,</em> and <em>direct responses to your enquiries</em>. We will only send marketing communications if you have explicitly opted in, and you may withdraw this consent at any time.</p>
+            <h4>Site Improvement</h4>
+            <p>Aggregated, anonymized usage data helps us understand how our community interacts with our website so we can <em>improve the experience, fix issues, and develop new offerings</em>.</p>
+            <h4>Fraud Prevention &amp; Legal Compliance</h4>
+            <p>We may use your information to <em>detect and prevent fraud</em>, enforce our terms, and comply with applicable legal obligations, including responding to lawful requests from government authorities.</p>
+            <h4>No Data Sale — A Founding Principle</h4>
+            <p><em>The House of Scion does not sell, rent, trade, or license your personal information to any third party for commercial purposes.</em> This is not a legal formality — it is a founding commitment of The House. From Day One, your details remain between you and us.</p>
         </div>
     </div>
 
-    <!-- 4. INFORMATION SHARING -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="sharing">IV. INFORMATION SHARING</h3>
-            <h4>CRAFTSMEN & SUPPLY CHAIN</h4>
-            <h5>| To fulfill your order, your measurements and design specifications are shared with our <em>craftsmen in Bharat</em> only to the extent necessary to produce your garment. These individuals are bound by confidentiality and may not use your information for any other purpose. |</h5>
-            <h4>SERVICE PROVIDERS</h4>
-            <h5>| We engage trusted third-party service providers who assist us in operating our business. These include: |</h5>
+    <!-- IV. Information Sharing — body left, heading right -->
+    <div class="page-row" id="sharing">
+        <div class="row-body">
+            <h4>Craftsmen &amp; Supply Chain</h4>
+            <p>To fulfill your order, your measurements and design specifications are shared with our <em>craftsmen in Bharat</em> only to the extent necessary to produce your garment. These individuals are bound by confidentiality and may not use your information for any other purpose.</p>
+            <h4>Service Providers</h4>
+            <p>We engage trusted third-party service providers who assist us in operating our business. These include:</p>
             <ul>
                 <li><em>Stripe</em> — Payment processing</li>
                 <li><em>Google Analytics</em> — Website analytics (anonymized data only)</li>
                 <li><em>Email service providers</em> — Order and transactional communications</li>
-                <li><em>Hosting & cloud infrastructure</em> — Secure data storage</li>
+                <li><em>Hosting &amp; cloud infrastructure</em> — Secure data storage</li>
             </ul>
-            <h5>| Each service provider is vetted, operates under data processing agreements, and is permitted to use your information only as directed by The House and as required to provide their specific service. |</h5>
-            <h4>LEGAL REQUIREMENTS</h4>
-            <h5>| We may disclose your information if required to do so by law, court order, or governmental authority, or if we believe in good faith that such disclosure is necessary to <em>protect the rights, property, or safety</em> of The House, our clients, or others. |</h5>
-            <h4>BUSINESS TRANSFERS</h4>
-            <h5>| In the unlikely event of a merger, acquisition, or transfer of all or a portion of our assets, your personal information may be transferred as part of that transaction. We will notify you via email prior to your information being transferred and becoming subject to a different privacy policy. |</h5>
+            <p>Each service provider is vetted, operates under data processing agreements, and is permitted to use your information only as directed by The House and as required to provide their specific service.</p>
+            <h4>Legal Requirements</h4>
+            <p>We may disclose your information if required to do so by law, court order, or governmental authority, or if we believe in good faith that such disclosure is necessary to <em>protect the rights, property, or safety</em> of The House, our clients, or others.</p>
+            <h4>Business Transfers</h4>
+            <p>In the unlikely event of a merger, acquisition, or transfer of all or a portion of our assets, your personal information may be transferred as part of that transaction. We will notify you via email prior to your information being transferred and becoming subject to a different privacy policy.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">IV</span>
+            <h3 class="row-title">Information Sharing</h3>
+            <p class="row-tagline">Shared only where necessary, bound by confidentiality</p>
         </div>
     </div>
 
-    <!-- 5. COOKIES -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="cookies">V. COOKIES &amp; TRACKING</h3>
-            <h4>WHAT ARE COOKIES</h4>
-            <h5>| Cookies are small text files placed on your device when you visit a website. They allow the site to remember your preferences and understand how you interact with it. |</h5>
-            <h4>COOKIES WE USE</h4>
-            <h5>| We use the following categories of cookies: |</h5>
+    <!-- V. Cookies — heading left, body right -->
+    <div class="page-row" id="cookies">
+        <div class="row-heading">
+            <span class="row-num">V</span>
+            <h3 class="row-title">Cookies &amp; Tracking</h3>
+            <p class="row-tagline">Minimal, transparent, controllable</p>
+        </div>
+        <div class="row-body">
+            <h4>What Are Cookies</h4>
+            <p>Cookies are small text files placed on your device when you visit a website. They allow the site to remember your preferences and understand how you interact with it.</p>
+            <h4>Cookies We Use</h4>
+            <p>We use the following categories of cookies:</p>
             <ul>
                 <li><em>Essential cookies</em> — Required for the website to function. They enable core features such as the shopping experience and account access. These cannot be disabled.</li>
                 <li><em>Analytics cookies</em> — Placed by Google Analytics to collect anonymized data on site usage (pages visited, session duration, device type). No personally identifiable information is collected.</li>
                 <li><em>Preference cookies</em> — Used to remember your settings and preferences for future visits.</li>
             </ul>
-            <h4>MANAGING COOKIES</h4>
-            <h5>| You may control or delete cookies through your browser settings. Disabling analytics or preference cookies will not affect your ability to browse or place an order, but may limit some functionality. Instructions for managing cookies can be found in your browser's help documentation. |</h5>
-            <h4>DO NOT TRACK</h4>
-            <h5>| Some browsers offer a "Do Not Track" signal. Our website does not currently respond to Do Not Track signals. However, our analytics implementation is designed to <em>collect only anonymized, aggregate data</em> that does not identify you as an individual. |</h5>
+            <h4>Managing Cookies</h4>
+            <p>You may control or delete cookies through your browser settings. Disabling analytics or preference cookies will not affect your ability to browse or place an order, but may limit some functionality.</p>
+            <h4>Do Not Track</h4>
+            <p>Some browsers offer a "Do Not Track" signal. Our website does not currently respond to Do Not Track signals. However, our analytics implementation is designed to <em>collect only anonymized, aggregate data</em> that does not identify you as an individual.</p>
         </div>
     </div>
 
-    <!-- 6. YOUR RIGHTS -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="your-rights">VI. YOUR RIGHTS</h3>
-            <h4>RIGHT TO ACCESS</h4>
-            <h5>| You have the right to request a copy of all personal data The House holds about you. We will provide this information within <em>5 business days</em> of a verified request. |</h5>
-            <h4>RIGHT TO CORRECTION</h4>
-            <h5>| If any information we hold about you is inaccurate or incomplete, you have the right to request that we <em>correct or update</em> it. |</h5>
-            <h4>RIGHT TO DELETION</h4>
-            <h5>| You may request that we <em>delete your account and all associated personal data</em> at any time. Please note that we are required to retain records of completed transactions for a minimum period as mandated by applicable law, and deletion requests may not extend to this data. |</h5>
-            <h4>RIGHT TO OBJECT & RESTRICT</h4>
-            <h5>| You may object to or request restriction of the processing of your personal data in certain circumstances, including where you believe our processing is not lawful or where you contest the accuracy of the data. |</h5>
-            <h4>RIGHT TO DATA PORTABILITY</h4>
-            <h5>| Where technically feasible, you may request that we provide your personal data in a <em>structured, machine-readable format</em>, or that we transmit it directly to another controller. |</h5>
-            <h4>OPT-OUT OF MARKETING</h4>
-            <h5>| If you have opted into marketing communications, you may <em>withdraw your consent at any time</em> by clicking the unsubscribe link in any email or by contacting us directly. Withdrawal of consent does not affect the lawfulness of any processing conducted prior to withdrawal. |</h5>
-            <h4>CALIFORNIA RESIDENTS (CCPA / CPRA)</h4>
-            <h5>| If you are a California resident, you have additional rights under the California Consumer Privacy Act and California Privacy Rights Act, including the right to know what personal information is collected, disclosed, or sold; the right to delete; the right to correct; and the right to opt-out of the sale or sharing of personal information. <em>The House does not sell or share personal information.</em> To exercise your rights, contact us at communicate@kdscion.com. |</h5>
-            <h4>DATA RETENTION</h4>
-            <h5>| We retain your account and order information for as long as your account is active, and for <em>3 years</em> following your last order, after which it is securely and permanently deleted. Body measurements are deleted upon account deletion. |</h5>
-            <h4>HOW TO EXERCISE YOUR RIGHTS</h4>
-            <h5>| To exercise any of the above rights, contact us at <em>communicate@kdscion.com</em>. We may ask you to verify your identity before processing your request. We will respond within <em>10 business days</em>. |</h5>
+    <!-- VI. Your Rights — body left, heading right -->
+    <div class="page-row" id="your-rights">
+        <div class="row-body">
+            <h4>Right to Access</h4>
+            <p>You have the right to request a copy of all personal data The House holds about you. We will provide this information within <em>5 business days</em> of a verified request.</p>
+            <h4>Right to Correction</h4>
+            <p>If any information we hold about you is inaccurate or incomplete, you have the right to request that we <em>correct or update</em> it.</p>
+            <h4>Right to Deletion</h4>
+            <p>You may request that we <em>delete your account and all associated personal data</em> at any time. Please note that we are required to retain records of completed transactions for a minimum period as mandated by applicable law.</p>
+            <h4>Right to Object &amp; Restrict</h4>
+            <p>You may object to or request restriction of the processing of your personal data in certain circumstances, including where you believe our processing is not lawful or where you contest the accuracy of the data.</p>
+            <h4>Right to Data Portability</h4>
+            <p>Where technically feasible, you may request that we provide your personal data in a <em>structured, machine-readable format</em>, or that we transmit it directly to another controller.</p>
+            <h4>Opt-Out of Marketing</h4>
+            <p>If you have opted into marketing communications, you may <em>withdraw your consent at any time</em> by clicking the unsubscribe link in any email or by contacting us directly.</p>
+            <h4>California Residents (CCPA / CPRA)</h4>
+            <p>If you are a California resident, you have additional rights under the CCPA and CPRA, including the right to know, delete, correct, and opt-out of the sale or sharing of personal information. <em>The House does not sell or share personal information.</em> Contact us at communicate@kdscion.com to exercise your rights.</p>
+            <h4>Data Retention</h4>
+            <p>We retain your account and order information for as long as your account is active, and for <em>3 years</em> following your last order, after which it is securely and permanently deleted. Body measurements are deleted upon account deletion.</p>
+            <h4>How to Exercise Your Rights</h4>
+            <p>Contact us at <em>communicate@kdscion.com</em>. We may ask you to verify your identity before processing your request. We will respond within <em>10 business days</em>.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">VI</span>
+            <h3 class="row-title">Your Rights</h3>
+            <p class="row-tagline">Your information, your authority over it</p>
         </div>
     </div>
 
-    <!-- 7. SECURITY -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="security">VII. DATA SECURITY</h3>
-            <h4>MEASURES WE TAKE</h4>
-            <h5>| The House implements <em>administrative, technical, and physical safeguards</em> to protect your personal information against unauthorized access, disclosure, alteration, and destruction. These measures include SSL/TLS encryption for all data transmitted between your browser and our servers, and access controls that restrict who within The House may view sensitive data. |</h5>
-            <h4>PAYMENT SECURITY</h4>
-            <h5>| All payment transactions are processed over encrypted connections by <em>Stripe</em>, which maintains PCI-DSS Level 1 compliance — the highest standard in payment security. The House never handles raw card data. |</h5>
-            <h4>LIMITATIONS</h4>
-            <h5>| No method of transmission over the internet, or method of electronic storage, is 100% secure. While we strive to use commercially acceptable means to protect your personal information, <em>we cannot guarantee its absolute security</em>. In the event of a data breach that affects your rights and freedoms, we will notify you as required by applicable law. |</h5>
+    <!-- VII. Data Security — heading left, body right -->
+    <div class="page-row" id="security">
+        <div class="row-heading">
+            <span class="row-num">VII</span>
+            <h3 class="row-title">Data Security</h3>
+            <p class="row-tagline">Safeguarded at every layer</p>
+        </div>
+        <div class="row-body">
+            <h4>Measures We Take</h4>
+            <p>The House implements <em>administrative, technical, and physical safeguards</em> to protect your personal information against unauthorized access, disclosure, alteration, and destruction. These measures include SSL/TLS encryption for all data transmitted between your browser and our servers, and access controls that restrict who within The House may view sensitive data.</p>
+            <h4>Payment Security</h4>
+            <p>All payment transactions are processed over encrypted connections by <em>Stripe</em>, which maintains PCI-DSS Level 1 compliance — the highest standard in payment security. The House never handles raw card data.</p>
+            <h4>Limitations</h4>
+            <p>No method of transmission over the internet, or method of electronic storage, is 100% secure. While we strive to use commercially acceptable means to protect your personal information, <em>we cannot guarantee its absolute security</em>. In the event of a data breach that affects your rights and freedoms, we will notify you as required by applicable law.</p>
         </div>
     </div>
 
-    <!-- 8. CHILDREN -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="children">VIII. CHILDREN'S PRIVACY</h3>
-            <h5>| The House of Scion is not directed to children under the age of <em>13</em>, and we do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information without your consent, please contact us immediately at <em>communicate@kdscion.com</em>. |</h5>
-            <h5>| Upon learning that we have collected personal information from a child under 13, we will take immediate steps to delete that information from our systems. |</h5>
+    <!-- VIII. Children's Privacy — body left, heading right -->
+    <div class="page-row" id="children">
+        <div class="row-body">
+            <p>The House of Scion is not directed to children under the age of <em>13</em>, and we do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information without your consent, please contact us immediately at <em>communicate@kdscion.com</em>.</p>
+            <p>Upon learning that we have collected personal information from a child under 13, we will take immediate steps to delete that information from our systems.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">VIII</span>
+            <h3 class="row-title">Children's Privacy</h3>
+            <p class="row-tagline">Not directed to those under 13</p>
         </div>
     </div>
 
-    <!-- 9. INTERNATIONAL TRANSFERS -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="international">IX. INTERNATIONAL TRANSFERS</h3>
-            <h5>| KD: The House of Scion is <em>designed in the USA and crafted in Bharat (India)</em>. In fulfilling your order, your measurements and design specifications are transmitted to our craftsmen in India. This constitutes an international transfer of personal data. |</h5>
-            <h5>| We take appropriate steps to ensure that such transfers are conducted securely and that your information receives an adequate level of protection consistent with this Policy and applicable law. Our craftsmen are contractually bound to use your information solely for the purpose of producing your garment and to maintain confidentiality. |</h5>
-            <h5>| If you are located in the European Economic Area (EEA) or United Kingdom, you acknowledge that your data may be transferred to and processed in countries — including the United States and India — that may not offer the same level of data protection as your jurisdiction. Where required, we rely on appropriate safeguards such as standard contractual clauses. |</h5>
+    <!-- IX. International Transfers — heading left, body right -->
+    <div class="page-row" id="international">
+        <div class="row-heading">
+            <span class="row-num">IX</span>
+            <h3 class="row-title">International Transfers</h3>
+            <p class="row-tagline">Designed in USA, crafted in Bharat</p>
+        </div>
+        <div class="row-body">
+            <p>KD: The House of Scion is <em>designed in the USA and crafted in Bharat (India)</em>. In fulfilling your order, your measurements and design specifications are transmitted to our craftsmen in India. This constitutes an international transfer of personal data.</p>
+            <p>We take appropriate steps to ensure that such transfers are conducted securely and that your information receives an adequate level of protection consistent with this Policy and applicable law. Our craftsmen are contractually bound to use your information solely for the purpose of producing your garment and to maintain confidentiality.</p>
+            <p>If you are located in the European Economic Area (EEA) or United Kingdom, you acknowledge that your data may be transferred to and processed in countries — including the United States and India — that may not offer the same level of data protection as your jurisdiction. Where required, we rely on appropriate safeguards such as standard contractual clauses.</p>
         </div>
     </div>
 
-    <!-- 10. CHANGES -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="changes">X. CHANGES TO THIS POLICY</h3>
-            <h5>| The House reserves the right to update or modify this Privacy Policy at any time. When we do, we will revise the "Last Updated" date at the top of this page. For material changes that significantly affect your rights or how we handle your data, we will provide notice via email (if we hold your email address) at least <em>14 days prior to the change taking effect</em>. |</h5>
-            <h5>| Your continued use of our website or services after any change constitutes your acceptance of the updated Policy. We encourage you to review this page periodically. |</h5>
+    <!-- X. Changes — body left, heading right -->
+    <div class="page-row" id="changes">
+        <div class="row-body">
+            <p>The House reserves the right to update or modify this Privacy Policy at any time. When we do, we will revise the "Last Updated" date at the top of this page. For material changes that significantly affect your rights or how we handle your data, we will provide notice via email (if we hold your email address) at least <em>14 days prior to the change taking effect</em>.</p>
+            <p>Your continued use of our website or services after any change constitutes your acceptance of the updated Policy. We encourage you to review this page periodically.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">X</span>
+            <h3 class="row-title">Changes to This Policy</h3>
+            <p class="row-tagline">Updated with notice, always in good faith</p>
         </div>
     </div>
 
-    <!-- 11. CONTACT -->
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3 id="contact">XI. CONTACT THE HOUSE</h3>
-            <h5>| For all privacy-related enquiries, requests, or concerns, please contact us: |</h5>
-            <h5>| <em>Email:</em> communicate@kdscion.com |</h5>
-            <h5>| <em>Website:</em> kdscion.com/contacthouse.html |</h5>
-            <h5>| We are committed to resolving any privacy concern promptly and fairly. If you are not satisfied with our response, you may have the right to lodge a complaint with a supervisory authority in your jurisdiction. |</h5>
+    <!-- XI. Contact — heading left, body right -->
+    <div class="page-row" id="contact">
+        <div class="row-heading">
+            <span class="row-num">XI</span>
+            <h3 class="row-title">Contact The House</h3>
+            <p class="row-tagline">Every concern resolved promptly and fairly</p>
+        </div>
+        <div class="row-body">
+            <p>For all privacy-related enquiries, requests, or concerns, please contact us:</p>
+            <h4>Email</h4>
+            <p>communicate@kdscion.com</p>
+            <h4>Website</h4>
+            <p>kdscion.com/contacthouse.html</p>
+            <p>We are committed to resolving any privacy concern promptly and fairly. If you are not satisfied with our response, you may have the right to lodge a complaint with a supervisory authority in your jurisdiction.</p>
         </div>
     </div>
 
-    <div class="legal-divider autoShow">
-        <h5>| VASUDHEIV KUTUMBAKAM — THE WORLD IS ONE FAMILY |</h5>
-        <h5>| COPYRIGHT 2026 KING DHORAJIYA |</h5>
-    </div>
+</div>
 
-    <div class="footer">
-        <div class="footer_details">
-            <a href="foundermessage.html"><h5>About House</h5></a>
-            <a href="contacthouse.html"><h5>Contact House</h5></a>
-            <a href="shipping.html"><h5>Shipping</h5></a>
-            <a href="returns.html"><h5>Returns</h5></a>
-            <a href="privacy.html"><h5>Privacy</h5></a>
-        </div>
-        <div class="footer_branding">
-            <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
-            <p>Copyright 2026 KING DHORAJIYA</p>
-        </div>
+<div class="page-divider">
+    <p>| VASUDHEIV KUTUMBAKAM — THE WORLD IS ONE FAMILY |</p>
+    <p>| COPYRIGHT 2026 KING DHORAJIYA |</p>
+</div>
+
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="contacthouse.html"><h5>Contact House</h5></a>
+        <a href="shipping.html"><h5>Shipping</h5></a>
+        <a href="returns.html"><h5>Returns</h5></a>
+        <a href="privacy.html"><h5>Privacy</h5></a>
     </div>
+    <div class="footer_branding">
+        <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
+        <p>Copyright 2026 KING DHORAJIYA</p>
+    </div>
+</div>
+
 </body>
 </html>

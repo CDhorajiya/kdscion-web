@@ -29,133 +29,213 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body { background: #fff; color: #1a1a1a; }
         em { color: rgb(128, 0, 0); font-style: normal; }
-        .autoShow {
-            animation: none;
-            opacity: 1;
-            transform: none;
+
+        .top-bar {
+            padding: 1.6rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .legal-header {
+        .top-bar a.brand {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            font-size: 2.1rem;
+            transition: color 0.2s;
+        }
+        .top-bar a.brand:hover { color: #444; }
+        .top-bar .bb-sm { opacity: 1; transition: opacity 0.5s, scale 0.5s; }
+        .top-bar .bb-sm img { width: 26rem; height: auto; display: block; }
+        .top-bar .bb-sm:hover { opacity: 0.6; scale: 1.05; }
+
+        .page-header {
             text-align: center;
-            margin-top: 12rem;
-            margin-bottom: 6rem;
+            margin-top: 8rem;
+            margin-bottom: 7rem;
+            padding: 0 4%;
         }
-        .legal-header h2 {
+        .page-header h2 {
+            font-family: "Times New Roman", Times, serif;
             letter-spacing: 20px;
             font-size: 4rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 1.2rem 0;
         }
-        .legal-header h5 {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+        .page-header h5 {
+            font-family: 'Cormorant Garamond', serif;
             font-weight: 300;
-            letter-spacing: 4px;
-            font-size: 1.84rem;
-            color: rgb(128, 0, 0);
-            opacity: 1;
-            margin-top: 1rem;
-        }
-        .legal-section {
-            max-width: 860px;
-            margin: 0 auto 8rem;
-            padding: 0 4rem;
-        }
-        .legal-section h3 {
-            letter-spacing: 12px;
-            font-size: 2.4rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1.5rem;
-        }
-        .legal-section h4 {
             letter-spacing: 5px;
-            font-size: 1.6rem;
-            color: rgb(128, 0, 0);
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-        }
-        .legal-section h5 {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
-            font-weight: 300;
-            letter-spacing: 0.5px;
             font-size: 1.8rem;
-            line-height: 1.9;
-            color: #000;
-            opacity: 1;
-            margin-bottom: 1.5rem;
+            color: rgb(128, 0, 0);
+            margin: 0;
+            text-transform: uppercase;
         }
-        .legal-section a {
-            color: rgb(128, 0, 0) !important;
-            text-decoration: underline;
-            letter-spacing: 1px;
+
+        .page-body {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 4% 6rem;
+        }
+        .page-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7rem;
+            align-items: center;
+            padding: 10rem 0;
+        }
+
+        .row-heading { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .row-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 6rem;
+            font-weight: 300;
+            color: rgba(128, 0, 0, 0.18);
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 1.2rem;
+        }
+        .row-title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 0.8rem 0;
+        }
+        .row-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: #2d5a2d;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .row-body { display: flex; flex-direction: column; padding-top: 0.4rem; }
+        .row-body h4 {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 5px;
+            font-size: 1.4rem;
+            color: rgb(128, 0, 0);
+            margin: 2.8rem 0 1rem 0;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+        .row-body h4:first-child { margin-top: 0; }
+        .row-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 1.85rem;
+            line-height: 1.85;
+            color: #444;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        .row-body a { color: rgb(128, 0, 0) !important; text-decoration: underline; }
+
+        @media (max-width: 1023px) {
+            .page-row { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 0; }
+            .page-header { margin-top: 5rem; margin-bottom: 4rem; }
+            .page-header h2 { font-size: 2.2rem; letter-spacing: 10px; }
+            .page-header h5 { font-size: 1.4rem; }
+            .row-num { font-size: 4rem; }
+            .row-title { font-size: 1.6rem; letter-spacing: 6px; }
+            .row-tagline { font-size: 1.3rem; }
+            .row-body p { font-size: 1.6rem; }
         }
         @media (max-width: 768px) {
-            .legal-header { margin-top: 6rem; margin-bottom: 4rem; }
-            .legal-header h2 { letter-spacing: 6px; font-size: 1.8rem; }
-            .legal-header h5 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 400; }
-            .legal-section { padding: 0 2rem; margin-bottom: 5rem; }
-            .legal-section h3 { letter-spacing: 4px; font-size: 1.3rem; margin-bottom: 2rem; }
-            .legal-section h4 { letter-spacing: 2px; font-size: 1.2rem; }
-            .legal-section h5 { font-size: 1.4rem; }
+            .top-bar { flex-direction: column; gap: 0.4rem; }
+            .page-header h2 { font-size: 1.7rem; letter-spacing: 6px; }
         }
     </style>
 </head>
 <body>
-    <nav class="nav collapsible">
-        <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
-        <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
-    </nav>
 
-    <div class="legal-header autoShow">
-        <h2>RETURNS POLICY</h2>
-        <h5>| Every attire is made exclusively for you |</h5>
-    </div>
+<div class="top-bar">
+    <a href="index.html" class="brand">King Dhorajiya</a>
+    <a href="bespokeboutique.html" class="bb-sm"><img src="images/Drawing.svg" alt="Bespoke Boutique"></a>
+</div>
 
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3>OUR PROMISE</h3>
-            <h4>MADE FOR YOU ALONE</h4>
-            <h5>| Because every garment from <em>The House of Scion</em> is custom-made to your individual measurements, design selection, and fabric choice, we do not accept returns for refund. Each piece exists because <em>you</em> chose it — it cannot be restocked or resold. |</h5>
-            <h4>OUR COMMITMENT TO YOU</h4>
-            <h5>| In exchange for this policy, we commit to the highest standard of craftsmanship. If your garment does not meet that standard, we will make it right. Your satisfaction is not optional — it is the foundation of everything we do. |</h5>
+<div class="page-header">
+    <h2>Returns Policy</h2>
+    <h5>Every attire is made exclusively for you</h5>
+</div>
+
+<div class="page-body">
+
+    <!-- Row I: Our Promise — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">I</span>
+            <h3 class="row-title">Our Promise</h3>
+            <p class="row-tagline">Crafted for you alone</p>
+        </div>
+        <div class="row-body">
+            <h4>Made for You Alone</h4>
+            <p>Because every garment from <em>The House of Scion</em> is custom-made to your individual measurements, design selection, and fabric choice, we do not accept returns for refund. Each piece exists because <em>you</em> chose it — it cannot be restocked or resold.</p>
+            <h4>Our Commitment to You</h4>
+            <p>In exchange for this policy, we commit to the highest standard of craftsmanship. If your garment does not meet that standard, we will make it right. Your satisfaction is not optional — it is the foundation of everything we do.</p>
         </div>
     </div>
 
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3>ALTERATIONS &amp; EXCHANGES</h3>
-            <h4>FIT ALTERATIONS</h4>
-            <h5>| If your garment does not fit as expected due to a discrepancy between your submitted measurements and the finished piece, contact us within <em>14 days of delivery</em>. We will arrange for alterations at no additional cost, provided the measurements submitted at the time of order were accurate. |</h5>
-            <h4>MEASUREMENT ACCURACY</h4>
-            <h5>| The accuracy of submitted measurements is the responsibility of the customer. We strongly recommend following our <a href="measurement guide.html">Measurement Guide</a> carefully before placing your order. Alterations required due to inaccurate measurements submitted by the customer may incur a fee. |</h5>
-            <h4>FABRIC OR DESIGN EXCHANGES</h4>
-            <h5>| Exchanges for a different fabric or design are evaluated case by case. Please contact us at <em>communicate@kdscion.com</em> within <em>7 days of delivery</em> to discuss your situation. We will always seek a fair resolution. |</h5>
+    <!-- Row II: Alterations & Exchanges — body left, heading right -->
+    <div class="page-row">
+        <div class="row-body">
+            <h4>Fit Alterations</h4>
+            <p>If your garment does not fit as expected due to a discrepancy between your submitted measurements and the finished piece, contact us within <em>14 days of delivery</em>. We will arrange for alterations at no additional cost, provided the measurements submitted at the time of order were accurate.</p>
+            <h4>Measurement Accuracy</h4>
+            <p>The accuracy of submitted measurements is the responsibility of the customer. We strongly recommend following our <a href="measurement guide.html">Measurement Guide</a> carefully before placing your order. Alterations required due to inaccurate measurements submitted by the customer may incur a fee.</p>
+            <h4>Fabric or Design Exchanges</h4>
+            <p>Exchanges for a different fabric or design are evaluated case by case. Please contact us at <em>communicate@kdscion.com</em> within <em>7 days of delivery</em> to discuss your situation. We will always seek a fair resolution.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">II</span>
+            <h3 class="row-title">Alterations</h3>
+            <p class="row-tagline">Fit corrected, no exceptions</p>
         </div>
     </div>
 
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3>QUALITY &amp; DEFECTS</h3>
-            <h4>CRAFTSMANSHIP GUARANTEE</h4>
-            <h5>| If your garment arrives with a manufacturing defect — a flaw in stitching, fabric, or construction that is attributable to our craft — we will provide a <em>full replacement at no cost</em>. No questions asked. |</h5>
-            <h4>HOW TO REPORT AN ISSUE</h4>
-            <h5>| Contact us at <em>communicate@kdscion.com</em> within <em>7 days of delivery</em> with a description and photographs of the defect. We will respond within 2 business days with a resolution. |</h5>
-            <h4>CONTACT US</h4>
-            <h5>| Phone &amp; Text: <em>+1 321 945 3452</em> (11am – 4pm daily) |</h5>
-            <h5>| Email: <em>communicate@kdscion.com</em> (24/7) |</h5>
+    <!-- Row III: Quality & Defects — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">III</span>
+            <h3 class="row-title">Quality</h3>
+            <p class="row-tagline">Guaranteed to the highest standard</p>
+        </div>
+        <div class="row-body">
+            <h4>Craftsmanship Guarantee</h4>
+            <p>If your garment arrives with a manufacturing defect — a flaw in stitching, fabric, or construction that is attributable to our craft — we will provide a <em>full replacement at no cost</em>. No questions asked.</p>
+            <h4>How to Report an Issue</h4>
+            <p>Contact us at <em>communicate@kdscion.com</em> within <em>7 days of delivery</em> with a description and photographs of the defect. We will respond within 2 business days with a resolution.</p>
+            <h4>Contact Us</h4>
+            <p>Phone &amp; Text: <em>+1 321 945 3452</em> (11am – 4pm daily)<br>Email: <em>communicate@kdscion.com</em> (24/7)</p>
         </div>
     </div>
 
-    <div class="footer">
-        <div class="footer_details">
-            <a href="foundermessage.html"><h5>About House</h5></a>
-            <a href="contacthouse.html"><h5>Contact House</h5></a>
-            <a href="shipping.html"><h5>Shipping</h5></a>
-            <a href="returns.html"><h5>Returns</h5></a>
-            <a href="privacy.html"><h5>Privacy</h5></a>
-        </div>
-        <div class="footer_branding">
-            <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
-            <p>Copyright 2026 KING DHORAJIYA</p>
-        </div>
+</div>
+
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="contacthouse.html"><h5>Contact House</h5></a>
+        <a href="shipping.html"><h5>Shipping</h5></a>
+        <a href="returns.html"><h5>Returns</h5></a>
+        <a href="privacy.html"><h5>Privacy</h5></a>
     </div>
+    <div class="footer_branding">
+        <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
+        <p>Copyright 2026 KING DHORAJIYA</p>
+    </div>
+</div>
+
 </body>
 </html>

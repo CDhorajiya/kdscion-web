@@ -29,133 +29,212 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body { background: #fff; color: #1a1a1a; }
         em { color: rgb(128, 0, 0); font-style: normal; }
-        .monogram img { filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5); }
-        .autoShow {
-            animation: none;
-            opacity: 1;
-            transform: none;
+
+        .top-bar {
+            padding: 1.6rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .legal-header {
+        .top-bar a.brand {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            font-size: 2.1rem;
+            transition: color 0.2s;
+        }
+        .top-bar a.brand:hover { color: #444; }
+        .top-bar .bb-sm { opacity: 1; transition: opacity 0.5s, scale 0.5s; }
+        .top-bar .bb-sm img { width: 26rem; height: auto; display: block; }
+        .top-bar .bb-sm:hover { opacity: 0.6; scale: 1.05; }
+
+        .page-header {
             text-align: center;
-            margin-top: 12rem;
-            margin-bottom: 6rem;
+            margin-top: 8rem;
+            margin-bottom: 7rem;
+            padding: 0 4%;
         }
-        .legal-header h2 {
+        .page-header h2 {
+            font-family: "Times New Roman", Times, serif;
             letter-spacing: 20px;
             font-size: 4rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 1.2rem 0;
         }
-        .legal-header h5 {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+        .page-header h5 {
+            font-family: 'Cormorant Garamond', serif;
             font-weight: 300;
-            letter-spacing: 4px;
-            font-size: 1.84rem;
-            color: rgb(128, 0, 0);
-            opacity: 1;
-            margin-top: 1rem;
-        }
-        .legal-section {
-            max-width: 860px;
-            margin: 0 auto 8rem;
-            padding: 0 4rem;
-        }
-        .legal-section h3 {
-            letter-spacing: 12px;
-            font-size: 2.4rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1.5rem;
-        }
-        .legal-section h4 {
             letter-spacing: 5px;
-            font-size: 1.6rem;
-            color: rgb(128, 0, 0);
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-        }
-        .legal-section h5 {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
-            font-weight: 300;
-            letter-spacing: 0.5px;
             font-size: 1.8rem;
-            line-height: 1.9;
-            color: #000;
-            opacity: 1;
-            margin-bottom: 1.5rem;
+            color: rgb(128, 0, 0);
+            margin: 0;
+            text-transform: uppercase;
         }
-        .legal-section a {
-            color: rgb(128, 0, 0) !important;
-            text-decoration: underline;
-            letter-spacing: 1px;
+
+        .page-body {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 4% 6rem;
+        }
+        .page-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7rem;
+            align-items: center;
+            padding: 10rem 0;
+        }
+
+        .row-heading { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .row-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 6rem;
+            font-weight: 300;
+            color: rgba(128, 0, 0, 0.18);
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 1.2rem;
+        }
+        .row-title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 0.8rem 0;
+        }
+        .row-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: #2d5a2d;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .row-body { display: flex; flex-direction: column; padding-top: 0.4rem; }
+        .row-body h4 {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 5px;
+            font-size: 1.4rem;
+            color: rgb(128, 0, 0);
+            margin: 2.8rem 0 1rem 0;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+        .row-body h4:first-child { margin-top: 0; }
+        .row-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 1.85rem;
+            line-height: 1.85;
+            color: #444;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        @media (max-width: 1023px) {
+            .page-row { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 0; }
+            .page-header { margin-top: 5rem; margin-bottom: 4rem; }
+            .page-header h2 { font-size: 2.2rem; letter-spacing: 10px; }
+            .page-header h5 { font-size: 1.4rem; }
+            .row-num { font-size: 4rem; }
+            .row-title { font-size: 1.6rem; letter-spacing: 6px; }
+            .row-tagline { font-size: 1.3rem; }
+            .row-body p { font-size: 1.6rem; }
         }
         @media (max-width: 768px) {
-            .legal-header { margin-top: 6rem; margin-bottom: 4rem; }
-            .legal-header h2 { letter-spacing: 6px; font-size: 1.8rem; }
-            .legal-header h5 { font-size: 1.2rem; letter-spacing: 2px; font-weight: 400; }
-            .legal-section { padding: 0 2rem; margin-bottom: 5rem; }
-            .legal-section h3 { letter-spacing: 4px; font-size: 1.3rem; margin-bottom: 2rem; }
-            .legal-section h4 { letter-spacing: 2px; font-size: 1.2rem; }
-            .legal-section h5 { font-size: 1.4rem; }
+            .top-bar { flex-direction: column; gap: 0.4rem; }
+            .page-header h2 { font-size: 1.7rem; letter-spacing: 6px; }
         }
     </style>
 </head>
 <body>
-    <nav class="nav collapsible">
-        <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
-        <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
-    </nav>
 
-    <div class="legal-header autoShow">
-        <h2>SHIPPING POLICY</h2>
-        <h5>| DESIGNED IN USA &nbsp;&nbsp; MADE IN BHARAT &nbsp;&nbsp; DELIVERED WORLDWIDE |</h5>
-    </div>
+<div class="top-bar">
+    <a href="index.html" class="brand">King Dhorajiya</a>
+    <a href="bespokeboutique.html" class="bb-sm"><img src="images/Drawing.svg" alt="Bespoke Boutique"></a>
+</div>
 
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3>PRODUCTION</h3>
-            <h4>MADE TO ORDER</h4>
-            <h5>| Every garment from <em>The House of Scion</em> is created exclusively for you — from the moment your order is confirmed, our craftsmen begin working on your piece. Nothing is held in stock. Nothing is mass-produced. |</h5>
-            <h4>PRODUCTION TIMELINE</h4>
-            <h5>| Please allow <em>3 to 5 weeks</em> from order confirmation for your garment to be crafted. This timeline reflects the care and precision each piece demands. Rush production is not available — quality cannot be hurried. |</h5>
-            <h4>ORDER CONFIRMATION</h4>
-            <h5>| Production begins only after your order is fully confirmed, measurements are verified, and payment is complete. You will receive a confirmation to your registered email address. |</h5>
+<div class="page-header">
+    <h2>Shipping Policy</h2>
+    <h5>Designed in USA &nbsp;·&nbsp; Made in Bharat &nbsp;·&nbsp; Delivered Worldwide</h5>
+</div>
+
+<div class="page-body">
+
+    <!-- Row I: Production — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">I</span>
+            <h3 class="row-title">Production</h3>
+            <p class="row-tagline">Made to order, built on patience</p>
+        </div>
+        <div class="row-body">
+            <h4>Made to Order</h4>
+            <p>Every garment from <em>The House of Scion</em> is created exclusively for you — from the moment your order is confirmed, our craftsmen begin working on your piece. Nothing is held in stock. Nothing is mass-produced.</p>
+            <h4>Production Timeline</h4>
+            <p>Please allow <em>3 to 5 weeks</em> from order confirmation for your garment to be crafted. This timeline reflects the care and precision each piece demands. Rush production is not available — quality cannot be hurried.</p>
+            <h4>Order Confirmation</h4>
+            <p>Production begins only after your order is fully confirmed, measurements are verified, and payment is complete. You will receive a confirmation to your registered email address.</p>
         </div>
     </div>
 
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3>DELIVERY</h3>
-            <h4>INTERNATIONAL SHIPPING</h4>
-            <h5>| <em>The House of Scion</em> ships worldwide. Shipping cost and estimated delivery time are calculated at checkout based on your location. Delivery typically takes <em>5 to 14 business days</em> from dispatch, depending on destination and local postal service. |</h5>
-            <h4>DISPATCH NOTIFICATION</h4>
-            <h5>| Once your garment leaves our atelier, you will receive a dispatch notification with tracking details to your registered email address. |</h5>
-            <h4>CUSTOMS & DUTIES</h4>
-            <h5>| International orders may be subject to <em>customs duties, taxes, or import fees</em> levied by your country's customs authority. These charges are the responsibility of the recipient and are not included in our pricing or shipping fees. We recommend checking your local customs regulations before placing an order. |</h5>
+    <!-- Row II: Delivery — body left, heading right -->
+    <div class="page-row">
+        <div class="row-body">
+            <h4>International Shipping</h4>
+            <p><em>The House of Scion</em> ships worldwide. Shipping cost and estimated delivery time are calculated at checkout based on your location. Delivery typically takes <em>5 to 14 business days</em> from dispatch, depending on destination and local postal service.</p>
+            <h4>Dispatch Notification</h4>
+            <p>Once your garment leaves our atelier, you will receive a dispatch notification with tracking details to your registered email address.</p>
+            <h4>Customs &amp; Duties</h4>
+            <p>International orders may be subject to <em>customs duties, taxes, or import fees</em> levied by your country's customs authority. These charges are the responsibility of the recipient and are not included in our pricing or shipping fees. We recommend checking your local customs regulations before placing an order.</p>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">II</span>
+            <h3 class="row-title">Delivery</h3>
+            <p class="row-tagline">Worldwide, without compromise</p>
         </div>
     </div>
 
-    <div class="autoShow">
-        <div class="legal-section">
-            <h3>SUPPORT</h3>
-            <h4>QUESTIONS ABOUT YOUR ORDER</h4>
-            <h5>| For any shipping queries, please reach out to us at <em>communicate@kdscion.com</em>. We are available by email 24/7, and by phone or text at <em>+1 321 945 3452</em> from 11am to 4pm daily. |</h5>
-            <h4>LOST OR DELAYED SHIPMENTS</h4>
-            <h5>| If your shipment appears lost or is significantly delayed beyond the estimated delivery window, contact us immediately. We will work with the carrier to resolve the issue and ensure your garment reaches you. |</h5>
+    <!-- Row III: Support — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">III</span>
+            <h3 class="row-title">Support</h3>
+            <p class="row-tagline">With you from commission to door</p>
+        </div>
+        <div class="row-body">
+            <h4>Questions About Your Order</h4>
+            <p>For any shipping queries, please reach out to us at <em>communicate@kdscion.com</em>. We are available by email 24/7, and by phone or text at <em>+1 321 945 3452</em> from 11am to 4pm daily.</p>
+            <h4>Lost or Delayed Shipments</h4>
+            <p>If your shipment appears lost or is significantly delayed beyond the estimated delivery window, contact us immediately. We will work with the carrier to resolve the issue and ensure your garment reaches you.</p>
         </div>
     </div>
 
-    <div class="footer">
-        <div class="footer_details">
-            <a href="foundermessage.html"><h5>About House</h5></a>
-            <a href="contacthouse.html"><h5>Contact House</h5></a>
-            <a href="shipping.html"><h5>Shipping</h5></a>
-            <a href="returns.html"><h5>Returns</h5></a>
-            <a href="privacy.html"><h5>Privacy</h5></a>
-        </div>
-        <div class="footer_branding">
-            <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
-            <p>Copyright 2026 KING DHORAJIYA</p>
-        </div>
+</div>
+
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="contacthouse.html"><h5>Contact House</h5></a>
+        <a href="shipping.html"><h5>Shipping</h5></a>
+        <a href="returns.html"><h5>Returns</h5></a>
+        <a href="privacy.html"><h5>Privacy</h5></a>
     </div>
+    <div class="footer_branding">
+        <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
+        <p>Copyright 2026 KING DHORAJIYA</p>
+    </div>
+</div>
+
 </body>
 </html>

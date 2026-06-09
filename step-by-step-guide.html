@@ -28,12 +28,8 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        body {
-            background: #fff;
-            color: #1a1a1a;
-        }
+        body { background: #fff; color: #1a1a1a; }
 
-        /* ── Top brand bar ── */
         .top-bar {
             padding: 1.6rem 4%;
             display: flex;
@@ -50,28 +46,17 @@
             transition: color 0.2s;
         }
         .top-bar a.brand:hover { color: #444; }
-        .top-bar .bb-sm {
-            opacity: 1;
-            transition: opacity 0.5s, scale 0.5s;
-        }
-        .top-bar .bb-sm img {
-            width: 26rem;
-            height: auto;
-            display: block;
-        }
-        .top-bar .bb-sm:hover {
-            opacity: 0.6;
-            scale: 1.05;
-        }
+        .top-bar .bb-sm { opacity: 1; transition: opacity 0.5s, scale 0.5s; }
+        .top-bar .bb-sm img { width: 26rem; height: auto; display: block; }
+        .top-bar .bb-sm:hover { opacity: 0.6; scale: 1.05; }
 
-        /* ── Page header ── */
-        .journey-header {
+        .page-header {
             text-align: center;
             margin-top: 8rem;
             margin-bottom: 7rem;
             padding: 0 4%;
         }
-        .journey-header h2 {
+        .page-header h2 {
             font-family: "Times New Roman", Times, serif;
             letter-spacing: 20px;
             font-size: 4rem;
@@ -80,35 +65,31 @@
             color: #1a1a1a;
             margin: 0 0 1.2rem 0;
         }
-        .journey-header h5 {
+        .page-header h5 {
             font-family: 'Cormorant Garamond', serif;
             font-weight: 300;
             letter-spacing: 5px;
             font-size: 1.8rem;
             color: rgb(128, 0, 0);
-            margin: 0 0 2rem 0;
+            margin: 0;
             text-transform: uppercase;
         }
 
-        /* ── Journey rows ── */
-        .journey-wrap {
-            max-width: 1180px;
+        .page-body {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 4% 2rem;
+            padding: 0 4% 6rem;
         }
-        .journey-row {
-            padding: 7rem 0;
+        .page-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7rem;
             align-items: center;
-            gap: 9rem;
-            margin-bottom: 2rem;
+            padding: 10rem 0;
         }
 
-        /* ── Step heading column ── */
-        .step-heading {
-            display: flex;
-            flex-direction: column;
-        }
-        .step-num {
+        .row-heading { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .row-num {
             font-family: 'Cormorant Garamond', serif;
             font-size: 6rem;
             font-weight: 300;
@@ -117,24 +98,24 @@
             line-height: 1;
             margin-bottom: 1.2rem;
         }
-        .step-heading h3 {
+        .row-title {
             font-family: "Times New Roman", Times, serif;
             font-size: 2.2rem;
             font-weight: 400;
             letter-spacing: 10px;
             text-transform: uppercase;
             color: #1a1a1a;
-            margin: 0 0 1rem 0;
+            margin: 0 0 0.8rem 0;
         }
-        .step-tagline {
+        .row-tagline {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.55rem;
             font-weight: 300;
             font-style: italic;
             letter-spacing: 2px;
-            color: #aaa;
-            margin: 0 0 2.5rem 0;
+            color: #2d5a2d;
             line-height: 1.5;
+            margin: 0 0 2.5rem 0;
         }
         .step-link {
             display: inline-block;
@@ -144,29 +125,18 @@
             text-transform: uppercase;
             color: rgb(128, 0, 0);
             text-decoration: none;
-            transition: color 0.2s, border-color 0.2s;
+            transition: color 0.2s;
+            align-self: flex-start;
         }
-        .step-link:hover {
-            color: rgb(180, 0, 0);
-            border-color: rgb(180, 0, 0);
-        }
-        .step-link.coming-soon {
-            color: #bbb;
-            border-color: #ddd;
-            cursor: default;
-            pointer-events: none;
-        }
+        .step-link:hover { color: rgb(180, 0, 0); }
 
-        /* ── Description column ── */
-        .journey-desc ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .row-body {
             display: flex;
             flex-direction: column;
             gap: 2.4rem;
+            padding-top: 0.4rem;
         }
-        .journey-desc li {
+        .row-body li {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.7rem;
             font-weight: 300;
@@ -176,8 +146,9 @@
             padding-left: 2rem;
             padding-right: 1rem;
             position: relative;
+            list-style: none;
         }
-        .journey-desc li::before {
+        .row-body li::before {
             content: '|';
             position: absolute;
             left: 0;
@@ -185,165 +156,161 @@
             font-family: "Times New Roman", serif;
             top: 0;
         }
-        .journey-desc li::after {
+        .row-body li::after {
             content: ' |';
             color: rgba(128, 0, 0, 0.4);
             font-family: "Times New Roman", serif;
         }
+        .row-body ul { list-style: none; padding: 0; margin: 0; display: contents; }
 
-
-        /* ── Mobile ── */
         @media (max-width: 1023px) {
-            .journey-header { margin-top: 5rem; margin-bottom: 4rem; }
-            .journey-header h2 { font-size: 2.2rem; letter-spacing: 10px; }
-            .journey-header h5 { font-size: 1.4rem; }
-            .journey-row { padding: 3.5rem 0; gap: 2.5rem; }
-            .step-num { font-size: 4rem; }
-            .step-heading h3 { font-size: 1.6rem; letter-spacing: 6px; }
-            .step-tagline { font-size: 1.3rem; }
-            .journey-desc li { font-size: 1.45rem; }
+            .page-row { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 0; }
+            .page-header { margin-top: 5rem; margin-bottom: 4rem; }
+            .page-header h2 { font-size: 2.2rem; letter-spacing: 10px; }
+            .page-header h5 { font-size: 1.4rem; }
+            .row-num { font-size: 4rem; }
+            .row-title { font-size: 1.6rem; letter-spacing: 6px; }
+            .row-tagline { font-size: 1.3rem; }
+            .row-body li { font-size: 1.45rem; }
         }
         @media (max-width: 768px) {
             .top-bar { flex-direction: column; gap: 0.4rem; }
-            .journey-header h2 { font-size: 1.7rem; letter-spacing: 6px; }
+            .page-header h2 { font-size: 1.7rem; letter-spacing: 6px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top bar -->
-    <div class="top-bar">
-        <a href="index.html" class="brand">King Dhorajiya</a>
-        <a href="bespokeboutique.html" class="bb-sm"><img src="images/Drawing.svg" alt="Bespoke Boutique"></a>
-    </div>
+<div class="top-bar">
+    <a href="index.html" class="brand">King Dhorajiya</a>
+    <a href="bespokeboutique.html" class="bb-sm"><img src="images/Drawing.svg" alt="Bespoke Boutique"></a>
+</div>
 
-    <!-- Page header -->
-    <div class="journey-header">
-        <h2>The Bespoke Journey</h2>
-        <h5>A Roadmap to Your Commission</h5>
-    </div>
+<div class="page-header">
+    <h2>The Bespoke Journey</h2>
+    <h5>A Roadmap to Your Commission</h5>
+</div>
 
-    <!-- Rows -->
-    <div class="journey-wrap">
+<div class="page-body">
 
-        <!-- Row 1: Skin Tone Profile — heading left, description right -->
-        <div class="journey-row grid grid--1x2">
-            <div class="step-heading">
-                <span class="step-num">I</span>
-                <h3>Skin Tone Profile</h3>
-                <p class="step-tagline">Know your colours before you choose them</p>
-                <a href="skinprofile.html" class="step-link">Begin Profile →</a>
-            </div>
-            <div class="journey-desc">
-                <ul>
-                    <li>Identify your skin type — Fair, Medium-Olive, Tan, or Dark-Deep — and confirm your undertone through three simple at-home tests: vein colour, jewellery preference, and fabric response</li>
-                    <li>Receive a curated colour palette of Best and Highly Acceptable shades and combinations calibrated precisely to your unique skin profile and undertone</li>
-                    <li>Use your palette as the guiding reference for every fabric colour decision throughout your bespoke commission — ensuring every garment enhances your natural radiance</li>
-                </ul>
-            </div>
+    <!-- Step I: Skin Tone Profile — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">I</span>
+            <h3 class="row-title">Skin Tone Profile</h3>
+            <p class="row-tagline">Know your colours before you choose them</p>
+            <a href="skinprofile.html" class="step-link">Begin Profile →</a>
         </div>
-
-        <!-- Row 2: Measurement Guide — description left, heading right -->
-        <div class="journey-row grid grid--1x2">
-            <div class="journey-desc">
-                <ul>
-                    <li>Navigate our interactive 3D body guide — hover each measurement point to illuminate the exact placement on the model and take your own measurements precisely at home</li>
-                    <li>Record 18+ body measurements including height, shoulder width, chest, waist, full hip, arm length, inseam, and more — in centimetres or inches — with built-in proportion validation</li>
-                    <li>Saved to your account and auto-applied at every checkout — we strongly advise refreshing your measurements before any commission placed 45 days or more apart. The body is not static, and neither should your fit be</li>
-                </ul>
-            </div>
-            <div class="step-heading">
-                <span class="step-num">II</span>
-                <h3>Measurement Guide</h3>
-                <p class="step-tagline">Precision fit begins with knowing your body</p>
-                <a href="measurement guide.html" class="step-link">Take Measurements →</a>
-            </div>
-        </div>
-
-        <!-- Row 3: Fabric Fundamentals — heading left, description right -->
-        <div class="journey-row grid grid--1x2">
-            <div class="step-heading">
-                <span class="step-num">III</span>
-                <h3>Fabric Fundamentals</h3>
-                <p class="step-tagline">Cloth is the canvas — choose it wisely</p>
-                <a href="" class="step-link coming-soon">Coming Soon</a>
-            </div>
-            <div class="journey-desc">
-                <ul>
-                    <li>Master the language of cloth — thread count in cotton, lea count in linen, and how fibre density governs handle, weight, and the way a garment moves and drapes on the body</li>
-                    <li>Understand the art of blending: how natural fibres are combined to balance breathability, structure, softness, and long-term durability across seasons and wear</li>
-                    <li>A curated selection guide to the finest natural fabrics — cotton, linen, silk, wool, and cashmere — matched by garment type, climate, and occasion to help you choose with confidence</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Row 4: Leather Fundamentals — description left, heading right -->
-        <div class="journey-row grid grid--1x2">
-            <div class="journey-desc">
-                <ul>
-                    <li>Learn to read leather by grade — full-grain retains the natural surface and develops rich patina over time, top-grain offers refined uniformity, corrected-grain delivers consistency; each grade defines how a garment wears and ages</li>
-                    <li>Understand the tanning spectrum: vegetable-tanned leathers build depth and character with wear, while chrome-tanned leathers prioritise softness, colour consistency, and resilience under frequent and demanding use</li>
-                    <li>A garment-matched leather guide — lambskin for fluid soft-structured jackets, calfskin for formal and tailored wear, suede for casual layering — paired with care principles to preserve each hide across seasons</li>
-                </ul>
-            </div>
-            <div class="step-heading">
-                <span class="step-num">IV</span>
-                <h3>Leather Fundamentals</h3>
-                <p class="step-tagline">Hide is history — understand it before you wear it</p>
-                <a href="leather-fundamentals.html" class="step-link">Explore Leather Fundamentals →</a>
-            </div>
-        </div>
-
-        <!-- Row 5: Design Selection — heading left, description right -->
-        <div class="journey-row grid grid--1x2">
-            <div class="step-heading">
-                <span class="step-num">V</span>
-                <h3>Design Selection</h3>
-                <p class="step-tagline">Every commission begins with a silhouette</p>
-                <a href="bespokeboutique.html" class="step-link">Go to the Bespoke Boutique →</a>
-            </div>
-            <div class="journey-desc">
-                <ul>
-                    <li>Browse our curated catalogue across four dressing categories — Men, Women, Boy, and Girl — each housing a range of silhouettes purpose-built for bespoke construction, from structured formal wear to fluid layering and occasion pieces</li>
-                    <li>Every design serves as the architectural foundation of your commission — the cut, structure, and line are set; the fabric, colour, and finishing detail are entirely yours to define in the steps that follow</li>
-                    <li>Use your skin tone palette from Step I and your fabric knowledge from Steps III and IV to inform your choice — design selection is where your personal colour profile and material understanding first meet a physical form</li>
-                    <li>Every design carries a skin tone selector — apply your result from Step I to preview precisely how the garment's proposed colours and fabrics harmonise with your skin type and undertone before your commission is confirmed</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Row 6: Fabric & Leather Selection — description left, heading right -->
-        <div class="journey-row grid grid--1x2">
-            <div class="journey-desc">
-                <ul>
-                    <li>Choose your primary material from a curated range of natural fabrics and leathers suited to the selected garment type, season, and occasion — your fundamentals from Steps III and IV make this decision informed rather than instinctive</li>
-                    <li>Commission a two-tone garment: a single piece finished in two complementary fabrics, with a contrasting material applied to the edges, collar, cuffs, or trim — a detail that adds depth, structure, and a signature character unique to the House</li>
-                    <li>Your selected design and all available fabric options are fully visible under the Pool of Designs — accessible through the Go to Collection button on your chosen category page within the Bespoke Boutique</li>
-                </ul>
-            </div>
-            <div class="step-heading">
-                <span class="step-num">VI</span>
-                <h3>Fabric & Leather Selection</h3>
-                <p class="step-tagline">The cloth makes the commission — every thread is a decision</p>
-                <a href="bespokeboutique.html" class="step-link">Go to the Bespoke Boutique →</a>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="footer">
-        <div class="footer_details">
-            <a href="foundermessage.html"><h5>About House</h5></a>
-            <a href="contacthouse.html"><h5>Contact House</h5></a>
-            <a href="shipping.html"><h5>Shipping</h5></a>
-            <a href="returns.html"><h5>Returns</h5></a>
-            <a href="privacy.html"><h5>Privacy</h5></a>
-        </div>
-        <div class="footer_branding">
-            <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram home page link"></a></div>
-            <p>Copyright 2026 KING DHORAJIYA</p>
+        <div class="row-body">
+            <ul>
+                <li>Identify your skin type — Fair, Medium-Olive, Tan, or Dark-Deep — and confirm your undertone through three simple at-home tests: vein colour, jewellery preference, and fabric response</li>
+                <li>Receive a curated colour palette of Best and Highly Acceptable shades and combinations calibrated precisely to your unique skin profile and undertone</li>
+                <li>Use your palette as the guiding reference for every fabric colour decision throughout your bespoke commission — ensuring every garment enhances your natural radiance</li>
+            </ul>
         </div>
     </div>
+
+    <!-- Step II: Measurement Guide — body left, heading right -->
+    <div class="page-row">
+        <div class="row-body">
+            <ul>
+                <li>Navigate our interactive 3D body guide — hover each measurement point to illuminate the exact placement on the model and take your own measurements precisely at home</li>
+                <li>Record 18+ body measurements including height, shoulder width, chest, waist, full hip, arm length, inseam, and more — in centimetres or inches — with built-in proportion validation</li>
+                <li>Saved to your account and auto-applied at every checkout — we strongly advise refreshing your measurements before any commission placed 45 days or more apart. The body is not static, and neither should your fit be</li>
+            </ul>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">II</span>
+            <h3 class="row-title">Measurement Guide</h3>
+            <p class="row-tagline">Precision fit begins with knowing your body</p>
+            <a href="measurement guide.html" class="step-link">Take Measurements →</a>
+        </div>
+    </div>
+
+    <!-- Step III: Fabric Fundamentals — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">III</span>
+            <h3 class="row-title">Fabric Fundamentals</h3>
+            <p class="row-tagline">Cloth is the canvas — choose it wisely</p>
+            <a href="fabric-fundamentals.html" class="step-link">Explore Fabric Fundamentals →</a>
+        </div>
+        <div class="row-body">
+            <ul>
+                <li>Master the language of cloth — thread count in cotton, lea count in linen, and how fibre density governs handle, weight, and the way a garment moves and drapes on the body</li>
+                <li>Understand the art of blending: how natural fibres are combined to balance breathability, structure, softness, and long-term durability across seasons and wear</li>
+                <li>A curated selection guide to the finest natural fabrics — cotton, linen, silk, wool, and cashmere — matched by garment type, climate, and occasion to help you choose with confidence</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step IV: Leather Fundamentals — body left, heading right -->
+    <div class="page-row">
+        <div class="row-body">
+            <ul>
+                <li>Learn to read leather by grade — full-grain retains the natural surface and develops rich patina over time, top-grain offers refined uniformity, corrected-grain delivers consistency; each grade defines how a garment wears and ages</li>
+                <li>Understand the tanning spectrum: vegetable-tanned leathers build depth and character with wear, while chrome-tanned leathers prioritise softness, colour consistency, and resilience under frequent and demanding use</li>
+                <li>A garment-matched leather guide — lambskin for fluid soft-structured jackets, calfskin for formal and tailored wear, suede for casual layering — paired with care principles to preserve each hide across seasons</li>
+            </ul>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">IV</span>
+            <h3 class="row-title">Leather Fundamentals</h3>
+            <p class="row-tagline">Hide is history — understand it before you wear it</p>
+            <a href="leather-fundamentals.html" class="step-link">Explore Leather Fundamentals →</a>
+        </div>
+    </div>
+
+    <!-- Step V: Design Selection — heading left, body right -->
+    <div class="page-row">
+        <div class="row-heading">
+            <span class="row-num">V</span>
+            <h3 class="row-title">Design Selection</h3>
+            <p class="row-tagline">Every commission begins with a silhouette</p>
+            <a href="bespokeboutique.html" class="step-link">Go to the Bespoke Boutique →</a>
+        </div>
+        <div class="row-body">
+            <ul>
+                <li>Browse our curated catalogue across four dressing categories — Men, Women, Boy, and Girl — each housing a range of silhouettes purpose-built for bespoke construction, from structured formal wear to fluid layering and occasion pieces</li>
+                <li>Every design serves as the architectural foundation of your commission — the cut, structure, and line are set; the fabric, colour, and finishing detail are entirely yours to define in the steps that follow</li>
+                <li>Use your skin tone palette from Step I and your fabric knowledge from Steps III and IV to inform your choice — design selection is where your personal colour profile and material understanding first meet a physical form</li>
+                <li>Every design carries a skin tone selector — apply your result from Step I to preview precisely how the garment's proposed colours and fabrics harmonise with your skin type and undertone before your commission is confirmed</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step VI: Fabric & Leather Selection — body left, heading right -->
+    <div class="page-row">
+        <div class="row-body">
+            <ul>
+                <li>Choose your primary material from a curated range of natural fabrics and leathers suited to the selected garment type, season, and occasion — your fundamentals from Steps III and IV make this decision informed rather than instinctive</li>
+                <li>Commission a two-tone garment: a single piece finished in two complementary fabrics, with a contrasting material applied to the edges, collar, cuffs, or trim — a detail that adds depth, structure, and a signature character unique to the House</li>
+                <li>Your selected design and all available fabric options are fully visible under the Pool of Designs — accessible through the Go to Collection button on your chosen category page within the Bespoke Boutique</li>
+            </ul>
+        </div>
+        <div class="row-heading">
+            <span class="row-num">VI</span>
+            <h3 class="row-title">Fabric &amp; Leather Selection</h3>
+            <p class="row-tagline">The cloth makes the commission — every thread is a decision</p>
+            <a href="bespokeboutique.html" class="step-link">Go to the Bespoke Boutique →</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="contacthouse.html"><h5>Contact House</h5></a>
+        <a href="shipping.html"><h5>Shipping</h5></a>
+        <a href="returns.html"><h5>Returns</h5></a>
+        <a href="privacy.html"><h5>Privacy</h5></a>
+    </div>
+    <div class="footer_branding">
+        <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram home page link"></a></div>
+        <p>Copyright 2026 KING DHORAJIYA</p>
+    </div>
+</div>
 
 </body>
 </html>

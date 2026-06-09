@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZJT42EG6J');
+    </script>
+    <title>Fabric Fundamentals — KD Scion</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KD: The House of Scion">
+    <meta property="og:title" content="Fabric Fundamentals — KD Scion">
+    <meta property="og:description" content="Understand the natural fabrics behind every bespoke commission — cotton, linen, wool, silk, and the art of the blend.">
+    <meta property="og:image" content="https://kdscion.com/images/KD_monogram.png">
+    <meta property="og:url" content="https://kdscion.com/fabric-fundamentals.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Fabric Fundamentals — KD Scion">
+    <meta name="twitter:description" content="Cotton, linen, wool, silk — know your cloth before you wear it.">
+    <meta name="twitter:image" content="https://kdscion.com/images/KD_monogram.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #fff; color: #1a1a1a; }
+
+        /* ── Top bar ── */
+        .top-bar {
+            padding: 1.6rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .top-bar a.brand {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            font-size: 2.1rem;
+            transition: color 0.2s;
+        }
+        .top-bar a.brand:hover { color: #444; }
+        .top-bar .bb-sm { opacity: 1; transition: opacity 0.5s, scale 0.5s; }
+        .top-bar .bb-sm img { width: 26rem; height: auto; display: block; }
+        .top-bar .bb-sm:hover { opacity: 0.6; scale: 1.05; }
+
+        /* ── Page header ── */
+        .page-header {
+            text-align: center;
+            margin-top: 8rem;
+            margin-bottom: 7rem;
+            padding: 0 4%;
+        }
+        .page-header h2 {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 20px;
+            font-size: 4rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 1.2rem 0;
+        }
+        .page-header h5 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: 5px;
+            font-size: 1.8rem;
+            color: rgb(128, 0, 0);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* ── Two-column alternating rows ── */
+        .fabric-body {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 4% 6rem;
+        }
+        .fabric-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7rem;
+            align-items: stretch;
+            padding: 11rem 0;
+        }
+
+        .fabric-col-vis {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            overflow: visible;
+        }
+        .fabric-col-vis svg {
+            width: 55%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        /* Text column */
+        .fabric-col-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Section text elements ── */
+        .section-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 6rem;
+            font-weight: 300;
+            color: rgba(128, 0, 0, 0.18);
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 1.2rem;
+        }
+        .section-name {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0 0 0.8rem 0;
+        }
+        .section-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: #aaa;
+            margin: 0 0 3rem 0;
+            line-height: 1.5;
+        }
+        .section-bullets {
+            list-style: none;
+            padding: 0; margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2.4rem;
+        }
+        .section-bullets li {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #444;
+            line-height: 1.85;
+            padding-left: 2rem;
+            padding-right: 1rem;
+            position: relative;
+        }
+        .section-bullets li::before {
+            content: '|';
+            position: absolute;
+            left: 0;
+            color: rgba(128, 0, 0, 0.4);
+            font-family: "Times New Roman", serif;
+            top: 0;
+        }
+        .section-bullets li::after {
+            content: ' |';
+            color: rgba(128, 0, 0, 0.4);
+            font-family: "Times New Roman", serif;
+        }
+        .blend-badge {
+            display: inline-block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgb(128, 0, 0);
+            border: 1px solid rgba(128, 0, 0, 0.5);
+            padding: 0.35rem 1.1rem;
+            margin-top: 2.5rem;
+            align-self: flex-start;
+        }
+
+        /* ── SVG interactive classes ── */
+        .fib {
+            transition: filter 0.22s, opacity 0.22s;
+            cursor: crosshair;
+        }
+        .fib:hover {
+            filter: brightness(1.28) drop-shadow(0 0 6px rgba(210,168,50,0.75));
+        }
+        .crimp-a { animation: crimpBreath 3.6s ease-in-out infinite; }
+        .crimp-b { animation: crimpBreath 3.6s ease-in-out 0.9s infinite; }
+        @keyframes crimpBreath {
+            0%,100% { stroke-opacity: 1; stroke-width: 13; }
+            50%      { stroke-opacity: 0.68; stroke-width: 11; }
+        }
+        .ray   { animation: rayPulse 2.4s ease-in-out infinite; }
+        .ray-b { animation: rayPulse 2.4s ease-in-out 0.8s infinite; }
+        .ray-c { animation: rayPulse 2.4s ease-in-out 1.6s infinite; }
+        @keyframes rayPulse {
+            0%,100% { opacity: 0.45; }
+            50%      { opacity: 1; }
+        }
+        .prism-fill { animation: prismShimmer 3s ease-in-out infinite; }
+        @keyframes prismShimmer {
+            0%,100% { fill: #D4B050; }
+            50%      { fill: #F0D070; }
+        }
+        .weave-overlay { animation: weavePulse 4.5s ease-in-out infinite; }
+        @keyframes weavePulse {
+            0%,100% { opacity: 0; }
+            50%      { opacity: 0.06; }
+        }
+        .s-bar { transition: filter 0.2s; cursor: default; }
+        .s-bar:hover { filter: brightness(1.22) drop-shadow(0 1px 4px rgba(128,0,0,0.3)); }
+        .ghost { animation: ghostDrift 5s ease-in-out infinite; }
+        @keyframes ghostDrift {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.55; }
+        }
+        .blend-grid { transition: filter 0.22s; cursor: crosshair; }
+        .blend-grid:hover { filter: brightness(1.12) saturate(1.15); }
+
+        /* ── Mobile ── */
+        @media (max-width: 1023px) {
+            .fabric-row { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 0; }
+            .fabric-row .fabric-col-vis { order: -1; }
+            .fabric-col-vis svg { width: 60%; }
+            .page-header { margin-top: 5rem; margin-bottom: 4rem; }
+            .page-header h2 { font-size: 2.2rem; letter-spacing: 10px; }
+            .page-header h5 { font-size: 1.4rem; }
+            .section-num { font-size: 4rem; }
+            .section-name { font-size: 1.6rem; letter-spacing: 6px; }
+            .section-tagline { font-size: 1.3rem; }
+            .section-bullets li { font-size: 1.45rem; }
+        }
+        @media (max-width: 768px) {
+            .top-bar { flex-direction: column; gap: 0.4rem; }
+            .page-header h2 { font-size: 1.7rem; letter-spacing: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="index.html" class="brand">King Dhorajiya</a>
+    <a href="bespokeboutique.html" class="bb-sm"><img src="images/Drawing.svg" alt="Bespoke Boutique"></a>
+</div>
+
+<div class="page-header">
+    <h2>Fabric Fundamentals</h2>
+    <h5>The Thread Beneath — Know Your Cloth Before You Wear It</h5>
+</div>
+
+<div class="fabric-body">
+
+    <!-- ══════════════════════════════════════════
+         ROW I  —  Cotton  (vis left, text right)
+    ══════════════════════════════════════════ -->
+    <div class="fabric-row">
+        <div class="fabric-col-vis">
+            <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                <defs>
+                    <pattern id="c-weave" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                        <rect x="0"  y="0"  width="15" height="15" fill="#C87818"/>
+                        <rect x="17" y="0"  width="15" height="15" fill="#EAB840"/>
+                        <rect x="0"  y="17" width="15" height="15" fill="#EAB840"/>
+                        <rect x="17" y="17" width="15" height="15" fill="#C87818"/>
+                        <line x1="16" y1="0" x2="16" y2="32" stroke="rgba(80,35,0,0.18)" stroke-width="2"/>
+                        <line x1="0" y1="16" x2="32" y2="16" stroke="rgba(80,35,0,0.18)" stroke-width="2"/>
+                    </pattern>
+                </defs>
+
+                <text x="134" y="18" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,45,5,0.45)" text-anchor="middle" letter-spacing="3">PLAIN WEAVE — MAGNIFIED</text>
+
+                <!-- Warp ticks -->
+                <line x1="44"  y1="38" x2="44"  y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="76"  y1="38" x2="76"  y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="108" y1="38" x2="108" y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="140" y1="38" x2="140" y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="172" y1="38" x2="172" y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="204" y1="38" x2="204" y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="236" y1="38" x2="236" y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="268" y1="38" x2="268" y2="52" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <text x="156" y="37" font-family="Times New Roman, serif" font-size="16" fill="rgba(100,55,10,0.45)" text-anchor="middle" letter-spacing="2">WARP ↓</text>
+
+                <!-- Weft ticks -->
+                <line x1="16" y1="68"  x2="28" y2="68"  stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="100" x2="28" y2="100" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="132" x2="28" y2="132" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="164" x2="28" y2="164" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="196" x2="28" y2="196" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="228" x2="28" y2="228" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="260" x2="28" y2="260" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <line x1="16" y1="292" x2="28" y2="292" stroke="rgba(100,55,10,0.4)" stroke-width="1"/>
+                <text x="3" y="180" font-family="Times New Roman, serif" font-size="16" fill="rgba(100,55,10,0.45)" text-anchor="middle" letter-spacing="2" transform="rotate(-90,3,180)">WEFT →</text>
+
+                <!-- Weave grid -->
+                <rect x="28" y="52" width="256" height="256" fill="url(#c-weave)" rx="2"/>
+                <rect class="weave-overlay" x="28" y="52" width="256" height="256" fill="white" rx="2" style="pointer-events:none;"/>
+                <rect x="28" y="52" width="256" height="256" fill="none" stroke="rgba(100,55,10,0.32)" stroke-width="1.6" rx="2"/>
+
+                <!-- 1-inch dimension -->
+                <line x1="28"  y1="322" x2="284" y2="322" stroke="rgba(100,55,10,0.38)" stroke-width="1"/>
+                <line x1="28"  y1="316" x2="28"  y2="328" stroke="rgba(100,55,10,0.38)" stroke-width="1"/>
+                <line x1="284" y1="316" x2="284" y2="328" stroke="rgba(100,55,10,0.38)" stroke-width="1"/>
+                <text x="156" y="342" font-family="Times New Roman, serif" font-size="17" fill="rgba(100,55,10,0.45)" text-anchor="middle" letter-spacing="2">1 INCH REPRESENTED</text>
+
+                <!-- Color key -->
+                <rect x="28" y="368" width="18" height="18" fill="#EAB840" rx="1"/>
+                <text x="52" y="381" font-family="Times New Roman, serif" font-size="18" fill="#555" letter-spacing="0.5">WEFT — runs horizontal</text>
+                <rect x="28" y="394" width="18" height="18" fill="#C87818" rx="1"/>
+                <text x="52" y="407" font-family="Times New Roman, serif" font-size="18" fill="#555" letter-spacing="0.5">WARP — runs vertical</text>
+
+                <!-- Right: thread count panel -->
+                <text x="300" y="72" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1.5">THREAD COUNT</text>
+                <text x="300" y="97" font-family="Cormorant Garamond, serif" font-size="30" font-style="italic" fill="rgba(128,0,0,0.8)">per square inch</text>
+
+                <text class="ghost" x="293" y="220" font-family="Cormorant Garamond, serif" font-size="108" font-weight="300" fill="rgba(200,140,30,0.12)" letter-spacing="2">200</text>
+                <text x="300" y="212" font-family="Times New Roman, serif" font-size="18" fill="#555" letter-spacing="0.5">100 WARP  +  100 WEFT</text>
+                <text x="300" y="234" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1">=  200 TC</text>
+
+                <line x1="300" y1="252" x2="460" y2="252" stroke="rgba(100,55,10,0.2)" stroke-width="0.9"/>
+
+                <text x="300" y="276" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(100,55,10,0.55)">quality by count</text>
+                <rect class="s-bar" x="300" y="288" width="28"  height="14" rx="1.5" fill="#C87818" opacity="0.35"/>
+                <text x="333" y="300" font-family="Times New Roman, serif" font-size="17" fill="#888" letter-spacing="0.5">80–160   everyday</text>
+                <rect class="s-bar" x="300" y="308" width="52"  height="14" rx="1.5" fill="#C87818" opacity="0.62"/>
+                <text x="357" y="320" font-family="Times New Roman, serif" font-size="17" fill="#555" letter-spacing="0.5">200–300  shirting</text>
+                <rect class="s-bar" x="300" y="328" width="78"  height="14" rx="1.5" fill="#C87818" opacity="0.9"/>
+                <text x="383" y="340" font-family="Times New Roman, serif" font-size="17" fill="#222" letter-spacing="0.5">300–400  fine bespoke</text>
+
+                <text x="240" y="622" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.78)" text-anchor="middle" letter-spacing="2">Cotton — Plain Weave, Thread Count</text>
+            </svg>
+        </div>
+        <div class="fabric-col-text">
+            <span class="section-num">I</span>
+            <h3 class="section-name">Cotton</h3>
+            <p class="section-tagline">Short-staple, breathable, built for skin comfort</p>
+            <ul class="section-bullets">
+                <li>Thread count — warp plus weft threads per square inch — governs the handle: 160–220 TC for shirt-grade cloth, 300–400 TC for fine bespoke shirting; fibre length and yarn count determine quality before thread count is even considered</li>
+                <li>The House uses 100s and 120s Egyptian and Pima cotton — it accepts dye cleanly, softens with each wash without losing structure, and breathes naturally against the skin from the first wearing</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ROW II  —  Linen  (text left, vis right)
+    ══════════════════════════════════════════ -->
+    <div class="fabric-row">
+        <div class="fabric-col-text">
+            <span class="section-num">II</span>
+            <h3 class="section-name">Linen</h3>
+            <p class="section-tagline">Flax fibre — cool, strong, and honestly textured</p>
+            <ul class="section-bullets">
+                <li>Fineness measured in lea count — the number of 300-yard leas per pound of yarn; 28–36 lea produces the lightweight, fine-draping cloth for summer commissions; its hollow fibre core conducts heat away faster than cotton at the same weight</li>
+                <li>Natural slub and slight surface crispness are properties, not flaws — they signal origin, distinguish instantly from synthetic imitation, and soften gracefully with wear while retaining the characteristic drape</li>
+            </ul>
+        </div>
+        <div class="fabric-col-vis">
+            <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+
+                <text x="134" y="18" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,5,0.45)" text-anchor="middle" letter-spacing="3">FIBRE CROSS-SECTION</text>
+
+                <!-- Linen fibres — 4 rows, polygonal -->
+                <polygon class="fib" points="28,44  57,35  72,49  69,68  44,73  27,60"   fill="#D4A820" stroke="rgba(100,65,5,0.45)" stroke-width="1.3"/>
+                <polygon class="fib" points="76,37  104,28 118,43 115,62  90,67  74,52"   fill="#B89028" stroke="rgba(100,65,5,0.38)" stroke-width="1.3"/>
+                <polygon class="fib" points="122,42 150,34 164,49 161,68 136,72 121,57"  fill="#DCAA30" stroke="rgba(100,65,5,0.42)" stroke-width="1.3"/>
+                <polygon class="fib" points="168,36 195,28 209,43 206,61 182,66 166,51"  fill="#B89028" stroke="rgba(100,65,5,0.36)" stroke-width="1.3"/>
+                <polygon class="fib" points="213,41 240,33 253,48 250,66 226,70 212,56"  fill="#D4A820" stroke="rgba(100,65,5,0.4)"  stroke-width="1.3"/>
+
+                <polygon class="fib" points="20,80  48,70  63,85  60,105 36,109 18,94"   fill="#B89028" stroke="rgba(100,65,5,0.42)" stroke-width="1.3"/>
+                <polygon class="fib" points="66,73  93,63  107,79 104,98  80,102 65,87"  fill="#DCAA30" stroke="rgba(100,65,5,0.45)" stroke-width="1.3"/>
+                <polygon class="fib" points="111,76 139,67 152,83 149,101 125,105 110,90" fill="#D4A820" stroke="rgba(100,65,5,0.42)" stroke-width="1.3"/>
+                <polygon class="fib" points="156,70 184,62 197,77 194,95  170,99  155,84" fill="#B89028" stroke="rgba(100,65,5,0.38)" stroke-width="1.3"/>
+                <polygon class="fib" points="202,75 229,66 242,82 239,100 215,104 201,89" fill="#DCAA30" stroke="rgba(100,65,5,0.4)"  stroke-width="1.3"/>
+
+                <polygon class="fib" points="28,114 57,104 71,120 68,139 44,143 26,128"  fill="#DCAA30" stroke="rgba(100,65,5,0.42)" stroke-width="1.3"/>
+                <polygon class="fib" points="74,107 101,98 115,114 112,132 88,136 73,121" fill="#D4A820" stroke="rgba(100,65,5,0.45)" stroke-width="1.3"/>
+                <polygon class="fib" points="119,110 147,101 160,117 157,135 133,139 118,124" fill="#B89028" stroke="rgba(100,65,5,0.38)" stroke-width="1.3"/>
+                <polygon class="fib" points="164,105 191,97 204,113 201,131 177,135 163,120" fill="#D4A820" stroke="rgba(100,65,5,0.4)"  stroke-width="1.3"/>
+                <polygon class="fib" points="208,108 235,100 248,115 245,133 221,137 207,122" fill="#DCAA30" stroke="rgba(100,65,5,0.42)" stroke-width="1.3"/>
+
+                <polygon class="fib" points="20,148 49,139 63,154 60,173 36,177 18,162"  fill="#D4A820" stroke="rgba(100,65,5,0.4)"  stroke-width="1.3"/>
+                <polygon class="fib" points="66,142 93,133 106,149 103,168 79,172 65,157" fill="#B89028" stroke="rgba(100,65,5,0.38)" stroke-width="1.3"/>
+                <polygon class="fib" points="111,145 138,136 151,152 148,170 124,174 110,159" fill="#DCAA30" stroke="rgba(100,65,5,0.42)" stroke-width="1.3"/>
+                <polygon class="fib" points="156,140 183,132 196,148 193,166 169,170 155,155" fill="#D4A820" stroke="rgba(100,65,5,0.4)"  stroke-width="1.3"/>
+                <polygon class="fib" points="200,144 228,135 241,151 238,169 214,173 199,158" fill="#B89028" stroke="rgba(100,65,5,0.36)" stroke-width="1.3"/>
+
+                <!-- Hollow core labels -->
+                <ellipse cx="89"  cy="87"  rx="5" ry="4.5" fill="rgba(255,255,255,0.85)" stroke="rgba(100,65,5,0.2)" stroke-width="0.8"/>
+                <ellipse cx="136" cy="124" rx="5" ry="4.5" fill="rgba(255,255,255,0.82)" stroke="rgba(100,65,5,0.2)" stroke-width="0.8"/>
+                <line x1="89" y1="92" x2="100" y2="144" stroke="rgba(100,60,10,0.38)" stroke-width="0.9"/>
+                <text x="105" y="152" font-family="Cormorant Garamond, serif" font-size="18" font-style="italic" fill="rgba(128,0,0,0.7)">hollow core</text>
+
+                <text x="134" y="200" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.72)" text-anchor="middle">polygonal — conducts heat away</text>
+
+                <!-- Yarn strand -->
+                <text x="80" y="228" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,5,0.45)" text-anchor="middle" letter-spacing="2.5">SPUN YARN</text>
+                <path d="M 34,242 C 41,264 26,286 36,308 C 46,330 30,352 40,374 C 50,396 34,418 44,440 C 54,462 38,484 48,504"
+                      stroke="#9A7820" stroke-width="11" fill="none" stroke-linecap="round" opacity="0.55"/>
+                <path d="M 40,242 C 47,264 32,286 42,308 C 52,330 36,352 46,374 C 56,396 40,418 50,440 C 60,462 44,484 54,504"
+                      stroke="#D4A820" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.65"/>
+                <line x1="35" y1="256" x2="22" y2="251" stroke="#C4A020" stroke-width="1.2" opacity="0.5"/>
+                <line x1="37" y1="296" x2="24" y2="291" stroke="#C4A020" stroke-width="1.2" opacity="0.5"/>
+                <line x1="37" y1="336" x2="24" y2="331" stroke="#C4A020" stroke-width="1.2" opacity="0.5"/>
+                <line x1="40" y1="376" x2="27" y2="371" stroke="#C4A020" stroke-width="1.2" opacity="0.5"/>
+                <line x1="46" y1="256" x2="59" y2="251" stroke="#C4A020" stroke-width="1.2" opacity="0.45"/>
+                <line x1="48" y1="296" x2="61" y2="291" stroke="#C4A020" stroke-width="1.2" opacity="0.45"/>
+                <line x1="48" y1="336" x2="61" y2="331" stroke="#C4A020" stroke-width="1.2" opacity="0.45"/>
+                <line x1="51" y1="376" x2="64" y2="371" stroke="#C4A020" stroke-width="1.2" opacity="0.45"/>
+
+                <line x1="80" y1="372" x2="105" y2="372" stroke="rgba(100,60,10,0.45)" stroke-width="1.4"/>
+                <polygon points="102,366 116,372 102,378" fill="rgba(100,60,10,0.45)"/>
+
+                <!-- Right: LEA COUNT -->
+                <text x="128" y="250" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1.5">LEA COUNT</text>
+                <text x="128" y="280" font-family="Cormorant Garamond, serif" font-size="30" font-style="italic" fill="rgba(128,0,0,0.8)">linen's fineness measure</text>
+                <text x="128" y="308" font-family="Times New Roman, serif" font-size="18" fill="#666" letter-spacing="0.5">1 lea  =  300 yards per pound</text>
+
+                <text class="ghost" x="122" y="400" font-family="Cormorant Garamond, serif" font-size="108" font-weight="300" fill="rgba(196,158,30,0.11)" letter-spacing="4">32</text>
+                <text x="128" y="390" font-family="Times New Roman, serif" font-size="18" fill="#555" letter-spacing="0.5">Higher number  =  finer yarn</text>
+
+                <line x1="128" y1="408" x2="458" y2="408" stroke="rgba(100,60,10,0.2)" stroke-width="0.9"/>
+
+                <text x="128" y="432" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(100,60,10,0.52)">quality by lea</text>
+                <rect class="s-bar" x="128" y="442" width="22"  height="14" rx="1.5" fill="#D4A820" opacity="0.35"/>
+                <text x="155" y="454" font-family="Times New Roman, serif" font-size="17" fill="#888" letter-spacing="0.5">14–20 lea  suiting</text>
+                <rect class="s-bar" x="128" y="462" width="48"  height="14" rx="1.5" fill="#D4A820" opacity="0.65"/>
+                <text x="181" y="474" font-family="Times New Roman, serif" font-size="17" fill="#444" letter-spacing="0.5">28–36 lea  shirt / dress</text>
+                <rect class="s-bar" x="128" y="482" width="74"  height="14" rx="1.5" fill="#D4A820" opacity="0.92"/>
+                <text x="207" y="494" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="0.5">40+ lea  fine shirting</text>
+
+                <text x="128" y="526" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.65)">House preference: 28–36 lea</text>
+
+                <text x="240" y="622" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.78)" text-anchor="middle" letter-spacing="2">Linen — Flax Fibre, Lea Count</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ROW III  —  Wool  (vis left, text right)
+    ══════════════════════════════════════════ -->
+    <div class="fabric-row">
+        <div class="fabric-col-vis">
+            <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+
+                <text x="134" y="30" font-family="Times New Roman, serif" font-size="16" fill="rgba(55,35,15,0.45)" text-anchor="middle" letter-spacing="3">WOOL FIBRE — MAGNIFIED</text>
+
+                <!-- Fibre 1 -->
+                <path class="crimp-a" d="M 14,82 Q 48,46 82,82 Q 116,118 150,82 Q 184,46 218,82 Q 252,118 268,98"
+                      stroke="#8B4A18" stroke-width="13" fill="none" stroke-linecap="round"/>
+                <path d="M 14,82 Q 48,46 82,82 Q 116,118 150,82 Q 184,46 218,82 Q 252,118 268,98"
+                      stroke="rgba(230,185,90,0.32)" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="1,13" style="pointer-events:none"/>
+                <!-- Cuticle scales -->
+                <line x1="30"  y1="62"  x2="22"  y2="71"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="46"  y1="53"  x2="38"  y2="62"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="62"  y1="56"  x2="54"  y2="65"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="78"  y1="68"  x2="70"  y2="77"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="94"  y1="84"  x2="86"  y2="93"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="110" y1="98"  x2="102" y2="107" stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="126" y1="97"  x2="118" y2="106" stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="142" y1="86"  x2="134" y2="77"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="158" y1="68"  x2="150" y2="59"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="174" y1="55"  x2="166" y2="46"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="190" y1="62"  x2="182" y2="53"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="206" y1="76"  x2="198" y2="67"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="222" y1="90"  x2="214" y2="81"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="238" y1="96"  x2="230" y2="87"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+                <line x1="254" y1="88"  x2="246" y2="80"  stroke="rgba(150,90,30,0.68)" stroke-width="1.8"/>
+
+                <line x1="111" y1="109" x2="100" y2="128" stroke="rgba(100,55,15,0.4)" stroke-width="1"/>
+                <text x="98" y="142" font-family="Times New Roman, serif" font-size="17" fill="#555" text-anchor="middle" letter-spacing="1">CUTICLE SCALES</text>
+
+                <!-- Fibre 2 -->
+                <path class="crimp-b" d="M 18,164 Q 52,128 86,164 Q 120,200 154,164 Q 188,128 222,164 Q 256,200 272,182"
+                      stroke="#62320C" stroke-width="13" fill="none" stroke-linecap="round" opacity="0.65"/>
+                <line x1="34"  y1="145" x2="26"  y2="154" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="58"  y1="136" x2="50"  y2="145" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="82"  y1="144" x2="74"  y2="153" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="106" y1="178" x2="98"  y2="187" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="130" y1="176" x2="122" y2="167" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="154" y1="156" x2="146" y2="147" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="178" y1="138" x2="170" y2="129" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="202" y1="150" x2="194" y2="141" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="226" y1="170" x2="218" y2="161" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+                <line x1="250" y1="182" x2="242" y2="173" stroke="rgba(120,75,25,0.55)" stroke-width="1.7"/>
+
+                <!-- Fibre 3 (faint) -->
+                <path d="M 22,244 Q 56,208 90,244 Q 124,280 158,244 Q 192,208 226,244 Q 260,280 276,264"
+                      stroke="#4A2408" stroke-width="11" fill="none" stroke-linecap="round" opacity="0.35"/>
+
+                <!-- Crimp span annotation -->
+                <line x1="82"  y1="215" x2="82"  y2="226" stroke="rgba(100,55,15,0.4)" stroke-width="1"/>
+                <line x1="154" y1="215" x2="154" y2="226" stroke="rgba(100,55,15,0.4)" stroke-width="1"/>
+                <line x1="82"  y1="221" x2="154" y2="221" stroke="rgba(100,55,15,0.4)" stroke-width="1"/>
+                <text x="118" y="244" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.68)" text-anchor="middle">one crimp — traps air</text>
+
+                <!-- Right: MICRON SCALE -->
+                <text x="294" y="72" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1.5">MICRON COUNT</text>
+                <text x="294" y="100" font-family="Cormorant Garamond, serif" font-size="30" font-style="italic" fill="rgba(128,0,0,0.8)">fibre diameter in µm</text>
+                <text x="294" y="128" font-family="Times New Roman, serif" font-size="18" fill="#666" letter-spacing="0.5">Lower  =  finer, softer handle</text>
+
+                <text class="ghost" x="287" y="245" font-family="Cormorant Garamond, serif" font-size="108" font-weight="300" fill="rgba(120,72,28,0.12)" letter-spacing="2">18</text>
+                <text x="294" y="236" font-family="Times New Roman, serif" font-size="18" fill="#555" letter-spacing="0.5">typical Super 120s fibre</text>
+
+                <line x1="294" y1="260" x2="462" y2="260" stroke="rgba(80,45,15,0.2)" stroke-width="0.9"/>
+
+                <text x="294" y="282" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(80,45,15,0.52)">quality by micron</text>
+                <rect class="s-bar" x="294" y="294" width="20"  height="14" rx="1.5" fill="#8B4A18" opacity="0.95"/>
+                <text x="319" y="306" font-family="Times New Roman, serif" font-size="17" fill="#222" letter-spacing="0.5">≤ 17µm   Super 150s+</text>
+                <rect class="s-bar" x="294" y="314" width="34"  height="14" rx="1.5" fill="#8B4A18" opacity="0.74"/>
+                <text x="333" y="326" font-family="Times New Roman, serif" font-size="17" fill="#333" letter-spacing="0.5">17–19µm  Super 120s</text>
+                <rect class="s-bar" x="294" y="334" width="52"  height="14" rx="1.5" fill="#8B4A18" opacity="0.53"/>
+                <text x="351" y="346" font-family="Times New Roman, serif" font-size="17" fill="#555" letter-spacing="0.5">19–21µm  Super 100s</text>
+                <rect class="s-bar" x="294" y="354" width="72"  height="14" rx="1.5" fill="#8B4A18" opacity="0.32"/>
+                <text x="371" y="366" font-family="Times New Roman, serif" font-size="17" fill="#888" letter-spacing="0.5">21–25µm  standard</text>
+
+                <text x="294" y="410" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.65)">House: Super 100s – 130s</text>
+
+                <text x="240" y="622" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.78)" text-anchor="middle" letter-spacing="2">Wool — Crimped Fibre, Micron Count</text>
+            </svg>
+        </div>
+        <div class="fabric-col-text">
+            <span class="section-num">III</span>
+            <h3 class="section-name">Wool</h3>
+            <p class="section-tagline">Scaled, crimped, built to remember its shape</p>
+            <ul class="section-bullets">
+                <li>Microscopic cuticle scales on each fibre interlock to hold structure and resist wrinkle; natural crimp traps air between strands, creating insulation that no flat synthetic can replicate — and a cloth that responds to steam pressing with precision nothing else matches</li>
+                <li>Fineness measured in microns; the House works with Super 100s–130s for structured commissions where drape and durability both matter — fine enough to move well, substantial enough to last decades</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ROW IV  —  Silk  (text left, vis right)
+    ══════════════════════════════════════════ -->
+    <div class="fabric-row">
+        <div class="fabric-col-text">
+            <span class="section-num">IV</span>
+            <h3 class="section-name">Silk</h3>
+            <p class="section-tagline">The only continuous natural filament — lustre from structure, not surface</p>
+            <ul class="section-bullets">
+                <li>The only continuous natural filament — one cocoon yields up to 1,200 metres of unbroken strand; woven filaments produce a surface so smooth it catches and shifts light with every movement, permanently, without any applied finish</li>
+                <li>Each fibre's triangular prism cross-section refracts light at every angle — the source of silk's lustre; weight measured in momme, and the House uses 16–19mm for all garment elements: light enough to move, substantial enough to hold its line</li>
+            </ul>
+        </div>
+        <div class="fabric-col-vis">
+            <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                <defs>
+                    <radialGradient id="cocoon-glow" cx="50%" cy="40%" r="50%">
+                        <stop offset="0%"   stop-color="#F8EDBE"/>
+                        <stop offset="100%" stop-color="#DDBC6A"/>
+                    </radialGradient>
+                </defs>
+
+                <text x="110" y="30" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,5,0.45)" text-anchor="middle" letter-spacing="3">BOMBYX MORI COCOON</text>
+
+                <!-- Cocoon -->
+                <ellipse cx="110" cy="170" rx="82" ry="120" fill="#DFC070" stroke="rgba(160,120,30,0.35)" stroke-width="2"/>
+                <ellipse cx="110" cy="170" rx="70"  ry="102" fill="url(#cocoon-glow)" stroke="rgba(160,120,30,0.22)" stroke-width="1.5"/>
+                <ellipse cx="110" cy="170" rx="55"  ry="82"  fill="#F5E8C0" stroke="rgba(160,120,30,0.16)" stroke-width="1.2"/>
+                <ellipse cx="110" cy="170" rx="38"  ry="58"  fill="#FBF2D0" stroke="rgba(160,120,30,0.1)"  stroke-width="0.9"/>
+                <ellipse cx="110" cy="170" rx="22"  ry="34"  fill="#FDF8E6" stroke="rgba(160,120,30,0.07)" stroke-width="0.7"/>
+
+                <!-- Filament unwinding -->
+                <path d="M 110,52 C 130,34 162,40 175,60 C 192,84 196,128 200,150"
+                      stroke="#C8A030" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+                <text x="110" y="318" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.75)" text-anchor="middle">up to 1,200 m per cocoon</text>
+
+                <text x="110" y="350" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,5,0.45)" text-anchor="middle" letter-spacing="2.5">CONTINUOUS FILAMENT</text>
+                <line x1="26" y1="362" x2="194" y2="362" stroke="#C8A030" stroke-width="3.5" stroke-linecap="round" opacity="0.8"/>
+                <line x1="26" y1="370" x2="194" y2="370" stroke="#D8B840" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>
+                <line x1="26" y1="377" x2="194" y2="377" stroke="#C8A030" stroke-width="2.8" stroke-linecap="round" opacity="0.6"/>
+
+                <text x="110" y="412" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,5,0.45)" text-anchor="middle" letter-spacing="2.5">FIBRE CROSS-SECTION</text>
+                <polygon class="prism-fill" points="110,426 58,512 162,512" stroke="rgba(160,120,20,0.55)" stroke-width="1.8" opacity="0.9"/>
+                <line class="ray"   x1="78"  y1="472" x2="44"  y2="451" stroke="rgba(235,195,50,0.8)" stroke-width="2.2"/>
+                <polygon class="ray" points="42,456 42,445 52,452" fill="rgba(235,195,50,0.8)"/>
+                <line class="ray-b" x1="142" y1="472" x2="176" y2="451" stroke="rgba(235,195,50,0.8)" stroke-width="2.2"/>
+                <polygon class="ray-b" points="178,456 178,445 168,452" fill="rgba(235,195,50,0.8)"/>
+                <line class="ray-c" x1="110" y1="426" x2="110" y2="408" stroke="rgba(235,195,50,0.65)" stroke-width="2"/>
+                <polygon class="ray-c" points="105,412 115,412 110,402" fill="rgba(235,195,50,0.65)"/>
+                <text x="110" y="540" font-family="Cormorant Garamond, serif" font-size="25" font-style="italic" fill="rgba(128,0,0,0.68)" text-anchor="middle">prism refracts light → natural lustre</text>
+
+                <!-- Right: MOMME WEIGHT -->
+                <text x="214" y="72" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1.5">MOMME WEIGHT</text>
+                <text x="214" y="100" font-family="Cormorant Garamond, serif" font-size="30" font-style="italic" fill="rgba(128,0,0,0.8)">fabric weight standard</text>
+                <text x="214" y="128" font-family="Times New Roman, serif" font-size="18" fill="#666" letter-spacing="0.5">Higher mm  =  heavier, more durable</text>
+
+                <text class="ghost" x="228" y="234" font-family="Cormorant Garamond, serif" font-size="108" font-weight="300" fill="rgba(200,155,30,0.12)" letter-spacing="2">18</text>
+                <text x="234" y="224" font-family="Times New Roman, serif" font-size="18" fill="#555" letter-spacing="0.5">typical garment weight</text>
+
+                <line x1="234" y1="250" x2="462" y2="250" stroke="rgba(100,60,10,0.2)" stroke-width="0.9"/>
+
+                <text x="234" y="272" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(100,60,10,0.52)">quality by momme</text>
+                <rect class="s-bar" x="234" y="284" width="24"  height="14" rx="1.5" fill="#C8A030" opacity="0.32"/>
+                <text x="263" y="296" font-family="Times New Roman, serif" font-size="17" fill="#999" letter-spacing="0.5">6–10mm   lining / scarf</text>
+                <rect class="s-bar" x="234" y="304" width="48"  height="14" rx="1.5" fill="#C8A030" opacity="0.62"/>
+                <text x="287" y="316" font-family="Times New Roman, serif" font-size="17" fill="#555" letter-spacing="0.5">12–16mm  blouse / occasion</text>
+                <rect class="s-bar" x="234" y="324" width="72"  height="14" rx="1.5" fill="#C8A030" opacity="0.92"/>
+                <text x="311" y="336" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="0.5">16–22mm  structured garment</text>
+
+                <text x="234" y="382" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.65)">House: 16–19mm silk elements</text>
+
+                <text x="240" y="622" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.78)" text-anchor="middle" letter-spacing="2">Silk — Continuous Filament, Momme</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ROW V  —  Cotton-Linen  (vis left, text right)
+    ══════════════════════════════════════════ -->
+    <div class="fabric-row">
+        <div class="fabric-col-vis">
+            <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                <defs>
+                    <pattern id="cl-c2" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                        <rect x="0"  y="0"  width="15" height="15" fill="#C87818"/>
+                        <rect x="17" y="0"  width="15" height="15" fill="#EAB840"/>
+                        <rect x="0"  y="17" width="15" height="15" fill="#EAB840"/>
+                        <rect x="17" y="17" width="15" height="15" fill="#C87818"/>
+                        <line x1="16" y1="0" x2="16" y2="32" stroke="rgba(80,35,0,0.16)" stroke-width="2"/>
+                        <line x1="0" y1="16" x2="32" y2="16" stroke="rgba(80,35,0,0.16)" stroke-width="2"/>
+                    </pattern>
+                    <pattern id="cl-l2" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                        <rect x="0"  y="0"  width="15" height="15" fill="#AA8010"/>
+                        <rect x="17" y="0"  width="15" height="15" fill="#D4A820"/>
+                        <rect x="0"  y="17" width="15" height="15" fill="#D4A820"/>
+                        <rect x="17" y="17" width="15" height="15" fill="#AA8010"/>
+                        <line x1="4" y1="3" x2="13" y2="7" stroke="rgba(80,48,0,0.22)" stroke-width="1.2"/>
+                        <line x1="19" y1="20" x2="29" y2="24" stroke="rgba(80,48,0,0.18)" stroke-width="1.2"/>
+                        <line x1="16" y1="0" x2="16" y2="32" stroke="rgba(80,38,0,0.17)" stroke-width="2"/>
+                        <line x1="0" y1="16" x2="32" y2="16" stroke="rgba(80,38,0,0.17)" stroke-width="2"/>
+                    </pattern>
+                </defs>
+
+                <text x="99"  y="28" font-family="Times New Roman, serif" font-size="16" fill="rgba(100,55,5,0.45)" text-anchor="middle" letter-spacing="2.5">COTTON</text>
+                <text x="267" y="28" font-family="Times New Roman, serif" font-size="16" fill="rgba(100,55,5,0.45)" text-anchor="middle" letter-spacing="2.5">LINEN</text>
+                <text x="430" y="28" font-family="Times New Roman, serif" font-size="16" fill="rgba(100,55,5,0.45)" text-anchor="middle" letter-spacing="2.5">BLEND</text>
+
+                <rect class="blend-grid" x="22"  y="38" width="154" height="260" fill="url(#cl-c2)" rx="2"/>
+                <rect x="22"  y="38" width="154" height="260" fill="none" stroke="rgba(180,120,40,0.32)" stroke-width="1.5" rx="2"/>
+                <rect class="blend-grid" x="190" y="38" width="154" height="260" fill="url(#cl-l2)" rx="2"/>
+                <rect x="190" y="38" width="154" height="260" fill="none" stroke="rgba(155,105,18,0.32)" stroke-width="1.5" rx="2"/>
+
+                <rect x="358" y="38" width="104" height="260" fill="#F4F4F4" rx="2"/>
+                <rect x="358" y="38" width="32" height="260" fill="url(#cl-c2)" opacity="0.9"/>
+                <rect x="390" y="38" width="32" height="260" fill="url(#cl-l2)"  opacity="0.9"/>
+                <rect x="422" y="38" width="32" height="260" fill="url(#cl-c2)" opacity="0.9"/>
+                <rect x="454" y="38" width="32" height="260" fill="url(#cl-l2)"  opacity="0.9"/>
+                <rect x="358" y="38" width="104" height="260" fill="none" stroke="rgba(130,85,20,0.32)" stroke-width="1.5" rx="2"/>
+
+                <line x1="190" y1="36" x2="190" y2="300" stroke="rgba(128,0,0,0.3)" stroke-width="1.6" stroke-dasharray="5,3"/>
+                <text x="354" y="172" font-family="Times New Roman, serif" font-size="28" fill="rgba(128,0,0,0.22)" text-anchor="middle">+</text>
+
+                <text x="99"  y="322" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.7)" text-anchor="middle">soft, consistent</text>
+                <text x="267" y="322" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.7)" text-anchor="middle">textured, cooling</text>
+                <text x="410" y="322" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.8)" text-anchor="middle">both</text>
+
+                <line x1="22" y1="350" x2="458" y2="350" stroke="rgba(100,60,5,0.2)" stroke-width="1"/>
+                <text x="22" y="382" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1.5">RATIO  ·  55% Cotton / 45% Linen</text>
+                <text x="22" y="420" font-family="Cormorant Garamond, serif" font-size="30" font-style="italic" fill="rgba(128,0,0,0.72)">or  60/40  ·  shirt, jacket, resort</text>
+
+                <line x1="22" y1="444" x2="458" y2="444" stroke="rgba(100,60,5,0.14)" stroke-width="0.9"/>
+                <text x="22" y="468" font-family="Times New Roman, serif" font-size="18" fill="#444" letter-spacing="0.5">COTTON  ·  softens handle, even dye</text>
+                <text x="22" y="492" font-family="Times New Roman, serif" font-size="18" fill="#444" letter-spacing="0.5">LINEN  ·  cools the body, honest drape</text>
+                <text x="22" y="516" font-family="Times New Roman, serif" font-size="18" fill="#444" letter-spacing="0.5">BEST FOR  ·  warm climates, year-round shirts</text>
+
+                <text x="240" y="622" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.78)" text-anchor="middle" letter-spacing="2">Cotton-Linen — Softness Meets Structure</text>
+            </svg>
+        </div>
+        <div class="fabric-col-text">
+            <span class="section-num">V</span>
+            <h3 class="section-name">Cotton-Linen</h3>
+            <p class="section-tagline">Softness and structure — united by the loom</p>
+            <ul class="section-bullets">
+                <li>A 55/45 blend captures cotton's soft, consistent handle alongside linen's cooling drape and honest texture — more fluid than pure linen, more substantial than plain cotton; the linen slub remains visible, distinguishing the cloth from anything synthetic</li>
+                <li>Correct for structured shirts, relaxed jackets, and warm-climate commissions where breathability and refined handle are both required in a single cloth</li>
+            </ul>
+            <span class="blend-badge">Blend Commission</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ROW VI  —  Cotton-Wool  (text left, vis right)
+    ══════════════════════════════════════════ -->
+    <div class="fabric-row">
+        <div class="fabric-col-text">
+            <span class="section-num">VI</span>
+            <h3 class="section-name">Cotton-Wool</h3>
+            <p class="section-tagline">Year-round performance in a single cloth</p>
+            <ul class="section-bullets">
+                <li>A 70/30 blend works across seasons — wool's natural crimp holds the garment's structure through a full day of wear while cotton softens the handle and reduces care demands; warm in cool air, not heavy in warmth</li>
+                <li>The House uses cotton-wool blends for transitional commissions built to be worn every day they are needed — not saved for the right season</li>
+            </ul>
+            <span class="blend-badge">Blend Commission</span>
+        </div>
+        <div class="fabric-col-vis">
+            <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                <defs>
+                    <pattern id="cw-c2" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                        <rect x="0"  y="0"  width="15" height="15" fill="#C87818"/>
+                        <rect x="17" y="0"  width="15" height="15" fill="#EAB840"/>
+                        <rect x="0"  y="17" width="15" height="15" fill="#EAB840"/>
+                        <rect x="17" y="17" width="15" height="15" fill="#C87818"/>
+                        <line x1="16" y1="0" x2="16" y2="32" stroke="rgba(80,35,0,0.16)" stroke-width="2"/>
+                        <line x1="0" y1="16" x2="32" y2="16" stroke="rgba(80,35,0,0.16)" stroke-width="2"/>
+                    </pattern>
+                    <pattern id="cw-w2" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                        <rect x="0"  y="0"  width="15" height="15" fill="#7A4018"/>
+                        <rect x="17" y="0"  width="15" height="15" fill="#A86838"/>
+                        <rect x="0"  y="17" width="15" height="15" fill="#A86838"/>
+                        <rect x="17" y="17" width="15" height="15" fill="#7A4018"/>
+                        <line x1="3"  y1="6"  x2="13" y2="4"  stroke="rgba(55,22,5,0.25)" stroke-width="1.2"/>
+                        <line x1="18" y1="21" x2="28" y2="23" stroke="rgba(55,22,5,0.25)" stroke-width="1.2"/>
+                        <line x1="16" y1="0" x2="16" y2="32" stroke="rgba(55,22,5,0.18)" stroke-width="2"/>
+                        <line x1="0" y1="16" x2="32" y2="16" stroke="rgba(55,22,5,0.18)" stroke-width="2"/>
+                    </pattern>
+                </defs>
+
+                <text x="99"  y="28" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,15,0.45)" text-anchor="middle" letter-spacing="2.5">COTTON</text>
+                <text x="267" y="28" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,15,0.45)" text-anchor="middle" letter-spacing="2.5">WOOL</text>
+                <text x="430" y="28" font-family="Times New Roman, serif" font-size="16" fill="rgba(80,50,15,0.45)" text-anchor="middle" letter-spacing="2.5">BLEND</text>
+
+                <rect class="blend-grid" x="22"  y="38" width="154" height="260" fill="url(#cw-c2)" rx="2"/>
+                <rect x="22"  y="38" width="154" height="260" fill="none" stroke="rgba(160,100,40,0.32)" stroke-width="1.5" rx="2"/>
+                <rect class="blend-grid" x="190" y="38" width="154" height="260" fill="url(#cw-w2)" rx="2"/>
+                <rect x="190" y="38" width="154" height="260" fill="none" stroke="rgba(100,55,20,0.32)" stroke-width="1.5" rx="2"/>
+
+                <rect x="358" y="38" width="104" height="260" fill="#F4F4F4" rx="2"/>
+                <rect x="358" y="38" width="73"  height="260" fill="url(#cw-c2)" opacity="0.9"/>
+                <rect x="431" y="38" width="31"  height="260" fill="url(#cw-w2)"  opacity="0.9"/>
+                <rect x="358" y="38" width="104" height="260" fill="none" stroke="rgba(100,65,22,0.32)" stroke-width="1.5" rx="2"/>
+                <!-- 70/30 ratio strip -->
+                <rect x="358" y="38" width="73" height="20" fill="rgba(200,150,50,0.3)" rx="0"/>
+                <rect x="431" y="38" width="31" height="20" fill="rgba(100,55,20,0.38)" rx="0"/>
+                <text x="394" y="53" font-family="Times New Roman, serif" font-size="13" fill="#555" text-anchor="middle">70%</text>
+                <text x="447" y="53" font-family="Times New Roman, serif" font-size="13" fill="#555" text-anchor="middle">30%</text>
+
+                <line x1="190" y1="36" x2="190" y2="300" stroke="rgba(128,0,0,0.3)" stroke-width="1.6" stroke-dasharray="5,3"/>
+                <text x="354" y="172" font-family="Times New Roman, serif" font-size="28" fill="rgba(128,0,0,0.22)" text-anchor="middle">+</text>
+
+                <text x="99"  y="322" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.7)" text-anchor="middle">breathable, soft</text>
+                <text x="267" y="322" font-family="Cormorant Garamond, serif" font-size="27" font-style="italic" fill="rgba(128,0,0,0.7)" text-anchor="middle">structured, warm</text>
+                <text x="410" y="322" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.8)" text-anchor="middle">year-round</text>
+
+                <line x1="22" y1="350" x2="458" y2="350" stroke="rgba(80,50,15,0.2)" stroke-width="1"/>
+                <text x="22" y="382" font-family="Times New Roman, serif" font-size="17" fill="#111" letter-spacing="1.5">RATIO  ·  70% Cotton / 30% Wool</text>
+                <text x="22" y="420" font-family="Cormorant Garamond, serif" font-size="30" font-style="italic" fill="rgba(128,0,0,0.72)">or  80/20  ·  transitional season</text>
+
+                <line x1="22" y1="444" x2="458" y2="444" stroke="rgba(80,50,15,0.14)" stroke-width="0.9"/>
+                <text x="22" y="468" font-family="Times New Roman, serif" font-size="18" fill="#444" letter-spacing="0.5">WOOL  ·  crimp holds shape, resists wrinkle</text>
+                <text x="22" y="492" font-family="Times New Roman, serif" font-size="18" fill="#444" letter-spacing="0.5">COTTON  ·  softens handle, reduces care</text>
+                <text x="22" y="516" font-family="Times New Roman, serif" font-size="18" fill="#444" letter-spacing="0.5">BEST FOR  ·  all seasons, holds line all day</text>
+
+                <text x="240" y="622" font-family="Cormorant Garamond, serif" font-size="26" font-style="italic" fill="rgba(128,0,0,0.78)" text-anchor="middle" letter-spacing="2">Cotton-Wool — Year-Round Performance</text>
+            </svg>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="contacthouse.html"><h5>Contact House</h5></a>
+        <a href="shipping.html"><h5>Shipping</h5></a>
+        <a href="returns.html"><h5>Returns</h5></a>
+        <a href="privacy.html"><h5>Privacy</h5></a>
+    </div>
+    <div class="footer_branding">
+        <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram home page link"></a></div>
+        <p>Copyright 2026 KING DHORAJIYA</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="images/KD_monogram.png" type="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FZJT42EG6J');</script>
+  <title>The House Forum — KD Scion</title>
+  <meta name="description" content="Every query answered personally by The House. Every conversation visible to the world.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KD: The House of Scion">
+  <meta property="og:title" content="The House Forum — KD Scion">
+  <meta property="og:description" content="Every query answered personally by The House. Every conversation visible to the world.">
+  <meta property="og:image" content="https://kdscion.com/images/KD_monogram.png">
+  <meta property="og:url" content="https://kdscion.com/queryforum.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The House Forum — KD Scion">
+  <meta name="twitter:description" content="Every query answered personally by The House. Every conversation visible to the world.">
+  <meta name="twitter:image" content="https://kdscion.com/images/KD_monogram.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #fff; color: #1a1a1a; }
+    em { color: #800000; font-style: normal; }
+    .footer_details { padding-left: 0; justify-content: center; }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      padding: 1.6rem 4%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e8e0d8;
+    }
+    .top-bar a.brand {
+      font-family: "Times New Roman", Times, serif;
+      letter-spacing: 1rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #000 !important;
+      font-size: 2.1rem;
+    }
+    .top-bar .bb-sm img { width: 22rem; height: auto; display: block; }
+    .top-bar .bb-sm { opacity: 1; transition: opacity 0.4s; }
+    .top-bar .bb-sm:hover { opacity: 0.6; }
+
+    /* ── PAGE HEADER ── */
+    .forum-header {
+      text-align: center;
+      padding: 7rem 4% 5rem;
+      border-bottom: 1px solid #e8e0d8;
+    }
+    .forum-header h2 {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 3.2rem;
+      font-weight: 400;
+      letter-spacing: 0.9rem;
+      text-transform: uppercase;
+      color: #000;
+      margin: 0 0 1.6rem;
+    }
+    .forum-header .sub {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.6rem;
+      color: #555;
+      letter-spacing: 0.1rem;
+      margin: 0 auto 1.6rem;
+      max-width: 58rem;
+      line-height: 1.8;
+    }
+    .forum-header .moat-line {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.35rem;
+      color: #800000;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .mgmt-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-top: 2.8rem;
+      border: 1px solid #e8e0d8;
+      padding: 0.8rem 2.4rem;
+    }
+    .mgmt-answered-by {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+    .mgmt-title {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.2rem;
+      color: #1a4a1a;
+      font-weight: 400;
+    }
+
+    /* ── NOTICE BAR ── */
+    .notice-bar {
+      background: #fdf8f3;
+      border-bottom: 1px solid #e8e0d8;
+      padding: 1.4rem 4%;
+      text-align: center;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.55rem;
+      color: #777;
+      line-height: 1.6;
+    }
+    .notice-bar strong { color: #800000; }
+
+    /* ── SETUP BANNER ── */
+    .setup-banner {
+      background: rgba(128,0,0,0.08);
+      border-bottom: none;
+      padding: 1.4rem 4%;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.3rem;
+      color: #555;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .setup-banner strong { color: #800000; }
+    .setup-banner.hidden { display: none; }
+
+    /* ── ACTIONS BAR ── */
+    .actions-bar {
+      padding: 2.4rem 4%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .btn-raise {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: #fff !important;
+      background: #800000;
+      border: none;
+      padding: 1.2rem 3.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-raise:hover { background: #600000; }
+    .count-badge {
+      font-family: "Courier New", monospace;
+      font-size: 1.2rem;
+      color: #888;
+      background: #f0ebe4;
+      padding: 0.3rem 1rem;
+      letter-spacing: 0.05rem;
+    }
+    .back-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.2rem;
+      color: #800000 !important;
+      cursor: pointer;
+      padding: 0;
+      text-transform: uppercase;
+    }
+
+    /* ── COUNTRY FILTER ── */
+    .country-filter {
+      padding: 0 4% 2.4rem;
+      border-bottom: 1px solid #e8e0d8;
+    }
+    .cf-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 1.4rem;
+    }
+    .country-filter-label {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: #aaa;
+      flex-shrink: 0;
+    }
+    .all-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.25rem;
+      text-transform: uppercase;
+      color: #aaa;
+      padding: 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .all-btn:hover { color: #800000; }
+    .all-btn.active { color: #800000; border-bottom-color: #800000; }
+
+    /* ticker */
+    .flag-ticker-wrap {
+      overflow-x: scroll;
+      overflow-y: visible;
+      padding: 1rem 0 0.6rem;
+      cursor: grab;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      user-select: none;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    }
+    .flag-ticker-wrap::-webkit-scrollbar { display: none; }
+    .flag-ticker-wrap.dragging { cursor: grabbing; }
+    .flag-ticker-inner {
+      display: flex;
+      width: max-content;
+    }
+    .flag-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      padding: 0 1.4rem 0.5rem;
+      font-size: 2.4rem;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+      transition: transform 0.18s;
+      transform-origin: bottom center;
+      flex-shrink: 0;
+    }
+    .flag-btn:hover .cname { color: #800000; }
+    .flag-count {
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      color: #800000;
+      font-weight: 700;
+      line-height: 1;
+      min-height: 1.2rem;
+      letter-spacing: 0;
+    }
+    .flag-btn .cname {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1rem;
+      letter-spacing: 0.1rem;
+      color: #999;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .flag-btn.active .cname { color: #800000; }
+    .flag-btn.active { border-bottom-color: #800000; }
+
+    /* ── FORUM BODY (2-col) ── */
+    .forum-body {
+      display: grid;
+      grid-template-columns: 36rem 1fr;
+      align-items: start;
+      border-bottom: 1px solid #e8e0d8;
+    }
+
+    /* ── QUERY LIST ── */
+    .query-list {
+      border-right: 1px solid #e8e0d8;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    .list-empty {
+      padding: 4rem 3rem;
+      text-align: center;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      color: #aaa;
+      line-height: 2;
+    }
+    .query-card {
+      padding: 1.8rem 2.4rem;
+      border-bottom: 1px solid #f0ebe4;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .query-card:hover { background: #fdf8f4; }
+    .query-card.active { background: #fdf0f0; border-left-color: #800000; }
+    .qc-num {
+      font-family: "Courier New", monospace;
+      font-size: 1.1rem;
+      color: #800000;
+      letter-spacing: 0.15rem;
+      margin-bottom: 0.4rem;
+    }
+    .qc-name {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.7rem;
+      color: #1a1a1a;
+      margin-bottom: 0.3rem;
+    }
+    .qc-meta {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      color: #999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22a06b;
+      flex-shrink: 0;
+    }
+    .status-dot.resolved { background: #bbb; }
+    .stars-mini { color: #800000; font-size: 1.1rem; }
+
+    /* ── CONVERSATION VIEW ── */
+    .conv-view {
+      display: flex;
+      flex-direction: column;
+      min-height: 60vh;
+    }
+    .conv-empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      color: #ccc;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.2rem;
+    }
+    .conv-empty-state img { width: 56px; opacity: 0.12; }
+
+    .conv-header {
+      padding: 2.4rem 3.2rem;
+      border-bottom: 1px solid #f0ebe4;
+      background: #fdf9f6;
+    }
+    .ch-num {
+      font-family: "Courier New", monospace;
+      font-size: 1.1rem;
+      color: #800000;
+      letter-spacing: 0.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .ch-name {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 2rem;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
+    }
+    .ch-meta {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.3rem;
+      color: #888;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .status-label {
+      font-size: 1.1rem;
+      letter-spacing: 0.1rem;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .status-label.open { color: #22a06b; }
+    .status-label.resolved { color: #aaa; }
+
+    /* ── MESSAGES ── */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2.4rem 3.2rem;
+      max-height: 48vh;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .msg { max-width: 72%; }
+    .msg.customer { align-self: flex-end; }
+    .msg.house { align-self: flex-start; }
+    .msg-label {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .msg.customer .msg-label { text-align: right; color: #800000; }
+    .msg.house .msg-label { color: #1a4a1a; }
+    .msg-bubble {
+      padding: 1.2rem 1.8rem;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.6rem;
+      line-height: 1.65;
+    }
+    .msg.customer .msg-bubble {
+      background: #faf0f0;
+      border: 1px solid #e8d4d4;
+    }
+    .msg.house .msg-bubble {
+      background: #f4f8f4;
+      border: 1px solid #d4e4d4;
+    }
+    .msg-time {
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      color: #ccc;
+      margin-top: 0.3rem;
+    }
+    .msg.customer .msg-time { text-align: right; }
+
+    /* ── REPLY AREA ── */
+    .reply-area {
+      border-top: 1px solid #e8e0d8;
+      padding: 2rem 3.2rem;
+    }
+    .reply-ta {
+      width: 100%;
+      border: 1px solid #ddd;
+      padding: 1.2rem 1.6rem;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.6rem;
+      resize: vertical;
+      min-height: 7.5rem;
+      outline: none;
+      box-sizing: border-box;
+      color: #1a1a1a;
+      transition: border-color 0.2s;
+    }
+    .reply-ta:focus { border-color: #800000; }
+    .reply-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.2rem;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .btn-send {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      background: #1a1a1a;
+      color: #fff !important;
+      border: none;
+      padding: 1rem 2.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-send:hover { background: #000; }
+    .btn-house {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      background: none;
+      color: #1a4a1a !important;
+      border: 1px solid #1a4a1a;
+      padding: 0.9rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-house:hover { background: #f4f8f4; }
+    .reply-note {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      color: #bbb;
+      width: 100%;
+    }
+
+    /* ── RATING ── */
+    .rating-section {
+      padding: 2.4rem 3.2rem;
+      border-top: 1px solid #f0ebe4;
+      background: #fdf9f6;
+    }
+    .section-label {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.25rem;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 1.2rem;
+    }
+    .star-row { display: flex; gap: 0.6rem; }
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 3rem;
+      cursor: pointer;
+      color: #e0d0d0;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.12s, transform 0.08s;
+    }
+    .star-btn:hover, .star-btn.lit { color: #800000; }
+    .star-btn:active { transform: scale(0.88); }
+    .rating-given {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      color: #800000;
+    }
+
+    /* ── PUBLIC SUGGESTION ── */
+    .sugg-section {
+      padding: 2rem 3.2rem;
+      border-top: 1px solid #e8e0d8;
+      background: #f7f4ef;
+    }
+    .sugg-note {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.3rem;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 1.2rem;
+      line-height: 1.7;
+    }
+    .sugg-display {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      color: #2a2a2a;
+      line-height: 1.7;
+      padding: 1.2rem 1.6rem;
+      background: #fff;
+      border-left: 3px solid #800000;
+      margin-top: 0.8rem;
+    }
+    .sugg-display-time {
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      color: #bbb;
+      margin-top: 0.4rem;
+    }
+    .sugg-ta {
+      width: 100%;
+      border: 1px solid #ddd;
+      padding: 1rem 1.4rem;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      resize: vertical;
+      min-height: 6rem;
+      outline: none;
+      box-sizing: border-box;
+      color: #1a1a1a;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .sugg-ta:focus { border-color: #800000; }
+    .btn-sugg {
+      margin-top: 1rem;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.25rem;
+      text-transform: uppercase;
+      background: none;
+      color: #666 !important;
+      border: 1px solid #ccc;
+      padding: 0.8rem 2.4rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-sugg:hover { border-color: #800000; color: #800000 !important; }
+    .sugg-done {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.4rem;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,26,0.55);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: #fff;
+      max-width: 56rem;
+      width: 100%;
+      padding: 4rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-x {
+      position: absolute;
+      top: 1.6rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      font-size: 2.4rem;
+      cursor: pointer;
+      color: #aaa;
+      line-height: 1;
+      padding: 0;
+    }
+    .modal-x:hover { color: #333; }
+    .modal-title {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      letter-spacing: 0.5rem;
+      text-transform: uppercase;
+      color: #000;
+      margin: 0 0 2.8rem;
+    }
+    .field { margin-bottom: 2.4rem; }
+    .field label {
+      display: block;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      color: #777;
+      margin-bottom: 0.6rem;
+    }
+    .field input[type=text], .field textarea {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      padding: 0.7rem 0;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.7rem;
+      outline: none;
+      color: #1a1a1a;
+      background: transparent;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .field input[type=text]:focus, .field textarea:focus { border-bottom-color: #800000; }
+    .field textarea {
+      border: 1px solid #ccc;
+      padding: 1rem 1.2rem;
+      resize: vertical;
+      min-height: 10rem;
+    }
+    .field textarea:focus { border-color: #800000; }
+    .field-note {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      color: #bbb;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+    .loc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .loc-val {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.6rem;
+      color: #444;
+      margin-top: 0.4rem;
+      min-height: 2.4rem;
+    }
+    .btn-full {
+      width: 100%;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.4rem;
+      text-transform: uppercase;
+      background: #800000;
+      color: #fff !important;
+      border: none;
+      padding: 1.4rem;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      transition: background 0.2s;
+    }
+    .btn-full:hover { background: #600000; }
+    .modal-status {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.4rem;
+      color: #800000;
+      text-align: center;
+      margin-top: 1.2rem;
+      min-height: 2rem;
+    }
+
+    /* house reply modal */
+    .pin-input {
+      font-family: "Courier New", monospace;
+      font-size: 2.6rem;
+      letter-spacing: 0.5rem;
+      text-align: center;
+      width: 14rem;
+      border: none;
+      border-bottom: 2px solid #111;
+      outline: none;
+      background: transparent;
+      color: #111;
+      padding: 0.4rem 0;
+      -webkit-text-security: disc;
+    }
+    .pin-error {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.2rem;
+      color: #c0392b;
+      min-height: 1.6rem;
+      margin-top: 0.8rem;
+    }
+
+    /* ── LOADING ── */
+    .spinner {
+      display: inline-block;
+      width: 2.2rem;
+      height: 2.2rem;
+      border: 2px solid #eee;
+      border-top-color: #800000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .forum-body { grid-template-columns: 1fr; }
+      .query-list { border-right: none; border-bottom: 1px solid #e8e0d8; max-height: none; }
+      .conv-view { min-height: 0; }
+      .conv-view { display: none; }
+      .conv-view.show { display: flex; }
+      .back-btn { display: inline-block !important; }
+      .messages { max-height: 38vh; }
+      .modal { padding: 2.8rem 2rem; }
+      .loc-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    }
+
+    /* ── HIDDEN UTIL ── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ── SETUP BANNER ── -->
+<div class="setup-banner" id="setup-banner">
+  <strong>⚙ Firebase not configured —</strong>
+  This page is running in demo mode (localStorage only). Open <code>queryforum.html</code>, find the <code>FIREBASE_CONFIG</code> block in the script, and replace the placeholder values with your Firebase Realtime Database credentials. See inline comments for the three setup steps.
+</div>
+
+<!-- ── TOP BAR ── -->
+<div class="top-bar">
+  <a href="index.html" class="brand">King Dhorajiya</a>
+  <a class="bb-sm" href="bespokeboutique.html">
+    <img src="images/Drawing.svg" alt="Bespoke Boutique">
+  </a>
+</div>
+
+<!-- ── PAGE HEADER ── -->
+<div class="forum-header">
+  <h2>The House Forum</h2>
+  <p class="sub">Every query answered personally by The House.<br>Every conversation — including improvement suggestions — visible to the world.</p>
+  <div class="mgmt-line">
+    <span class="mgmt-answered-by">Answered by</span>
+    <span class="mgmt-title" id="mgmt-title">The Chief Executive</span>
+  </div>
+  <p class="moat-line" style="margin-top:2rem;">The standard of service that built the legacy.</p>
+</div>
+
+<!-- ── PUBLIC NOTICE ── -->
+<div class="notice-bar">
+  <strong>Fully public conversations.</strong>&ensp;
+  Do not include personal identifiers of any kind — no order numbers, delivery addresses, phone numbers, payment details, or full names.
+  The House already holds your personal details on file through your order and will reference them privately when handling your query.
+  Everything written here is permanently and publicly visible to anyone in the world.
+</div>
+
+<!-- ── ACTIONS BAR ── -->
+<div class="actions-bar">
+  <div style="display:flex;align-items:center;gap:1.6rem;flex-wrap:wrap;">
+    <button class="btn-raise" id="btn-raise" onclick="openQueryModal()">Raise a Query</button>
+    <span class="count-badge" id="count-badge">— conversations</span>
+  </div>
+  <button class="back-btn" id="back-btn" onclick="showListView()">← All Queries</button>
+</div>
+
+<!-- ── COUNTRY FILTER ── -->
+<div class="country-filter">
+  <div class="cf-header">
+    <span class="country-filter-label">Filter by Country</span>
+    <button class="all-btn active" data-code="ALL" onclick="setCountryFilter('ALL')">All</button>
+  </div>
+  <div class="flag-ticker-wrap" id="flag-ticker-wrap">
+    <div class="flag-ticker-inner" id="flag-strip"></div>
+  </div>
+</div>
+
+<!-- ── FORUM BODY ── -->
+<div class="forum-body">
+
+  <!-- Query list -->
+  <div class="query-list" id="query-list">
+    <div class="list-empty" id="list-loading">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- Conversation view -->
+  <div class="conv-view" id="conv-view">
+    <div class="conv-empty-state" id="conv-empty">
+      <img src="images/KD_monogram.png" alt="">
+      <span>Select a query to read the conversation</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+    <div class="footer_details">
+        <a href="foundermessage.html"><h5>About House</h5></a>
+        <a href="queryforum.html"><h5>Contact House</h5></a>
+        <a href="shipping.html"><h5>Shipping</h5></a>
+        <a href="returns.html"><h5>Returns</h5></a>
+        <a href="privacy.html"><h5>Privacy</h5></a>
+    </div>
+    <div class="footer_branding">
+        <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram"></a></div>
+        <p>Copyright 2026 KING DHORAJIYA</p>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW QUERY MODAL
+═══════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="query-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeQueryModal()">×</button>
+    <h3 class="modal-title">Raise a Query</h3>
+
+    <div class="field">
+      <label>Your Name</label>
+      <input type="text" id="q-name" placeholder="First name or initials" maxlength="50" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label>Your Query</label>
+      <textarea id="q-text" placeholder="Describe your query. The House responds personally to every one." maxlength="1200"></textarea>
+      <p class="field-note" style="color:#c0392b;font-style:normal;font-size:1.25rem;margin-top:0.8rem;line-height:1.7;">
+        ⚠ This conversation is permanently public and visible to anyone in the world.
+        Do not write your order number, delivery address, phone number, payment details, or full name.
+      </p>
+    </div>
+
+    <div class="loc-grid">
+      <div>
+        <label style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:0.2rem;text-transform:uppercase;color:#777;display:block;margin-bottom:0.4rem;">Country</label>
+        <div class="loc-val" id="loc-country"><span class="spinner"></span></div>
+      </div>
+      <div>
+        <label style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:0.2rem;text-transform:uppercase;color:#777;display:block;margin-bottom:0.4rem;">Region / State</label>
+        <div class="loc-val" id="loc-state">—</div>
+      </div>
+    </div>
+    <p class="field-note" style="margin-top:-1.2rem;margin-bottom:2rem;">Auto-detected from your IP address.</p>
+
+    <button class="btn-full" id="btn-submit-q" onclick="submitQuery()">Submit to The House</button>
+    <div class="modal-status" id="q-status"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HOUSE REPLY MODAL
+═══════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="house-modal">
+  <div class="modal" style="max-width:44rem;">
+    <button class="modal-x" onclick="closeHouseModal()">×</button>
+    <h3 class="modal-title" style="font-size:1.8rem;">House Reply</h3>
+
+    <div id="pin-section">
+      <p style="font-family:'Times New Roman',serif;font-size:1.4rem;color:#666;margin-bottom:2.4rem;letter-spacing:0.08rem;">Enter the House PIN to reply.</p>
+      <div style="text-align:center;">
+        <input type="password" class="pin-input" id="house-pin" placeholder="····" maxlength="8"
+               onkeydown="if(event.key==='Enter')checkPin()">
+        <div class="pin-error" id="pin-error"></div>
+        <button class="btn-raise" style="margin-top:2rem;" onclick="checkPin()">Enter</button>
+      </div>
+    </div>
+
+    <div id="reply-section" class="hidden">
+      <div style="margin-bottom:1.8rem;">
+        <label style="display:block;font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:0.2rem;text-transform:uppercase;color:#777;margin-bottom:0.6rem;">Replying as</label>
+        <select id="house-role" style="width:100%;border:none;border-bottom:1px solid #ccc;padding:0.7rem 0;font-family:'Times New Roman',serif;font-size:1.6rem;color:#1a4a1a;background:transparent;outline:none;cursor:pointer;">
+          <option value="Chief Executive">Chief Executive</option>
+          <option value="Chief Operating Officer">Chief Operating Officer</option>
+          <option value="Chief Technology Officer">Chief Technology Officer</option>
+          <option value="Chief of Staff">Chief of Staff</option>
+          <option value="Management Team">Management Team</option>
+        </select>
+      </div>
+      <textarea class="reply-ta" id="house-reply-ta" placeholder="Your reply…" style="min-height:11rem;"></textarea>
+      <div style="display:flex;justify-content:space-between;gap:1.2rem;margin-top:1.6rem;flex-wrap:wrap;">
+        <button class="btn-house" onclick="sendHouseReply(false)">Send Reply</button>
+        <button class="btn-house" style="background:#f4f8f4;" onclick="sendHouseReply(true)">Send &amp; Resolve Query</button>
+      </div>
+      <div class="modal-status" id="house-status"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPT
+═══════════════════════════════════════════ -->
+<script type="module">
+
+// ════════════════════════════════════════════════════
+// FIREBASE SETUP — THREE STEPS
+//
+// Step 1: Create a free Firebase project at
+//         https://console.firebase.google.com
+//         Add a web app → copy the config object below.
+//
+// Step 2: In Firebase console → Build → Realtime Database
+//         Create a database (start in test mode).
+//         Rules: { "rules": { ".read": true, ".write": true } }
+//         Tighten these once you go live.
+//
+// Step 3: Replace every value below with your real config.
+// ════════════════════════════════════════════════════
+
+const FIREBASE_CONFIG = {
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
+};
+
+// ── House PIN (change before launch) ──────────────
+const HOUSE_PIN = "KINGKD";
+
+// ════════════════════════════════════════════════════
+
+const IS_DEMO = FIREBASE_CONFIG.apiKey === "YOUR_API_KEY";
+
+// ── Firebase refs (populated below if not demo) ──────
+let db, FB;
+
+if (!IS_DEMO) {
+  document.getElementById('setup-banner').classList.add('hidden');
+  const [{ initializeApp }, fbdb] = await Promise.all([
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js")
+  ]);
+  const app = initializeApp(FIREBASE_CONFIG);
+  db = fbdb.getDatabase(app);
+  FB = fbdb;
+}
+
+// ════════════════════════════════════════════════════
+// DEMO STORAGE (localStorage)
+// ════════════════════════════════════════════════════
+
+const DEMO_NS = 'kdf2_';
+const demoRead  = k => { try { return JSON.parse(localStorage.getItem(DEMO_NS+k)||'null'); } catch(e) { return null; } };
+const demoWrite = (k,v) => { localStorage.setItem(DEMO_NS+k, JSON.stringify(v)); };
+function demoPush(path, data) {
+  const key = 'k' + Date.now() + Math.random().toString(36).slice(2,6);
+  const all = demoRead(path) || {};
+  all[key] = data;
+  demoWrite(path, all);
+  return key;
+}
+function demoUpdate(path, patch) {
+  const all = demoRead(path) || {};
+  Object.assign(all, patch);
+  demoWrite(path, all);
+}
+
+// ════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════
+
+let allQueries     = {};
+let activeFilter   = 'ALL';
+let activeQueryId  = null;
+let houseUnlocked  = false;
+let replyTarget    = null;
+let msgUnsubscribe = null;
+
+let detCountryCode = 'US';
+let detCountry     = 'United States';
+let detState       = '';
+
+const rnames = new Intl.DisplayNames(['en'], { type: 'region' });
+const toFlag = c => c.toUpperCase().split('').map(ch=>String.fromCodePoint(0x1F1E6+ch.charCodeAt(0)-65)).join('');
+const esc    = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtTs  = ts => ts ? new Date(ts).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}) : '';
+const starsOf = n => n ? Array.from({length:5},(_,i)=>`<span style="color:${i<n?'#800000':'#ddd'}">★</span>`).join('') : '';
+const pad    = n => String(n).padStart(4,'0');
+const makeNum = n => `KD-${new Date().getFullYear()}-${pad(n)}`;
+
+// ════════════════════════════════════════════════════
+// IP GEOLOCATION
+// ════════════════════════════════════════════════════
+
+async function detectLocation() {
+  try {
+    const d = await fetch('https://ipapi.co/json/').then(r=>r.json());
+    detCountryCode = d.country_code || 'US';
+    detCountry     = d.country_name || rnames.of(detCountryCode);
+    detState       = d.region || '';
+  } catch(e) {
+    detCountryCode = 'US'; detCountry = 'United States'; detState = '';
+  }
+  document.getElementById('loc-country').textContent = toFlag(detCountryCode) + ' ' + detCountry;
+  document.getElementById('loc-state').textContent   = detState || '—';
+}
+
+// ════════════════════════════════════════════════════
+// NEW QUERY MODAL
+// ════════════════════════════════════════════════════
+
+window.openQueryModal = function() {
+  document.getElementById('query-modal').classList.remove('hidden');
+  document.getElementById('q-name').value = '';
+  document.getElementById('q-text').value = '';
+  document.getElementById('q-status').textContent = '';
+  document.getElementById('loc-country').innerHTML = '<span class="spinner"></span>';
+  document.getElementById('loc-state').textContent = '—';
+  detectLocation();
+  setTimeout(() => document.getElementById('q-name').focus(), 120);
+};
+window.closeQueryModal = () => document.getElementById('query-modal').classList.add('hidden');
+
+window.submitQuery = async function() {
+  const name = document.getElementById('q-name').value.trim();
+  const text = document.getElementById('q-text').value.trim();
+  const status = document.getElementById('q-status');
+
+  if (!name)        { status.textContent = 'Please enter your name.'; return; }
+  if (text.length < 12) { status.textContent = 'Please describe your query in more detail.'; return; }
+
+  const btn = document.getElementById('btn-submit-q');
+  btn.disabled = true; btn.textContent = 'Submitting…'; status.textContent = '';
+
+  const now = Date.now();
+  let num;
+  if (IS_DEMO) {
+    num = Object.keys(demoRead('queries') || {}).length + 1;
+  } else {
+    const snap = await FB.get(FB.ref(db,'meta/queryCount'));
+    num = (snap.val() || 0) + 1;
+    await FB.set(FB.ref(db,'meta/queryCount'), num);
+  }
+
+  const q = {
+    number:       makeNum(num),
+    queryNum:     num,
+    customerName: name,
+    country:      detCountry,
+    countryCode:  detCountryCode,
+    state:        detState,
+    localTime:    now,
+    status:       'open',
+    rating:       null,
+    createdAt:    now
+  };
+  const firstMsg = { text, author: 'customer', timestamp: now };
+
+  let qid;
+  if (IS_DEMO) {
+    qid = demoPush('queries', q);
+    demoPush('messages/'+qid, firstMsg);
+    allQueries = demoRead('queries') || {};
+    renderList();
+  } else {
+    const qref = await FB.push(FB.ref(db,'queries'), q);
+    qid = qref.key;
+    await FB.push(FB.ref(db,'messages/'+qid), firstMsg);
+  }
+
+  btn.disabled = false; btn.textContent = 'Submit to The House';
+  status.textContent = '✓ ' + q.number + ' — query submitted.';
+  setTimeout(() => { closeQueryModal(); openConversation(qid); }, 1600);
+};
+
+// ════════════════════════════════════════════════════
+// QUERY LIST
+// ════════════════════════════════════════════════════
+
+function startListener() {
+  if (IS_DEMO) {
+    allQueries = demoRead('queries') || {};
+    renderList();
+    // poll for demo cross-tab updates
+    window.addEventListener('storage', e => {
+      if (e.key === DEMO_NS+'queries') {
+        allQueries = demoRead('queries') || {};
+        renderList();
+        if (activeQueryId) renderConversation(activeQueryId);
+      }
+    });
+  } else {
+    FB.onValue(FB.ref(db,'queries'), snap => {
+      allQueries = snap.val() || {};
+      renderList();
+    });
+  }
+}
+
+function renderList() {
+  const sorted   = Object.entries(allQueries).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+  const filtered = activeFilter==='ALL' ? sorted : sorted.filter(([,q])=>q.countryCode===activeFilter);
+
+  document.getElementById('count-badge').textContent =
+    sorted.length + ' conversation' + (sorted.length!==1?'s':'');
+
+  // refresh country flag strip
+  const knownCodes = [...new Set(sorted.map(([,q])=>q.countryCode).filter(Boolean))];
+  syncFlagStrip(knownCodes);
+
+  const list = document.getElementById('query-list');
+  list.innerHTML = '';
+
+  if (filtered.length === 0) {
+    const el = document.createElement('div');
+    el.className = 'list-empty';
+    el.innerHTML = sorted.length===0
+      ? 'No conversations yet.<br><br>Be the first to raise a query.'
+      : 'No queries from this country.';
+    list.appendChild(el);
+    return;
+  }
+
+  filtered.forEach(([id,q]) => {
+    const card = document.createElement('div');
+    card.className = 'query-card' + (id===activeQueryId?' active':'');
+    card.onclick = () => openConversation(id);
+    card.innerHTML = `
+      <div class="qc-num">${esc(q.number)}</div>
+      <div class="qc-name">${esc(q.customerName)}</div>
+      <div class="qc-meta">
+        <span>${q.countryCode?toFlag(q.countryCode):''} ${esc([q.state,q.country].filter(Boolean).join(', '))}</span>
+        <span>·</span>
+        <span>${fmtTs(q.createdAt)}</span>
+      </div>
+      <div class="qc-meta" style="margin-top:0.4rem;">
+        <span class="status-dot ${q.status==='resolved'?'resolved':''}"></span>
+        <span style="font-size:1rem;letter-spacing:0.1rem;text-transform:uppercase;">${q.status||'open'}</span>
+        ${q.rating?`<span class="stars-mini">${starsOf(q.rating)}</span>`:''}
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+// ── TICKER ENGINE ──────────────────────────────────
+let _tickerDragging = false;
+let _tickerDragX    = 0;
+let _tickerDragSL   = 0;
+let _tickerReady    = false;
+
+function initTickerEngine() {
+  const wrap = document.getElementById('flag-ticker-wrap');
+  if (!wrap || _tickerReady) return;
+  _tickerReady = true;
+
+  function seamlessWrap() {
+    const half = Math.floor(wrap.scrollWidth / 2);
+    if (half <= 0) return;
+    if (wrap.scrollLeft <= 0)         wrap.scrollLeft += half;
+    else if (wrap.scrollLeft >= half) wrap.scrollLeft -= half;
+  }
+
+  // Mouse drag
+  wrap.addEventListener('mousedown', e => {
+    _tickerDragging = true;
+    _tickerDragX    = e.clientX;
+    _tickerDragSL   = wrap.scrollLeft;
+    wrap.classList.add('dragging');
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!_tickerDragging) return;
+    wrap.scrollLeft = _tickerDragSL + (_tickerDragX - e.clientX);
+    seamlessWrap();
+  });
+  document.addEventListener('mouseup', () => {
+    if (!_tickerDragging) return;
+    _tickerDragging = false;
+    wrap.classList.remove('dragging');
+  });
+
+  // Touch drag
+  wrap.addEventListener('touchstart', e => {
+    _tickerDragging = true;
+    _tickerDragX    = e.touches[0].clientX;
+    _tickerDragSL   = wrap.scrollLeft;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    if (!_tickerDragging) return;
+    wrap.scrollLeft = _tickerDragSL + (_tickerDragX - e.touches[0].clientX);
+    seamlessWrap();
+  }, { passive: true });
+  wrap.addEventListener('touchend', () => { _tickerDragging = false; });
+
+  // Auto-scroll RAF — direction: scrollLeft decreases → content drifts right (left→right)
+  const SPEED = 0.35; // px per frame (~21px/s at 60fps — slow drift)
+  function tick() {
+    if (!_tickerDragging) {
+      wrap.scrollLeft -= SPEED;
+      seamlessWrap();
+    }
+    requestAnimationFrame(tick);
+  }
+  // Start at the second half so backward scroll has room immediately.
+  // Poll until scrollWidth is painted before starting the loop.
+  function startTick() {
+    if (wrap.scrollWidth < 100) { setTimeout(startTick, 60); return; }
+    wrap.scrollLeft = Math.floor(wrap.scrollWidth / 2);
+    requestAnimationFrame(tick);
+  }
+  setTimeout(startTick, 80);
+}
+
+function syncFlagStrip(codes) {
+  const inner = document.getElementById('flag-strip');
+  const wrap  = document.getElementById('flag-ticker-wrap');
+  if (!inner || !wrap) return;
+
+  if (codes.length === 0) {
+    inner.innerHTML = '';
+    wrap.style.visibility = 'hidden';
+    return;
+  }
+  wrap.style.visibility = '';
+
+  // Compute open query count per country
+  const openCounts = {};
+  Object.values(allQueries).forEach(q => {
+    if (q.status !== 'resolved' && q.countryCode) {
+      openCounts[q.countryCode] = (openCounts[q.countryCode] || 0) + 1;
+    }
+  });
+
+  // Only rebuild DOM if codes+counts changed (preserves scroll position)
+  const cacheKey = codes.slice().sort().join(',') + '|' + codes.map(c => openCounts[c]||0).join(',');
+  if (inner.dataset.cache === cacheKey) {
+    inner.querySelectorAll('.flag-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.code === activeFilter)
+    );
+    return;
+  }
+  inner.dataset.cache = cacheKey;
+
+  // Enough reps for seamless loop (≥2 full cycles visible)
+  const reps = Math.max(4, Math.ceil(20 / codes.length)) * 2;
+  inner.innerHTML = '';
+  for (let i = 0; i < reps; i++) {
+    codes.forEach(code => {
+      const name  = rnames.of(code) || code;
+      const count = openCounts[code] || 0;
+      const btn   = document.createElement('button');
+      btn.className   = 'flag-btn' + (code === activeFilter ? ' active' : '');
+      btn.dataset.code = code;
+      btn.onclick = () => setCountryFilter(code);
+      btn.innerHTML = `
+        <span class="flag-count">${count > 0 ? count : ''}</span>
+        <span>${toFlag(code)}</span>
+        <span class="cname">${name}</span>`;
+      inner.appendChild(btn);
+    });
+  }
+
+  // Re-position to middle after rebuild so seamless wrap still works
+  requestAnimationFrame(() => {
+    const half = Math.floor(wrap.scrollWidth / 2);
+    if (half > 0 && (wrap.scrollLeft < 10 || wrap.scrollLeft > wrap.scrollWidth - 10)) {
+      wrap.scrollLeft = half;
+    }
+    initTickerEngine();
+  });
+}
+
+window.setCountryFilter = function(code) {
+  activeFilter = code;
+  document.querySelectorAll('.flag-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.code === code)
+  );
+  document.querySelector('.all-btn')?.classList.toggle('active', code === 'ALL');
+  renderList();
+};
+
+// ════════════════════════════════════════════════════
+// CONVERSATION VIEW
+// ════════════════════════════════════════════════════
+
+window.openConversation = function(qid) {
+  activeQueryId = qid;
+  renderList();  // update active card highlight
+
+  // mobile
+  document.getElementById('conv-view').classList.add('show');
+  document.getElementById('back-btn').style.display = 'inline-block';
+
+  renderConversation(qid);
+};
+
+window.showListView = function() {
+  document.getElementById('conv-view').classList.remove('show');
+  document.getElementById('back-btn').style.display = 'none';
+  activeQueryId = null;
+  renderList();
+};
+
+function renderConversation(qid) {
+  const q = allQueries[qid];
+  if (!q) return;
+
+  const view = document.getElementById('conv-view');
+  view.innerHTML = '';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'conv-header';
+  hdr.innerHTML = `
+    <div class="ch-num">${esc(q.number)}</div>
+    <div class="ch-name">${esc(q.customerName)}</div>
+    <div class="ch-meta">
+      <span>${q.countryCode?toFlag(q.countryCode):''} ${esc([q.state,q.country].filter(Boolean).join(', '))}</span>
+      <span>·</span>
+      <span>${fmtTs(q.createdAt)}</span>
+      <span>·</span>
+      <span class="status-label ${q.status||'open'}">● ${q.status==='resolved'?'Resolved':'Open'}</span>
+    </div>`;
+  view.appendChild(hdr);
+
+  // Messages container
+  const msgBox = document.createElement('div');
+  msgBox.className = 'messages';
+  msgBox.id = 'msgbox-' + qid;
+  view.appendChild(msgBox);
+
+  // Load & listen to messages
+  if (msgUnsubscribe) { msgUnsubscribe(); msgUnsubscribe = null; }
+
+  if (IS_DEMO) {
+    renderMessages(msgBox, demoRead('messages/'+qid)||{}, q);
+    const storageHandler = e => {
+      if (e.key === DEMO_NS+'messages/'+qid) {
+        renderMessages(msgBox, demoRead('messages/'+qid)||{}, q);
+      }
+    };
+    window.addEventListener('storage', storageHandler);
+    msgUnsubscribe = () => window.removeEventListener('storage', storageHandler);
+  } else {
+    const unsub = FB.onValue(FB.ref(db,'messages/'+qid), snap => {
+      renderMessages(msgBox, snap.val()||{}, q);
+    });
+    msgUnsubscribe = unsub;
+  }
+
+  // Customer follow-up reply (if open)
+  if (q.status !== 'resolved') {
+    const ra = document.createElement('div');
+    ra.className = 'reply-area';
+    ra.innerHTML = `
+      <textarea class="reply-ta" id="cust-ta-${qid}" placeholder="Add a follow-up…" maxlength="800"></textarea>
+      <div class="reply-row">
+        <button class="btn-send" onclick="sendCustomerReply('${qid}')">Send</button>
+        <button class="btn-house" onclick="openHouseModal('${qid}')">House Reply</button>
+        <span class="reply-note">Visible to everyone.</span>
+      </div>`;
+    view.appendChild(ra);
+  }
+
+  // Rating (only if resolved)
+  if (q.status === 'resolved') {
+    const ratingEl = document.createElement('div');
+    ratingEl.className = 'rating-section';
+    ratingEl.id = 'rating-'+qid;
+
+    if (q.rating) {
+      ratingEl.innerHTML = `
+        <div class="section-label">Customer Rating</div>
+        <div class="rating-given">${starsOf(q.rating)} &ensp;Thank you for your feedback.</div>`;
+    } else {
+      ratingEl.innerHTML = `
+        <div class="section-label">How did we do? Rate this conversation.</div>
+        <div class="star-row" id="stars-${qid}">
+          ${[1,2,3,4,5].map(n=>`
+            <button class="star-btn" data-n="${n}"
+              onmouseover="hoverStars('${qid}',${n})"
+              onmouseout="resetStars('${qid}')"
+              onclick="submitRating('${qid}',${n})">★</button>`).join('')}
+        </div>`;
+    }
+    view.appendChild(ratingEl);
+
+    // Public improvement suggestion
+    const suggEl = document.createElement('div');
+    suggEl.className = 'sugg-section';
+    suggEl.id = 'sugg-'+qid;
+
+    const existingSugg = IS_DEMO ? demoRead('suggestions/'+qid) : null;
+
+    if (existingSugg) {
+      suggEl.innerHTML = `
+        <div class="section-label">Improvement Suggestion</div>
+        <div class="sugg-display">${esc(existingSugg.text)}</div>
+        <div class="sugg-display-time">${fmtTs(existingSugg.timestamp)}</div>`;
+    } else {
+      suggEl.innerHTML = `
+        <div class="section-label">Improvement Suggestion</div>
+        <div class="sugg-note">Visible to the world. Tell The House — and everyone reading — what could make this experience better.</div>
+        <textarea class="sugg-ta" id="sugg-ta-${qid}" placeholder="Your suggestion, openly shared…" maxlength="800"></textarea>
+        <br>
+        <button class="btn-sugg" id="sugg-btn-${qid}" onclick="submitSuggestion('${qid}')">Post Suggestion</button>
+        <div style="font-family:'Times New Roman',serif;font-size:1.3rem;color:#800000;margin-top:0.8rem;" id="sugg-status-${qid}"></div>`;
+    }
+    view.appendChild(suggEl);
+  }
+}
+
+function renderMessages(box, msgs, q) {
+  const sorted = Object.entries(msgs).sort((a,b)=>a[1].timestamp-b[1].timestamp);
+  box.innerHTML = '';
+  sorted.forEach(([,m]) => {
+    const d = document.createElement('div');
+    d.className = 'msg ' + (m.author==='house'?'house':'customer');
+    const houseLabel = m.role ? `The House · <span style="font-weight:400;font-style:italic;">${esc(m.role)}</span>` : 'The House';
+    d.innerHTML = `
+      <div class="msg-label">${m.author==='house' ? houseLabel : esc(q.customerName)}</div>
+      <div class="msg-bubble">${esc(m.text)}</div>
+      <div class="msg-time">${fmtTs(m.timestamp)}</div>`;
+    box.appendChild(d);
+  });
+  box.scrollTop = box.scrollHeight;
+}
+
+// ════════════════════════════════════════════════════
+// CUSTOMER REPLY
+// ════════════════════════════════════════════════════
+
+window.sendCustomerReply = async function(qid) {
+  const ta   = document.getElementById('cust-ta-'+qid);
+  const text = ta.value.trim();
+  if (!text) return;
+
+  const msg = { text, author: 'customer', timestamp: Date.now() };
+
+  if (IS_DEMO) {
+    demoPush('messages/'+qid, msg);
+    window.dispatchEvent(new StorageEvent('storage',{key:DEMO_NS+'messages/'+qid}));
+    renderMessages(document.getElementById('msgbox-'+qid), demoRead('messages/'+qid)||{}, allQueries[qid]);
+  } else {
+    await FB.push(FB.ref(db,'messages/'+qid), msg);
+  }
+  ta.value = '';
+};
+
+// ════════════════════════════════════════════════════
+// HOUSE REPLY
+// ════════════════════════════════════════════════════
+
+window.openHouseModal = function(qid) {
+  replyTarget = qid;
+  document.getElementById('house-modal').classList.remove('hidden');
+  document.getElementById('house-reply-ta').value = '';
+  document.getElementById('house-status').textContent = '';
+  document.getElementById('pin-error').textContent = '';
+  document.getElementById('house-pin').value = '';
+
+  if (houseUnlocked) {
+    document.getElementById('pin-section').classList.add('hidden');
+    document.getElementById('reply-section').classList.remove('hidden');
+    setTimeout(()=>document.getElementById('house-reply-ta').focus(),80);
+  } else {
+    document.getElementById('pin-section').classList.remove('hidden');
+    document.getElementById('reply-section').classList.add('hidden');
+    setTimeout(()=>document.getElementById('house-pin').focus(),80);
+  }
+};
+window.closeHouseModal = () => document.getElementById('house-modal').classList.add('hidden');
+
+window.checkPin = function() {
+  const pin = document.getElementById('house-pin').value;
+  if (pin === HOUSE_PIN) {
+    houseUnlocked = true;
+    document.getElementById('pin-section').classList.add('hidden');
+    document.getElementById('reply-section').classList.remove('hidden');
+    document.getElementById('house-reply-ta').focus();
+  } else {
+    document.getElementById('pin-error').textContent = 'Incorrect PIN.';
+    document.getElementById('house-pin').value = '';
+  }
+};
+
+window.sendHouseReply = async function(resolve) {
+  const text = document.getElementById('house-reply-ta').value.trim();
+  const role = document.getElementById('house-role').value;
+  const stat = document.getElementById('house-status');
+  if (!text) { stat.textContent = 'Please enter a reply.'; return; }
+  stat.textContent = 'Sending…';
+
+  const msg = { text, author: 'house', role, timestamp: Date.now() };
+
+  if (IS_DEMO) {
+    demoPush('messages/'+replyTarget, msg);
+    window.dispatchEvent(new StorageEvent('storage',{key:DEMO_NS+'messages/'+replyTarget}));
+    if (resolve) {
+      const queries = demoRead('queries') || {};
+      if (queries[replyTarget]) { queries[replyTarget].status = 'resolved'; demoWrite('queries', queries); }
+      allQueries = demoRead('queries') || {};
+      window.dispatchEvent(new StorageEvent('storage',{key:DEMO_NS+'queries'}));
+    }
+    renderMessages(document.getElementById('msgbox-'+replyTarget), demoRead('messages/'+replyTarget)||{}, allQueries[replyTarget]);
+    if (resolve) renderConversation(replyTarget);
+    renderList();
+  } else {
+    await FB.push(FB.ref(db,'messages/'+replyTarget), msg);
+    if (resolve) await FB.update(FB.ref(db,'queries/'+replyTarget),{status:'resolved'});
+  }
+
+  stat.textContent = '✓ Sent.';
+  setTimeout(closeHouseModal, 900);
+};
+
+// ════════════════════════════════════════════════════
+// RATING
+// ════════════════════════════════════════════════════
+
+window.hoverStars = (qid,n) => {
+  document.querySelectorAll(`#stars-${qid} .star-btn`).forEach((b,i)=>b.classList.toggle('lit',i<n));
+};
+window.resetStars = qid => {
+  document.querySelectorAll(`#stars-${qid} .star-btn`).forEach(b=>b.classList.remove('lit'));
+};
+window.submitRating = async function(qid, n) {
+  if (IS_DEMO) {
+    const queries = demoRead('queries') || {};
+    if (queries[qid]) { queries[qid].rating = n; demoWrite('queries', queries); }
+    allQueries = demoRead('queries') || {};
+    window.dispatchEvent(new StorageEvent('storage',{key:DEMO_NS+'queries'}));
+    renderConversation(qid);
+    renderList();
+  } else {
+    await FB.update(FB.ref(db,'queries/'+qid),{rating:n});
+  }
+};
+
+// ════════════════════════════════════════════════════
+// PUBLIC SUGGESTION
+// ════════════════════════════════════════════════════
+
+window.submitSuggestion = async function(qid) {
+  const ta   = document.getElementById('sugg-ta-'+qid);
+  const text = ta.value.trim();
+  if (!text) return;
+
+  const stat = document.getElementById('sugg-status-'+qid);
+  stat.textContent = 'Posting…';
+
+  const payload = { text, timestamp: Date.now(), queryNumber: (allQueries[qid]||{}).number||'' };
+
+  if (IS_DEMO) {
+    demoWrite('suggestions/'+qid, payload);
+  } else {
+    await FB.set(FB.ref(db,'suggestions/'+qid), payload);
+  }
+
+  stat.textContent = '✓ Posted. Visible to The House and the world.';
+  ta.disabled = true;
+  const btn = document.getElementById('sugg-btn-'+qid);
+  if (btn) btn.style.display = 'none';
+
+  // Re-render so the suggestion displays as a block (not a form)
+  setTimeout(() => renderConversation(qid), 600);
+};
+
+// ════════════════════════════════════════════════════
+// DEMO SEED DATA
+// Only runs once, only in demo mode, only if no data yet.
+// Remove this block once Firebase is connected.
+// ════════════════════════════════════════════════════
+
+function seedDemoData() {
+  if (!IS_DEMO) return;
+  if (demoRead('queries')) return; // already seeded
+
+  const Y = new Date().getFullYear();
+  const now = Date.now();
+  const ago = ms => now - ms;
+
+  const queries = {
+    'kdemo001': {
+      number: `KD-${Y}-0001`, queryNum: 1,
+      customerName: 'James R.',
+      country: 'United States', countryCode: 'US', state: 'New York',
+      localTime: ago(7*24*60*60*1000), createdAt: ago(7*24*60*60*1000),
+      status: 'resolved', rating: 5
+    },
+    'kdemo002': {
+      number: `KD-${Y}-0002`, queryNum: 2,
+      customerName: 'Priya M.',
+      country: 'India', countryCode: 'IN', state: 'Maharashtra',
+      localTime: ago(4*24*60*60*1000), createdAt: ago(4*24*60*60*1000),
+      status: 'resolved', rating: 4
+    },
+    'kdemo003': {
+      number: `KD-${Y}-0003`, queryNum: 3,
+      customerName: 'Oliver H.',
+      country: 'United Kingdom', countryCode: 'GB', state: 'London',
+      localTime: ago(2*24*60*60*1000), createdAt: ago(2*24*60*60*1000),
+      status: 'open', rating: null
+    },
+    'kdemo004': {
+      number: `KD-${Y}-0004`, queryNum: 4,
+      customerName: 'Ahmad K.',
+      country: 'United Arab Emirates', countryCode: 'AE', state: 'Dubai',
+      localTime: ago(18*60*60*1000), createdAt: ago(18*60*60*1000),
+      status: 'open', rating: null
+    },
+    'kdemo005': {
+      number: `KD-${Y}-0005`, queryNum: 5,
+      customerName: 'Sofia L.',
+      country: 'Italy', countryCode: 'IT', state: 'Milan',
+      localTime: ago(2*60*60*1000), createdAt: ago(2*60*60*1000),
+      status: 'open', rating: null
+    }
+  };
+
+  const messages = {
+    'messages/kdemo001': {
+      'm001a': { author: 'customer', timestamp: ago(7*24*60*60*1000),
+        text: "I ordered a full-sleeve classic shirt. I am between a 15.5 and 16 collar — which do you recommend given that I prefer a slightly relaxed fit around the neck without any looseness in the shoulder?" },
+      'm001b': { author: 'house', role: 'Chief Executive', timestamp: ago(7*24*60*60*1000 - 4*60*60*1000),
+        text: "Thank you for this detail, James. For a relaxed collar without shoulder compromise, we recommend 15.75 — which we can cut to your neck measurement precisely. The shoulder line is set independently of collar size at KD Scion, so there is no trade-off. We will note this on your order brief." },
+      'm001c': { author: 'customer', timestamp: ago(7*24*60*60*1000 - 6*60*60*1000),
+        text: "That is exactly what I needed to know. Proceeding with the order. Thank you for the clarity." },
+      'm001d': { author: 'house', role: 'Chief Executive', timestamp: ago(7*24*60*60*1000 - 7*60*60*1000),
+        text: "Noted and confirmed. Your piece is now in the production brief. Expect delivery within the stated window. Welcome to The House." }
+    },
+    'messages/kdemo002': {
+      'm002a': { author: 'customer', timestamp: ago(4*24*60*60*1000),
+        text: "I am looking at linen versus cotton for a summer kurta. I live in coastal Maharashtra — high humidity. Which fabric holds its structure better through a full day in this climate?" },
+      'm002b': { author: 'house', role: 'Chief Executive', timestamp: ago(4*24*60*60*1000 - 3*60*60*1000),
+        text: "For coastal Maharashtra, linen is the definitive choice. It absorbs up to 20% of its weight in moisture without feeling damp, and the natural crimp in linen fibre gives it a self-airing quality cotton lacks. The trade-off is that linen wrinkles — but for a kurta silhouette, that texture reads as character, not dishevelment. We use a mid-weight linen (160gsm) that holds the drape of a kurta without going limp by afternoon." },
+      'm002c': { author: 'customer', timestamp: ago(4*24*60*60*1000 - 5*60*60*1000),
+        text: "The 160gsm linen sounds right. One more question — natural ecru linen or would you recommend a dyed colour for first piece?" },
+      'm002d': { author: 'house', role: 'Chief Executive', timestamp: ago(4*24*60*60*1000 - 6*60*60*1000),
+        text: "For a first piece, natural ecru. It photographs beautifully, ages with dignity, and you will know exactly what the fabric quality is without a dye interfering. Once you have worn it and understand the drape, your second piece can be colour." },
+      'm002e': { author: 'customer', timestamp: ago(4*24*60*60*1000 - 7*60*60*1000),
+        text: "Settled. Ecru linen kurta. Placing the order now. This is the level of guidance I could not find anywhere else." }
+    },
+    'messages/kdemo003': {
+      'm003a': { author: 'customer', timestamp: ago(2*24*60*60*1000),
+        text: "I have an important board meeting in six weeks. I need a structured blazer — is that enough time for a full bespoke piece to be designed, made, and delivered to London?" },
+      'm003b': { author: 'house', role: 'Chief Executive', timestamp: ago(2*24*60*60*1000 - 5*60*60*1000),
+        text: "Six weeks is workable, Oliver. Standard production is 4 weeks from order confirmation, plus 5–7 days for international shipping. That leaves you a narrow margin but a real one. To protect it: submit your measurements today, keep the design brief simple — we recommend our structured single-button blazer in charcoal wool for a first board piece — and confirm your delivery address precisely. We will flag your brief for priority scheduling." },
+      'm003c': { author: 'customer', timestamp: ago(2*24*60*60*1000 - 6*60*60*1000),
+        text: "Understood. Sending measurements today. Should I go wool or is there a travel-friendly fabric you would recommend given I will be flying the day before?" }
+    },
+    'messages/kdemo004': {
+      'm004a': { author: 'customer', timestamp: ago(18*60*60*1000),
+        text: "I want something that works for a formal Arabic majlis setting but also transitions to a Western business dinner in the same evening. Is this a contradiction in terms, or is there a silhouette at KD Scion that walks this line?" },
+      'm004b': { author: 'house', role: 'Chief Executive', timestamp: ago(16*60*60*1000),
+        text: "Not a contradiction — it is a design problem with a clean solution. A longline structured shirt in ivory or cream wool-linen, cut to below the hip with a straight hem and a mandarin collar, reads with dignity in a majlis and translates flawlessly to a Western dinner setting when paired with dark trousers. The mandarin collar eliminates the necktie decision entirely and is understood in both contexts as intentional. We have built this exact brief before. Would you like us to draft it for you?" }
+    },
+    'messages/kdemo005': {
+      'm005a': { author: 'customer', timestamp: ago(2*60*60*1000),
+        text: "I received my piece last week — the sleeveless silk dress. It is perfect. My only question: the silk feels delicate. What is the correct way to store and care for it long term so it stays in this condition?" }
+    }
+  };
+
+  const suggestions = {
+    'suggestions/kdemo001': {
+      text: "It would be helpful to have a visual comparison of different collar sizes on the product page — even simple line drawings. Would have made my decision faster.",
+      timestamp: ago(6*24*60*60*1000),
+      queryNumber: `KD-${Y}-0001`
+    },
+    'suggestions/kdemo002': {
+      text: "A fabric sample service — even a small swatch by post before ordering — would remove the last bit of hesitation for international customers. I was 95% confident, not 100%.",
+      timestamp: ago(3*24*60*60*1000),
+      queryNumber: `KD-${Y}-0002`
+    }
+  };
+
+  demoWrite('queries', queries);
+  demoWrite('meta/queryCount', 5);
+  Object.entries(messages).forEach(([path, msgs]) => demoWrite(path, msgs));
+  Object.entries(suggestions).forEach(([path, sugg]) => demoWrite(path, sugg));
+}
+
+// ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
+
+seedDemoData();
+startListener();
+
+</script>
+</body>
+</html>

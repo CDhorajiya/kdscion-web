@@ -771,6 +771,7 @@
       <button class="dash-tab active" onclick="switchTab('orders')">Orders</button>
       <button class="dash-tab" onclick="switchTab('prices')">Prices</button>
       <button class="dash-tab" onclick="switchTab('fabrics')">Fabrics</button>
+      <button class="dash-tab" onclick="switchTab('forum')">Forum</button>
     </div>
 
     <!-- Orders pane -->
@@ -833,7 +834,65 @@
       </div>
     </div>
 
+    <!-- ══ Forum pane ══ -->
+    <div id="pane-forum" class="dash-pane">
+      <div style="display:grid;grid-template-columns:32rem 1fr;gap:0;min-height:64vh;border:1px solid #e0e0e0;border-radius:3px;overflow:hidden;">
+
+        <!-- Left: query list -->
+        <div id="forum-list" style="border-right:1px solid #e0e0e0;overflow-y:auto;max-height:72vh;background:#fff;">
+          <div style="padding:1.4rem 1.8rem;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:5px;text-transform:uppercase;color:#111;">Queries</span>
+            <button class="dash-refresh" onclick="loadForumQueries()" style="font-size:1rem;padding:0.3rem 0.8rem;">Refresh</button>
+          </div>
+          <div id="forum-query-list">
+            <p style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:3px;text-transform:uppercase;color:#aaa;text-align:center;padding:3rem 1rem;">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Right: conversation + suggestion -->
+        <div id="forum-conv" style="display:flex;flex-direction:column;background:#fafaf9;">
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;color:#ccc;font-family:'Times New Roman',serif;font-size:1.4rem;letter-spacing:4px;text-transform:uppercase;" id="forum-conv-empty">
+            Select a query
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
+
+  <!-- Forum styles (scoped) -->
+  <style>
+    .fq-card {
+      padding: 1.4rem 1.8rem;
+      border-bottom: 1px solid #f0ebe4;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .fq-card:hover { background: #fdf8f4; }
+    .fq-card.active { background: #fdf0f0; border-left-color: #800000; }
+    .fq-num { font-family:"Courier New",monospace; font-size:1.1rem; color:#800000; letter-spacing:0.15rem; }
+    .fq-name { font-family:"Times New Roman",serif; font-size:1.5rem; color:#111; margin:0.2rem 0; }
+    .fq-meta { font-family:"Times New Roman",serif; font-size:1.15rem; color:#999; }
+    .fq-sdot { display:inline-block;width:7px;height:7px;border-radius:50%;background:#22a06b;margin-right:4px; }
+    .fq-sdot.r { background:#bbb; }
+    .fm-msg { max-width:70%;margin-bottom:1.6rem; }
+    .fm-msg.c { align-self:flex-end; }
+    .fm-msg.h { align-self:flex-start; }
+    .fm-label { font-family:"Times New Roman",serif;font-size:1.1rem;letter-spacing:0.15rem;text-transform:uppercase;margin-bottom:0.3rem; }
+    .fm-msg.c .fm-label { text-align:right;color:#800000; }
+    .fm-msg.h .fm-label { color:#1a4a1a; }
+    .fm-bubble { padding:1rem 1.4rem;font-family:"Times New Roman",serif;font-size:1.5rem;line-height:1.6; }
+    .fm-msg.c .fm-bubble { background:#faf0f0;border:1px solid #e8d4d4; }
+    .fm-msg.h .fm-bubble { background:#f4f8f4;border:1px solid #d4e4d4; }
+    .fm-time { font-family:"Courier New",monospace;font-size:1rem;color:#ccc;margin-top:0.2rem; }
+    .fm-msg.c .fm-time { text-align:right; }
+    .btn-forum-reply { font-family:"Times New Roman",serif;font-size:1.2rem;letter-spacing:0.25rem;text-transform:uppercase;background:#111;color:#fff;border:none;padding:0.9rem 2.4rem;cursor:pointer;transition:background 0.2s; }
+    .btn-forum-reply:hover { background:#333; }
+    .btn-forum-resolve { font-family:"Times New Roman",serif;font-size:1.2rem;letter-spacing:0.25rem;text-transform:uppercase;background:none;color:#1a4a1a;border:1px solid #1a4a1a;padding:0.9rem 2.4rem;cursor:pointer;transition:background 0.2s; }
+    .btn-forum-resolve:hover { background:#f4f8f4; }
+  </style>
 
   <script type="module">
     // ── PIN Gate ─────────────────────────────────────────────────────────────
@@ -879,6 +938,7 @@
       document.querySelectorAll('.dash-pane').forEach(p => p.classList.remove('active'));
       document.querySelector(`.dash-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
       document.getElementById(`pane-${tab}`).classList.add('active');
+      if (tab === 'forum') loadForumQueries();
     };
 
     // ── Price metadata ────────────────────────────────────────────────────────
@@ -1771,6 +1831,141 @@
     };
 
     loadOrders();
+
+    // ════════════════════════════════════════════════════
+    // HOUSE FORUM — admin view
+    // Uses the same localStorage namespace (kdf2_) as queryforum.html
+    // When Firebase is configured in queryforum.html, replace demoRead/demoPush
+    // calls below with Firebase Realtime Database equivalents.
+    // ════════════════════════════════════════════════════
+
+    const FNS       = 'kdf2_';
+    const fRead     = k => { try { return JSON.parse(localStorage.getItem(FNS+k)||'null'); } catch(e) { return null; } };
+    const fWrite    = (k,v) => localStorage.setItem(FNS+k, JSON.stringify(v));
+    const fEsc      = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const fFmt      = ts => ts ? new Date(ts).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}) : '';
+    const fToFlag   = c => c.toUpperCase().split('').map(ch=>String.fromCodePoint(0x1F1E6+ch.charCodeAt(0)-65)).join('');
+    const fStars    = n => n ? Array.from({length:5},(_,i)=>`<span style="color:${i<n?'#800000':'#ddd'}">★</span>`).join('') : '—';
+
+    let fActiveQid = null;
+
+    window.loadForumQueries = function() {
+      const queries  = fRead('queries') || {};
+      const sorted   = Object.entries(queries).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+      const listEl   = document.getElementById('forum-query-list');
+
+      if (sorted.length === 0) {
+        listEl.innerHTML = '<p style="font-family:\'Times New Roman\',serif;font-size:1.2rem;letter-spacing:3px;text-transform:uppercase;color:#aaa;text-align:center;padding:3rem 1rem;">No queries yet</p>';
+        return;
+      }
+
+      listEl.innerHTML = '';
+      sorted.forEach(([id,q]) => {
+        const card = document.createElement('div');
+        card.className = 'fq-card' + (id===fActiveQid?' active':'');
+        card.onclick   = () => openForumConv(id);
+        const flag     = q.countryCode ? fToFlag(q.countryCode) : '';
+        const loc      = [q.state,q.country].filter(Boolean).join(', ');
+        card.innerHTML = `
+          <div class="fq-num">${fEsc(q.number)}</div>
+          <div class="fq-name">${fEsc(q.customerName)}</div>
+          <div class="fq-meta">${flag} ${fEsc(loc)} · ${fFmt(q.createdAt)}</div>
+          <div class="fq-meta" style="margin-top:0.3rem;">
+            <span class="fq-sdot ${q.status==='resolved'?'r':''}"></span>
+            <span style="font-size:1rem;letter-spacing:0.1rem;text-transform:uppercase;">${q.status||'open'}</span>
+            ${q.rating ? '&ensp;'+fStars(q.rating) : ''}
+          </div>`;
+        listEl.appendChild(card);
+      });
+    };
+
+    function openForumConv(qid) {
+      fActiveQid = qid;
+      loadForumQueries();
+
+      const q       = (fRead('queries')||{})[qid];
+      const msgs    = fRead('messages/'+qid) || {};
+      const sugg    = fRead('suggestions/'+qid);
+      const convEl  = document.getElementById('forum-conv');
+
+      const flag    = q.countryCode ? fToFlag(q.countryCode) : '';
+      const loc     = [q.state,q.country].filter(Boolean).join(', ');
+      const sorted  = Object.entries(msgs).sort((a,b)=>a[1].timestamp-b[1].timestamp);
+
+      const msgsHtml = sorted.map(([,m]) => {
+        const hLabel = m.role
+          ? `The House · <span style="font-weight:400;font-style:italic;">${fEsc(m.role)}</span>`
+          : 'The House';
+        return `
+        <div class="fm-msg ${m.author==='house'?'h':'c'}">
+          <div class="fm-label">${m.author==='house' ? hLabel : fEsc(q.customerName)}</div>
+          <div class="fm-bubble">${fEsc(m.text)}</div>
+          <div class="fm-time">${fFmt(m.timestamp)}</div>
+        </div>`;
+      }).join('');
+
+      const suggHtml = sugg
+        ? `<div style="padding:2rem 2rem 0;">
+             <p style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:4px;text-transform:uppercase;color:#555;margin-bottom:0.8rem;">Improvement Suggestion (Public)</p>
+             <div style="font-family:'Times New Roman',serif;font-size:1.4rem;color:#1a1a1a;padding:1.2rem 1.6rem;background:#fff;border-left:3px solid #800000;line-height:1.7;">${fEsc(sugg.text)}</div>
+             <p style="font-family:'Courier New',monospace;font-size:1rem;color:#bbb;margin-top:0.5rem;">${fFmt(sugg.timestamp)}</p>
+           </div>`
+        : `<div style="padding:2rem 2rem 0;">
+             <p style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:4px;text-transform:uppercase;color:#bbb;">No improvement suggestion yet</p>
+           </div>`;
+
+      convEl.innerHTML = `
+        <div style="padding:1.8rem 2.2rem;border-bottom:1px solid #e8e0d8;background:#fff;">
+          <div style="font-family:'Courier New',monospace;font-size:1.1rem;color:#800000;letter-spacing:0.2rem;margin-bottom:0.4rem;">${fEsc(q.number)}</div>
+          <div style="font-family:'Times New Roman',serif;font-size:1.8rem;color:#111;margin-bottom:0.3rem;">${fEsc(q.customerName)}</div>
+          <div style="font-family:'Times New Roman',serif;font-size:1.3rem;color:#888;">${flag} ${fEsc(loc)} · ${fFmt(q.createdAt)} · <span style="text-transform:uppercase;font-size:1.1rem;letter-spacing:0.1rem;color:${q.status==='resolved'?'#bbb':'#22a06b'}">● ${q.status||'open'}</span>${q.rating?' · '+fStars(q.rating):''}</div>
+        </div>
+        <div style="flex:1;overflow-y:auto;max-height:38vh;padding:2rem 2.2rem;display:flex;flex-direction:column;">
+          ${msgsHtml || '<p style="font-family:\'Times New Roman\',serif;color:#ccc;font-size:1.3rem;">No messages.</p>'}
+        </div>
+        ${suggHtml}
+        <div style="padding:1.6rem 2.2rem;border-top:1px solid #e8e0d8;background:#fff;">
+          <div style="margin-bottom:1.2rem;">
+            <label style="font-family:'Times New Roman',serif;font-size:1.1rem;letter-spacing:0.2rem;text-transform:uppercase;color:#777;display:block;margin-bottom:0.4rem;">Replying as</label>
+            <select id="forum-role-sel" style="border:none;border-bottom:1px solid #ccc;padding:0.5rem 0;font-family:'Times New Roman',serif;font-size:1.5rem;color:#1a4a1a;background:transparent;outline:none;width:100%;cursor:pointer;">
+              <option value="Chief Executive">Chief Executive</option>
+              <option value="Chief Operating Officer">Chief Operating Officer</option>
+              <option value="Chief Technology Officer">Chief Technology Officer</option>
+              <option value="Chief of Staff">Chief of Staff</option>
+              <option value="Management Team">Management Team</option>
+            </select>
+          </div>
+          <textarea id="forum-reply-ta" style="width:100%;border:1px solid #ddd;padding:1rem 1.2rem;font-family:'Times New Roman',serif;font-size:1.5rem;resize:vertical;min-height:7rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;" placeholder="Reply as The House…" maxlength="1200" onfocus="this.style.borderColor='#800000'" onblur="this.style.borderColor='#ddd'"></textarea>
+          <div style="display:flex;gap:1.2rem;margin-top:1.2rem;flex-wrap:wrap;">
+            <button class="btn-forum-reply" onclick="sendForumReply('${qid}', false)">Send Reply</button>
+            <button class="btn-forum-resolve" onclick="sendForumReply('${qid}', true)">Send &amp; Resolve</button>
+          </div>
+          <div style="font-family:'Times New Roman',serif;font-size:1.3rem;color:#800000;margin-top:0.8rem;min-height:1.6rem;" id="forum-reply-status"></div>
+        </div>`;
+    }
+
+    window.sendForumReply = function(qid, resolve) {
+      const ta   = document.getElementById('forum-reply-ta');
+      const text = ta.value.trim();
+      const role = document.getElementById('forum-role-sel')?.value || 'Chief Executive';
+      const stat = document.getElementById('forum-reply-status');
+      if (!text) { stat.textContent = 'Please enter a reply.'; return; }
+
+      const msgKey = 'k' + Date.now() + Math.random().toString(36).slice(2,6);
+      const msgs   = fRead('messages/'+qid) || {};
+      msgs[msgKey] = { text, author: 'house', role, timestamp: Date.now() };
+      fWrite('messages/'+qid, msgs);
+
+      if (resolve) {
+        const queries = fRead('queries') || {};
+        if (queries[qid]) { queries[qid].status = 'resolved'; fWrite('queries', queries); }
+      }
+
+      stat.textContent = '✓ Sent.';
+      ta.value = '';
+      setTimeout(() => openForumConv(qid), 600);
+    };
+
   </script>
 
 </body>

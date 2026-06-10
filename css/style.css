@@ -795,9 +795,9 @@ a {
   margin-top: 15%;
 }
 .footer_details {
-  padding-left: 22%;
-
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   text-wrap: nowrap;
 }
 .footer_details h5 {

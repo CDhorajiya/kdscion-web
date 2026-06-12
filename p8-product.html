@@ -915,7 +915,7 @@
             const H = panel.clientHeight || 700;
             rendererS = new THREE.WebGLRenderer({ canvas, antialias: true });
             rendererS.setClearColor(0xe8e8e8, 1);
-            rendererS.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 

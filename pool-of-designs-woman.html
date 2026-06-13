@@ -78,11 +78,13 @@
         .product-item {
             position: relative;
             cursor: pointer;
-            z-index: 1;
             transition: transform 0.4s ease;
         }
         .product-item:hover {
             transform: scale(1.05);
+        }
+        .product-item.popup-active {
+            z-index: 10;
         }
         .img-wrap {
             position: relative;

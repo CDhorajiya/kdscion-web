@@ -1039,8 +1039,8 @@
                     });
                 }
             }
-            bottomMeshes = [...twoToneSet].map(n => n);
-            topMeshes    = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
+            topMeshes    = [...twoToneSet].map(n => n);
+            bottomMeshes = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
         }
 
         function initFabricData() {

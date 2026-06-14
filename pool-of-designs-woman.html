@@ -1222,8 +1222,17 @@
     <script>
         document.querySelectorAll('.product-item[data-product-url]').forEach(item => {
             item.addEventListener('click', () => {
+                sessionStorage.setItem('poolScrollY', window.scrollY);
                 window.location.href = item.dataset.productUrl;
             });
+        });
+
+        window.addEventListener('pageshow', () => {
+            const y = sessionStorage.getItem('poolScrollY');
+            if (y !== null) {
+                window.scrollTo(0, parseInt(y));
+                sessionStorage.removeItem('poolScrollY');
+            }
         });
 
         const items = document.querySelectorAll('.product-item');

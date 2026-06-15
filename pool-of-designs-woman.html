@@ -235,6 +235,30 @@
         .product-item[data-design-type].hidden {
             display: none;
         }
+
+        /* ── Stacked-fold indicator for designs with variations ── */
+        .product-item.has-variations .img-wrap::before,
+        .product-item.has-variations .img-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            pointer-events: none;
+            z-index: 5;
+        }
+        /* shadow layer behind the fold */
+        .product-item.has-variations .img-wrap::before {
+            border-width: 0 0 28px 28px;
+            border-color: transparent transparent rgba(30,20,5,0.20) transparent;
+        }
+        /* fold flap on top */
+        .product-item.has-variations .img-wrap::after {
+            border-width: 0 0 22px 22px;
+            border-color: transparent transparent rgba(242,235,222,0.92) transparent;
+        }
     </style>
 </head>
 <body>
@@ -266,7 +290,7 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p1 design variations.html">
+                <div class="product-item has-variations" data-design-type="solo" data-product-url="p1 design variations.html">
                 <div class="img-wrap">
                 <img src="images/KDscion-p1-full sleeve classic shirt_Colorway A.webp"
                 alt="KDscion p1 full sleeve classic shirt">

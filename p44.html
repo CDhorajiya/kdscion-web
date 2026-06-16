@@ -723,6 +723,23 @@
         .skin-btn:hover { background: #eee; border-color: #bbb; color: #1a1a1a; }
         .skin-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
 
+
+        /* ── Two-tone zone labels ── */
+        .fabric-zone-label {
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 0.6rem 0 0.4rem 0;
+            text-align: center;
+        }
+        .fabric-zone-divider {
+            flex-shrink: 0;
+            height: 1px;
+            background: #999;
+            margin: 1.6rem 0 0 0;
+        }
     </style>
 </head>
 <body>
@@ -779,8 +796,18 @@
                 <div class="fabric-panel" data-sku="KD-P44-FSSD">
                 <p class="fabric-panel-title">Select Fabric</p>
 
-                <div class="fabric-list">
+                <div id="zone-main">
+                <p class="fabric-zone-label">Main Design</p>
+                <div class="fabric-list" id="fabric-list-top">
+                </div>
+                </div>
 
+                <div class="fabric-zone-divider" id="zone-divider"></div>
+
+                <div id="zone-twotone">
+                <p class="fabric-zone-label">Two Tone</p>
+                <div class="fabric-list" id="fabric-list-bottom">
+                </div>
                 </div>
 
                 <!-- Price + Add to Cart -->
@@ -798,6 +825,7 @@
     <script type="module">
         import * as THREE from 'https://esm.sh/three@0.169.0';
         import { initConfigurator, selectFabric, addSelectedToCart, initGoToCollection } from './js/configurator.js';
+        import { renderFabricList, getMergedTwotoneCatalog } from './js/fabrics.js';
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
@@ -805,7 +833,10 @@
         const canvas = document.getElementById('viewer-canvas');
 
         const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
-        if (sku) initConfigurator(sku);
+        if (sku) {
+            initConfigurator(sku);
+            renderFabricList(document.getElementById('fabric-list-bottom'), sku, 'two-tone', getMergedTwotoneCatalog());
+        }
         document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
         document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
         initGoToCollection();
@@ -939,6 +970,7 @@
                             origBodyMats.set(node.uuid, node.material.clone());
                     }
                 });
+                splitMeshes();
                 preSampleAll();
             }, (xhr) => {
                 if (_vt && xhr.total) _vt.textContent = Math.round(xhr.loaded / xhr.total * 100) + '%';
@@ -995,7 +1027,45 @@
             uvNormCache = { gMinU, gMinV, gScale };
         }
 
-        function applyFabric(texturePath) {
+                /* ── Two-tone mesh groups ── */
+        let topMeshes    = [];
+        let bottomMeshes = [];
+
+        function splitMeshes() {
+            const cloth = [];
+            currentModel.traverse((node) => {
+                if (!node.isMesh || isBodyMesh(node)) return;
+                const box    = new THREE.Box3().setFromObject(node);
+                const center = box.getCenter(new THREE.Vector3());
+                cloth.push({ node, center });
+                if (!origGeometries.has(node.uuid))
+                    origGeometries.set(node.uuid, node.geometry.clone());
+            });
+            const twoToneSet = new Set();
+            const TWOTONE_RE = /two[\s-]?tone/i;
+            cloth.forEach(({ node }) => {
+                if (TWOTONE_RE.test(node.name || '')) twoToneSet.add(node);
+            });
+            if (twoToneSet.size === 0) {
+                const matCount = new Map();
+                cloth.forEach(({ node }) => {
+                    const name = node.material?.name || '';
+                    matCount.set(name, (matCount.get(name) || 0) + 1);
+                });
+                if (matCount.size > 1) {
+                    const primaryMat = [...matCount.entries()].sort((a, b) => b[1] - a[1])[0][0];
+                    cloth.forEach(({ node }) => {
+                        const name = node.material?.name || '';
+                        if (name && name !== primaryMat) twoToneSet.add(node);
+                    });
+                }
+            }
+            bottomMeshes = [...twoToneSet].map(n => n);
+            topMeshes    = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
+        }
+
+        function applyFabricToMeshSet(texturePath, meshSet) {
+            if (!texturePath || !meshSet.length) return;
             texLoader.load(texturePath, (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -1007,8 +1077,7 @@
                 initFabricData();
                 const { gMinU, gMinV, gScale } = uvNormCache;
 
-                currentModel.traverse((node) => {
-                    if (!node.isMesh || isBodyMesh(node)) return;
+                meshSet.forEach((node) => {
                     const orig = origGeometries.get(node.uuid);
                     if (!orig) return;
                     const geo = orig.clone();
@@ -1031,7 +1100,7 @@
                         side: THREE.DoubleSide,
                     });
                 });
-                console.log('[fabric] applied:', texturePath);
+                console.log('[fabric] applied to', meshSet.length, 'meshes:', texturePath);
             }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
         }
 
@@ -1043,48 +1112,70 @@
             fabricPreview.classList.remove('visible');
         });
 
-        /* ── Delegated listeners on fabric-list (works after dynamic render) ── */
-        const fabricList = document.querySelector('.fabric-list');
-        fabricList.addEventListener('click', (e) => {
-            // Category card toggle
-            const card = e.target.closest('.category-card');
-            if (card) {
-                e.stopPropagation();
-                const cat = card.closest('.fabric-category');
-                const isOpen = cat.classList.contains('open');
-                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
-                if (!isOpen) { cat.classList.add('open'); fabricList.classList.add('has-open'); }
-                else         { fabricList.classList.remove('has-open'); }
-                return;
-            }
-            // Sub-category header toggle
-            const header = e.target.closest('.subcategory-header');
-            if (header) {
-                e.stopPropagation();
-                const sub    = header.closest('.fabric-subcategory');
-                const isOpen = sub.classList.contains('open');
-                sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
-                if (!isOpen) sub.classList.add('open');
-                return;
-            }
-            // Swatch click
-            const swatch = e.target.closest('.swatch-card');
-            if (swatch) {
-                e.stopPropagation();
-                fabricList.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
-                swatch.classList.add('active');
-                applyFabric(swatch.dataset.texture);
-                if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
-                fabricPreviewImg.src = swatch.dataset.texture;
-                fabricPreview.classList.add('visible');
-            }
-        });
+                /* ── Delegated listeners for each two-tone fabric zone ── */
+        const fabricListTop    = document.getElementById('fabric-list-top');
+        const fabricListBottom = document.getElementById('fabric-list-bottom');
 
-        /* ── Click outside: collapse ── */
+        const zoneMain    = document.getElementById('zone-main');
+        const zoneDivider = document.getElementById('zone-divider');
+        const zoneTwoTone = document.getElementById('zone-twotone');
+
+        function showEl(el, show) { el.style.display = show ? '' : 'none'; }
+        function restoreZones() {
+            showEl(zoneMain, true); showEl(zoneDivider, true); showEl(zoneTwoTone, true);
+        }
+
+        function attachFabricHandler(listEl, getMeshSet, otherZoneEls) {
+            listEl.addEventListener('click', (e) => {
+                const card = e.target.closest('.category-card');
+                if (card) {
+                    e.stopPropagation();
+                    const cat    = card.closest('.fabric-category');
+                    const isOpen = cat.classList.contains('open');
+                    listEl.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                    if (!isOpen) {
+                        cat.classList.add('open');
+                        listEl.classList.add('has-open');
+                        otherZoneEls.forEach(el => showEl(el, false));
+                    } else {
+                        listEl.classList.remove('has-open');
+                        restoreZones();
+                    }
+                    return;
+                }
+                const header = e.target.closest('.subcategory-header');
+                if (header) {
+                    e.stopPropagation();
+                    const sub    = header.closest('.fabric-subcategory');
+                    const isOpen = sub.classList.contains('open');
+                    sub.closest('.swatch-grid').querySelectorAll('.fabric-subcategory').forEach(s => s.classList.remove('open'));
+                    if (!isOpen) sub.classList.add('open');
+                    return;
+                }
+                const swatch = e.target.closest('.swatch-card');
+                if (swatch) {
+                    e.stopPropagation();
+                    listEl.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
+                    swatch.classList.add('active');
+                    applyFabricToMeshSet(swatch.dataset.texture, getMeshSet());
+                    if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
+                    fabricPreviewImg.src = swatch.dataset.texture;
+                    fabricPreview.classList.add('visible');
+                }
+            });
+        }
+
+        attachFabricHandler(fabricListTop,    () => topMeshes,    [zoneTwoTone, zoneDivider]);
+        attachFabricHandler(fabricListBottom, () => bottomMeshes, [zoneMain,    zoneDivider]);
+
+        /* ── Click outside: collapse both zones and restore visibility ── */
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.fabric-category')) {
-                fabricList.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
-                fabricList.classList.remove('has-open');
+                [fabricListTop, fabricListBottom].forEach(listEl => {
+                    listEl.querySelectorAll('.fabric-category').forEach(c => c.classList.remove('open'));
+                    listEl.classList.remove('has-open');
+                });
+                restoreZones();
             }
         });
 

@@ -139,6 +139,31 @@
             right: 0;
         }
         .product-desc::after { display: none; }
+        .product-item.has-variations .product-desc::before { display: none; }
+        .var-dots {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .product-column:last-child .var-dots { left: auto; right: 0; }
+        .var-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            animation: dot-blink 3s ease-in-out infinite;
+        }
+        .var-dot:nth-child(1) { animation-delay: 0s; }
+        .var-dot:nth-child(2) { animation-delay: 1s; }
+        .var-dot:nth-child(3) { animation-delay: 2s; }
+        @keyframes dot-blink {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 1; }
+        }
         .product-item.popup-active .product-desc { opacity: 1; }
         .product-desc__title {
             font-family: "Times New Roman", Times, serif;
@@ -901,6 +926,16 @@
 
     <script>
         document.querySelectorAll('.product-item[data-product-url]').forEach(item => {
+            if (item.dataset.productUrl.includes('design variations')) {
+                item.classList.add('has-variations');
+                const desc = item.querySelector('.product-desc');
+                if (desc) {
+                    const dots = document.createElement('span');
+                    dots.className = 'var-dots';
+                    dots.innerHTML = '<span class="var-dot"></span><span class="var-dot"></span><span class="var-dot"></span>';
+                    desc.prepend(dots);
+                }
+            }
             item.addEventListener('click', () => {
                 sessionStorage.setItem('poolScrollY', window.scrollY);
                 window.location.href = item.dataset.productUrl;

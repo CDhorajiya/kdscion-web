@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram.png" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZJT42EG6J');
+    </script>
+
+    <title>P107 Design Variations — KD Scion</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KD: The House of Scion">
+    <meta property="og:title" content="P107 Design Variations — KD Scion">
+    <meta property="og:description" content="Design variations of the P107 design. Every piece tailored to your exact measurements.">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-p107-sleeveless top_Colorway A.webp">
+    <meta property="og:url" content="https://kdscion.com/p107 design variations.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="P107 Design Variations — KD Scion">
+    <meta name="twitter:description" content="Design variations of the P107 design. Every piece tailored to your exact measurements.">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-p107-sleeveless top_Colorway A.webp">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .monogram img {filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);}
+        .nav .brand-name h1 {font-size: 2.1rem; color: rgb(128, 0, 0);}
+        h3.title {font-family: "Times New Roman", Times, serif; font-size: 3rem; font-weight: 400; letter-spacing: 15px; color: #1a1a1a; margin-bottom: 1rem;}
+        .title-sub {font-family: "Times New Roman", Times, serif; font-size: 1.9rem; font-weight: 400; font-style: normal; color: #1a1a1a; letter-spacing: 6px; margin: 0 0 4rem 0; text-align: center;}
+        .product-gallery {display: flex; gap: 4rem; margin-top: 0; margin-right: 5%;}
+        .product-column {display: flex; flex-direction: column; gap: 4rem; flex: 1;}
+        .product-item {position: relative; cursor: pointer; transition: transform 0.4s ease;}
+        .product-item:hover {transform: scale(1.05);}
+        .product-item.popup-active {z-index: 10;}
+        .img-wrap {position: relative; width: 100%; aspect-ratio: 1679 / 2042; overflow: hidden;}
+        .img-wrap img {width: 100%; height: 100%; object-fit: contain; display: block;}
+        .product-desc {position: absolute; top: 50%; left: calc(100% - 40px); transform: translateY(-50%); white-space: nowrap; display: flex; flex-direction: column; align-items: flex-start; padding-left: 14px; opacity: 0; pointer-events: none; transition: opacity 0.12s ease; z-index: 300;}
+        .product-column:last-child .product-desc {left: auto; right: calc(100% - 180px); align-items: flex-end; padding-left: 0; padding-right: 14px;}
+        .product-desc::before {content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; border-radius: 50%; background: rgba(40,25,5,0.8); box-shadow: 0 0 4px rgba(40,25,5,0.4);}
+        .product-column:last-child .product-desc::before {left: auto; right: 0;}
+        .product-desc::after {display: none;}
+        .product-item.popup-active .product-desc {opacity: 1;}
+        .product-desc__title {font-family: "Times New Roman", Times, serif; font-size: 1.45rem; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; color: rgba(30,20,5,0.9); margin: 0; white-space: nowrap;}
+        .product-desc__divider {display: none;}
+        .product-desc__sub {display: block; font-family: "Times New Roman", Times, serif; font-size: 1.2rem; letter-spacing: 2px; color: rgba(30,20,5,0.7); text-transform: uppercase; margin: 0.5rem 0 0 0; white-space: normal; max-width: 160px;}
+        .product-column:last-child .product-desc__title, .product-column:last-child .product-desc__sub {text-align: right;}
+        @media (max-width: 768px) {
+            .snap-gallery {flex-direction: column; gap: 2rem; width: 94%; padding: 0;}
+            .column {gap: 2rem;}
+            .container-snaps h3 {letter-spacing: 4px; font-size: 2.4rem;}
+            .product-desc {position: static !important; transform: none !important; opacity: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0.35rem !important; padding: 0.55rem 0.5rem 0.4rem !important; background: none !important; pointer-events: none !important;}
+            .product-column:last-child .product-desc {left: auto !important; right: auto !important; align-items: center !important; padding-left: 0.5rem !important; padding-right: 0.5rem !important;}
+            .product-desc::before {display: none !important;}
+            .product-desc__title {display: none !important;}
+            .product-desc__sub {font-size: 1rem !important; color: rgba(30,20,5,0.85) !important; letter-spacing: 1.5px !important; margin: 0 !important; white-space: normal !important; max-width: none !important; text-align: center !important;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav collapsible">
+            <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+            <svg class="icon icon--white nav__toggler"><use xlink:href="images/sprite.svg#menu"></use></svg>
+            <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+        </nav>
+    </header>
+    <div class="container-snaps">
+        <h3 class="title">DESIGN VARIATIONS</h3>
+        <p class="title-sub">CUSTOM | PREMIUM | UNIQUE</p>
+        <div class="product-gallery snap-gallery">
+            <!-- ── Column 1 ── -->
+            <div class="product-column column column1">
+                <div class="product-item" data-design-type="solo" data-product-url="p107.html">
+                    <div class="img-wrap">
+                        <img src="images/KDscion-p107-sleeveless top_Colorway A.webp"
+                             alt="KDscion p107 sleeveless top">
+                    </div>
+                    <div class="product-desc">
+                        <p class="product-desc__title">P107 | KD Scion</p>
+                        <div class="product-desc__divider"></div>
+                        <p class="product-desc__sub">sleeveless top</p>
+                    </div>
+                </div>
+            </div>
+            <!-- ── Column 2 ── -->
+            <div class="product-column column column2">
+                <div class="product-item" data-design-type="solo" data-product-url="p108.html">
+                    <div class="img-wrap">
+                        <img src="images/KDscion-p108-full sleeve top_Colorway A.webp"
+                             alt="KDscion p108 full sleeve top">
+                    </div>
+                    <div class="product-desc">
+                        <p class="product-desc__title">P108 | KD Scion</p>
+                        <div class="product-desc__divider"></div>
+                        <p class="product-desc__sub">full sleeve top</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer_details">
+            <a href="foundermessage.html"><h5>About House</h5></a>
+            <a href="queryforum.html"><h5>Contact House</h5></a>
+            <a href="shipping.html"><h5>Shipping</h5></a>
+            <a href="returns.html"><h5>Returns</h5></a>
+            <a href="privacy.html"><h5>Privacy</h5></a>
+        </div>
+        <div class="footer_branding">
+            <div class="monogram"><a href="index.html"><img src="/images/KD_monogram.png" alt="KD monogram home page link"></a></div>
+            <p>Copyright 2026 KING DHORAJIYA</p>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.product-item[data-product-url]').forEach(item => {
+            item.addEventListener('click', () => {
+                sessionStorage.setItem('varScrollY', window.scrollY);
+                window.location.href = item.dataset.productUrl;
+            });
+        });
+        window.addEventListener('pageshow', () => {
+            const y = sessionStorage.getItem('varScrollY');
+            if (y !== null) { window.scrollTo(0, parseInt(y)); sessionStorage.removeItem('varScrollY'); }
+        });
+        const items = document.querySelectorAll('.product-item');
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => { items.forEach(el => el.classList.remove('popup-active')); item.classList.add('popup-active'); });
+            item.addEventListener('mouseleave', () => { item.classList.remove('popup-active'); });
+        });
+    </script>
+    <script src="js/bundle.js"></script>
+</body>
+</html>

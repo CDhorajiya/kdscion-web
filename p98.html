@@ -1035,6 +1035,9 @@
             const cloth = [];
             currentModel.traverse((node) => {
                 if (!node.isMesh || isBodyMesh(node)) return;
+                const nLow = (node.name || '').toLowerCase();
+                const mLow = (node.material?.name || '').toLowerCase();
+                if (nLow.includes('button') || mLow.includes('button')) return;
                 const box    = new THREE.Box3().setFromObject(node);
                 const center = box.getCenter(new THREE.Vector3());
                 cloth.push({ node, center });

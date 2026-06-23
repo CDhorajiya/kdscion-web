@@ -1,3 +1,113 @@
+<!--
+  ================================================================
+  p60.html  —  Two-Tone Product Page Template
+  ================================================================
+
+  WHAT THIS PAGE DOES
+  --------------------
+  This is the standard TWO-TONE product page. It is used as the
+  template for all two-tone designs (products where the garment
+  has two separate fabric zones that can be set to different fabrics).
+
+  A "two-tone" garment means two parts of the garment use different
+  fabrics — e.g. the bodice is Cotton 1 and the skirt is Linen 2.
+
+  HOW THE PAGE IS STRUCTURED (top to bottom)
+  --------------------------------------------
+  1. <head>  — Meta tags, OG/Twitter cards (for social link previews),
+               Google Fonts link, and a large <style> block.
+
+  2. Background iframe — A hidden <iframe> loads pool-of-designs-woman.html
+     as a blurred background. This gives the page a gallery wallpaper effect
+     while the product is in the foreground.
+
+  3. Navigation bar — Same KD logo + hamburger as every other page.
+
+  4. Product title row:
+       - Garment name (h2)
+       - Bespoke Boutique link
+       - Breadcrumb: "Pool of Designs · KDscion-p60 · The House of Scion"
+       - Skin tone buttons: Fair / Medium / Tan / Dark
+
+  5. Main split layout (side by side):
+       LEFT  → .viewer-panel  — the 3D model canvas (WebGL via Three.js)
+       RIGHT → .fabric-col    — the fabric selection panel
+
+  6. The fabric panel (RIGHT side) has TWO zones because this is two-tone:
+       ┌─ zone-main ──────────────────────────────────────────────┐
+       │  MAIN DESIGN  — fabric selector for the primary zone     │
+       ├─ zone-divider ────────────────────────────────────────────┤
+       │  TWO TONE  — fabric selector for the contrast zone       │
+       └─ zone-twotone ────────────────────────────────────────────┘
+       When the customer opens one zone's fabric list, the other zone
+       collapses (hidden) so the panel doesn't get too crowded.
+
+  7. JavaScript (ES module) at the bottom handles everything:
+
+     a) FABRIC CONFIGURATION (configurator.js + fabrics.js)
+        → initConfigurator(sku) initialises the pricing and fabric list
+        → renderFabricList renders the two-tone zone's fabric list
+        → addSelectedToCart saves the session and adds to cart
+
+     b) THREE.JS 3D VIEWER
+        → Creates a WebGL renderer, scene, camera, lights, orbit controls
+        → Loads the Draco-compressed GLB model
+        → Stores original materials so skin tone can be restored
+        → Renders at 60fps in an animation loop
+
+     c) SKIN TONE SYSTEM
+        → Pre-loads three reference GLBs (medium/tan/dark woman.glb)
+        → Samples the skin colour from each reference model's body mesh
+        → On button click, applies that colour to the body mesh of the
+          current garment model, leaving cloth meshes untouched
+
+     d) FABRIC APPLICATION (UV normalisation)
+        → CLO3D exports UV coordinates in millimetre units (not 0–1 range)
+        → The applyFabricToMeshSet() function remaps the UVs to 0–1
+          so fabric textures tile correctly across the garment surface
+        → Each fabric zone (main / two-tone) applies textures only to
+          its own set of meshes (topMeshes / bottomMeshes)
+
+     e) splitMeshes()  — THE KEY TWO-TONE FUNCTION
+        → Examines all non-body meshes in the loaded GLB
+        → Groups them by material name
+        → The MINORITY material group → topMeshes    → "Main Design" zone
+        → The MAJORITY material group → bottomMeshes → "Two Tone" zone
+        This auto-detects the split without any manual configuration.
+
+     f) DESIGN ONLY / DESIGN DETAILS buttons
+        → "Design Only" toggles body-mesh visibility (hide the mannequin)
+        → "Design Details" shows annotation dots & leader lines on the model
+
+  KEY IDENTIFIERS
+  ----------------
+  data-sku="KD-P60-FSSD"         → the product's unique SKU
+  id="viewer-canvas"              → the <canvas> element Three.js renders into
+  id="zone-main"                  → main design fabric zone container
+  id="fabric-list-top"            → fabric list inside the main zone
+  id="zone-twotone"               → two-tone zone container
+  id="fabric-list-bottom"         → fabric list inside the two-tone zone
+  id="cfg-add-btn"                → "ADD TO COLLECTION" button
+  id="cfg-goto-btn"               → "GO TO COLLECTION" button (unlocks after add)
+
+  HOW THIS TEMPLATE IS USED
+  --------------------------
+  All two-tone product pages (p11.html, p13.html, p60.html, p126.html, etc.)
+  are generated from this file by substituting:
+    - KDscion-p60 → KDscion-pN
+    - Full Sleeve Sheath Dress → <garment name>
+    - KD-P60-FSSD → <new SKU>
+    - 'full sleeve sheath dress.glb' → '<new garment>.glb'
+
+  RELATED FILES
+  -------------
+  js/configurator.js  → initConfigurator(), addSelectedToCart(), initGoToCollection()
+  js/fabrics.js       → renderFabricList(), getMergedTwotoneCatalog()
+  js/prices.js        → getDesignPrice(), getFabricPrice()
+  js/api.js           → backend API calls
+  3d/KDscion-p60-*.glb → the Draco-compressed 3D model file
+  images/KDscion-p60-*_Colorway A.webp → the snapshot shown in the pool page
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>

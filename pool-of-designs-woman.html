@@ -1,3 +1,75 @@
+<!--
+  ================================================================
+  pool-of-designs-woman.html  —  The Main Product Gallery Page
+  ================================================================
+
+  WHAT THIS PAGE DOES
+  --------------------
+  This is the primary browsing page of the KD Scion website.
+  It shows all available designs as a 3-column photo gallery.
+  Customers click a design snapshot to open its individual product
+  page (pN.html) where they can choose a fabric and add it to
+  their collection.
+
+  HOW DESIGNS ARE ORGANISED
+  --------------------------
+  Products are laid out in THREE equal columns using CSS Flexbox.
+  Column 1 (left), Column 2 (middle), Column 3 (right).
+
+  Each design card looks like this in HTML:
+
+    <div class="product-item"
+         data-design-type="solo"
+         data-product-url="p60.html">       ← which page to open on click
+      <div class="img-wrap">
+        <img src="images/KDscion-p60-...webp" alt="…">   ← the snapshot
+      </div>
+      <div class="product-desc">            ← hover label (desktop only)
+        <p class="product-desc__title">P60 | KD Scion</p>
+        <div class="product-desc__divider"></div>
+        <p class="product-desc__sub">full sleeve sheath dress</p>
+      </div>
+    </div>
+
+  data-design-type values:
+    "solo"     — a standalone design or the lead design of a variation set
+    "pair"     — two designs shown together (e.g. top + trouser)
+    "triplet"  — three related designs
+
+  DESIGN VARIATIONS (three-dot blinking indicator)
+  --------------------------------------------------
+  If a product's data-product-url contains "design variations", the card
+  shows THREE blinking dots instead of one. This tells the customer that
+  clicking will open a page with multiple related designs to choose from.
+  The blinking animation is powered by CSS keyframes + JS at the bottom.
+
+  FILTER BUTTONS
+  ---------------
+  The "All / Solo / Pair / Triplet" buttons at the top filter the gallery
+  by data-design-type. When a filter button is clicked, cards that don't
+  match the selected type get a .hidden class (display:none via CSS).
+
+  SCROLL POSITION MEMORY
+  -----------------------
+  When a customer clicks a design and navigates to the product page, then
+  presses Back, the page scrolls back to where they were. This is done by
+  saving window.scrollY to sessionStorage before navigation and restoring
+  it on pageshow (which fires on back-navigation).
+
+  HOW TO ADD A NEW PRODUCT
+  -------------------------
+  1. Add a new <div class="product-item"> block to the correct column.
+  2. Set data-product-url to the product page filename.
+  3. Point the <img> src to the WebP snapshot in the images/ folder.
+  4. Run the pool-update Python script (or use the batch workflow).
+
+  RELATED FILES
+  -------------
+  css/style.css          → shared styles including .product-item, .product-gallery
+  pN.html                → individual product pages linked from here
+  pN design variations.html  → variation-set pages linked from variation cards
+  images/KDscion-pN-*.webp   → snapshot images shown in the gallery cards
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>

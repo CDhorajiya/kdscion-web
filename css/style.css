@@ -1,3 +1,76 @@
+/*
+ * ============================================================
+ *  style.css  —  Global Stylesheet for KD Scion
+ * ============================================================
+ *
+ *  WHAT THIS FILE DOES
+ *  --------------------
+ *  This is the main CSS file loaded on every page of the website.
+ *  It defines typography, layout, components, and interactive states
+ *  that are shared across all pages.
+ *
+ *  FILE STRUCTURE (in order)
+ *  --------------------------
+ *  1.  :root variables     — Design tokens (colours, border-radius).
+ *                            Change a colour here to update it everywhere.
+ *
+ *  2.  Typography          — Base font size, headings, paragraphs, links.
+ *                            Note: html { font-size: 62.5% } makes 1rem = 10px,
+ *                            so 1.6rem = 16px, 2.4rem = 24px, etc.
+ *
+ *  3.  Navigation bar      — Top nav (.nav), mobile hamburger toggle (.nav__toggler),
+ *                            Bespoke Boutique dropdown (.navigation, .bb).
+ *
+ *  4.  Labels & Lists      — Reusable label/badge components and list resets.
+ *
+ *  5.  Icons               — SVG icon containers and colour modifiers.
+ *
+ *  6.  Buttons             — .btn base + colour variants (primary, secondary, accent).
+ *
+ *  7.  Inputs              — Form input fields.
+ *
+ *  8.  Cards               — Generic card component (.card, .card__header, .card__body).
+ *
+ *  9.  Grids               — Responsive 2-column and 3-column grid layouts.
+ *
+ *  10. Blocks              — Large feature sections (text + image side by side).
+ *
+ *  11. Collapsibles        — Accordion / expandable sections.
+ *
+ *  12. Hero                — Full-screen hero banner on the homepage.
+ *
+ *  13. Testimonials        — Customer quote cards.
+ *
+ *  14. Call-outs           — Highlighted info banners.
+ *
+ *  15. Nav bar (detail)    — Extended nav styles, sticky behaviour.
+ *
+ *  16. Footer              — Page footer layout.
+ *
+ *  17. Media queries       — Responsive breakpoints (mainly @media min-width:1024px
+ *                            to switch from mobile to desktop layout).
+ *
+ *  18. Pool page           — Styles specific to the pool-of-designs-woman.html layout
+ *                            (snap-gallery, product-item cards, fabric panel, etc.).
+ *
+ *  HOW REM UNITS WORK HERE
+ *  -------------------------
+ *  The rule  html { font-size: 62.5%; }  converts the browser's default
+ *  16px base font to 10px, so:
+ *    1rem  = 10px
+ *    1.6rem = 16px
+ *    2.4rem = 24px
+ *    4.8rem = 48px
+ *  This makes it easy to read off the intended pixel size from the CSS.
+ *
+ *  COLOUR SYSTEM
+ *  -------------
+ *  Colours are defined as CSS custom properties (variables) in :root below.
+ *  Use var(--color-primary) in any rule instead of hard-coding the hex value.
+ *  This way, changing a brand colour in one place updates it everywhere.
+ */
+
+/* ── 1. Design tokens (CSS custom properties) ────────────────────────────── */
 :root {
   --color-primary: #2584ff;
   --color-secondary: #00d9ff;

@@ -1,3 +1,63 @@
+<!--
+  ================================================================
+  p100.html  —  Single-Tone Product Page Template
+  ================================================================
+
+  WHAT THIS PAGE DOES
+  --------------------
+  This is the standard SINGLE-TONE product page. Used for garments
+  that have only ONE fabric zone — the customer picks one fabric and
+  it applies to the entire garment.
+
+  HOW IT DIFFERS FROM THE TWO-TONE TEMPLATE (p60.html)
+  ------------------------------------------------------
+  The two-tone template (p60.html) has:
+    - TWO fabric zones: "Main Design" + "Two Tone"
+    - splitMeshes()  — auto-splits the 3D model into two mesh groups
+    - attachFabricHandler() — separate click handlers per zone
+
+  This single-tone template has:
+    - ONE fabric zone: a single ".fabric-list" div
+    - No splitMeshes() — all cloth meshes are treated the same
+    - One delegated click listener on the single fabric list
+    - applyFabric(texturePath) applies the texture to ALL cloth meshes
+
+  STRUCTURE OVERVIEW
+  ------------------
+  Same layout as p60.html (background iframe, nav, title row, split view)
+  EXCEPT the fabric panel has one zone:
+
+    <div class="fabric-panel" data-sku="KD-P100-FSSBLC">
+      <p class="fabric-panel-title">Select Fabric</p>
+      <div class="fabric-list">          ← single fabric list, no zones
+      </div>
+      <div class="cfg-actions">          ← price + add/go buttons
+    </div>
+
+  UV NORMALISATION (applyFabric)
+  --------------------------------
+  CLO3D exports UV coordinates in mm units (often negative values).
+  The applyFabric() function:
+    1. On first call, scans all cloth mesh UVs to find the global min/max.
+    2. Remaps each UV coordinate from mm-space to 0–1 range.
+    3. Applies the selected fabric texture using the remapped UVs.
+  This ensures the fabric pattern tiles consistently across the garment,
+  regardless of the model's original export scale.
+
+  HOW THIS TEMPLATE IS USED
+  --------------------------
+  All single-tone product pages are generated from this file by substituting:
+    - KDscion-p100 → KDscion-pN
+    - Full Sleeve Single Breasted Long Coat → <garment name>
+    - KD-P100-FSSBLC → <new SKU>
+    - 'full sleeve single breasted long coat.glb' → '<new garment>.glb'
+
+  RELATED FILES
+  -------------
+  js/configurator.js  → initConfigurator(), addSelectedToCart(), initGoToCollection()
+  js/fabrics.js       → renderFabricList() (called by initConfigurator)
+  p60.html            → the two-tone variant (use this as template for two-tone products)
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -74,7 +74,7 @@ export const FABRIC_CATALOG = [
         id: 'plain',
         label: 'Plain Collection',
         swatches: [
-          { id: 'cotton-1', label: 'Cotton 1', image: 'images/cotton-1.webp' },
+          { id: 'cotton-1', label: 'Cotton 1', image: 'images/cotton-1.webp', opacity: 0.7 },
           { id: 'cotton-2', label: 'Cotton 2', image: 'images/cotton-2.webp' },
         ],
       },
@@ -517,7 +517,7 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
       // data-texture → the image applied to the 3D model when clicked.
       // data-fabric-id → the ID passed to selectFabric() and saved to the session.
       const swatchCards = visibleSwatches.map(s => `
-        <div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}">
+        <div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${s.opacity ?? 1}">
           <img src="${s.image}" alt="${s.label}">
           <span>${s.label}</span>
         </div>`).join('');

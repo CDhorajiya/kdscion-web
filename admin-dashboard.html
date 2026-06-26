@@ -943,6 +943,7 @@
 
     // ── Price metadata ────────────────────────────────────────────────────────
     const DESIGN_META = {
+  'KD-P1-FSS': 'Full Sleeve Classic Shirt',
   'KD-P1-FSCS': 'Full Sleeve Classic Shirt',
   'KD-P2-SLCS': 'Sleeveless Classic Shirt',
   'KD-P3-FSOD': 'Full Sleeve Overall Dress',
@@ -974,6 +975,7 @@
   'KD-P29-FSCBD': 'Full Sleeve Classic Fit Buttonup Dress',
   'KD-P30-SLCBD': 'Sleeveless Classic Fit Buttonup Dress',
   'KD-P31-FSLBD': 'Full Sleeve Loose Fit Buttonup Dress',
+  'KD-P32-QAD': 'Quarter Sleeve A-Line Dress - Two Tone',
   'KD-P32-SLLBD': 'Sleeveless Loose Fit Buttonup Dress',
   'KD-P33-QSAD': 'Quarter Shirring Sleeve A-line Dress',
   'KD-P34-SLSD': 'Sleeveless Shift Dress',
@@ -1077,7 +1079,16 @@
   'KD-P132-SLC': 'Sleeveless Long Coat',
   'KD-P133-SShD133': 'Sleeveless Sheath Dress',
   'KD-P134-SDLBD': 'Sleeveless Double Layer Bodycon Dress',
-  'KD-P279P280-FSCT': 'Full Sleeve Classic Shirt and Classic Trouser',
+  'KD-P135-FSSHD135': 'Full Sleeve Sheath Dress',
+  'KD-P136-QShD136': 'Quarter Sheath Dress',
+  'KD-P137-FSGT': 'Full Sleeve Gown-Translucent',
+  'KD-P138-SGT': 'Sleeveless Gown-Translucent',
+  'KD-P139-FSLGT': 'Full Sleeve Long Gown-Translucent',
+  'KD-P140-SLGT': 'Sleeveless Long Gown-Translucent',
+  'KD-P141-ST141': 'Sleeveless Top',
+  'KD-P142-SSDEWT': 'Sleeveless Shift Dress-Elastic Waist-Translucent',
+  'KD-P143-STEE': 'Sleeveless Top-Elastic Edge',
+  'KD-P144-STEW': 'Sleeveless Top-Elastic Waist',
 };
     const FABRIC_META = {
       'cotton-1':       'Cotton Plain 1',
@@ -1151,6 +1162,7 @@
   'KD-P26-FSAD',
   'KD-P27-SLAD',
   'KD-P28-SLAD',
+  'KD-P32-QAD',
   'KD-P33-QSAD',
   'KD-P35-SLTSD',
   'KD-P38-SLSD',
@@ -1213,10 +1225,17 @@
   'KD-P131-FSLC',
   'KD-P132-SLC',
   'KD-P133-SShD133',
-  'KD-P134-SDLBD'
+  'KD-P134-SDLBD',
+  'KD-P135-FSSHD135',
+  'KD-P136-QShD136',
+  'KD-P137-FSGT',
+  'KD-P138-SGT',
+  'KD-P139-FSLGT',
+  'KD-P140-SLGT'
 ]);
 
 const ALL_DESIGNS = [
+  { sku: 'KD-P1-FSS', name: 'Full Sleeve Classic Shirt', group: 'woman' },
   { sku: 'KD-P1-FSCS', name: 'Full Sleeve Classic Shirt', group: 'woman' },
   { sku: 'KD-P2-SLCS', name: 'Sleeveless Classic Shirt', group: 'woman' },
   { sku: 'KD-P3-FSOD', name: 'Full Sleeve Overall Dress', group: 'woman' },
@@ -1248,6 +1267,7 @@ const ALL_DESIGNS = [
   { sku: 'KD-P29-FSCBD', name: 'Full Sleeve Classic Fit Buttonup Dress', group: 'woman' },
   { sku: 'KD-P30-SLCBD', name: 'Sleeveless Classic Fit Buttonup Dress', group: 'woman' },
   { sku: 'KD-P31-FSLBD', name: 'Full Sleeve Loose Fit Buttonup Dress', group: 'woman' },
+  { sku: 'KD-P32-QAD', name: 'Quarter Sleeve A-Line Dress - Two Tone', group: 'woman' },
   { sku: 'KD-P32-SLLBD', name: 'Sleeveless Loose Fit Buttonup Dress', group: 'woman' },
   { sku: 'KD-P33-QSAD', name: 'Quarter Shirring Sleeve A-line Dress', group: 'woman' },
   { sku: 'KD-P34-SLSD', name: 'Sleeveless Shift Dress', group: 'woman' },
@@ -1351,7 +1371,16 @@ const ALL_DESIGNS = [
   { sku: 'KD-P132-SLC', name: 'Sleeveless Long Coat', group: 'woman' },
   { sku: 'KD-P133-SShD133', name: 'Sleeveless Sheath Dress', group: 'woman' },
   { sku: 'KD-P134-SDLBD', name: 'Sleeveless Double Layer Bodycon Dress', group: 'woman' },
-  { sku: 'KD-P279P280-FSCT', name: 'Full Sleeve Classic Shirt and Classic Trouser', group: 'man' },
+  { sku: 'KD-P135-FSSHD135', name: 'Full Sleeve Sheath Dress', group: 'woman' },
+  { sku: 'KD-P136-QShD136', name: 'Quarter Sheath Dress', group: 'woman' },
+  { sku: 'KD-P137-FSGT', name: 'Full Sleeve Gown-Translucent', group: 'woman' },
+  { sku: 'KD-P138-SGT', name: 'Sleeveless Gown-Translucent', group: 'woman' },
+  { sku: 'KD-P139-FSLGT', name: 'Full Sleeve Long Gown-Translucent', group: 'woman' },
+  { sku: 'KD-P140-SLGT', name: 'Sleeveless Long Gown-Translucent', group: 'woman' },
+  { sku: 'KD-P141-ST141', name: 'Sleeveless Top', group: 'woman' },
+  { sku: 'KD-P142-SSDEWT', name: 'Sleeveless Shift Dress-Elastic Waist-Translucent', group: 'woman' },
+  { sku: 'KD-P143-STEE', name: 'Sleeveless Top-Elastic Edge', group: 'woman' },
+  { sku: 'KD-P144-STEW', name: 'Sleeveless Top-Elastic Waist', group: 'woman' },
 ];
 
     const DESIGN_GROUPS = [
@@ -1905,7 +1934,16 @@ const ALL_DESIGNS = [
   '132': 'images/KDscion-p132-sleeveless long coat_Colorway A.webp',
   '133': 'images/KDscion-p133-sleeveless sheath dress_Colorway A.webp',
   '134': 'images/KDscion-p134-sleeveless double layer bodycon dress_Colorway A.webp',
-  '279': 'images/p279&p280-full sleeve classic shirt and classic trouser_Colorway A (1).webp',
+  '135': 'images/KDscion-p135-full sleeve sheath dress_Colorway A.webp',
+  '136': 'images/KDscion-p136-quarter sheath dress_Colorway A.webp',
+  '137': 'images/KDscion-p137-full sleeve gown-translucent_Colorway A.webp',
+  '138': 'images/KDscion-p138-sleeveless gown-translucent_Colorway A.webp',
+  '139': 'images/KDscion-p139-full sleeve long gown-translucent_Colorway A.webp',
+  '140': 'images/KDscion-p140-sleeve less long gown-translucent_Colorway A.webp',
+  '141': 'images/KDscion-p141-sleeveless top_Colorway A.webp',
+  '142': 'images/KDscion-p142-sleeveless shift dress-elastic waist-translucent_Colorway A.webp',
+  '143': 'images/KDscion-p143-sleeveless top-elastic edge_Colorway A.webp',
+  '144': 'images/KDscion-p144-sleeveless top-elastic waist_Colorway A.webp',
 };
 
     function getDesignImage(sku) {

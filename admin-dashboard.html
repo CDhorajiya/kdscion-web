@@ -772,6 +772,7 @@
       <button class="dash-tab" onclick="switchTab('prices')">Prices</button>
       <button class="dash-tab" onclick="switchTab('fabrics')">Fabrics</button>
       <button class="dash-tab" onclick="switchTab('forum')">Forum</button>
+      <button class="dash-tab" onclick="switchTab('traffic')">Traffic</button>
     </div>
 
     <!-- Orders pane -->
@@ -894,6 +895,133 @@
     .btn-forum-resolve:hover { background:#f4f8f4; }
   </style>
 
+  <!-- ── Traffic pane ── -->
+  <div id="pane-traffic" class="dash-pane">
+    <style>
+      /* ── Traffic tab styles ─────────────────────────────── */
+      .traffic-wrap { display:flex; flex-direction:column; gap:2rem; }
+
+      /* Live pulse indicator */
+      .traffic-live {
+        display:flex; align-items:center; gap:0.8rem;
+        font-family:"Times New Roman",serif; font-size:1.3rem;
+        letter-spacing:3px; text-transform:uppercase; color:#1a4a1a;
+      }
+      .live-dot {
+        width:10px; height:10px; border-radius:50%; background:#2a8a2a;
+        animation:live-pulse 1.8s ease-in-out infinite;
+      }
+      @keyframes live-pulse {
+        0%,100%{opacity:1;transform:scale(1)}
+        50%{opacity:0.4;transform:scale(0.7)}
+      }
+
+      /* Summary cards */
+      .traffic-summary {
+        display:grid; grid-template-columns:repeat(4,1fr); gap:1.4rem;
+      }
+      .traffic-stat {
+        background:#fff; border:1px solid #e0e0e0; border-radius:3px;
+        padding:1.4rem 1.6rem;
+      }
+      .traffic-stat-num {
+        font-family:"Courier New",monospace; font-size:2.4rem;
+        font-weight:700; color:#111; margin:0 0 0.3rem;
+      }
+      .traffic-stat-label {
+        font-family:"Times New Roman",serif; font-size:1.1rem;
+        letter-spacing:2px; text-transform:uppercase; color:#888; margin:0;
+      }
+
+      /* Day-range selector */
+      .traffic-controls {
+        display:flex; gap:0.8rem; align-items:center;
+      }
+      .traffic-range-btn {
+        font-family:"Times New Roman",serif; font-size:1.1rem;
+        letter-spacing:2px; text-transform:uppercase;
+        background:transparent; border:1px solid #ccc; color:#888;
+        padding:0.3rem 1rem; border-radius:2px; cursor:pointer;
+        transition:background 0.15s,color 0.15s,border-color 0.15s;
+      }
+      .traffic-range-btn.active,
+      .traffic-range-btn:hover { background:#111; border-color:#111; color:#fff; }
+
+      /* Two-column row */
+      .traffic-row { display:grid; grid-template-columns:1.6fr 1fr; gap:1.4rem; }
+      .traffic-row.three  { grid-template-columns:1fr 1fr 1fr; }
+      .traffic-row.equal  { grid-template-columns:1fr 1fr; }
+
+      /* Card container */
+      .traffic-card {
+        background:#fff; border:1px solid #e0e0e0; border-radius:3px;
+        padding:1.6rem 1.8rem;
+      }
+      .traffic-card-title {
+        font-family:"Times New Roman",serif; font-size:1.25rem;
+        letter-spacing:4px; text-transform:uppercase; color:#333;
+        margin:0 0 1.2rem; border-bottom:1px solid #f0f0f0; padding-bottom:0.8rem;
+      }
+
+      /* Map canvas */
+      #traffic-map { width:100%; height:320px; }
+
+      /* Country table */
+      .country-table { width:100%; border-collapse:collapse; }
+      .country-table th {
+        font-family:"Times New Roman",serif; font-size:1rem;
+        letter-spacing:3px; text-transform:uppercase; color:#aaa;
+        padding:0.4rem 0.6rem; text-align:left;
+        border-bottom:1px solid #f0f0f0;
+      }
+      .country-table td {
+        font-family:"Times New Roman",serif; font-size:1.2rem;
+        color:#333; padding:0.5rem 0.6rem; border-bottom:1px solid #f8f8f8;
+      }
+      .country-table td:last-child { text-align:right; color:#888; }
+      .country-bar-wrap { display:flex; align-items:center; gap:0.6rem; }
+      .country-bar {
+        height:4px; background:#1a1a1a; border-radius:2px;
+        min-width:2px; transition:width 0.4s;
+      }
+
+      /* Generic bar list */
+      .bar-list { display:flex; flex-direction:column; gap:0.8rem; }
+      .bar-row { display:flex; flex-direction:column; gap:0.3rem; }
+      .bar-label {
+        font-family:"Times New Roman",serif; font-size:1.1rem;
+        color:#333; display:flex; justify-content:space-between;
+      }
+      .bar-label span { color:#aaa; font-size:1rem; }
+      .bar-track { height:5px; background:#f0f0f0; border-radius:3px; }
+      .bar-fill { height:100%; background:#1a1a1a; border-radius:3px; transition:width 0.5s; }
+
+      /* Canvas charts */
+      .chart-canvas { width:100%; }
+
+      .traffic-loading {
+        font-family:"Times New Roman",serif; font-size:1.3rem;
+        letter-spacing:3px; text-transform:uppercase; color:#aaa;
+        text-align:center; padding:3rem 0;
+      }
+      .traffic-setup-notice {
+        background:#fffbf0; border:1px solid #e8ddb0; border-radius:3px;
+        padding:1.4rem 1.8rem; font-family:"Times New Roman",serif;
+        font-size:1.2rem; line-height:1.8; color:#555; letter-spacing:1px;
+      }
+      .traffic-setup-notice strong { color:#111; }
+      .traffic-setup-notice code {
+        font-family:"Courier New",monospace; background:#f5f0e8;
+        padding:0.1rem 0.4rem; border-radius:2px; font-size:1rem;
+      }
+    </style>
+
+    <div class="traffic-wrap" id="traffic-wrap">
+      <p class="traffic-loading" id="traffic-loading">Loading traffic data…</p>
+    </div>
+  </div>
+
+  <!-- Chart.js + geo plugin + topojson (loaded lazily when Traffic tab opens) -->
   <script type="module">
     // ── PIN Gate ─────────────────────────────────────────────────────────────
     // Change this PIN to whatever you want
@@ -938,7 +1066,8 @@
       document.querySelectorAll('.dash-pane').forEach(p => p.classList.remove('active'));
       document.querySelector(`.dash-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
       document.getElementById(`pane-${tab}`).classList.add('active');
-      if (tab === 'forum') loadForumQueries();
+      if (tab === 'forum')   loadForumQueries();
+      if (tab === 'traffic') loadTrafficData();
     };
 
     // ── Price metadata ────────────────────────────────────────────────────────
@@ -2455,7 +2584,336 @@ const ALL_DESIGNS = [
       setTimeout(() => openForumConv(qid), 600);
     };
 
+    // ── Traffic tab ───────────────────────────────────────────────────────────
+
+    let _trafficLoaded = false;   // only fetch once per dashboard session
+    let _trafficDays   = 30;
+    let _trafficData   = null;
+    let _chartInstances = {};     // track Chart.js instances so we can destroy on re-render
+
+    window.loadTrafficData = async function (days) {
+      if (days) _trafficDays = days;
+      const wrap = document.getElementById('traffic-wrap');
+      if (!wrap) return;
+
+      wrap.innerHTML = `<p class="traffic-loading">Loading traffic data…</p>`;
+
+      try {
+        const res  = await fetch(`/api/analytics/dashboard?days=${_trafficDays}`);
+        const data = await res.json();
+        _trafficData = data;
+        _trafficLoaded = true;
+        renderTrafficTab(data);
+      } catch (e) {
+        wrap.innerHTML = `
+          <div class="traffic-setup-notice">
+            <strong>Backend not connected yet.</strong><br><br>
+            To activate the Traffic tab:<br>
+            1. Run the SQL in <code>analytics-server/schema.sql</code> on your Railway PostgreSQL.<br>
+            2. Add the route in <code>analytics-server/analyticsRouter.js</code> to the Railway backend.<br>
+            3. Set env vars on Railway: <code>ANALYTICS_SECRET</code><br>
+            4. Set env vars on Vercel: <code>RAILWAY_API_URL</code> and <code>ANALYTICS_SECRET</code><br><br>
+            Once connected, real visitor data from every page will appear here.
+          </div>`;
+      }
+    };
+
+    function fmtNum(n) {
+      if (!n) return '0';
+      return Number(n).toLocaleString();
+    }
+    function fmtDur(s) {
+      if (!s) return '—';
+      const m = Math.floor(s / 60), sec = Math.round(s % 60);
+      return `${m}m ${sec}s`;
+    }
+    function pct(val, total) {
+      if (!total) return 0;
+      return Math.round((val / total) * 100);
+    }
+    function destroyChart(id) {
+      if (_chartInstances[id]) { _chartInstances[id].destroy(); delete _chartInstances[id]; }
+    }
+
+    function renderTrafficTab(d) {
+      const wrap = document.getElementById('traffic-wrap');
+      if (!wrap) return;
+
+      const s = d.summary || {};
+      const isDemo = d._demo;
+
+      // Day-range buttons
+      const rangeHtml = [7,30,90].map(n =>
+        `<button class="traffic-range-btn ${_trafficDays===n?'active':''}"
+           onclick="window.loadTrafficData(${n})">${n}D</button>`
+      ).join('');
+
+      // Summary cards
+      const statsHtml = `
+        <div class="traffic-summary">
+          <div class="traffic-stat">
+            <p class="traffic-stat-num">${fmtNum(s.sessions)}</p>
+            <p class="traffic-stat-label">Sessions</p>
+          </div>
+          <div class="traffic-stat">
+            <p class="traffic-stat-num">${fmtNum(s.visitors)}</p>
+            <p class="traffic-stat-label">Unique Visitors</p>
+          </div>
+          <div class="traffic-stat">
+            <p class="traffic-stat-num">${fmtNum(s.page_views)}</p>
+            <p class="traffic-stat-label">Page Views</p>
+          </div>
+          <div class="traffic-stat">
+            <p class="traffic-stat-num">${fmtDur(s.avg_duration_secs)}</p>
+            <p class="traffic-stat-label">Avg Session</p>
+          </div>
+        </div>`;
+
+      // Country table (top 10)
+      const countries = (d.byCountry || []).slice(0, 10);
+      const maxSess   = countries[0]?.sessions || 1;
+      const countryRows = countries.map((c, i) => `
+        <tr>
+          <td style="color:#aaa;font-size:1rem;padding-right:0.4rem">${i+1}</td>
+          <td>${c.country || c.country_code || '—'}</td>
+          <td>
+            <div class="country-bar-wrap">
+              <div class="country-bar" style="width:${Math.round(c.sessions/maxSess*80)}px"></div>
+            </div>
+          </td>
+          <td>${fmtNum(c.sessions)}</td>
+        </tr>`).join('');
+
+      // Device bars
+      const devices  = d.byDevice || [];
+      const totalDev = devices.reduce((a,x) => a + Number(x.sessions), 0) || 1;
+      const devBars  = devices.map(d => `
+        <div class="bar-row">
+          <div class="bar-label">${d.device_type || '—'}<span>${pct(d.sessions,totalDev)}%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct(d.sessions,totalDev)}%"></div></div>
+        </div>`).join('');
+
+      // Top designs
+      const topDesigns = (d.topPages || [])
+        .filter(p => p.page_url && p.page_url.match(/^\/p\d+/))
+        .slice(0, 8)
+        .map((p,i) => `
+          <tr>
+            <td style="color:#aaa;font-size:1rem">${i+1}</td>
+            <td style="font-family:'Courier New',monospace;font-size:1rem">${p.page_url}</td>
+            <td>${fmtNum(p.views)}</td>
+          </tr>`).join('');
+
+      // Top fabrics
+      const topFabrics = (d.topFabrics || []).slice(0, 8).map((f,i) => `
+        <tr>
+          <td style="color:#aaa;font-size:1rem">${i+1}</td>
+          <td>${f.fabric_type || f.fabric_id || '—'}</td>
+          <td style="font-family:'Courier New',monospace;font-size:1rem;color:#aaa">${f.fabric_id || ''}</td>
+          <td>${fmtNum(f.clicks)}</td>
+        </tr>`).join('');
+
+      // Traffic sources bars
+      const sources     = d.bySource || [];
+      const totalSrc    = sources.reduce((a,x) => a + Number(x.sessions), 0) || 1;
+      const sourceBars  = sources.slice(0,6).map(s => `
+        <div class="bar-row">
+          <div class="bar-label">${s.source_label || s.referrer_type || 'direct'}<span>${pct(s.sessions,totalSrc)}%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct(s.sessions,totalSrc)}%"></div></div>
+        </div>`).join('');
+
+      // Skin tone bars
+      const tones     = d.bySkinTone || [];
+      const toneMap   = { '': 'Fair', fair: 'Fair', medium: 'Medium', tan: 'Tan', dark: 'Dark' };
+      const totalTone = tones.reduce((a,x) => a + Number(x.selections), 0) || 1;
+      const toneBars  = tones.map(t => `
+        <div class="bar-row">
+          <div class="bar-label">${toneMap[t.tone] || t.tone || 'Fair'}<span>${pct(t.selections,totalTone)}%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct(t.selections,totalTone)}%"></div></div>
+        </div>`).join('') || '<p style="font-family:\'Times New Roman\',serif;color:#aaa;font-size:1.2rem">No data yet</p>';
+
+      wrap.innerHTML = `
+        ${isDemo ? `<div class="traffic-setup-notice" style="margin-bottom:0">
+          <strong>Backend not connected — setup steps below.</strong> This tab will show live data once the Railway + Vercel env vars are configured. See <code>analytics-server/</code> folder for all the code to deploy.
+        </div>` : ''}
+
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+          <div class="traffic-live">
+            <div class="live-dot"></div>
+            <span id="traffic-live-count">${fmtNum(d.liveNow)}</span> active now
+          </div>
+          <div class="traffic-controls">${rangeHtml}</div>
+        </div>
+
+        ${statsHtml}
+
+        <!-- World map + Countries -->
+        <div class="traffic-row">
+          <div class="traffic-card">
+            <p class="traffic-card-title">Visitors by Country</p>
+            <canvas id="traffic-map" class="chart-canvas"></canvas>
+          </div>
+          <div class="traffic-card" style="overflow-y:auto;max-height:360px">
+            <p class="traffic-card-title">Top Countries</p>
+            <table class="country-table">
+              <thead><tr><th>#</th><th>Country</th><th></th><th>Sessions</th></tr></thead>
+              <tbody>${countryRows || '<tr><td colspan="4" style="color:#aaa;text-align:center;padding:1rem">No data yet</td></tr>'}</tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Time series chart -->
+        <div class="traffic-card">
+          <p class="traffic-card-title">Sessions — Last ${_trafficDays} Days</p>
+          <canvas id="traffic-timeseries" class="chart-canvas" style="height:160px"></canvas>
+        </div>
+
+        <!-- Designs + Fabrics -->
+        <div class="traffic-row equal">
+          <div class="traffic-card">
+            <p class="traffic-card-title">Top Product Pages</p>
+            <table class="country-table">
+              <thead><tr><th>#</th><th>Page</th><th>Views</th></tr></thead>
+              <tbody>${topDesigns || '<tr><td colspan="3" style="color:#aaa;text-align:center;padding:1rem">No data yet</td></tr>'}</tbody>
+            </table>
+          </div>
+          <div class="traffic-card">
+            <p class="traffic-card-title">Top Fabrics Selected</p>
+            <table class="country-table">
+              <thead><tr><th>#</th><th>Fabric</th><th>ID</th><th>Clicks</th></tr></thead>
+              <tbody>${topFabrics || '<tr><td colspan="4" style="color:#aaa;text-align:center;padding:1rem">No data yet</td></tr>'}</tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sources + Devices + Skin tones -->
+        <div class="traffic-row three">
+          <div class="traffic-card">
+            <p class="traffic-card-title">Traffic Sources</p>
+            <div class="bar-list">${sourceBars || '<p style="font-family:\'Times New Roman\',serif;color:#aaa;font-size:1.2rem">No data yet</p>'}</div>
+          </div>
+          <div class="traffic-card">
+            <p class="traffic-card-title">Devices</p>
+            <div class="bar-list">${devBars || '<p style="font-family:\'Times New Roman\',serif;color:#aaa;font-size:1.2rem">No data yet</p>'}</div>
+          </div>
+          <div class="traffic-card">
+            <p class="traffic-card-title">Skin Tone Selections</p>
+            <div class="bar-list">${toneBars}</div>
+          </div>
+        </div>
+      `;
+
+      // ── Render Charts (loaded lazily from CDN) ─────────────────────────────
+      renderCharts(d);
+    }
+
+    async function renderCharts(d) {
+      // Load Chart.js and the geo plugin from CDN only once
+      if (!window.Chart) {
+        await loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js');
+      }
+      if (!window.ChartGeo) {
+        await loadScript('https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.2.0/build/index.umd.min.js');
+      }
+
+      // ── World choropleth map ───────────────────────────────────────────────
+      const mapCanvas = document.getElementById('traffic-map');
+      if (mapCanvas && d.byCountry?.length) {
+        destroyChart('map');
+        try {
+          const topo    = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
+          const nations = ChartGeo.topojson.feature(topo, topo.objects.countries).features;
+
+          // Build a lookup: country_code → sessions
+          const sessMap = {};
+          (d.byCountry || []).forEach(c => { if (c.country_code) sessMap[c.country_code] = Number(c.sessions); });
+
+          // Map topojson ISO-numeric codes to ISO-alpha2 using a small lookup
+          const num2a2 = {"4":"AF","8":"AL","12":"DZ","24":"AO","32":"AR","36":"AU","40":"AT","50":"BD","56":"BE","64":"BT","68":"BO","76":"BR","100":"BG","104":"MM","116":"KH","124":"CA","152":"CL","156":"CN","170":"CO","178":"CG","180":"CD","191":"HR","192":"CU","203":"CZ","208":"DK","218":"EC","818":"EG","231":"ET","246":"FI","250":"FR","276":"DE","288":"GH","300":"GR","320":"GT","332":"HT","340":"HN","356":"IN","360":"ID","364":"IR","368":"IQ","372":"IE","376":"IL","380":"IT","388":"JM","392":"JP","400":"JO","404":"KE","410":"KR","408":"KP","414":"KW","418":"LA","422":"LB","434":"LY","484":"MX","504":"MA","508":"MZ","524":"NP","528":"NL","554":"NZ","566":"NG","578":"NO","586":"PK","591":"PA","604":"PE","608":"PH","616":"PL","620":"PT","630":"PR","634":"QA","642":"RO","643":"RU","682":"SA","686":"SN","694":"SL","706":"SO","710":"ZA","724":"ES","144":"LK","729":"SD","752":"SE","756":"CH","760":"SY","764":"TH","792":"TR","800":"UG","804":"UA","784":"AE","826":"GB","840":"US","858":"UY","860":"UZ","862":"VE","704":"VN","887":"YE","894":"ZM","716":"ZW"};
+
+          const data = nations.map(f => ({
+            feature:  f,
+            value:    sessMap[num2a2[String(f.id)]] || 0,
+          }));
+
+          _chartInstances['map'] = new Chart(mapCanvas, {
+            type: 'choropleth',
+            data: {
+              labels:   data.map(d => d.feature.properties?.name || ''),
+              datasets: [{
+                label:          'Sessions',
+                data,
+                backgroundColor: context => {
+                  if (!context.raw) return 'rgba(220,220,220,0.4)';
+                  const max = Math.max(...data.map(d => d.value));
+                  const v   = max ? context.raw.value / max : 0;
+                  return `rgba(26,26,26,${0.08 + v * 0.85})`;
+                },
+                borderColor:    'rgba(255,255,255,0.6)',
+                borderWidth:    0.5,
+              }],
+            },
+            options: {
+              showOutline: false,
+              showGraticule: false,
+              plugins: { legend: { display: false }, tooltip: {
+                callbacks: { label: ctx => `${ctx.label}: ${ctx.raw?.value || 0} sessions` }
+              }},
+              scales: { projection: { axis: 'x', projection: 'naturalEarth1' } },
+            },
+          });
+        } catch (e) {
+          // If geo plugin fails, show country table only (already rendered above)
+          if (mapCanvas) mapCanvas.style.display = 'none';
+        }
+      }
+
+      // ── Time series line chart ─────────────────────────────────────────────
+      const tsCanvas = document.getElementById('traffic-timeseries');
+      if (tsCanvas && d.timeSeries?.length) {
+        destroyChart('ts');
+        _chartInstances['ts'] = new Chart(tsCanvas, {
+          type: 'line',
+          data: {
+            labels:   d.timeSeries.map(r => new Date(r.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})),
+            datasets: [{
+              label:           'Sessions',
+              data:            d.timeSeries.map(r => Number(r.sessions)),
+              borderColor:     '#1a1a1a',
+              backgroundColor: 'rgba(26,26,26,0.07)',
+              borderWidth:     1.5,
+              pointRadius:     2,
+              tension:         0.3,
+              fill:            true,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { display: false }, ticks: { font: { family: 'Times New Roman' }, maxTicksLimit: 10 } },
+              y: { grid: { color: '#f0f0f0' }, ticks: { font: { family: 'Times New Roman' } }, beginAtZero: true },
+            },
+          },
+        });
+      }
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+        const s   = document.createElement('script');
+        s.src     = src;
+        s.onload  = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
   </script>
 
+
+    <script src="js/analytics.js"></script>
 </body>
 </html>

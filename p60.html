@@ -947,7 +947,25 @@
             initConfigurator(sku);
             renderFabricList(document.getElementById('fabric-list-bottom'), sku, 'two-tone', getMergedTwotoneCatalog());
         }
-        document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
+        // Track design view with product details
+        if (typeof window.kdTrack === 'function') {
+            window.kdTrack('design_viewed', {
+                product_sku:  sku,
+                design_name:  document.querySelector('.product-title-row h2')?.textContent.trim(),
+                is_two_tone:  true,
+            });
+        }
+        document.getElementById('cfg-add-btn').addEventListener('click', () => {
+            addSelectedToCart();
+            // Track add-to-cart intent (actual success tracked in configurator.js)
+            if (typeof window.kdTrack === 'function') {
+                const activeSwatch = document.querySelector('.swatch-card.active');
+                window.kdTrack('add_to_cart', {
+                    product_sku: sku,
+                    fabric_id:   activeSwatch?.dataset.fabricId || null,
+                });
+            }
+        });
         document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
         initGoToCollection();
         let rendererS, sceneS, cameraS, controlsS, animIdS, currentModel;
@@ -1032,6 +1050,8 @@
                 document.querySelectorAll('.skin-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 applySkinTone(btn.dataset.skin);
+                if (typeof window.kdTrack === 'function')
+                    window.kdTrack('skin_tone_selected', { tone: btn.dataset.skin || 'fair', product_sku: document.querySelector('.fabric-panel[data-sku]')?.dataset.sku });
             });
         });
 
@@ -1073,6 +1093,17 @@
                 currentModel.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
                 sceneS.add(currentModel);
                 if (_vl) _vl.style.display = 'none';
+                // Track model load time
+                if (typeof window.kdTrack === 'function')
+                    window.kdTrack('model_loaded', { product_sku: document.querySelector('.fabric-panel[data-sku]')?.dataset.sku, load_time_secs: ((Date.now() - window._modelLoadStart) / 1000).toFixed(2) });
+                // Track first rotate interaction
+                let _rotateTracked = false;
+                controlsS.addEventListener('start', () => {
+                    if (!_rotateTracked && typeof window.kdTrack === 'function') {
+                        window.kdTrack('model_rotated', { product_sku: document.querySelector('.fabric-panel[data-sku]')?.dataset.sku });
+                        _rotateTracked = true;
+                    }
+                });
                 currentModel.traverse((node) => {
                     if (node.isMesh) {
                         console.log('[mesh]', node.name);
@@ -1271,6 +1302,16 @@
                     if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
                     fabricPreviewImg.src = swatch.dataset.texture;
                     fabricPreview.classList.add('visible');
+                    // Track fabric selection
+                    if (typeof window.kdTrack === 'function') {
+                        const typeEl = swatch.closest('.fabric-category')?.querySelector('.category-card p');
+                        window.kdTrack('fabric_clicked', {
+                            fabric_id:   swatch.dataset.fabricId,
+                            fabric_type: typeEl ? typeEl.textContent.trim() : null,
+                            zone:        zone || 'main',
+                            product_sku: document.querySelector('.fabric-panel[data-sku]')?.dataset.sku,
+                        });
+                    }
                 }
             });
         }
@@ -1374,6 +1415,7 @@
         }
 
         /* ── Start viewer on page load ── */
+        window._modelLoadStart = Date.now();
         requestAnimationFrame(initViewer);
 
         /* ── Resize handling ── */
@@ -1401,5 +1443,7 @@
         <p>Copyright 2026 KING DHORAJIYA</p>
     </div>
 </div>
+
+    <script src="js/analytics.js"></script>
 </body>
 </html>

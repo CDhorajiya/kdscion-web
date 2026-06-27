@@ -1328,7 +1328,20 @@
             }
             item.addEventListener('click', () => {
                 sessionStorage.setItem('poolScrollY', window.scrollY);
-                window.location.href = item.dataset.productUrl;
+                // Track which design was clicked and whether it has variations
+                const url = item.dataset.productUrl || '';
+                const subEl = item.querySelector('.product-desc__sub');
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack(
+                        url.includes('design variations') ? 'variation_opened' : 'design_clicked',
+                        {
+                            destination:  url,
+                            design_name:  subEl ? subEl.textContent.trim() : '',
+                            has_variations: url.includes('design variations'),
+                        }
+                    );
+                }
+                window.location.href = url;
             });
         });
 
@@ -1361,6 +1374,10 @@
                 btns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const f = btn.dataset.filter;
+                // Track filter usage
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack('pool_filter_used', { filter: f });
+                }
                 document.querySelectorAll('.product-item[data-design-type]').forEach(item => {
                     if (f === 'all' || item.dataset.designType === f) {
                         item.classList.remove('hidden');
@@ -1372,5 +1389,7 @@
         });
     })();
     </script>
+
+    <script src="js/analytics.js"></script>
 </body>
 </html>

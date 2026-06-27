@@ -866,7 +866,21 @@
 
         const sku = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku;
         if (sku) initConfigurator(sku);
-        document.getElementById('cfg-add-btn').addEventListener('click', addSelectedToCart);
+        // Track design view
+        if (typeof window.kdTrack === 'function') {
+            window.kdTrack('design_viewed', {
+                product_sku: sku,
+                design_name: document.querySelector('.product-title-row h2')?.textContent.trim(),
+                is_two_tone: false,
+            });
+        }
+        document.getElementById('cfg-add-btn').addEventListener('click', () => {
+            addSelectedToCart();
+            if (typeof window.kdTrack === 'function') {
+                const activeSwatch = document.querySelector('.swatch-card.active');
+                window.kdTrack('add_to_cart', { product_sku: sku, fabric_id: activeSwatch?.dataset.fabricId || null });
+            }
+        });
         document.getElementById('cfg-goto-btn').addEventListener('click', () => window.location.href = 'checkout.html');
         initGoToCollection();
         let rendererS, sceneS, cameraS, controlsS, animIdS, currentModel;
@@ -1260,5 +1274,7 @@
         <p>Copyright 2026 KING DHORAJIYA</p>
     </div>
 </div>
+
+    <script src="js/analytics.js"></script>
 </body>
 </html>

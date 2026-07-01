@@ -10,16 +10,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:   #c9a96e;
-      --cream:  #f5f0e8;
-      --dark:   #0e0c09;
-      --mid:    #1c1810;
+      --maroon:  #800000;
+      --green:   #1a4a1a;
+      --accent:  #800000;
+      --bg:      #ffffff;
+      --surface: #faf9f7;
+      --border:  rgba(128,0,0,0.15);
     }
 
     html, body {
       height: 100%;
-      background: var(--dark);
-      color: var(--cream);
+      background: var(--bg);
+      color: #1a1a1a;
       font-family: 'Cormorant Garamond', serif;
       -webkit-font-smoothing: antialiased;
     }
@@ -29,22 +31,22 @@
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 1.6rem;
-      background: var(--dark); z-index: 100;
+      background: var(--bg); z-index: 100;
       transition: opacity 0.8s ease;
     }
     #loading.hidden { opacity: 0; pointer-events: none; }
     .load-mono {
       font-size: 2.2rem; letter-spacing: 6px;
-      color: var(--gold); font-weight: 300;
+      color: var(--maroon); font-weight: 300;
     }
     .load-bar {
-      width: 160px; height: 1px; background: rgba(201,169,110,0.2);
+      width: 160px; height: 1px; background: rgba(128,0,0,0.15);
       overflow: hidden;
     }
     .load-bar::after {
       content: '';
       display: block; height: 100%;
-      width: 40%; background: var(--gold);
+      width: 40%; background: var(--maroon);
       animation: load-sweep 1.4s ease-in-out infinite;
     }
     @keyframes load-sweep {
@@ -65,8 +67,8 @@
     /* ── Left: 3D viewer ── */
     .viewer-side {
       position: relative;
-      background: #0a0806;
-      border-right: 1px solid rgba(201,169,110,0.15);
+      background: #f4f3f0;
+      border-right: 1px solid rgba(128,0,0,0.12);
     }
     #viewer-canvas {
       position: absolute; inset: 0;
@@ -77,7 +79,7 @@
       position: absolute; bottom: 2rem; left: 50%;
       transform: translateX(-50%);
       font-size: 1rem; letter-spacing: 4px; text-transform: uppercase;
-      color: rgba(201,169,110,0.4);
+      color: rgba(128,0,0,0.35);
       pointer-events: none;
       animation: hint-fade 3s ease 3s forwards;
     }
@@ -88,7 +90,7 @@
       display: flex;
       flex-direction: column;
       padding: 3.6rem 3rem;
-      background: var(--mid);
+      background: var(--bg);
       overflow-y: auto;
       position: relative;
     }
@@ -98,25 +100,25 @@
       display: flex; align-items: center; gap: 1.2rem;
       margin-bottom: 3rem;
       padding-bottom: 2rem;
-      border-bottom: 1px solid rgba(201,169,110,0.2);
+      border-bottom: 1px solid rgba(128,0,0,0.15);
     }
     .kd-seal {
       width: 48px; height: 48px;
       border-radius: 50%;
-      border: 1px solid rgba(201,169,110,0.5);
+      border: 1px solid rgba(128,0,0,0.4);
       display: flex; align-items: center; justify-content: center;
       font-size: 1.4rem; letter-spacing: 1px;
-      color: var(--gold); flex-shrink: 0;
+      color: var(--maroon); flex-shrink: 0;
     }
     .house-name {
       font-size: 1.1rem; letter-spacing: 6px;
-      text-transform: uppercase; color: var(--gold);
+      text-transform: uppercase; color: var(--maroon);
       font-weight: 300;
     }
     .house-sub {
       font-size: 0.9rem; letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(201,169,110,0.45);
+      color: rgba(128,0,0,0.4);
       margin-top: 0.2rem;
     }
 
@@ -124,12 +126,12 @@
     .cert-title {
       font-size: 1rem; letter-spacing: 6px;
       text-transform: uppercase;
-      color: rgba(245,240,232,0.35);
+      color: rgba(26,74,26,0.5);
       margin-bottom: 0.6rem;
     }
     .garment-name {
       font-size: 2.6rem; font-weight: 300;
-      color: var(--cream);
+      color: #1a1a1a;
       line-height: 1.15;
       margin-bottom: 2.8rem;
     }
@@ -142,53 +144,54 @@
     .data-row {
       display: flex; flex-direction: column; gap: 0.3rem;
       padding-bottom: 1.6rem;
-      border-bottom: 1px solid rgba(245,240,232,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
     }
     .data-row:last-child { border-bottom: none; }
     .data-label {
       font-size: 0.88rem; letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(201,169,110,0.55);
+      color: var(--green);
+      opacity: 0.7;
     }
     .data-value {
       font-size: 1.5rem; letter-spacing: 2px;
-      color: var(--cream); font-weight: 300;
+      color: #1a1a1a; font-weight: 300;
     }
     .data-value.passport-num {
       font-family: 'Courier New', monospace;
       font-size: 1.3rem; letter-spacing: 4px;
-      color: var(--gold);
+      color: var(--maroon);
     }
     .data-value.edition {
       display: flex; align-items: baseline; gap: 0.5rem;
     }
     .edition-num {
-      font-size: 2.4rem; color: var(--gold);
+      font-size: 2.4rem; color: var(--maroon);
     }
     .edition-label {
       font-size: 1rem; letter-spacing: 2px;
-      color: rgba(201,169,110,0.5);
+      color: rgba(128,0,0,0.45);
     }
 
     /* Authenticated seal */
     .auth-seal {
       margin-top: 2.4rem;
       padding: 1.6rem;
-      border: 1px solid rgba(201,169,110,0.25);
+      border: 1px solid rgba(26,74,26,0.25);
       border-radius: 2px;
       display: flex; align-items: center; gap: 1.2rem;
-      background: rgba(201,169,110,0.04);
+      background: rgba(26,74,26,0.04);
     }
     .seal-icon {
-      font-size: 2rem; color: var(--gold); flex-shrink: 0;
+      font-size: 2rem; color: var(--green); flex-shrink: 0;
     }
     .seal-text-main {
       font-size: 1rem; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--cream);
+      text-transform: uppercase; color: var(--green);
     }
     .seal-text-sub {
       font-size: 0.85rem; letter-spacing: 2px;
-      color: rgba(245,240,232,0.4); margin-top: 0.2rem;
+      color: rgba(26,74,26,0.55); margin-top: 0.2rem;
     }
 
     /* Designer note */
@@ -196,13 +199,14 @@
       margin-top: 2rem;
       font-size: 1.25rem; font-style: italic;
       line-height: 1.8; letter-spacing: 1px;
-      color: rgba(245,240,232,0.5);
+      color: rgba(26,26,26,0.45);
     }
     .designer-sig {
       margin-top: 1.2rem;
       font-size: 1rem; letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(201,169,110,0.6);
+      color: var(--maroon);
+      opacity: 0.7;
     }
 
     /* Not found */
@@ -214,12 +218,12 @@
     }
     .not-found h1 {
       font-size: 2rem; letter-spacing: 6px;
-      text-transform: uppercase; color: var(--gold);
+      text-transform: uppercase; color: var(--maroon);
       font-weight: 300;
     }
     .not-found p {
       font-size: 1.2rem; letter-spacing: 2px;
-      color: rgba(245,240,232,0.4);
+      color: rgba(26,26,26,0.4);
     }
 
     /* Mobile */
@@ -387,7 +391,7 @@
     const panel  = canvas.parentElement;
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setClearColor(0x0a0806, 1);
+    renderer.setClearColor(0xf4f3f0, 1);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(panel.clientWidth, panel.clientHeight, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -396,11 +400,11 @@
     const camera = new THREE.PerspectiveCamera(42, panel.clientWidth / panel.clientHeight, 0.01, 1000);
     camera.position.set(0, 0, 3);
 
-    // Warm luxury lighting
-    scene.add(new THREE.AmbientLight(0xfff5e0, 1.4));
-    const key  = new THREE.DirectionalLight(0xfff8e8, 1.6);
+    // Clean daylight lighting for white background
+    scene.add(new THREE.AmbientLight(0xffffff, 1.8));
+    const key  = new THREE.DirectionalLight(0xffffff, 1.4);
     key.position.set(4, 8, 6); scene.add(key);
-    const fill = new THREE.DirectionalLight(0xc9a96e, 0.4);
+    const fill = new THREE.DirectionalLight(0xffffff, 0.6);
     fill.position.set(-6, 2, -4); scene.add(fill);
     const rim  = new THREE.DirectionalLight(0xffffff, 0.3);
     rim.position.set(0, -4, -8); scene.add(rim);

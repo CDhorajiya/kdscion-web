@@ -2359,7 +2359,8 @@ const ALL_DESIGNS = [
               ✉ Email to Bespoke House
             </a>
             <button class="order-email-btn" style="background:rgba(201,169,110,0.1);border-color:rgba(201,169,110,0.4);color:rgba(201,169,110,0.9);"
-              onclick="generatePassport('${orderId}', this, ${JSON.stringify(items)}, ${JSON.stringify(order)})">
+              data-order-id="${orderId}"
+              onclick="generatePassport(this)">
               ◈ Issue Passport
             </button>
           </div>
@@ -2589,61 +2590,64 @@ const ALL_DESIGNS = [
     };
 
     // ── Passport generation ───────────────────────────────────────────────────
-    window.generatePassport = async function(orderId, btn, items, order) {
-      if (!items?.length) { alert('No garment items found on this order.'); return; }
+    window.generatePassport = async function(btn) {
+      const orderId = btn.dataset.orderId;
+      // Find the order card and read data from rendered DOM
+      const card = btn.closest('.order-card');
+      if (!card) return;
+
+      const orderIdEl  = card.querySelector('.order-card-id');
+      const dfNameEl   = card.querySelector('.df-name a, .df-name');
+      const dfValEls   = card.querySelectorAll('.df-val');
+      const skuEl      = [...dfValEls].find(el => el.textContent.trim().startsWith('KD-'));
+      const fabricEl   = card.querySelector('.df-details:nth-child(2) .df-name');
+      const fabricIdEl = [...dfValEls].find(el => el !== skuEl);
+
+      const designName  = (dfNameEl?.textContent || '').trim().replace(/\s*→.*/, '').trim();
+      const productSku  = (skuEl?.textContent || '').trim();
+      const fabricLabel = (fabricEl?.textContent || '').trim();
+      const fabricId    = (fabricIdEl?.textContent || '').trim();
+
+      // Derive product number and GLB path from SKU
+      const pNum    = productSku.match(/KD-P(\d+)/i)?.[1] || '';
+      const glbName = designName.toLowerCase().replace(/[^a-z0-9 \-]/g, '').trim();
+      const glbPath = pNum ? `3d/KDscion-p${pNum}-${glbName}.glb` : '';
 
       btn.textContent = 'Issuing…';
       btn.disabled    = true;
 
       try {
-        // Use the first item for passport data
-        const item       = items[0];
-        const sku        = item.configuratorSelections
-          ? Object.keys(item.configuratorSelections)[0]
-          : item.productName;
-        const selections = item.configuratorSelections || {};
-        const fabVal     = Object.values(selections)[0];
-        const fabricId   = fabVal?.id    || '';
-        const fabricLabel= fabVal?.label || '';
-
-        // Derive GLB path from product name (stored in productName or SKU)
-        const pNum = (item.productName || '').match(/p(\d+)/i)?.[1]
-                  || sku?.match(/KD-P(\d+)/i)?.[1] || '';
-        const glbPath = pNum ? `3d/KDscion-p${pNum}-${(item.productName||'').toLowerCase().replace(/[^a-z0-9 -]/g,'').trim()}.glb` : '';
-
-        const customerName = [order.shippingAddress?.firstName, order.shippingAddress?.lastName]
-          .filter(Boolean).join(' ') || 'KD Client';
-
-        const res = await fetch('https://fashion-backend-production-3ed9.up.railway.app/api/v1/passport/generate', {
+        const res = await fetch('/api/passport/generate', {
           method:  'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer kdscion_analytics_2026` },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            orderId:      parseInt(orderId),
-            productSku:   sku,
-            designName:   item.productName || sku,
+            orderId:      parseInt(orderId) || 0,
+            productSku:   productSku || 'KD-UNKNOWN',
+            designName:   designName || 'KD Scion Design',
             glbPath,
             fabricId,
             fabricLabel,
-            customerName,
+            customerName: 'KD Client',
           }),
         });
 
-        if (!res.ok) throw new Error('Failed');
+        if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
 
-        // Replace button with passport link
-        btn.replaceWith(Object.assign(document.createElement('a'), {
-          href:        data.url,
-          target:      '_blank',
-          className:   'order-email-btn',
-          textContent: `◈ ${data.passport_number}`,
-          style:       'background:rgba(201,169,110,0.15);border-color:rgba(201,169,110,0.5);color:rgba(201,169,110,1);text-decoration:none',
-        }));
+        // Replace button with a live passport link
+        const link = document.createElement('a');
+        link.href        = data.url;
+        link.target      = '_blank';
+        link.className   = 'order-email-btn';
+        link.textContent = `◈ ${data.passport_number}`;
+        link.style.cssText = 'background:rgba(201,169,110,0.15);border-color:rgba(201,169,110,0.5);color:rgba(201,169,110,1);text-decoration:none';
+        btn.replaceWith(link);
 
       } catch (e) {
+        console.error('[Passport]', e);
         btn.textContent = '◈ Issue Passport';
         btn.disabled    = false;
-        alert('Passport generation failed. Check Railway is deployed.');
+        alert('Passport generation failed: ' + e.message);
       }
     };
 

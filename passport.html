@@ -103,12 +103,13 @@
       border-bottom: 1px solid rgba(128,0,0,0.15);
     }
     .kd-seal {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      border: 1px solid rgba(128,0,0,0.4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; letter-spacing: 1px;
-      color: var(--maroon); flex-shrink: 0;
+      width: 54px; height: 54px;
+      flex-shrink: 0;
+    }
+    .kd-seal img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: invert(10%) sepia(60%) saturate(800%) hue-rotate(320deg) brightness(0.6);
     }
     .house-name {
       font-size: 1.1rem; letter-spacing: 6px;
@@ -116,10 +117,11 @@
       font-weight: 300;
     }
     .house-sub {
-      font-size: 0.9rem; letter-spacing: 3px;
+      font-size: 0.9rem; letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(128,0,0,0.4);
-      margin-top: 0.2rem;
+      color: rgba(128,0,0,0.38);
+      margin-top: 0.3rem;
+      font-style: italic;
     }
 
     /* Certificate title */
@@ -310,10 +312,12 @@
 
     document.getElementById('details-side').innerHTML = `
       <div class="passport-header">
-        <div class="kd-seal">KD</div>
+        <div class="kd-seal">
+          <img src="images/KD_monogram.png" alt="KD Monogram">
+        </div>
         <div>
           <div class="house-name">King Dhorajiya</div>
-          <div class="house-sub">Certificate of Authenticity</div>
+          <div class="house-sub">By Commission</div>
         </div>
       </div>
 

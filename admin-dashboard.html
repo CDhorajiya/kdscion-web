@@ -2602,7 +2602,7 @@ const ALL_DESIGNS = [
           ? Object.keys(item.configuratorSelections)[0]
           : item.productName;
         const selections = item.configuratorSelections || {};
-        const fabVal     = Object.values(selections)[0] as any;
+        const fabVal     = Object.values(selections)[0];
         const fabricId   = fabVal?.id    || '';
         const fabricLabel= fabVal?.label || '';
 

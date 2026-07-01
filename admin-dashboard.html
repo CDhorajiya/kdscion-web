@@ -2358,6 +2358,10 @@ const ALL_DESIGNS = [
             <a href="${mailtoHref}" class="order-email-btn">
               ✉ Email to Bespoke House
             </a>
+            <button class="order-email-btn" style="background:rgba(201,169,110,0.1);border-color:rgba(201,169,110,0.4);color:rgba(201,169,110,0.9);"
+              onclick="generatePassport('${orderId}', this, ${JSON.stringify(items)}, ${JSON.stringify(order)})">
+              ◈ Issue Passport
+            </button>
           </div>
         </div>
 
@@ -2582,6 +2586,65 @@ const ALL_DESIGNS = [
       stat.textContent = '✓ Sent.';
       ta.value = '';
       setTimeout(() => openForumConv(qid), 600);
+    };
+
+    // ── Passport generation ───────────────────────────────────────────────────
+    window.generatePassport = async function(orderId, btn, items, order) {
+      if (!items?.length) { alert('No garment items found on this order.'); return; }
+
+      btn.textContent = 'Issuing…';
+      btn.disabled    = true;
+
+      try {
+        // Use the first item for passport data
+        const item       = items[0];
+        const sku        = item.configuratorSelections
+          ? Object.keys(item.configuratorSelections)[0]
+          : item.productName;
+        const selections = item.configuratorSelections || {};
+        const fabVal     = Object.values(selections)[0] as any;
+        const fabricId   = fabVal?.id    || '';
+        const fabricLabel= fabVal?.label || '';
+
+        // Derive GLB path from product name (stored in productName or SKU)
+        const pNum = (item.productName || '').match(/p(\d+)/i)?.[1]
+                  || sku?.match(/KD-P(\d+)/i)?.[1] || '';
+        const glbPath = pNum ? `3d/KDscion-p${pNum}-${(item.productName||'').toLowerCase().replace(/[^a-z0-9 -]/g,'').trim()}.glb` : '';
+
+        const customerName = [order.shippingAddress?.firstName, order.shippingAddress?.lastName]
+          .filter(Boolean).join(' ') || 'KD Client';
+
+        const res = await fetch('https://fashion-backend-production-3ed9.up.railway.app/api/v1/passport/generate', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer kdscion_analytics_2026` },
+          body: JSON.stringify({
+            orderId:      parseInt(orderId),
+            productSku:   sku,
+            designName:   item.productName || sku,
+            glbPath,
+            fabricId,
+            fabricLabel,
+            customerName,
+          }),
+        });
+
+        if (!res.ok) throw new Error('Failed');
+        const data = await res.json();
+
+        // Replace button with passport link
+        btn.replaceWith(Object.assign(document.createElement('a'), {
+          href:        data.url,
+          target:      '_blank',
+          className:   'order-email-btn',
+          textContent: `◈ ${data.passport_number}`,
+          style:       'background:rgba(201,169,110,0.15);border-color:rgba(201,169,110,0.5);color:rgba(201,169,110,1);text-decoration:none',
+        }));
+
+      } catch (e) {
+        btn.textContent = '◈ Issue Passport';
+        btn.disabled    = false;
+        alert('Passport generation failed. Check Railway is deployed.');
+      }
     };
 
     // ── Traffic tab ───────────────────────────────────────────────────────────

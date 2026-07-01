@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garment Passport — King Dhorajiya</title>
+  <link rel="icon" href="images/KD_monogram.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:   #c9a96e;
+      --cream:  #f5f0e8;
+      --dark:   #0e0c09;
+      --mid:    #1c1810;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--dark);
+      color: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Loading ── */
+    #loading {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.6rem;
+      background: var(--dark); z-index: 100;
+      transition: opacity 0.8s ease;
+    }
+    #loading.hidden { opacity: 0; pointer-events: none; }
+    .load-mono {
+      font-size: 2.2rem; letter-spacing: 6px;
+      color: var(--gold); font-weight: 300;
+    }
+    .load-bar {
+      width: 160px; height: 1px; background: rgba(201,169,110,0.2);
+      overflow: hidden;
+    }
+    .load-bar::after {
+      content: '';
+      display: block; height: 100%;
+      width: 40%; background: var(--gold);
+      animation: load-sweep 1.4s ease-in-out infinite;
+    }
+    @keyframes load-sweep {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+
+    /* ── Main layout ── */
+    .passport-wrap {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 1s ease 0.3s;
+    }
+    .passport-wrap.visible { opacity: 1; }
+
+    /* ── Left: 3D viewer ── */
+    .viewer-side {
+      position: relative;
+      background: #0a0806;
+      border-right: 1px solid rgba(201,169,110,0.15);
+    }
+    #viewer-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+    .viewer-hint {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem; letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(201,169,110,0.4);
+      pointer-events: none;
+      animation: hint-fade 3s ease 3s forwards;
+    }
+    @keyframes hint-fade { to { opacity: 0; } }
+
+    /* ── Right: passport details ── */
+    .details-side {
+      display: flex;
+      flex-direction: column;
+      padding: 3.6rem 3rem;
+      background: var(--mid);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* Top header */
+    .passport-header {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(201,169,110,0.2);
+    }
+    .kd-seal {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,169,110,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; letter-spacing: 1px;
+      color: var(--gold); flex-shrink: 0;
+    }
+    .house-name {
+      font-size: 1.1rem; letter-spacing: 6px;
+      text-transform: uppercase; color: var(--gold);
+      font-weight: 300;
+    }
+    .house-sub {
+      font-size: 0.9rem; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.45);
+      margin-top: 0.2rem;
+    }
+
+    /* Certificate title */
+    .cert-title {
+      font-size: 1rem; letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.35);
+      margin-bottom: 0.6rem;
+    }
+    .garment-name {
+      font-size: 2.6rem; font-weight: 300;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 2.8rem;
+    }
+
+    /* Data rows */
+    .data-grid {
+      display: flex; flex-direction: column; gap: 1.6rem;
+      flex: 1;
+    }
+    .data-row {
+      display: flex; flex-direction: column; gap: 0.3rem;
+      padding-bottom: 1.6rem;
+      border-bottom: 1px solid rgba(245,240,232,0.06);
+    }
+    .data-row:last-child { border-bottom: none; }
+    .data-label {
+      font-size: 0.88rem; letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.55);
+    }
+    .data-value {
+      font-size: 1.5rem; letter-spacing: 2px;
+      color: var(--cream); font-weight: 300;
+    }
+    .data-value.passport-num {
+      font-family: 'Courier New', monospace;
+      font-size: 1.3rem; letter-spacing: 4px;
+      color: var(--gold);
+    }
+    .data-value.edition {
+      display: flex; align-items: baseline; gap: 0.5rem;
+    }
+    .edition-num {
+      font-size: 2.4rem; color: var(--gold);
+    }
+    .edition-label {
+      font-size: 1rem; letter-spacing: 2px;
+      color: rgba(201,169,110,0.5);
+    }
+
+    /* Authenticated seal */
+    .auth-seal {
+      margin-top: 2.4rem;
+      padding: 1.6rem;
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 2px;
+      display: flex; align-items: center; gap: 1.2rem;
+      background: rgba(201,169,110,0.04);
+    }
+    .seal-icon {
+      font-size: 2rem; color: var(--gold); flex-shrink: 0;
+    }
+    .seal-text-main {
+      font-size: 1rem; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--cream);
+    }
+    .seal-text-sub {
+      font-size: 0.85rem; letter-spacing: 2px;
+      color: rgba(245,240,232,0.4); margin-top: 0.2rem;
+    }
+
+    /* Designer note */
+    .designer-note {
+      margin-top: 2rem;
+      font-size: 1.25rem; font-style: italic;
+      line-height: 1.8; letter-spacing: 1px;
+      color: rgba(245,240,232,0.5);
+    }
+    .designer-sig {
+      margin-top: 1.2rem;
+      font-size: 1rem; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.6);
+    }
+
+    /* Not found */
+    .not-found {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh; gap: 1.2rem; text-align: center;
+      padding: 2rem;
+    }
+    .not-found h1 {
+      font-size: 2rem; letter-spacing: 6px;
+      text-transform: uppercase; color: var(--gold);
+      font-weight: 300;
+    }
+    .not-found p {
+      font-size: 1.2rem; letter-spacing: 2px;
+      color: rgba(245,240,232,0.4);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .passport-wrap { grid-template-columns: 1fr; }
+      .viewer-side { height: 55vw; min-height: 260px; }
+      .details-side { padding: 2.4rem 1.6rem; }
+      .garment-name { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loading">
+  <div class="load-mono">KD</div>
+  <div class="load-bar"></div>
+</div>
+
+<!-- Main content (hidden until data loads) -->
+<div class="passport-wrap" id="passport-wrap" style="display:none">
+
+  <!-- Left: 3D model -->
+  <div class="viewer-side">
+    <canvas id="viewer-canvas"></canvas>
+    <p class="viewer-hint">Drag to rotate</p>
+  </div>
+
+  <!-- Right: details -->
+  <div class="details-side" id="details-side">
+    <!-- filled by JS -->
+  </div>
+
+</div>
+
+<!-- Not found (hidden by default) -->
+<div class="not-found" id="not-found" style="display:none">
+  <h1>Passport Not Found</h1>
+  <p>This certificate does not exist or may have been issued privately.</p>
+  <p style="margin-top:1.6rem;font-size:1rem;letter-spacing:3px;color:rgba(201,169,110,0.5)">
+    KING DHORAJIYA · THE HOUSE OF SCION
+  </p>
+</div>
+
+<script type="module">
+  import * as THREE from 'https://esm.sh/three@0.169.0';
+  import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+  import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
+  import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+
+  // ── Get passport ID from URL ──────────────────────────────────────────────
+  const params     = new URLSearchParams(window.location.search);
+  const passportId = params.get('id') || location.pathname.split('/').pop();
+
+  if (!passportId) {
+    showNotFound();
+  } else {
+    loadPassport(passportId);
+  }
+
+  async function loadPassport(id) {
+    try {
+      const res  = await fetch(`/api/passport/${encodeURIComponent(id.toUpperCase())}`);
+      if (!res.ok) { showNotFound(); return; }
+      const data = await res.json();
+      renderPassport(data);
+    } catch {
+      showNotFound();
+    }
+  }
+
+  function showNotFound() {
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('not-found').style.display = 'flex';
+  }
+
+  // ── Render passport details ───────────────────────────────────────────────
+  function renderPassport(p) {
+    const createdDate = new Date(p.created_at).toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric',
+    });
+
+    document.title = `${p.design_name} — KD Scion Passport`;
+
+    document.getElementById('details-side').innerHTML = `
+      <div class="passport-header">
+        <div class="kd-seal">KD</div>
+        <div>
+          <div class="house-name">King Dhorajiya</div>
+          <div class="house-sub">Certificate of Authenticity</div>
+        </div>
+      </div>
+
+      <p class="cert-title">Garment Passport</p>
+      <h1 class="garment-name">${p.design_name}</h1>
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-label">Passport Number</span>
+          <span class="data-value passport-num">${p.passport_number}</span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">Edition</span>
+          <div class="data-value edition">
+            <span class="edition-num">${p.edition_number}</span>
+            <span class="edition-label">of this design · one of a kind</span>
+          </div>
+        </div>
+
+        ${p.fabric_label ? `
+        <div class="data-row">
+          <span class="data-label">Fabric</span>
+          <span class="data-value">${p.fabric_label}</span>
+        </div>` : ''}
+
+        <div class="data-row">
+          <span class="data-label">Created For</span>
+          <span class="data-value">${p.customer_initials || '—'}</span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">Date of Creation</span>
+          <span class="data-value">${createdDate}</span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">Design Reference</span>
+          <span class="data-value" style="font-family:'Courier New',monospace;font-size:1.1rem;letter-spacing:3px;color:rgba(245,240,232,0.5)">${p.product_sku}</span>
+        </div>
+      </div>
+
+      <div class="auth-seal">
+        <div class="seal-icon">◈</div>
+        <div>
+          <div class="seal-text-main">Authenticated Original</div>
+          <div class="seal-text-sub">This garment was made exclusively to its owner's measurements</div>
+        </div>
+      </div>
+
+      <p class="designer-note">
+        "Every piece that leaves this house carries a piece of its maker.
+        This garment was imagined, designed, and entrusted to you —
+        and to you alone."
+      </p>
+      <p class="designer-sig">— King Dhorajiya · The House of Scion</p>
+    `;
+
+    // Show passport
+    const wrap = document.getElementById('passport-wrap');
+    wrap.style.display = 'grid';
+    setTimeout(() => wrap.classList.add('visible'), 50);
+
+    // Hide loading
+    const loading = document.getElementById('loading');
+    loading.classList.add('hidden');
+
+    // Start 3D viewer
+    if (p.glb_path) initViewer(p.glb_path);
+  }
+
+  // ── 3D Viewer ─────────────────────────────────────────────────────────────
+  function initViewer(glbPath) {
+    const canvas = document.getElementById('viewer-canvas');
+    const panel  = canvas.parentElement;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setClearColor(0x0a0806, 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(panel.clientWidth, panel.clientHeight, false);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, panel.clientWidth / panel.clientHeight, 0.01, 1000);
+    camera.position.set(0, 0, 3);
+
+    // Warm luxury lighting
+    scene.add(new THREE.AmbientLight(0xfff5e0, 1.4));
+    const key  = new THREE.DirectionalLight(0xfff8e8, 1.6);
+    key.position.set(4, 8, 6); scene.add(key);
+    const fill = new THREE.DirectionalLight(0xc9a96e, 0.4);
+    fill.position.set(-6, 2, -4); scene.add(fill);
+    const rim  = new THREE.DirectionalLight(0xffffff, 0.3);
+    rim.position.set(0, -4, -8); scene.add(rim);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping  = true;
+    controls.dampingFactor  = 0.06;
+    controls.enablePan      = false;
+    controls.autoRotate     = true;
+    controls.autoRotateSpeed = 0.6;
+    controls.target.set(0, 0, 0);
+    controls.update();
+
+    // Stop auto-rotate when user interacts, resume after 4s idle
+    let idleTimer;
+    controls.addEventListener('start', () => {
+      controls.autoRotate = false;
+      clearTimeout(idleTimer);
+    });
+    controls.addEventListener('end', () => {
+      idleTimer = setTimeout(() => { controls.autoRotate = true; }, 4000);
+    });
+
+    const loader = new GLTFLoader();
+    const draco  = new DRACOLoader();
+    draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+    loader.setDRACOLoader(draco);
+
+    loader.load(glbPath, (gltf) => {
+      const model = gltf.scene;
+      const box   = new THREE.Box3().setFromObject(model);
+      model.position.sub(box.getCenter(new THREE.Vector3()));
+      model.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
+      scene.add(model);
+    });
+
+    (function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(panel.clientWidth, panel.clientHeight, false);
+      camera.aspect = panel.clientWidth / panel.clientHeight;
+      camera.updateProjectionMatrix();
+    });
+  }
+</script>
+</body>
+</html>

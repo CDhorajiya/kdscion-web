@@ -109,7 +109,11 @@
     .kd-seal img {
       width: 100%; height: 100%;
       object-fit: contain;
-      filter: invert(20%) sepia(100%) saturate(400%) hue-rotate(88deg) brightness(0.55);
+      animation: passport-spin 18s linear infinite;
+    }
+    @keyframes passport-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
     .house-bespoke {
       font-size: 1rem; letter-spacing: 10px;
@@ -318,7 +322,7 @@
     document.getElementById('details-side').innerHTML = `
       <div class="passport-header">
         <div class="kd-seal">
-          <img src="images/KD_monogram.png" alt="KD Monogram">
+          <img src="images/a2.webp" alt="KD Scion">
         </div>
         <div class="house-bespoke">Bespoke</div>
       </div>

@@ -280,13 +280,16 @@
       transform: rotateX(-195deg);
     }
 
-    /* Bouquet seal — sits at the tip of the flap */
+    /* Bouquet seal — on the ENVELOPE itself (not inside the clipped flap)
+       so it is never cut off. Positioned at the flap tip (55% down). */
     .bouquet-seal {
       position: absolute;
-      bottom: -28px; left: 50%;
+      top: calc(55% - 36px);   /* centred on the flap tip */
+      left: 50%;
       transform: translateX(-50%);
-      width: 56px; height: 56px;
-      z-index: 6;
+      width: 72px; height: 72px;
+      z-index: 10;              /* above flap and body */
+      pointer-events: none;
     }
     .bouquet-seal .seal-wreath {
       position: absolute; inset: 0;
@@ -297,7 +300,7 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 26px; height: 26px;
+      width: 30px; height: 30px;
       object-fit: contain;
       filter: brightness(0) saturate(100%) invert(13%) sepia(80%)
               saturate(500%) hue-rotate(320deg) brightness(0.5);
@@ -306,8 +309,96 @@
     /* Open hint */
     .envelope-hint {
       font-size: 0.82rem; letter-spacing: 5px;
-      text-transform: uppercase; color: rgba(128,0,0,0.35);
+      text-transform: uppercase; color: #000;
+      font-style: italic;
     }
+
+    /* ── Gift envelope ── */
+    .gift-envelope-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      margin-top: 1.6rem;
+    }
+    .gift-toggle {
+      font-size: 0.78rem; letter-spacing: 4px;
+      text-transform: uppercase; color: rgba(26,74,26,0.5);
+      cursor: pointer; background: none; border: none;
+      font-family: inherit; font-style: italic;
+      transition: color 0.2s;
+    }
+    .gift-toggle:hover { color: var(--green); }
+    .gift-envelope {
+      position: relative;
+      width: 100%; max-width: 300px;
+      height: 160px;
+      cursor: pointer;
+      perspective: 900px;
+      display: none;
+    }
+    .gift-envelope.active { display: block; }
+    .gift-envelope-body {
+      position: absolute; inset: 0;
+      background: #fff;
+      border: 1px solid rgba(26,74,26,0.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .gift-envelope-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 50%;
+      clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+      background: #f4f8f4;
+      border-left: 1px solid rgba(26,74,26,0.2);
+      border-right: 1px solid rgba(26,74,26,0.2);
+      transform-origin: 50% 0%;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+    }
+    .gift-envelope.open .gift-envelope-flap { transform: rotateX(-185deg); }
+
+    /* Gift message field (revealed after gift envelope opens) */
+    .gift-message-area {
+      display: none;
+      flex-direction: column; gap: 0.8rem;
+      width: 100%; max-width: 300px;
+      animation: slide-up 0.5s ease forwards;
+    }
+    .gift-message-area.visible { display: flex; }
+    @keyframes slide-up {
+      from { opacity:0; transform: translateY(16px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .gift-message-area textarea {
+      width: 100%;
+      height: 100px;
+      border: 1px solid rgba(26,74,26,0.25);
+      border-radius: 2px;
+      padding: 0.8rem 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-style: italic; letter-spacing: 1px;
+      color: #111; resize: none; outline: none;
+      background: #fafdf8;
+    }
+    .gift-message-area input[type="text"] {
+      width: 100%;
+      border: none; border-bottom: 1px solid rgba(26,74,26,0.25);
+      padding: 0.4rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; letter-spacing: 3px;
+      color: #111; outline: none; background: transparent;
+    }
+    .gift-message-area input::placeholder,
+    .gift-message-area textarea::placeholder { color: rgba(0,0,0,0.25); }
+    .gift-save-btn {
+      align-self: flex-end;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem; letter-spacing: 4px;
+      text-transform: uppercase;
+      background: none; border: 1px solid var(--green);
+      color: var(--green); padding: 0.35rem 1rem;
+      cursor: pointer; border-radius: 2px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .gift-save-btn:hover { background: var(--green); color: #fff; }
 
     /* ── Passport body (revealed after envelope opens) ── */
     .passport-body {
@@ -463,19 +554,34 @@
 
       <!-- ENVELOPE STAGE: visible before opening -->
       <div class="envelope-stage" id="envelope-stage">
+
+        <!-- Main passport envelope -->
         <div class="envelope" id="envelope" onclick="window._openEnvelope()">
-          <!-- Body -->
-          <div class="envelope-body">
-            <p>Tap to open</p>
-          </div>
-          <!-- Flap with bouquet seal -->
-          <div class="envelope-flap">
-            <div class="bouquet-seal">
-              <img class="seal-wreath" src="images/Linen Wreath.webp" alt="">
-              <img class="seal-mono"   src="images/KD_monogram.png"   alt="">
-            </div>
+          <div class="envelope-body"><p>Waiting to be explored</p></div>
+          <div class="envelope-flap"></div>
+          <!-- Bouquet seal: outside the clipped flap so it is never cut off -->
+          <div class="bouquet-seal">
+            <img class="seal-wreath" src="images/Linen Wreath.webp" alt="">
+            <img class="seal-mono"   src="images/KD_monogram.png"   alt="">
           </div>
         </div>
+
+        <!-- Gift envelope (optional) -->
+        <div class="gift-envelope-wrap" id="gift-envelope-wrap">
+          <button class="gift-toggle" onclick="window._toggleGift()">
+            + Add a gift message
+          </button>
+          <div class="gift-envelope" id="gift-envelope" onclick="window._openGift()">
+            <div class="gift-envelope-body"></div>
+            <div class="gift-envelope-flap"></div>
+          </div>
+          <div class="gift-message-area" id="gift-message-area">
+            <input type="text" id="gift-from" placeholder="From —">
+            <textarea id="gift-msg" placeholder="Write your message here…"></textarea>
+            <button class="gift-save-btn" onclick="window._saveGift()">Save</button>
+          </div>
+        </div>
+
       </div>
 
       <!-- BODY: hidden, revealed when envelope opens -->
@@ -535,6 +641,42 @@
         <p class="footer-house">· the house of scion</p>
       </div>
     `;
+
+    // ── Gift envelope handlers ────────────────────────────────────────────────
+    window._toggleGift = function(e) {
+      if (e) e.stopPropagation();
+      const env = document.getElementById('gift-envelope');
+      env.classList.toggle('active');
+    };
+    window._openGift = function() {
+      const env  = document.getElementById('gift-envelope');
+      const area = document.getElementById('gift-message-area');
+      if (env.classList.contains('open')) return;
+      env.classList.add('open');
+      setTimeout(() => { area.classList.add('visible'); }, 600);
+    };
+    window._saveGift = function() {
+      const from = document.getElementById('gift-from').value.trim();
+      const msg  = document.getElementById('gift-msg').value.trim();
+      if (!msg) return;
+      localStorage.setItem(`kd_gift_${passportId}`, JSON.stringify({ from, msg }));
+      const btn = document.querySelector('.gift-save-btn');
+      btn.textContent = 'Saved ✓'; btn.style.background = 'var(--green)'; btn.style.color = '#fff';
+      setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; btn.style.color = ''; }, 2500);
+    };
+    // Restore saved gift message if exists
+    const saved = localStorage.getItem(`kd_gift_${passportId}`);
+    if (saved) {
+      try {
+        const { from, msg } = JSON.parse(saved);
+        setTimeout(() => {
+          const fi = document.getElementById('gift-from');
+          const ta = document.getElementById('gift-msg');
+          if (fi) fi.value = from;
+          if (ta) ta.value = msg;
+        }, 100);
+      } catch (_) {}
+    }
 
     // ── Envelope open handler (attached to window so onclick works) ──────────
     window._openEnvelope = function() {

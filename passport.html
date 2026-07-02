@@ -280,74 +280,74 @@
       transform: rotateX(-195deg);
     }
 
-    /* Bouquet seal — on the ENVELOPE itself (not inside the clipped flap)
-       so it is never cut off. Positioned at the flap tip (55% down). */
-    .bouquet-seal {
-      position: absolute;
-      top: calc(55% - 36px);   /* centred on the flap tip */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 72px; height: 72px;
-      z-index: 10;              /* above flap and body */
-      pointer-events: none;
-    }
-    .bouquet-seal .seal-wreath {
+    /* ── Maroon ribbon on main envelope ── */
+    .envelope-ribbon {
       position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: contain;
+      pointer-events: none; z-index: 8;
+      transition: opacity 0.4s ease 0.35s, transform 0.5s ease 0.35s;
     }
-    .bouquet-seal .seal-mono {
+    .envelope.open .envelope-ribbon {
+      opacity: 0; transform: translateY(20px);
+    }
+    /* Horizontal band */
+    .ribbon-band {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 10px;
+      background: var(--maroon);
+      transform: translateY(-50%);
+      opacity: 0.88;
+    }
+    /* Bow SVG centred on the band */
+    .ribbon-bow {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 30px; height: 30px;
-      object-fit: contain;
-      filter: brightness(0) saturate(100%) invert(13%) sepia(80%)
-              saturate(500%) hue-rotate(320deg) brightness(0.5);
+      width: 70px; height: 50px;
     }
 
     /* Open hint */
     .envelope-hint {
       font-size: 0.82rem; letter-spacing: 5px;
-      text-transform: uppercase; color: #000;
-      font-style: italic;
+      text-transform: uppercase;
+      color: #000; font-style: italic;
     }
 
     /* ── Gift envelope ── */
     .gift-envelope-wrap {
       display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-      margin-top: 1.6rem;
+      margin-top: 2rem;
     }
     .gift-toggle {
       font-size: 0.78rem; letter-spacing: 4px;
-      text-transform: uppercase; color: rgba(26,74,26,0.5);
+      text-transform: uppercase; color: rgba(30,60,130,0.45);
       cursor: pointer; background: none; border: none;
       font-family: inherit; font-style: italic;
       transition: color 0.2s;
     }
-    .gift-toggle:hover { color: var(--green); }
+    .gift-toggle:hover { color: #1e3c82; }
+
+    /* Gift envelope — same size as main */
     .gift-envelope {
       position: relative;
-      width: 100%; max-width: 300px;
-      height: 160px;
-      cursor: pointer;
-      perspective: 900px;
+      width: 100%; max-width: 300px; height: 200px;
+      cursor: pointer; perspective: 900px;
       display: none;
     }
     .gift-envelope.active { display: block; }
     .gift-envelope-body {
       position: absolute; inset: 0;
       background: #fff;
-      border: 1px solid rgba(26,74,26,0.2);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid rgba(30,60,130,0.2);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.07);
     }
     .gift-envelope-flap {
       position: absolute;
-      top: 0; left: 0; right: 0; height: 50%;
+      top: 0; left: 0; right: 0; height: 55%;
       clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-      background: #f4f8f4;
-      border-left: 1px solid rgba(26,74,26,0.2);
-      border-right: 1px solid rgba(26,74,26,0.2);
+      background: #f0f4fc;
+      border-left: 1px solid rgba(30,60,130,0.18);
+      border-right: 1px solid rgba(30,60,130,0.18);
       transform-origin: 50% 0%;
       transform-style: preserve-3d;
       transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
@@ -355,50 +355,80 @@
     }
     .gift-envelope.open .gift-envelope-flap { transform: rotateX(-185deg); }
 
-    /* Gift message field (revealed after gift envelope opens) */
-    .gift-message-area {
-      display: none;
-      flex-direction: column; gap: 0.8rem;
-      width: 100%; max-width: 300px;
-      animation: slide-up 0.5s ease forwards;
+    /* Blue ribbon on gift envelope */
+    .gift-ribbon {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 8;
+      transition: opacity 0.4s ease 0.3s, transform 0.5s ease 0.3s;
     }
-    .gift-message-area.visible { display: flex; }
+    .gift-envelope.open .gift-ribbon { opacity: 0; transform: translateY(20px); }
+    .gift-ribbon-band {
+      position: absolute;
+      top: 50%; left: 0; right: 0; height: 10px;
+      background: #1e3c82; opacity: 0.8;
+      transform: translateY(-50%);
+    }
+
+    /* Gift content (revealed after gift envelope opens) */
+    .gift-content {
+      display: none; flex-direction: column; align-items: center; gap: 1rem;
+      width: 100%; max-width: 300px;
+      animation: slide-up 0.6s ease forwards;
+      padding: 0.5rem 0;
+    }
+    .gift-content.visible { display: flex; }
     @keyframes slide-up {
       from { opacity:0; transform: translateY(16px); }
       to   { opacity:1; transform: translateY(0); }
     }
-    .gift-message-area textarea {
-      width: 100%;
-      height: 100px;
-      border: 1px solid rgba(26,74,26,0.25);
-      border-radius: 2px;
-      padding: 0.8rem 1rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-style: italic; letter-spacing: 1px;
-      color: #111; resize: none; outline: none;
-      background: #fafdf8;
+
+    /* Rose bouquet */
+    .rose-bouquet {
+      text-align: center; line-height: 1.3;
+      font-size: 1.8rem; letter-spacing: 2px;
+      user-select: none;
     }
-    .gift-message-area input[type="text"] {
+
+    .gift-note {
+      font-size: 1.15rem; font-style: italic;
+      line-height: 1.8; letter-spacing: 0.5px;
+      color: #1a1a1a; text-align: center;
+    }
+    .gift-note span { color: #1e3c82; }
+
+    /* Custom message fields */
+    .gift-custom {
+      width: 100%; display: flex; flex-direction: column; gap: 0.6rem;
+      border-top: 1px solid rgba(30,60,130,0.1); padding-top: 0.8rem;
+    }
+    .gift-custom textarea {
+      width: 100%; height: 80px;
+      border: 1px solid rgba(30,60,130,0.2); border-radius: 2px;
+      padding: 0.7rem 0.9rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; letter-spacing: 1px;
+      color: #111; resize: none; outline: none; background: #f8f9fd;
+    }
+    .gift-custom input[type="text"] {
       width: 100%;
-      border: none; border-bottom: 1px solid rgba(26,74,26,0.25);
+      border: none; border-bottom: 1px solid rgba(30,60,130,0.2);
       padding: 0.4rem 0;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem; letter-spacing: 3px;
+      font-size: 1rem; letter-spacing: 3px;
       color: #111; outline: none; background: transparent;
     }
-    .gift-message-area input::placeholder,
-    .gift-message-area textarea::placeholder { color: rgba(0,0,0,0.25); }
+    .gift-custom input::placeholder,
+    .gift-custom textarea::placeholder { color: rgba(0,0,0,0.22); }
     .gift-save-btn {
       align-self: flex-end;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.85rem; letter-spacing: 4px;
-      text-transform: uppercase;
-      background: none; border: 1px solid var(--green);
-      color: var(--green); padding: 0.35rem 1rem;
+      font-size: 0.82rem; letter-spacing: 4px; text-transform: uppercase;
+      background: none; border: 1px solid #1e3c82;
+      color: #1e3c82; padding: 0.3rem 0.9rem;
       cursor: pointer; border-radius: 2px;
       transition: background 0.2s, color 0.2s;
     }
-    .gift-save-btn:hover { background: var(--green); color: #fff; }
+    .gift-save-btn:hover { background: #1e3c82; color: #fff; }
 
     /* ── Passport body (revealed after envelope opens) ── */
     .passport-body {
@@ -559,14 +589,25 @@
         <div class="envelope" id="envelope" onclick="window._openEnvelope()">
           <div class="envelope-body"><p>Waiting to be explored</p></div>
           <div class="envelope-flap"></div>
-          <!-- Bouquet seal: outside the clipped flap so it is never cut off -->
-          <div class="bouquet-seal">
-            <img class="seal-wreath" src="images/Linen Wreath.webp" alt="">
-            <img class="seal-mono"   src="images/KD_monogram.png"   alt="">
+          <!-- Maroon ribbon — sits above flap and body, animates away on open -->
+          <div class="envelope-ribbon">
+            <div class="ribbon-band"></div>
+            <svg class="ribbon-bow" viewBox="0 0 70 50" xmlns="http://www.w3.org/2000/svg">
+              <!-- Left bow loop -->
+              <ellipse cx="18" cy="22" rx="16" ry="10" fill="#800000" opacity="0.9" transform="rotate(-18 18 22)"/>
+              <!-- Right bow loop -->
+              <ellipse cx="52" cy="22" rx="16" ry="10" fill="#800000" opacity="0.9" transform="rotate(18 52 22)"/>
+              <!-- Centre knot -->
+              <ellipse cx="35" cy="22" rx="7" ry="7" fill="#5a0000"/>
+              <!-- Left tail -->
+              <path d="M 30 27 Q 22 38 18 46" stroke="#800000" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <!-- Right tail -->
+              <path d="M 40 27 Q 48 38 52 46" stroke="#800000" stroke-width="5" stroke-linecap="round" fill="none"/>
+            </svg>
           </div>
         </div>
 
-        <!-- Gift envelope (optional) -->
+        <!-- Gift envelope (optional, same size, blue ribbon) -->
         <div class="gift-envelope-wrap" id="gift-envelope-wrap">
           <button class="gift-toggle" onclick="window._toggleGift()">
             + Add a gift message
@@ -574,11 +615,35 @@
           <div class="gift-envelope" id="gift-envelope" onclick="window._openGift()">
             <div class="gift-envelope-body"></div>
             <div class="gift-envelope-flap"></div>
+            <!-- Blue ribbon -->
+            <div class="gift-ribbon">
+              <div class="gift-ribbon-band"></div>
+              <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:50px" viewBox="0 0 70 50" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="18" cy="22" rx="16" ry="10" fill="#1e3c82" opacity="0.9" transform="rotate(-18 18 22)"/>
+                <ellipse cx="52" cy="22" rx="16" ry="10" fill="#1e3c82" opacity="0.9" transform="rotate(18 52 22)"/>
+                <ellipse cx="35" cy="22" rx="7" ry="7" fill="#0f2050"/>
+                <path d="M 30 27 Q 22 38 18 46" stroke="#1e3c82" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <path d="M 40 27 Q 48 38 52 46" stroke="#1e3c82" stroke-width="5" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
           </div>
-          <div class="gift-message-area" id="gift-message-area">
-            <input type="text" id="gift-from" placeholder="From —">
-            <textarea id="gift-msg" placeholder="Write your message here…"></textarea>
-            <button class="gift-save-btn" onclick="window._saveGift()">Save</button>
+          <!-- Gift content: bouquet + text + custom message -->
+          <div class="gift-content" id="gift-content">
+            <div class="rose-bouquet">
+              🌹&nbsp;🌸&nbsp;🌺<br>
+              🌷&nbsp;🌼&nbsp;🌻&nbsp;🌷<br>
+              🌹&nbsp;🌸&nbsp;🌺
+            </div>
+            <p class="gift-note">
+              "Wear it on your finest days.<br>
+              Wear it on your ordinary ones.<br>
+              <span>Both deserve to feel like this.</span>"
+            </p>
+            <div class="gift-custom">
+              <input type="text" id="gift-from" placeholder="From —">
+              <textarea id="gift-msg" placeholder="Your personal note…"></textarea>
+              <button class="gift-save-btn" onclick="window._saveGift()">Save</button>
+            </div>
           </div>
         </div>
 
@@ -649,11 +714,11 @@
       env.classList.toggle('active');
     };
     window._openGift = function() {
-      const env  = document.getElementById('gift-envelope');
-      const area = document.getElementById('gift-message-area');
+      const env     = document.getElementById('gift-envelope');
+      const content = document.getElementById('gift-content');
       if (env.classList.contains('open')) return;
       env.classList.add('open');
-      setTimeout(() => { area.classList.add('visible'); }, 600);
+      setTimeout(() => { content.classList.add('visible'); }, 600);
     };
     window._saveGift = function() {
       const from = document.getElementById('gift-from').value.trim();

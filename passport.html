@@ -245,7 +245,7 @@
     }
     .envelope-body p {
       font-size: 0.82rem; letter-spacing: 5px;
-      text-transform: uppercase; color: rgba(128,0,0,0.3);
+      text-transform: uppercase; color: #000;
     }
 
     /* Bottom triangle fold lines (decorative V on the body) */
@@ -318,36 +318,25 @@
       display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
       margin-top: 2rem;
     }
-    .gift-toggle {
-      font-size: 0.78rem; letter-spacing: 4px;
-      text-transform: uppercase; color: rgba(30,60,130,0.45);
-      cursor: pointer; background: none; border: none;
-      font-family: inherit; font-style: italic;
-      transition: color 0.2s;
-    }
-    .gift-toggle:hover { color: #1e3c82; }
-
-    /* Gift envelope — same size as main */
+    /* Gift envelope — same size as main, always visible */
     .gift-envelope {
       position: relative;
       width: 100%; max-width: 300px; height: 200px;
       cursor: pointer; perspective: 900px;
-      display: none;
     }
-    .gift-envelope.active { display: block; }
     .gift-envelope-body {
       position: absolute; inset: 0;
       background: #fff;
-      border: 1px solid rgba(30,60,130,0.2);
+      border: 1px solid rgba(210,80,120,0.22);
       box-shadow: 0 6px 28px rgba(0,0,0,0.07);
     }
     .gift-envelope-flap {
       position: absolute;
       top: 0; left: 0; right: 0; height: 55%;
       clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-      background: #f0f4fc;
-      border-left: 1px solid rgba(30,60,130,0.18);
-      border-right: 1px solid rgba(30,60,130,0.18);
+      background: #fdf0f4;
+      border-left: 1px solid rgba(210,80,120,0.18);
+      border-right: 1px solid rgba(210,80,120,0.18);
       transform-origin: 50% 0%;
       transform-style: preserve-3d;
       transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
@@ -355,7 +344,7 @@
     }
     .gift-envelope.open .gift-envelope-flap { transform: rotateX(-185deg); }
 
-    /* Blue ribbon on gift envelope */
+    /* Pink ribbon on gift envelope */
     .gift-ribbon {
       position: absolute; inset: 0;
       pointer-events: none; z-index: 8;
@@ -365,7 +354,7 @@
     .gift-ribbon-band {
       position: absolute;
       top: 50%; left: 0; right: 0; height: 10px;
-      background: #1e3c82; opacity: 0.8;
+      background: #d25078; opacity: 0.85;
       transform: translateY(-50%);
     }
 
@@ -394,7 +383,7 @@
       line-height: 1.8; letter-spacing: 0.5px;
       color: #1a1a1a; text-align: center;
     }
-    .gift-note span { color: #1e3c82; }
+    .gift-note span { color: #d25078; }
 
     /* Custom message fields */
     .gift-custom {
@@ -403,7 +392,7 @@
     }
     .gift-custom textarea {
       width: 100%; height: 80px;
-      border: 1px solid rgba(30,60,130,0.2); border-radius: 2px;
+      border: 1px solid rgba(210,80,120,0.2); border-radius: 2px;
       padding: 0.7rem 0.9rem;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem; font-style: italic; letter-spacing: 1px;
@@ -411,7 +400,7 @@
     }
     .gift-custom input[type="text"] {
       width: 100%;
-      border: none; border-bottom: 1px solid rgba(30,60,130,0.2);
+      border: none; border-bottom: 1px solid rgba(210,80,120,0.2);
       padding: 0.4rem 0;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1rem; letter-spacing: 3px;
@@ -423,12 +412,12 @@
       align-self: flex-end;
       font-family: 'Cormorant Garamond', serif;
       font-size: 0.82rem; letter-spacing: 4px; text-transform: uppercase;
-      background: none; border: 1px solid #1e3c82;
-      color: #1e3c82; padding: 0.3rem 0.9rem;
+      background: none; border: 1px solid #d25078;
+      color: #d25078; padding: 0.3rem 0.9rem;
       cursor: pointer; border-radius: 2px;
       transition: background 0.2s, color 0.2s;
     }
-    .gift-save-btn:hover { background: #1e3c82; color: #fff; }
+    .gift-save-btn:hover { background: #d25078; color: #fff; }
 
     /* ── Passport body (revealed after envelope opens) ── */
     .passport-body {
@@ -607,23 +596,20 @@
           </div>
         </div>
 
-        <!-- Gift envelope (optional, same size, blue ribbon) -->
+        <!-- Gift envelope — always visible, pink ribbon -->
         <div class="gift-envelope-wrap" id="gift-envelope-wrap">
-          <button class="gift-toggle" onclick="window._toggleGift()">
-            + Add a gift message
-          </button>
           <div class="gift-envelope" id="gift-envelope" onclick="window._openGift()">
             <div class="gift-envelope-body"></div>
             <div class="gift-envelope-flap"></div>
-            <!-- Blue ribbon -->
+            <!-- Pink ribbon -->
             <div class="gift-ribbon">
               <div class="gift-ribbon-band"></div>
               <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:50px" viewBox="0 0 70 50" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="18" cy="22" rx="16" ry="10" fill="#1e3c82" opacity="0.9" transform="rotate(-18 18 22)"/>
-                <ellipse cx="52" cy="22" rx="16" ry="10" fill="#1e3c82" opacity="0.9" transform="rotate(18 52 22)"/>
-                <ellipse cx="35" cy="22" rx="7" ry="7" fill="#0f2050"/>
-                <path d="M 30 27 Q 22 38 18 46" stroke="#1e3c82" stroke-width="5" stroke-linecap="round" fill="none"/>
-                <path d="M 40 27 Q 48 38 52 46" stroke="#1e3c82" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <ellipse cx="18" cy="22" rx="16" ry="10" fill="#d25078" opacity="0.9" transform="rotate(-18 18 22)"/>
+                <ellipse cx="52" cy="22" rx="16" ry="10" fill="#d25078" opacity="0.9" transform="rotate(18 52 22)"/>
+                <ellipse cx="35" cy="22" rx="7" ry="7" fill="#9e1a44"/>
+                <path d="M 30 27 Q 22 38 18 46" stroke="#d25078" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <path d="M 40 27 Q 48 38 52 46" stroke="#d25078" stroke-width="5" stroke-linecap="round" fill="none"/>
               </svg>
             </div>
           </div>
@@ -708,11 +694,6 @@
     `;
 
     // ── Gift envelope handlers ────────────────────────────────────────────────
-    window._toggleGift = function(e) {
-      if (e) e.stopPropagation();
-      const env = document.getElementById('gift-envelope');
-      env.classList.toggle('active');
-    };
     window._openGift = function() {
       const env     = document.getElementById('gift-envelope');
       const content = document.getElementById('gift-content');

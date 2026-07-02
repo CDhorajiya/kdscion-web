@@ -189,19 +189,23 @@
       color: rgba(26,74,26,0.55); margin-top: 0.2rem;
     }
 
-    /* Designer note */
-    .designer-note {
-      margin-top: 2rem;
-      font-size: 1.25rem; font-style: italic;
-      line-height: 1.8; letter-spacing: 1px;
-      color: rgba(26,26,26,0.45);
+    /* Footer mark */
+    .passport-footer {
+      margin-top: 2.4rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
     }
-    .designer-sig {
-      margin-top: 1.2rem;
-      font-size: 1rem; letter-spacing: 3px;
+    .footer-mono img {
+      width: 48px; height: 48px;
+      object-fit: contain;
+      filter: brightness(0) saturate(100%);
+    }
+    .footer-house {
+      font-size: 0.9rem; letter-spacing: 5px;
       text-transform: uppercase;
-      color: var(--maroon);
-      opacity: 0.7;
+      color: #111;
+      font-weight: 300;
     }
 
     /* Not found */
@@ -358,12 +362,12 @@
         </div>
       </div>
 
-      <p class="designer-note">
-        "Every piece that leaves this house carries a piece of its maker.
-        This garment was imagined, designed, and entrusted to you —
-        and to you alone."
-      </p>
-      <p class="designer-sig">— King Dhorajiya · The House of Scion</p>
+      <div class="passport-footer">
+        <div class="footer-mono">
+          <img src="images/KD_monogram.png" alt="KD">
+        </div>
+        <p class="footer-house">· The House of Scion</p>
+      </div>
     `;
 
     // Show passport

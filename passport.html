@@ -107,19 +107,21 @@
     .details-side {
       display: flex;
       flex-direction: column;
-      padding: 3.6rem 3rem;
+      justify-content: space-between;
+      padding: 2.8rem 3rem;
       background: var(--bg);
-      overflow-y: auto;
+      overflow: hidden;
+      height: 100vh;
       position: relative;
     }
 
     /* Top header */
     .passport-header {
       display: flex; flex-direction: column; align-items: center;
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
+      padding-bottom: 1.6rem;
       border-bottom: 1px solid rgba(128,0,0,0.15);
-      gap: 1rem;
+      gap: 0.8rem;
+      flex-shrink: 0;
     }
     .kd-seal {
       width: 150px; height: 150px;
@@ -211,6 +213,122 @@
       color: rgba(26,74,26,0.55); margin-top: 0.2rem;
     }
 
+    /* ── Envelope stage (between header and footer) ── */
+    .envelope-stage {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.4rem;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .envelope-stage.hiding {
+      opacity: 0; transform: scale(0.92); pointer-events: none;
+    }
+
+    /* Envelope shape */
+    .envelope {
+      position: relative;
+      width: 100%; max-width: 300px;
+      height: 200px;
+      cursor: pointer;
+      perspective: 900px;
+    }
+
+    /* Envelope body (the lower rectangle) */
+    .envelope-body {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      border: 1px solid rgba(128,0,0,0.18);
+      box-shadow: 0 6px 32px rgba(0,0,0,0.08);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 1.6rem;
+    }
+    .envelope-body p {
+      font-size: 0.82rem; letter-spacing: 5px;
+      text-transform: uppercase; color: rgba(128,0,0,0.3);
+    }
+
+    /* Bottom triangle fold lines (decorative V on the body) */
+    .envelope-body::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(135deg, #f5f3f0 50%, transparent 50%),
+                  linear-gradient(225deg, #f5f3f0 50%, transparent 50%);
+      background-size: 50% 100%;
+      background-position: left, right;
+      background-repeat: no-repeat;
+      opacity: 0.5;
+    }
+
+    /* Flap — triangular, sits on top of the envelope body */
+    .envelope-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+      background: #f8f6f2;
+      border-left: 1px solid rgba(128,0,0,0.18);
+      border-right: 1px solid rgba(128,0,0,0.18);
+      transform-origin: 50% 0%;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+    }
+    .envelope.open .envelope-flap {
+      transform: rotateX(-195deg);
+    }
+
+    /* Bouquet seal — sits at the tip of the flap */
+    .bouquet-seal {
+      position: absolute;
+      bottom: -28px; left: 50%;
+      transform: translateX(-50%);
+      width: 56px; height: 56px;
+      z-index: 6;
+    }
+    .bouquet-seal .seal-wreath {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: contain;
+    }
+    .bouquet-seal .seal-mono {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 26px; height: 26px;
+      object-fit: contain;
+      filter: brightness(0) saturate(100%) invert(13%) sepia(80%)
+              saturate(500%) hue-rotate(320deg) brightness(0.5);
+    }
+
+    /* Open hint */
+    .envelope-hint {
+      font-size: 0.82rem; letter-spacing: 5px;
+      text-transform: uppercase; color: rgba(128,0,0,0.35);
+    }
+
+    /* ── Passport body (revealed after envelope opens) ── */
+    .passport-body {
+      flex: 1; overflow-y: auto;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s;
+      display: none;
+    }
+    .passport-body.visible {
+      display: block;
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* Footer */
+    .passport-footer {
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid rgba(0,0,0,0.07);
+      flex-shrink: 0;
+    }
+
     /* Designer quote */
     .designer-note {
       margin-top: 2rem;
@@ -219,23 +337,14 @@
       color: #111;
     }
 
-    /* Footer mark */
-    .passport-footer {
-      margin-top: 2.4rem;
-      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(0,0,0,0.08);
-    }
     .footer-mono img {
-      width: 240px; height: 240px;
+      width: 160px; height: 160px;
       object-fit: contain;
       filter: brightness(0) saturate(100%);
     }
     .footer-house {
-      font-size: 0.9rem; letter-spacing: 5px;
-      text-transform: uppercase;
-      color: #000;
-      font-weight: 400;
+      font-size: 0.82rem; letter-spacing: 5px;
+      text-transform: uppercase; color: #000; font-weight: 400;
     }
 
     /* Not found */
@@ -337,93 +446,125 @@
     document.getElementById('not-found').style.display = 'flex';
   }
 
-  // ── Render passport details ───────────────────────────────────────────────
+  // ── Render passport — initial state: header + envelope + footer ──────────
   function renderPassport(p) {
     const createdDate = new Date(p.created_at).toLocaleDateString('en-GB', {
       day: 'numeric', month: 'long', year: 'numeric',
     });
-
     document.title = `${p.design_name} — KD Scion Passport`;
 
     document.getElementById('details-side').innerHTML = `
+
+      <!-- HEADER: always visible -->
       <div class="passport-header">
-        <div class="kd-seal">
-          <img src="images/a2.webp" alt="KD Scion">
-        </div>
+        <div class="kd-seal"><img src="images/a2.webp" alt="KD Scion"></div>
         <div class="house-bespoke">Bespoke</div>
       </div>
 
-      <p class="cert-title">Garment Passport</p>
-      <h1 class="garment-name">${p.design_name}</h1>
-
-      <div class="data-grid">
-        <div class="data-row">
-          <span class="data-label">Passport Number</span>
-          <span class="data-value passport-num">${p.passport_number}</span>
+      <!-- ENVELOPE STAGE: visible before opening -->
+      <div class="envelope-stage" id="envelope-stage">
+        <div class="envelope" id="envelope" onclick="window._openEnvelope()">
+          <!-- Body -->
+          <div class="envelope-body">
+            <p>Tap to open</p>
+          </div>
+          <!-- Flap with bouquet seal -->
+          <div class="envelope-flap">
+            <div class="bouquet-seal">
+              <img class="seal-wreath" src="images/Linen Wreath.webp" alt="">
+              <img class="seal-mono"   src="images/KD_monogram.png"   alt="">
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="data-row">
-          <span class="data-label">Edition</span>
-          <div class="data-value edition">
-            <span class="edition-num">${p.edition_number}</span>
-            <span class="edition-label">of this design · one of a kind</span>
+      <!-- BODY: hidden, revealed when envelope opens -->
+      <div class="passport-body" id="passport-body">
+        <p class="cert-title">Garment Passport</p>
+        <h1 class="garment-name">${p.design_name}</h1>
+
+        <div class="data-grid">
+          <div class="data-row">
+            <span class="data-label">Passport Number</span>
+            <span class="data-value passport-num">${p.passport_number}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Edition</span>
+            <div class="data-value edition">
+              <span class="edition-num">${p.edition_number}</span>
+              <span class="edition-label">of this design · one of a kind</span>
+            </div>
+          </div>
+          ${p.fabric_label ? `
+          <div class="data-row">
+            <span class="data-label">Fabric</span>
+            <span class="data-value">${p.fabric_label}</span>
+          </div>` : ''}
+          <div class="data-row">
+            <span class="data-label">Created For</span>
+            <span class="data-value">${p.customer_initials || '—'}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Date of Creation</span>
+            <span class="data-value">${createdDate}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Design Reference</span>
+            <span class="data-value" style="font-family:'Courier New',monospace;font-size:1.1rem;letter-spacing:3px;color:rgba(26,74,26,0.6)">${p.product_sku}</span>
           </div>
         </div>
 
-        ${p.fabric_label ? `
-        <div class="data-row">
-          <span class="data-label">Fabric</span>
-          <span class="data-value">${p.fabric_label}</span>
-        </div>` : ''}
-
-        <div class="data-row">
-          <span class="data-label">Created For</span>
-          <span class="data-value">${p.customer_initials || '—'}</span>
+        <div class="auth-seal">
+          <div class="seal-icon">◈</div>
+          <div>
+            <div class="seal-text-main">Authenticated Original</div>
+            <div class="seal-text-sub">Made exclusively to its owner's measurements</div>
+          </div>
         </div>
 
-        <div class="data-row">
-          <span class="data-label">Date of Creation</span>
-          <span class="data-value">${createdDate}</span>
-        </div>
-
-        <div class="data-row">
-          <span class="data-label">Design Reference</span>
-          <span class="data-value" style="font-family:'Courier New',monospace;font-size:1.1rem;letter-spacing:3px;color:rgba(245,240,232,0.5)">${p.product_sku}</span>
-        </div>
+        <p class="designer-note">
+          "Every piece that leaves the house carries a piece of its maker.
+          This garment was imagined, designed, and entrusted to you —
+          and to you alone."
+        </p>
       </div>
 
-      <div class="auth-seal">
-        <div class="seal-icon">◈</div>
-        <div>
-          <div class="seal-text-main">Authenticated Original</div>
-          <div class="seal-text-sub">This garment was made exclusively to its owner's measurements</div>
-        </div>
-      </div>
-
-      <p class="designer-note">
-        "Every piece that leaves the house carries a piece of its maker.
-        This garment was imagined, designed, and entrusted to you —
-        and to you alone."
-      </p>
-
+      <!-- FOOTER: always visible -->
       <div class="passport-footer">
-        <div class="footer-mono">
-          <img src="images/KD_monogram.png" alt="KD">
-        </div>
-        <p class="footer-house">· The House of Scion</p>
+        <div class="footer-mono"><img src="images/KD_monogram.png" alt="KD"></div>
+        <p class="footer-house">· the house of scion</p>
       </div>
     `;
 
-    // Show passport
+    // ── Envelope open handler (attached to window so onclick works) ──────────
+    window._openEnvelope = function() {
+      const envelope = document.getElementById('envelope');
+      const stage    = document.getElementById('envelope-stage');
+      const body     = document.getElementById('passport-body');
+
+      // 1. Open flap
+      envelope.classList.add('open');
+
+      // 2. After flap lifts, show body content
+      setTimeout(() => {
+        body.style.display = 'block';
+        requestAnimationFrame(() => body.classList.add('visible'));
+      }, 600);
+
+      // 3. Fade out and collapse envelope stage
+      setTimeout(() => {
+        stage.classList.add('hiding');
+        setTimeout(() => { stage.style.display = 'none'; }, 500);
+      }, 700);
+    };
+
+    // Show passport panel
     const wrap = document.getElementById('passport-wrap');
     wrap.style.display = 'grid';
     setTimeout(() => wrap.classList.add('visible'), 50);
+    document.getElementById('loading').classList.add('hidden');
 
-    // Hide loading
-    const loading = document.getElementById('loading');
-    loading.classList.add('hidden');
-
-    // Activate the matching wreath based on fabric_id
+    // Activate matching wreath
     activateWreath(p.fabric_id);
 
     // Start 3D viewer

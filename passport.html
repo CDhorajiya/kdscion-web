@@ -335,9 +335,9 @@
     }
     .gift-envelope-body {
       position: absolute; inset: 0;
-      background: #fffafc;
-      border: 1px solid rgba(210,80,120,0.35);
-      box-shadow: 0 6px 28px rgba(210,80,120,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      background: #fff;
+      border: 1px solid rgba(210,80,120,0.2);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.08);
     }
     .gift-envelope-flap {
       position: absolute;
@@ -764,8 +764,8 @@
     // Activate matching wreath
     activateWreath(p.fabric_id);
 
-    // Start 3D viewer
-    if (p.glb_path) initViewer(p.glb_path);
+    // Start 3D viewer — double rAF ensures grid has laid out and panel has real px dimensions
+    if (p.glb_path) requestAnimationFrame(() => requestAnimationFrame(() => initViewer(p.glb_path)));
   }
 
   // ── Wreath activation ─────────────────────────────────────────────────────

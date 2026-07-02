@@ -78,20 +78,16 @@
     /* ── Wreath column (right edge of viewer) ── */
     .wreath-col {
       position: absolute;
-      top: 50%; right: 1.2rem;
-      transform: translateY(-50%);
+      top: 0; bottom: 0; right: 1.2rem;
       display: flex; flex-direction: column;
-      align-items: center; gap: 1rem;
+      align-items: center; justify-content: space-evenly;
       z-index: 10;
     }
     .wreath-col img {
-      width: 38px; height: 38px;
+      width: 114px; height: 114px;
       object-fit: contain;
-      opacity: 0.55;
-      transition: opacity 0.3s;
     }
     .wreath-col img.spinning {
-      opacity: 1;
       animation: passport-spin 18s linear infinite;
     }
 
@@ -434,11 +430,15 @@
 
   // ── Wreath activation ─────────────────────────────────────────────────────
   function activateWreath(fabricId) {
+    // TEST MODE: force linen to spin regardless of fabric_id
+    // Remove the next line once testing is done
+    fabricId = 'linen-1';
+
     if (!fabricId) return;
     const id = fabricId.toLowerCase().replace('tt-', '');
     let type = null;
-    if (id.startsWith('cotton-linen') || id.startsWith('cotton_linen')) type = 'cotton'; // blend: use cotton
-    else if (id.startsWith('cotton-wool') || id.startsWith('cotton_wool')) type = 'wool'; // blend: use wool
+    if (id.startsWith('cotton-linen') || id.startsWith('cotton_linen')) type = 'cotton';
+    else if (id.startsWith('cotton-wool') || id.startsWith('cotton_wool')) type = 'wool';
     else if (id.startsWith('cotton'))  type = 'cotton';
     else if (id.startsWith('linen'))   type = 'linen';
     else if (id.startsWith('wool'))    type = 'wool';

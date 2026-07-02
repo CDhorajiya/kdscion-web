@@ -610,7 +610,15 @@
       <!-- GIFT ENVELOPE: outside envelope-stage, always visible -->
       <div class="gift-envelope-wrap" id="gift-envelope-wrap">
           <div class="gift-envelope" id="gift-envelope" onclick="window._openGift()">
-            <div class="gift-envelope-body"></div>
+            <div class="gift-envelope-body">
+              <!-- Heart to heart SVG — centred on the envelope face -->
+              <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:90px;height:60px;opacity:0.18" viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left heart -->
+                <path d="M 28 30 C 28 22 18 14 8 22 C -2 30 8 46 28 56 C 48 46 58 30 48 22 C 38 14 28 22 28 30 Z" fill="#d25078"/>
+                <!-- Right heart (mirrored, overlapping at centre) -->
+                <path d="M 62 30 C 62 22 52 14 42 22 C 32 30 42 46 62 56 C 82 46 92 30 82 22 C 72 14 62 22 62 30 Z" fill="#d25078"/>
+              </svg>
+            </div>
             <div class="gift-envelope-flap"></div>
             <!-- Pink ribbon -->
             <div class="gift-ribbon">

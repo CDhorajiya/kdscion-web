@@ -1706,17 +1706,38 @@ const ALL_DESIGNS = [
         let collsHtml = '';
         type.collections.forEach(coll => {
           const swatchItems = coll.swatches.map(s => {
-            const visible = sOn(s.id);
-            const isExtra = !!(overrides.extras?.[`${type.id}:${coll.id}`]?.find(e => e.id === s.id));
-            return `<div class="fab-swatch-item">
+            const visible   = sOn(s.id);
+            const isExtra   = !!(overrides.extras?.[`${type.id}:${coll.id}`]?.find(e => e.id === s.id));
+            const opVal     = (overrides.swatchOpacity ?? {})[s.id];
+            const hasOp     = opVal !== undefined;
+            const opDisplay = hasOp ? opVal.toFixed(2) : '1.00';
+            return `<div class="fab-swatch-item" style="flex-wrap:wrap;gap:0.5rem;">
               <img src="${s.image}" alt="${s.label}">
-              <span>${s.label}</span>
+              <span style="flex:1">${s.label}</span>
               <label class="fab-toggle" title="Show/hide globally">
                 <input type="checkbox" ${visible ? 'checked' : ''}
                   onchange="setVisibility('s:${s.id}', this.checked)">
                 <span class="fab-slider"></span>
               </label>
               ${isExtra ? `<button class="fab-swatch-del" onclick="deleteSwatch('${type.id}','${coll.id}','${s.id}')">✕</button>` : ''}
+              <div style="width:100%;display:flex;align-items:center;gap:0.6rem;padding:0.3rem 0 0.2rem 0.2rem;border-top:1px solid #f4f4f4;">
+                <label style="display:flex;align-items:center;gap:0.3rem;font-family:'Times New Roman',serif;font-size:1rem;letter-spacing:1px;color:#888;cursor:pointer;">
+                  <input type="checkbox" ${hasOp ? 'checked' : ''}
+                    onchange="toggleSwatchOpacity('${s.id}', this.checked)"
+                    style="width:13px;height:13px;cursor:pointer;">
+                  Opacity
+                </label>
+                <input type="range" min="0.05" max="1" step="0.05"
+                  value="${hasOp ? opVal : 1}"
+                  ${hasOp ? '' : 'disabled'}
+                  id="op-slider-${s.id}"
+                  oninput="setSwatchOpacity('${s.id}', parseFloat(this.value)); document.getElementById('op-val-${s.id}').textContent=parseFloat(this.value).toFixed(2)"
+                  style="flex:1;min-width:60px;accent-color:#1a1a1a;${hasOp ? '' : 'opacity:0.3'}">
+                <span id="op-val-${s.id}"
+                  style="font-family:'Courier New',monospace;font-size:0.95rem;color:${hasOp ? '#111' : '#ccc'};min-width:2.8rem;text-align:right;">
+                  ${opDisplay}
+                </span>
+              </div>
             </div>`;
           }).join('');
 
@@ -1859,6 +1880,43 @@ const ALL_DESIGNS = [
       const overrides = loadFabricOverrides();
       if (!overrides.visibility) overrides.visibility = {};
       overrides.visibility[key] = on;
+      saveFabricOverrides(overrides);
+    };
+
+    // ── Per-swatch opacity ────────────────────────────────────────────────────
+    // Stored in localStorage under overrides.swatchOpacity = { 'cotton-1': 0.7, ... }
+    // renderFabricList() reads this and emits data-opacity on every swatch card.
+    // All product pages read data-opacity and pass it to applyFabric() / applyFabricToMeshSet().
+
+    window.toggleSwatchOpacity = function(swatchId, on) {
+      const overrides = loadFabricOverrides();
+      if (!overrides.swatchOpacity) overrides.swatchOpacity = {};
+      if (on) {
+        // Default to 0.7 when first enabled
+        overrides.swatchOpacity[swatchId] = overrides.swatchOpacity[swatchId] ?? 0.7;
+      } else {
+        delete overrides.swatchOpacity[swatchId];
+      }
+      saveFabricOverrides(overrides);
+      // Enable/disable the slider in-place
+      const slider = document.getElementById(`op-slider-${swatchId}`);
+      const valEl  = document.getElementById(`op-val-${swatchId}`);
+      if (slider) {
+        slider.disabled = !on;
+        slider.style.opacity = on ? '1' : '0.3';
+        slider.value = overrides.swatchOpacity?.[swatchId] ?? 1;
+      }
+      if (valEl) {
+        const v = overrides.swatchOpacity?.[swatchId];
+        valEl.textContent = v !== undefined ? v.toFixed(2) : '1.00';
+        valEl.style.color = on ? '#111' : '#ccc';
+      }
+    };
+
+    window.setSwatchOpacity = function(swatchId, value) {
+      const overrides = loadFabricOverrides();
+      if (!overrides.swatchOpacity) overrides.swatchOpacity = {};
+      overrides.swatchOpacity[swatchId] = Math.round(value * 100) / 100;
       saveFabricOverrides(overrides);
     };
 

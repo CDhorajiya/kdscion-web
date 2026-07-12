@@ -1069,7 +1069,7 @@
             uvNormCache = { gMinU, gMinV, gScale };
         }
 
-        function applyFabric(texturePath) {
+        function applyFabric(texturePath, opacity = 1) {
             texLoader.load(texturePath, (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -1103,9 +1103,11 @@
                     node.material = new THREE.MeshBasicMaterial({
                         map: t,
                         side: THREE.DoubleSide,
+                        opacity: opacity,
+                        transparent: opacity < 1,
                     });
                 });
-                console.log('[fabric] applied:', texturePath);
+                console.log('[fabric] applied:', texturePath, 'opacity:', opacity);
             }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
         }
 
@@ -1147,7 +1149,7 @@
                 e.stopPropagation();
                 fabricList.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
                 swatch.classList.add('active');
-                applyFabric(swatch.dataset.texture);
+                applyFabric(swatch.dataset.texture, parseFloat(swatch.dataset.opacity ?? '1'));
                 if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
                 fabricPreviewImg.src = swatch.dataset.texture;
                 fabricPreview.classList.add('visible');

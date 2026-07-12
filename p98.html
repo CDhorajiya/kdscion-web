@@ -1067,7 +1067,7 @@
             bottomMeshes = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
         }
 
-        function applyFabricToMeshSet(texturePath, meshSet) {
+        function applyFabricToMeshSet(texturePath, meshSet, opacity = 1) {
             if (!texturePath || !meshSet.length) return;
             texLoader.load(texturePath, (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
@@ -1101,6 +1101,8 @@
                     node.material = new THREE.MeshBasicMaterial({
                         map: t,
                         side: THREE.DoubleSide,
+                        opacity: opacity,
+                        transparent: opacity < 1,
                     });
                 });
                 console.log('[fabric] applied to', meshSet.length, 'meshes:', texturePath);
@@ -1160,7 +1162,7 @@
                     e.stopPropagation();
                     listEl.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
                     swatch.classList.add('active');
-                    applyFabricToMeshSet(swatch.dataset.texture, getMeshSet());
+                    applyFabricToMeshSet(swatch.dataset.texture, getMeshSet(), parseFloat(swatch.dataset.opacity ?? '1'));
                     if (swatch.dataset.fabricId) selectFabric(swatch.dataset.fabricId);
                     fabricPreviewImg.src = swatch.dataset.texture;
                     fabricPreview.classList.add('visible');

@@ -516,11 +516,15 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
       // Build one clickable swatch card per visible swatch.
       // data-texture → the image applied to the 3D model when clicked.
       // data-fabric-id → the ID passed to selectFabric() and saved to the session.
-      const swatchCards = visibleSwatches.map(s => `
-        <div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${s.opacity ?? 1}">
+      const swatchCards = visibleSwatches.map(s => {
+        // Opacity priority: 1) localStorage admin override  2) swatch definition  3) 1 (fully opaque)
+        const opacityOverride = (overrides.swatchOpacity ?? {})[s.id];
+        const opacity = opacityOverride !== undefined ? opacityOverride : (s.opacity ?? 1);
+        return `<div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}">
           <img src="${s.image}" alt="${s.label}">
           <span>${s.label}</span>
-        </div>`).join('');
+        </div>`;
+      }).join('');
 
       // Sub-category block: collapsible header + swatch grid.
       collectionsHtml += `

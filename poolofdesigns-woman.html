@@ -759,7 +759,7 @@
             uvNormCache = { gMinU, gMinV, gScale };
         }
 
-        function applyFabric(texturePath) {
+        function applyFabric(texturePath, opacity = 1) {
             texLoader.load(texturePath, (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -799,6 +799,8 @@
                     node.material = new THREE.MeshBasicMaterial({
                         map: t,
                         side: THREE.DoubleSide,
+                        opacity: opacity,
+                        transparent: opacity < 1,
                     });
                 });
                 console.log('[fabric] applied:', texturePath);

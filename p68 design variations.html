@@ -151,6 +151,13 @@
         .product-column:last-child .product-desc__title,
         .product-column:last-child .product-desc__sub { text-align: right; }
         @media (max-width: 768px) {
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
+            .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
+
             .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
             .column { gap: 2rem; }
             .container-snaps h3 { letter-spacing: 4px; font-size: 2.4rem; }
@@ -197,9 +204,9 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p68.html">
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p68.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p68-full sleeve quarter button sheath dress_Colorway A.webp"
+                        <img src="images/KDscion-p68-full sleeve quarter button sheath dress_Colorway A.webp" style="--rc:-24.99%"
                              alt="KDscion p68 full sleeve quarter button sheath dress">
                     </div>
                     <div class="product-desc">
@@ -209,9 +216,9 @@
                     </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p71.html">
+                <div class="product-item" style="--ord:3" data-design-type="solo" data-product-url="p71.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p71-sleeveless button up sheath dress_Colorway A.webp"
+                        <img src="images/KDscion-p71-sleeveless button up sheath dress_Colorway A.webp" style="--rc:-9.29%"
                              alt="KDscion p71 sleeveless button up sheath dress">
                     </div>
                     <div class="product-desc">
@@ -226,9 +233,9 @@
             <!-- ── Column 2 ── -->
             <div class="product-column column column2">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p69.html">
+                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="p69.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p69-sleeveless quarter button sheath dress_Colorway A.webp"
+                        <img src="images/KDscion-p69-sleeveless quarter button sheath dress_Colorway A.webp" style="--rc:-19.74%"
                              alt="KDscion p69 sleeveless quarter button sheath dress">
                     </div>
                     <div class="product-desc">
@@ -243,9 +250,9 @@
             <!-- ── Column 3 ── -->
             <div class="product-column column column3">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p70.html">
+                <div class="product-item" style="--ord:2" data-design-type="solo" data-product-url="p70.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p70-full sleeve button up sheath dress_Colorway A.webp"
+                        <img src="images/KDscion-p70-full sleeve button up sheath dress_Colorway A.webp" style="--rc:-22.66%"
                              alt="KDscion p70 full sleeve button up sheath dress">
                     </div>
                     <div class="product-desc">

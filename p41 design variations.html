@@ -151,6 +151,13 @@
         .product-column:last-child .product-desc__title,
         .product-column:last-child .product-desc__sub { text-align: right; }
         @media (max-width: 768px) {
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
+            .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
+
             .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
             .column { gap: 2rem; }
             .container-snaps h3 { letter-spacing: 4px; font-size: 2.4rem; }
@@ -197,9 +204,9 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p41.html">
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p41.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p41-full sleeve sheath dress_Colorway A.webp"
+                        <img src="images/KDscion-p41-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.18%"
                              alt="KDscion p41 full sleeve sheath dress">
                     </div>
                     <div class="product-desc">
@@ -214,9 +221,9 @@
             <!-- ── Column 2 ── -->
             <div class="product-column column column2">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p42.html">
+                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="p42.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p42-sleeveless shift dress_Colorway A.webp"
+                        <img src="images/KDscion-p42-sleeveless shift dress_Colorway A.webp" style="--rc:-11.08%"
                              alt="KDscion p42 sleeveless shift dress">
                     </div>
                     <div class="product-desc">

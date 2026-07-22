@@ -263,15 +263,16 @@
         .product-column:last-child .product-desc__sub { text-align: right; }
 
         @media (max-width: 768px) {
-            .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; margin: 0 auto; padding: 0; }
-            .column { gap: 2rem; }
-            .container-snaps h3 { letter-spacing: 3px; font-size: 2.1rem; }
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
             .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
 
-            /* recenter the garment subject within its frame — the source
-               snapshots are framed off-center for the desktop pointer
-               callout, which no longer applies on mobile */
-            .img-wrap img { transform: translateX(var(--rc, 0%)); }
+            .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
+            .column { gap: 2rem; }
+            .container-snaps h3 { letter-spacing: 3px; font-size: 2.1rem; }
 
             .product-desc {
                 position: static !important;
@@ -375,7 +376,7 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p1 design variations.html">
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p1 design variations.html">
                 <div class="img-wrap">
                 <img src="images/KDscion-p1-full sleeve classic shirt_Colorway A.webp" style="--rc:-10.90%"
                 alt="KDscion p1 full sleeve classic shirt">
@@ -387,9 +388,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p8 design variations.html">
+                <div class="product-item" style="--ord:3" data-design-type="solo" data-product-url="p8 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p8-full sleeve sheath dress_Colorway A.webp" style="--rc:-24.27%"
+                <img src="images/KDscion-p8-full sleeve sheath dress_Colorway A.webp" style="--rc:-20.64%"
                 alt="KDscion p8 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -399,9 +400,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p13 design variations.html">
+                <div class="product-item" style="--ord:6" data-design-type="solo" data-product-url="p13 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p13-full sleeve swift dress_Colorway A.webp" style="--rc:-14.56%"
+                <img src="images/KDscion-p13-full sleeve swift dress_Colorway A.webp" style="--rc:-14.59%"
                 alt="KDscion p13 full sleeve swift dress">
                 </div>
                 <div class="product-desc">
@@ -411,9 +412,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p18.html">
+                <div class="product-item" style="--ord:9" data-design-type="solo" data-product-url="p18.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p18-sleeveless maxi dress_Colorway A.webp" style="--rc:-10.63%"
+                <img src="images/KDscion-p18-sleeveless maxi dress_Colorway A.webp" style="--rc:-10.69%"
                 alt="KDscion p18 sleeveless maxi dress">
                 </div>
                 <div class="product-desc">
@@ -423,9 +424,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p21.html">
+                <div class="product-item" style="--ord:12" data-design-type="solo" data-product-url="p21.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p21-full sleeve Button less jacket_Colorway A.webp" style="--rc:-9.26%"
+                <img src="images/KDscion-p21-full sleeve Button less jacket_Colorway A.webp" style="--rc:-9.14%"
                 alt="KDscion p21 full sleeve buttonless jacket">
                 </div>
                 <div class="product-desc">
@@ -435,9 +436,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p24 design variations.html">
+                <div class="product-item" style="--ord:15" data-design-type="solo" data-product-url="p24 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p24-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.81%"
+                <img src="images/KDscion-p24-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.60%"
                 alt="KDscion p24 full sleeve a-line dress">
                 </div>
                 <div class="product-desc">
@@ -447,9 +448,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p33.html">
+                <div class="product-item" style="--ord:18" data-design-type="solo" data-product-url="p33.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p33-Quarter shirring sleeve A-line dress_Colorway A.webp" style="--rc:-18.34%"
+                <img src="images/KDscion-p33-Quarter shirring sleeve A-line dress_Colorway A.webp" style="--rc:-18.23%"
                 alt="KDscion p33 quarter shirring sleeve a-line dress">
                 </div>
                 <div class="product-desc">
@@ -459,9 +460,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p37.html">
+                <div class="product-item" style="--ord:21" data-design-type="solo" data-product-url="p37.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p37-sleeveless maxi dress_Colorway A.webp" style="--rc:-9.68%"
+                <img src="images/KDscion-p37-sleeveless maxi dress_Colorway A.webp" style="--rc:-9.62%"
                 alt="KDscion p37 sleeveless maxi dress">
                 </div>
                 <div class="product-desc">
@@ -471,9 +472,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p41 design variations.html">
+                <div class="product-item" style="--ord:24" data-design-type="solo" data-product-url="p41 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p41-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.33%"
+                <img src="images/KDscion-p41-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.18%"
                 alt="KDscion p41 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -483,9 +484,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p48 design variations.html">
+                <div class="product-item" style="--ord:27" data-design-type="solo" data-product-url="p48 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p48-quarter sleeve shift dress_Colorway A.webp" style="--rc:-16.02%"
+                <img src="images/KDscion-p48-quarter sleeve shift dress_Colorway A.webp" style="--rc:-16.08%"
                 alt="KDscion p48 quarter sleeve shift dress">
                 </div>
                 <div class="product-desc">
@@ -495,9 +496,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p56 design variations.html">
+                <div class="product-item" style="--ord:30" data-design-type="solo" data-product-url="p56 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p56-full sleeve shift dress-elastic lines_Colorway A.webp" style="--rc:-16.62%"
+                <img src="images/KDscion-p56-full sleeve shift dress-elastic lines_Colorway A.webp" style="--rc:-16.77%"
                 alt="KDscion p56 full sleeve shift dress - elastic lines">
                 </div>
                 <div class="product-desc">
@@ -507,9 +508,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p62 design variations.html">
+                <div class="product-item" style="--ord:33" data-design-type="solo" data-product-url="p62 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p62-full sleeve bodycon dress_Colorway A.webp" style="--rc:-14.35%"
+                <img src="images/KDscion-p62-full sleeve bodycon dress_Colorway A.webp" style="--rc:-14.23%"
                 alt="KDscion p62 full sleeve bodycon dress">
                 </div>
                 <div class="product-desc">
@@ -519,9 +520,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p72 design variations.html">
+                <div class="product-item" style="--ord:36" data-design-type="solo" data-product-url="p72 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p72-full sleeve sheath dress_Colorway A.webp" style="--rc:-24.54%"
+                <img src="images/KDscion-p72-full sleeve sheath dress_Colorway A.webp" style="--rc:-24.45%"
                 alt="KDscion p72 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -531,9 +532,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p78 design variations.html">
+                <div class="product-item" style="--ord:39" data-design-type="solo" data-product-url="p78 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp" style="--rc:-21.65%"
+                <img src="images/KDscion-p78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp" style="--rc:-21.41%"
                 alt="KDscion p78 full sleeve sheath dress with belt - two tone layer">
                 </div>
                 <div class="product-desc">
@@ -543,9 +544,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p83.html">
+                <div class="product-item" style="--ord:42" data-design-type="solo" data-product-url="p83.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p83-sleeveless sheath dress_Colorway A.webp" style="--rc:-17.90%"
+                <img src="images/KDscion-p83-sleeveless sheath dress_Colorway A.webp" style="--rc:-18.14%"
                 alt="KDscion p83 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -555,9 +556,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p92 design variations.html">
+                <div class="product-item" style="--ord:45" data-design-type="solo" data-product-url="p92 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p92-full sleeve asymmetric jacket_Colorway A.webp" style="--rc:-9.86%"
+                <img src="images/KDscion-p92-full sleeve asymmetric jacket_Colorway A.webp" style="--rc:-9.98%"
                 alt="KDscion p92 full sleeve asymmetric jacket">
                 </div>
                 <div class="product-desc">
@@ -569,9 +570,9 @@
 
 
             
-                <div class="product-item" data-design-type="solo" data-product-url="p102 design variations.html">
+                <div class="product-item" style="--ord:48" data-design-type="solo" data-product-url="p102 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p102-full sleeve shift dress_Colorway A.webp" style="--rc:-13.64%"
+                <img src="images/KDscion-p102-full sleeve shift dress_Colorway A.webp" style="--rc:-13.55%"
                 alt="KDscion p102 full sleeve shift dress">
                 </div>
                 <div class="product-desc">
@@ -581,9 +582,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p105 design variations.html">
+                <div class="product-item" style="--ord:51" data-design-type="solo" data-product-url="p105 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p105-full sleeve full zipper top_Colorway A.webp" style="--rc:-9.05%"
+                <img src="images/KDscion-p105-full sleeve full zipper top_Colorway A.webp" style="--rc:-9.26%"
                 alt="KDscion p105 full sleeve full zipper top">
                 </div>
                 <div class="product-desc">
@@ -593,9 +594,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p111 design variations.html">
+                <div class="product-item" style="--ord:54" data-design-type="solo" data-product-url="p111 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p111-half sleeve elastic shift dress_Colorway A.webp" style="--rc:-16.89%"
+                <img src="images/KDscion-p111-half sleeve elastic shift dress_Colorway A.webp" style="--rc:-8.67%"
                 alt="KDscion p111 half sleeve elastic shift dress">
                 </div>
                 <div class="product-desc">
@@ -605,9 +606,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p114.html">
+                <div class="product-item" style="--ord:57" data-design-type="solo" data-product-url="p114.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p114-full sleeve top_Colorway A.webp" style="--rc:-10.69%"
+                <img src="images/KDscion-p114-full sleeve top_Colorway A.webp" style="--rc:-10.96%"
                 alt="KDscion p114 full sleeve top">
                 </div>
                 <div class="product-desc">
@@ -618,7 +619,7 @@
                 </div>
 
 
-<div class="product-item" data-design-type="solo" data-product-url="p121 design variations.html">
+<div class="product-item" style="--ord:60" data-design-type="solo" data-product-url="p121 design variations.html">
                 <div class="img-wrap">
                 <img src="images/KDscion-p121-half sleeve top_Colorway A.webp" style="--rc:-12.12%"
                 alt="KDscion p121 half sleeve top">
@@ -630,9 +631,9 @@
                 </div>
                 </div>
             
-                <div class="product-item" data-design-type="solo" data-product-url="p126.html">
+                <div class="product-item" style="--ord:63" data-design-type="solo" data-product-url="p126.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p126-half sleeve top_Colorway A.webp" style="--rc:-13.31%"
+                <img src="images/KDscion-p126-half sleeve top_Colorway A.webp" style="--rc:-13.34%"
                 alt="KDscion p126 half sleeve top">
                 </div>
                 <div class="product-desc">
@@ -642,9 +643,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p129.html">
+                <div class="product-item" style="--ord:66" data-design-type="solo" data-product-url="p129.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p129-sleeveless top-with large side vents_Colorway A.webp" style="--rc:-14.38%"
+                <img src="images/KDscion-p129-sleeveless top-with large side vents_Colorway A.webp" style="--rc:-14.44%"
                 alt="KDscion p129 sleeveless top-with large side vents">
                 </div>
                 <div class="product-desc">
@@ -654,9 +655,9 @@
                 </div>
                 </div>
 
-<div class="product-item" data-design-type="solo" data-product-url="p133.html">
+<div class="product-item" style="--ord:69" data-design-type="solo" data-product-url="p133.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p133-sleeveless sheath dress_Colorway A.webp" style="--rc:-12.66%"
+                <img src="images/KDscion-p133-sleeveless sheath dress_Colorway A.webp" style="--rc:-12.54%"
                 alt="KDscion p133 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -666,7 +667,7 @@
                 </div>
                 </div>
             
-                <div class="product-item" data-design-type="solo" data-product-url="p142.html">
+                <div class="product-item" style="--ord:72" data-design-type="solo" data-product-url="p142.html">
                 <div class="img-wrap">
                 <img src="images/KDscion-p142-sleeveless shift dress-elastic waist-translucent_Colorway A.webp" style="--rc:-16.11%"
                 alt="KDscion p142 sleeveless shift dress-elastic waist-translucent">
@@ -678,9 +679,9 @@
                 </div>
                 </div>
 
-<div class="product-item" data-design-type="solo" data-product-url="p144.html">
+<div class="product-item" style="--ord:75" data-design-type="solo" data-product-url="p144.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p144-sleeveless top-elastic waist_Colorway A.webp" style="--rc:-15.46%"
+                <img src="images/KDscion-p144-sleeveless top-elastic waist_Colorway A.webp" style="--rc:-15.57%"
                 alt="KDscion p144 sleeveless top-elastic waist">
                 </div>
                 <div class="product-desc">
@@ -694,9 +695,9 @@
 
             
             
-<div class="product-item" data-design-type="solo" data-product-url="p149 design variations.html">
+<div class="product-item" style="--ord:78" data-design-type="solo" data-product-url="p149 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p149-full sleeve long coat_Colorway A.webp" style="--rc:-8.84%" alt="KDscion p149 full sleeve long coat">
+                <img src="images/KDscion-p149-full sleeve long coat_Colorway A.webp" style="--rc:-9.05%" alt="KDscion p149 full sleeve long coat">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P149 | KD Scion</p>
@@ -705,9 +706,9 @@
                 </div>
                 </div>
             
-<div class="product-item" data-design-type="solo" data-product-url="p155 design variations.html">
+<div class="product-item" style="--ord:81" data-design-type="solo" data-product-url="p155 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p155-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.54%" alt="KDscion p155 full sleeve sheath dress">
+                <img src="images/KDscion-p155-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.72%" alt="KDscion p155 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P155 | KD Scion</p>
@@ -717,9 +718,9 @@
                 </div>
             
 
-                <div class="product-item" data-design-type="solo" data-product-url="p161 design variations.html">
+                <div class="product-item" style="--ord:84" data-design-type="solo" data-product-url="p161 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p161-full sleeve turtle neck jacket_Colorway A.webp" style="--rc:-10.51%" alt="KDscion p161 full sleeve turtle neck jacket">
+                <img src="images/KDscion-p161-full sleeve turtle neck jacket_Colorway A.webp" style="--rc:-10.63%" alt="KDscion p161 full sleeve turtle neck jacket">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P161 | KD Scion</p>
@@ -732,9 +733,9 @@
             <!-- ── Column 2 ── -->
             <div class="product-column column column2">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p3 design variations.html">
+                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="p3 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p3-full sleeve overall dress_Colorway A.webp" style="--rc:-20.73%"
+                <img src="images/KDscion-p3-full sleeve overall dress_Colorway A.webp" style="--rc:-12.92%"
                 alt="KDscion p3 full sleeve overall dress">
                 </div>
                 <div class="product-desc">
@@ -744,9 +745,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p10.html">
+                <div class="product-item" style="--ord:4" data-design-type="solo" data-product-url="p10.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p10-sleeveless sheath dress_Colorway A.webp" style="--rc:-19.18%"
+                <img src="images/KDscion-p10-sleeveless sheath dress_Colorway A.webp" style="--rc:-9.29%"
                 alt="KDscion p10 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -756,9 +757,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p15 design variations.html">
+                <div class="product-item" style="--ord:7" data-design-type="solo" data-product-url="p15 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p15-full sleeve bodycon dress_Colorway A.webp" style="--rc:-15.28%"
+                <img src="images/KDscion-p15-full sleeve bodycon dress_Colorway A.webp" style="--rc:-15.07%"
                 alt="KDscion p15 full sleeve bodycon dress">
                 </div>
                 <div class="product-desc">
@@ -768,9 +769,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p19.html">
+                <div class="product-item" style="--ord:10" data-design-type="solo" data-product-url="p19.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p19-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.33%"
+                <img src="images/KDscion-p19-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.18%"
                 alt="KDscion p19 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -780,9 +781,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p22 design variations.html">
+                <div class="product-item" style="--ord:13" data-design-type="solo" data-product-url="p22 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p22-modern shawl_Colorway A.webp" style="--rc:-14.62%"
+                <img src="images/KDscion-p22-modern shawl_Colorway A.webp" style="--rc:-14.47%"
                 alt="KDscion p22 modern shawl">
                 </div>
                 <div class="product-desc">
@@ -792,9 +793,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p28.html">
+                <div class="product-item" style="--ord:16" data-design-type="solo" data-product-url="p28.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p28-sleeveless A-line dress_Colorway A.webp" style="--rc:-13.73%"
+                <img src="images/KDscion-p28-sleeveless A-line dress_Colorway A.webp" style="--rc:-13.46%"
                 alt="KDscion p28 sleeveless a-line dress">
                 </div>
                 <div class="product-desc">
@@ -804,9 +805,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p34 design variations.html">
+                <div class="product-item" style="--ord:19" data-design-type="solo" data-product-url="p34 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p34-sleeveless shift dress_Colorway A.webp" style="--rc:-10.51%"
+                <img src="images/KDscion-p34-sleeveless shift dress_Colorway A.webp" style="--rc:-10.54%"
                 alt="KDscion p34 sleeveless shift dress">
                 </div>
                 <div class="product-desc">
@@ -816,7 +817,7 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p38 design variations.html">
+                <div class="product-item" style="--ord:22" data-design-type="solo" data-product-url="p38 design variations.html">
                 <div class="img-wrap">
                 <img src="images/KDscion-p38-sleeveless shift dress_Colorway A.webp" style="--rc:-9.56%"
                 alt="KDscion p38 sleeveless shift dress">
@@ -828,9 +829,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p44 design variations.html">
+                <div class="product-item" style="--ord:25" data-design-type="solo" data-product-url="p44 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p44-full sleeve sheath dress_Colorway A.webp" style="--rc:-24.18%"
+                <img src="images/KDscion-p44-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.04%"
                 alt="KDscion p44 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -840,9 +841,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p52 design variations.html">
+                <div class="product-item" style="--ord:28" data-design-type="solo" data-product-url="p52 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p52-sleeveless shift dress (designer folding)-translucent_Colorway A.webp" style="--rc:-16.80%"
+                <img src="images/KDscion-p52-sleeveless shift dress (designer folding)-translucent_Colorway A.webp" style="--rc:-16.62%"
                 alt="KDscion p52 sleeveless shift dress (designer folding) - translucent">
                 </div>
                 <div class="product-desc">
@@ -852,9 +853,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p58 design variations.html">
+                <div class="product-item" style="--ord:31" data-design-type="solo" data-product-url="p58 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p58-full sleeve sheath dress_Colorway A.webp" style="--rc:-11.17%"
+                <img src="images/KDscion-p58-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.99%"
                 alt="KDscion p58 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -864,9 +865,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p64 design variations.html">
+                <div class="product-item" style="--ord:34" data-design-type="solo" data-product-url="p64 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p64-full sleeve button up top_Colorway A.webp" style="--rc:-9.50%"
+                <img src="images/KDscion-p64-full sleeve button up top_Colorway A.webp" style="--rc:-9.26%"
                 alt="KDscion p64 full sleeve button up top">
                 </div>
                 <div class="product-desc">
@@ -876,9 +877,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p74 design variations.html">
+                <div class="product-item" style="--ord:37" data-design-type="solo" data-product-url="p74 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p74-full sleeve sheath dress-translucent two tone_Colorway A.webp" style="--rc:-15.37%"
+                <img src="images/KDscion-p74-full sleeve sheath dress-translucent two tone_Colorway A.webp" style="--rc:-15.28%"
                 alt="KDscion p74 full sleeve sheath dress - translucent two tone">
                 </div>
                 <div class="product-desc">
@@ -888,9 +889,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p80.html">
+                <div class="product-item" style="--ord:40" data-design-type="solo" data-product-url="p80.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p80 (p81 and p103)-full sleeve button up jacket and skirt_Colorway A.webp" style="--rc:-8.31%"
+                <img src="images/KDscion-p80 (p81 and p103)-full sleeve button up jacket and skirt_Colorway A.webp" style="--rc:-8.22%"
                 alt="KDscion p80 full sleeve button up jacket &amp; skirt">
                 </div>
                 <div class="product-desc">
@@ -900,9 +901,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p85 design variations.html">
+                <div class="product-item" style="--ord:43" data-design-type="solo" data-product-url="p85 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p85-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.60%"
+                <img src="images/KDscion-p85-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.49%"
                 alt="KDscion p85 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -912,9 +913,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p94 design variations.html">
+                <div class="product-item" style="--ord:46" data-design-type="solo" data-product-url="p94 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p94-full sleeve single breasted coat_Colorway A.webp" style="--rc:-9.38%"
+                <img src="images/KDscion-p94-full sleeve single breasted coat_Colorway A.webp" style="--rc:-9.20%"
                 alt="KDscion p94 full sleeve single breasted coat">
                 </div>
                 <div class="product-desc">
@@ -924,9 +925,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p100 design variations.html">
+                <div class="product-item" style="--ord:49" data-design-type="solo" data-product-url="p100 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p100-full sleeve single breasted long coat_Colorway A.webp" style="--rc:-10.36%"
+                <img src="images/KDscion-p100-full sleeve single breasted long coat_Colorway A.webp" style="--rc:-10.01%"
                 alt="KDscion p100 full sleeve single breasted long coat">
                 </div>
                 <div class="product-desc">
@@ -937,9 +938,9 @@
                 </div>
 
             
-                <div class="product-item" data-design-type="solo" data-product-url="p103.html">
+                <div class="product-item" style="--ord:52" data-design-type="solo" data-product-url="p103.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p103-skirt_Colorway A.webp" style="--rc:-11.05%"
+                <img src="images/KDscion-p103-skirt_Colorway A.webp" style="--rc:-10.99%"
                 alt="KDscion p103 skirt">
                 </div>
                 <div class="product-desc">
@@ -949,9 +950,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p109 design variations.html">
+                <div class="product-item" style="--ord:55" data-design-type="solo" data-product-url="p109 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p109-half sleeve top_Colorway A.webp" style="--rc:-10.07%"
+                <img src="images/KDscion-p109-half sleeve top_Colorway A.webp" style="--rc:-10.01%"
                 alt="KDscion p109 half sleeve top">
                 </div>
                 <div class="product-desc">
@@ -961,9 +962,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p118.html">
+                <div class="product-item" style="--ord:58" data-design-type="solo" data-product-url="p118.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p118-sleeveless shift dress_Colorway A.webp" style="--rc:-7.89%"
+                <img src="images/KDscion-p118-sleeveless shift dress_Colorway A.webp" style="--rc:-8.04%"
                 alt="KDscion p118 sleeveless shift dress">
                 </div>
                 <div class="product-desc">
@@ -974,9 +975,9 @@
                 </div>
 
 
-<div class="product-item" data-design-type="solo" data-product-url="p123 design variations.html">
+<div class="product-item" style="--ord:61" data-design-type="solo" data-product-url="p123 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p123-sleeveless shift dress_Colorway A.webp" style="--rc:-11.11%"
+                <img src="images/KDscion-p123-sleeveless shift dress_Colorway A.webp" style="--rc:-10.84%"
                 alt="KDscion p123 sleeveless shift dress">
                 </div>
                 <div class="product-desc">
@@ -986,9 +987,9 @@
                 </div>
                 </div>
             
-                <div class="product-item" data-design-type="solo" data-product-url="p127.html">
+                <div class="product-item" style="--ord:64" data-design-type="solo" data-product-url="p127.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p127-half sleeve shift dress_Colorway A.webp" style="--rc:-15.34%"
+                <img src="images/KDscion-p127-half sleeve shift dress_Colorway A.webp" style="--rc:-15.16%"
                 alt="KDscion p127 half sleeve shift dress">
                 </div>
                 <div class="product-desc">
@@ -998,9 +999,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p130.html">
+                <div class="product-item" style="--ord:67" data-design-type="solo" data-product-url="p130.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p130-sleeveless cross strap bodycon dress_Colorway A.webp" style="--rc:-17.90%"
+                <img src="images/KDscion-p130-sleeveless cross strap bodycon dress_Colorway A.webp" style="--rc:-17.96%"
                 alt="KDscion p130 sleeveless cross strap bodycon dress">
                 </div>
                 <div class="product-desc">
@@ -1011,9 +1012,9 @@
                 </div>
 
 
-<div class="product-item" data-design-type="solo" data-product-url="p134.html">
+<div class="product-item" style="--ord:70" data-design-type="solo" data-product-url="p134.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p134-sleeveless double layer bodycon dress_Colorway A.webp" style="--rc:-16.29%"
+                <img src="images/KDscion-p134-sleeveless double layer bodycon dress_Colorway A.webp" style="--rc:-16.26%"
                 alt="KDscion p134 sleeveless double layer bodycon dress">
                 </div>
                 <div class="product-desc">
@@ -1023,9 +1024,9 @@
                 </div>
                 </div>
             
-                <div class="product-item" data-design-type="solo" data-product-url="p137 design variations.html">
+                <div class="product-item" style="--ord:73" data-design-type="solo" data-product-url="p137 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p137-full sleeve gown-translucent_Colorway A.webp" style="--rc:-13.34%"
+                <img src="images/KDscion-p137-full sleeve gown-translucent_Colorway A.webp" style="--rc:-13.58%"
                 alt="KDscion p137 full sleeve gown-translucent">
                 </div>
                 <div class="product-desc">
@@ -1041,9 +1042,9 @@
             
             
             
-<div class="product-item" data-design-type="solo" data-product-url="p145 design variations.html">
+<div class="product-item" style="--ord:76" data-design-type="solo" data-product-url="p145 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p145-full sleeve bodycon dress_Colorway A.webp" style="--rc:-11.11%" alt="KDscion p145 full sleeve bodycon dress">
+                <img src="images/KDscion-p145-full sleeve bodycon dress_Colorway A.webp" style="--rc:-11.05%" alt="KDscion p145 full sleeve bodycon dress">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P145 | KD Scion</p>
@@ -1052,9 +1053,9 @@
                 </div>
                 </div>
             
-<div class="product-item" data-design-type="solo" data-product-url="p151 design variations.html">
+<div class="product-item" style="--ord:79" data-design-type="solo" data-product-url="p151 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p151-full sleeve shift dress_Colorway A.webp" style="--rc:-12.89%" alt="KDscion p151 full sleeve shift dress">
+                <img src="images/KDscion-p151-full sleeve shift dress_Colorway A.webp" style="--rc:-12.84%" alt="KDscion p151 full sleeve shift dress">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P151 | KD Scion</p>
@@ -1063,9 +1064,9 @@
                 </div>
                 </div>
             
-                <div class="product-item" data-design-type="solo" data-product-url="p157 design variations.html">
+                <div class="product-item" style="--ord:82" data-design-type="solo" data-product-url="p157 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p157-full sleeve top_Colorway A.webp" style="--rc:-8.96%" alt="KDscion p157 full sleeve top">
+                <img src="images/KDscion-p157-full sleeve top_Colorway A.webp" style="--rc:-8.99%" alt="KDscion p157 full sleeve top">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P157 | KD Scion</p>
@@ -1073,9 +1074,9 @@
                 <p class="product-desc__sub">full sleeve top</p>
                 </div>
                 </div>
-                <div class="product-item" data-design-type="solo" data-product-url="p163 design variations.html">
+                <div class="product-item" style="--ord:85" data-design-type="solo" data-product-url="p163 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p163-full sleeve turtle neck short jacket_Colorway A.webp" style="--rc:-10.51%" alt="KDscion p163 full sleeve turtle neck short jacket">
+                <img src="images/KDscion-p163-full sleeve turtle neck short jacket_Colorway A.webp" style="--rc:-10.48%" alt="KDscion p163 full sleeve turtle neck short jacket">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P163 | KD Scion</p>
@@ -1088,9 +1089,9 @@
             <!-- ── Column 3 ── -->
             <div class="product-column column column3">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p7.html">
+                <div class="product-item" style="--ord:2" data-design-type="solo" data-product-url="p7.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p7-sleeveless sheath dress_Colorway A.webp" style="--rc:-19.30%"
+                <img src="images/KDscion-p7-sleeveless sheath dress_Colorway A.webp" style="--rc:-13.19%"
                 alt="KDscion p7 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1100,9 +1101,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p11 design variations.html">
+                <div class="product-item" style="--ord:5" data-design-type="solo" data-product-url="p11 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p11-full sleeve A-line dress_Colorway A.webp" style="--rc:-14.32%"
+                <img src="images/KDscion-p11-full sleeve A-line dress_Colorway A.webp" style="--rc:-14.41%"
                 alt="KDscion p11 full sleeve a-line dress">
                 </div>
                 <div class="product-desc">
@@ -1112,9 +1113,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p17.html">
+                <div class="product-item" style="--ord:8" data-design-type="solo" data-product-url="p17.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p17-sleeveless midi dress_Colorway A.webp" style="--rc:-21.80%"
+                <img src="images/KDscion-p17-sleeveless midi dress_Colorway A.webp" style="--rc:-21.77%"
                 alt="KDscion p17 sleeveless midi dress">
                 </div>
                 <div class="product-desc">
@@ -1124,9 +1125,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p20.html">
+                <div class="product-item" style="--ord:11" data-design-type="solo" data-product-url="p20.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p20-sleeveless A-line dress_Colorway A.webp" style="--rc:-14.41%"
+                <img src="images/KDscion-p20-sleeveless A-line dress_Colorway A.webp" style="--rc:-13.82%"
                 alt="KDscion p20 sleeveless a-line dress">
                 </div>
                 <div class="product-desc">
@@ -1136,9 +1137,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p23.html">
+                <div class="product-item" style="--ord:14" data-design-type="solo" data-product-url="p23.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p23-sleeveless bodycon dress_Colorway A.webp" style="--rc:-10.21%"
+                <img src="images/KDscion-p23-sleeveless bodycon dress_Colorway A.webp" style="--rc:-10.15%"
                 alt="KDscion p23 sleeveless bodycon dress">
                 </div>
                 <div class="product-desc">
@@ -1148,9 +1149,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p29 design variations.html">
+                <div class="product-item" style="--ord:17" data-design-type="solo" data-product-url="p29 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p29-full sleeve classic fit buttonup dress_Colorway A.webp" style="--rc:-18.88%"
+                <img src="images/KDscion-p29-full sleeve classic fit buttonup dress_Colorway A.webp" style="--rc:-18.73%"
                 alt="KDscion p29 full sleeve classic fit buttonup dress">
                 </div>
                 <div class="product-desc">
@@ -1160,9 +1161,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p36.html">
+                <div class="product-item" style="--ord:20" data-design-type="solo" data-product-url="p36.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p36-sleeveless maxi dress_Colorway A.webp" style="--rc:-13.82%"
+                <img src="images/KDscion-p36-sleeveless maxi dress_Colorway A.webp" style="--rc:-13.94%"
                 alt="KDscion p36 sleeveless maxi dress">
                 </div>
                 <div class="product-desc">
@@ -1172,9 +1173,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p40.html">
+                <div class="product-item" style="--ord:23" data-design-type="solo" data-product-url="p40.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p40-sleeveless sheath dress_Colorway A.webp" style="--rc:-14.53%"
+                <img src="images/KDscion-p40-sleeveless sheath dress_Colorway A.webp" style="--rc:-14.71%"
                 alt="KDscion p40 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1184,9 +1185,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p46 design variations.html">
+                <div class="product-item" style="--ord:26" data-design-type="solo" data-product-url="p46 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p46-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.81%"
+                <img src="images/KDscion-p46-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.46%"
                 alt="KDscion p46 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1196,9 +1197,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p54 design variations.html">
+                <div class="product-item" style="--ord:29" data-design-type="solo" data-product-url="p54 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p54-full sleeve A-line dress_Colorway A.webp" style="--rc:-10.84%"
+                <img src="images/KDscion-p54-full sleeve A-line dress_Colorway A.webp" style="--rc:-10.69%"
                 alt="KDscion p54 full sleeve a-line dress">
                 </div>
                 <div class="product-desc">
@@ -1208,9 +1209,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p60 design variations.html">
+                <div class="product-item" style="--ord:32" data-design-type="solo" data-product-url="p60 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p60-full sleeve sheath dress_Colorway A.webp" style="--rc:-8.61%"
+                <img src="images/KDscion-p60-full sleeve sheath dress_Colorway A.webp" style="--rc:-8.55%"
                 alt="KDscion p60 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1220,9 +1221,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p68 design variations.html">
+                <div class="product-item" style="--ord:35" data-design-type="solo" data-product-url="p68 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p68-full sleeve quarter button sheath dress_Colorway A.webp" style="--rc:-25.28%"
+                <img src="images/KDscion-p68-full sleeve quarter button sheath dress_Colorway A.webp" style="--rc:-24.99%"
                 alt="KDscion p68 full sleeve quarter button sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1232,9 +1233,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p76 design variations.html">
+                <div class="product-item" style="--ord:38" data-design-type="solo" data-product-url="p76 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p76-full sleeve asymmetric jacket_Colorway A.webp" style="--rc:-19.71%"
+                <img src="images/KDscion-p76-full sleeve asymmetric jacket_Colorway A.webp" style="--rc:-19.62%"
                 alt="KDscion p76 full sleeve asymmetric jacket">
                 </div>
                 <div class="product-desc">
@@ -1244,9 +1245,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p81 design variations.html">
+                <div class="product-item" style="--ord:41" data-design-type="solo" data-product-url="p81 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p81-full sleeve button up jacket_Colorway A.webp" style="--rc:-7.83%"
+                <img src="images/KDscion-p81-full sleeve button up jacket_Colorway A.webp" style="--rc:-7.98%"
                 alt="KDscion p81 full sleeve button up jacket">
                 </div>
                 <div class="product-desc">
@@ -1256,9 +1257,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p87 design variations.html">
+                <div class="product-item" style="--ord:44" data-design-type="solo" data-product-url="p87 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p87-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.66%"
+                <img src="images/KDscion-p87-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.78%"
                 alt="KDscion p87 full sleeve a-line dress">
                 </div>
                 <div class="product-desc">
@@ -1268,9 +1269,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p96 design variations.html">
+                <div class="product-item" style="--ord:47" data-design-type="solo" data-product-url="p96 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p96-full sleeve single breasted coat_Colorway A.webp" style="--rc:-10.27%"
+                <img src="images/KDscion-p96-full sleeve single breasted coat_Colorway A.webp" style="--rc:-10.18%"
                 alt="KDscion p96 full sleeve single breasted coat">
                 </div>
                 <div class="product-desc">
@@ -1281,9 +1282,9 @@
                 </div>
 
             
-                <div class="product-item" data-design-type="solo" data-product-url="p107 design variations.html">
+                <div class="product-item" style="--ord:50" data-design-type="solo" data-product-url="p107 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p107-sleeveless top_Colorway A.webp" style="--rc:-9.68%"
+                <img src="images/KDscion-p107-sleeveless top_Colorway A.webp" style="--rc:-9.83%"
                 alt="KDscion p107 sleeveless top">
                 </div>
                 <div class="product-desc">
@@ -1293,9 +1294,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p113.html">
+                <div class="product-item" style="--ord:53" data-design-type="solo" data-product-url="p113.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p113-sleeveless top_Colorway A.webp" style="--rc:-12.42%"
+                <img src="images/KDscion-p113-sleeveless top_Colorway A.webp" style="--rc:-12.57%"
                 alt="KDscion p113 sleeveless top">
                 </div>
                 <div class="product-desc">
@@ -1305,9 +1306,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p116 design variations.html">
+                <div class="product-item" style="--ord:56" data-design-type="solo" data-product-url="p116 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p116-quarter sleeve top_Colorway A.webp" style="--rc:-8.90%"
+                <img src="images/KDscion-p116-quarter sleeve top_Colorway A.webp" style="--rc:-8.67%"
                 alt="KDscion p116 quarter sleeve top">
                 </div>
                 <div class="product-desc">
@@ -1317,9 +1318,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p119 design variations.html">
+                <div class="product-item" style="--ord:59" data-design-type="solo" data-product-url="p119 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p119-full sleeve sheath dress_Colorway A.webp" style="--rc:-13.43%"
+                <img src="images/KDscion-p119-full sleeve sheath dress_Colorway A.webp" style="--rc:-13.28%"
                 alt="KDscion p119 full sleeve sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1329,9 +1330,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p125.html">
+                <div class="product-item" style="--ord:62" data-design-type="solo" data-product-url="p125.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p125-full sleeve top_Colorway A.webp" style="--rc:-9.68%"
+                <img src="images/KDscion-p125-full sleeve top_Colorway A.webp" style="--rc:-9.47%"
                 alt="KDscion p125 full sleeve top">
                 </div>
                 <div class="product-desc">
@@ -1341,9 +1342,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p128.html">
+                <div class="product-item" style="--ord:65" data-design-type="solo" data-product-url="p128.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p128-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.36%"
+                <img src="images/KDscion-p128-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.30%"
                 alt="KDscion p128 sleeveless sheath dress">
                 </div>
                 <div class="product-desc">
@@ -1353,9 +1354,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p131 design variations.html">
+                <div class="product-item" style="--ord:68" data-design-type="solo" data-product-url="p131 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p131-full sleeve long coat_Colorway A.webp" style="--rc:-11.29%"
+                <img src="images/KDscion-p131-full sleeve long coat_Colorway A.webp" style="--rc:-11.20%"
                 alt="KDscion p131 full sleeve long coat">
                 </div>
                 <div class="product-desc">
@@ -1366,7 +1367,7 @@
                 </div>
 
 
-                <div class="product-item" data-design-type="solo" data-product-url="p135 design variations.html">
+                <div class="product-item" style="--ord:71" data-design-type="solo" data-product-url="p135 design variations.html">
                 <div class="img-wrap">
                 <img src="images/KDscion-p135-full sleeve sheath dress_Colorway A.webp" style="--rc:-12.12%"
                 alt="KDscion p135 full sleeve sheath dress">
@@ -1378,9 +1379,9 @@
                 </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p141 design variations.html">
+                <div class="product-item" style="--ord:74" data-design-type="solo" data-product-url="p141 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p141-sleeveless top_Colorway A.webp" style="--rc:-16.94%"
+                <img src="images/KDscion-p141-sleeveless top_Colorway A.webp" style="--rc:-16.91%"
                 alt="KDscion p141 sleeveless top">
                 </div>
                 <div class="product-desc">
@@ -1397,9 +1398,9 @@
             
             
             
-<div class="product-item" data-design-type="solo" data-product-url="p147 design variations.html">
+<div class="product-item" style="--ord:77" data-design-type="solo" data-product-url="p147 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p147-full sleeve top_Colorway A.webp" style="--rc:-11.49%" alt="KDscion p147 full sleeve top">
+                <img src="images/KDscion-p147-full sleeve top_Colorway A.webp" style="--rc:-11.58%" alt="KDscion p147 full sleeve top">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P147 | KD Scion</p>
@@ -1408,9 +1409,9 @@
                 </div>
                 </div>
             
-<div class="product-item" data-design-type="solo" data-product-url="p153 design variations.html">
+<div class="product-item" style="--ord:80" data-design-type="solo" data-product-url="p153 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p153-full sleeve top_Colorway A.webp" style="--rc:-12.95%" alt="KDscion p153 full sleeve top">
+                <img src="images/KDscion-p153-full sleeve top_Colorway A.webp" style="--rc:-12.63%" alt="KDscion p153 full sleeve top">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P153 | KD Scion</p>
@@ -1420,9 +1421,9 @@
                 </div>
             
 
-                <div class="product-item" data-design-type="solo" data-product-url="p159 design variations.html">
+                <div class="product-item" style="--ord:83" data-design-type="solo" data-product-url="p159 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p159-full sleeve shirring top_Colorway A.webp" style="--rc:-7.59%" alt="KDscion p159 full sleeve shirring top">
+                <img src="images/KDscion-p159-full sleeve shirring top_Colorway A.webp" style="--rc:-7.62%" alt="KDscion p159 full sleeve shirring top">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P159 | KD Scion</p>
@@ -1430,9 +1431,9 @@
                 <p class="product-desc__sub">full sleeve shirring top</p>
                 </div>
                 </div>
-                <div class="product-item" data-design-type="solo" data-product-url="p165 design variations.html">
+                <div class="product-item" style="--ord:86" data-design-type="solo" data-product-url="p165 design variations.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p165-full sleeve wrap top_Colorway A.webp" style="--rc:-10.15%" alt="KDscion p165 full sleeve wrap top">
+                <img src="images/KDscion-p165-full sleeve wrap top_Colorway A.webp" style="--rc:-10.13%" alt="KDscion p165 full sleeve wrap top">
                 </div>
                 <div class="product-desc">
                 <p class="product-desc__title">P165 | KD Scion</p>

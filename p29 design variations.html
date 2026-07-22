@@ -151,6 +151,13 @@
         .product-column:last-child .product-desc__title,
         .product-column:last-child .product-desc__sub { text-align: right; }
         @media (max-width: 768px) {
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
+            .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
+
             .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
             .column { gap: 2rem; }
             .container-snaps h3 { letter-spacing: 4px; font-size: 2.4rem; }
@@ -197,9 +204,9 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p29.html">
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p29.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p29-full sleeve classic fit buttonup dress_Colorway A.webp"
+                        <img src="images/KDscion-p29-full sleeve classic fit buttonup dress_Colorway A.webp" style="--rc:-18.73%"
                              alt="KDscion p29 full sleeve classic fit buttonup dress">
                     </div>
                     <div class="product-desc">
@@ -209,9 +216,9 @@
                     </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p32.html">
+                <div class="product-item" style="--ord:3" data-design-type="solo" data-product-url="p32.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p32-sleeveless loose fit button up dress_Colorway A.webp"
+                        <img src="images/KDscion-p32-sleeveless loose fit button up dress_Colorway A.webp" style="--rc:-13.85%"
                              alt="KDscion p32 sleeveless loose fit buttonup dress">
                     </div>
                     <div class="product-desc">
@@ -226,9 +233,9 @@
             <!-- ── Column 2 ── -->
             <div class="product-column column column2">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p30.html">
+                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="p30.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p30-sleeveless classic fit buttonup dress_Colorway A.webp"
+                        <img src="images/KDscion-p30-sleeveless classic fit buttonup dress_Colorway A.webp" style="--rc:-15.04%"
                              alt="KDscion p30 sleeveless classic fit buttonup dress">
                     </div>
                     <div class="product-desc">
@@ -238,9 +245,9 @@
                     </div>
                 </div>
 
-                <div class="product-item" data-design-type="solo" data-product-url="p43.html">
+                <div class="product-item" style="--ord:4" data-design-type="solo" data-product-url="p43.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p43-sleeveless loose fit button up dress_Colorway A.webp"
+                        <img src="images/KDscion-p43-sleeveless loose fit button up dress_Colorway A.webp" style="--rc:-7.56%"
                              alt="KDscion p43 sleeveless loose fit button up dress">
                     </div>
                     <div class="product-desc">
@@ -255,9 +262,9 @@
             <!-- ── Column 3 ── -->
             <div class="product-column column column3">
 
-                <div class="product-item" data-design-type="solo" data-product-url="p31.html">
+                <div class="product-item" style="--ord:2" data-design-type="solo" data-product-url="p31.html">
                     <div class="img-wrap">
-                        <img src="images/KDscion-p31-full sleeve loose fit button up dress_Colorway A.webp"
+                        <img src="images/KDscion-p31-full sleeve loose fit button up dress_Colorway A.webp" style="--rc:-13.58%"
                              alt="KDscion p31 full sleeve loose fit buttonup dress">
                     </div>
                     <div class="product-desc">

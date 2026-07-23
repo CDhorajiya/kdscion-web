@@ -1,0 +1,60 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "meta": {
+      "queryCount": {
+        ".read": true,
+        ".write": true,
+        ".validate": "newData.isNumber() && newData.val() >= 0"
+      }
+    },
+
+    "queries": {
+      ".read": true,
+      "$qid": {
+        ".write": "!data.exists() || newData.exists()",
+        ".validate": "newData.hasChildren(['number','customerName','createdAt','status'])",
+        "number":       { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "queryNum":     { ".validate": "newData.isNumber()" },
+        "customerName": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+        "country":      { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "countryCode":  { ".validate": "newData.isString() && newData.val().length <= 5" },
+        "state":        { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "localTime":    { ".validate": "newData.isNumber()" },
+        "status":       { ".validate": "newData.val() === 'open' || newData.val() === 'resolved'" },
+        "rating":       { ".validate": "newData.val() === null || (newData.isNumber() && newData.val() >= 1 && newData.val() <= 5)" },
+        "createdAt":    { ".validate": "newData.isNumber()" },
+        "$other":       { ".validate": false }
+      }
+    },
+
+    "messages": {
+      ".read": true,
+      "$qid": {
+        "$mid": {
+          ".write": "!data.exists()",
+          ".validate": "newData.hasChildren(['text','author','timestamp'])",
+          "text":      { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 1200" },
+          "author":    { ".validate": "newData.val() === 'customer' || newData.val() === 'house'" },
+          "role":      { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "timestamp": { ".validate": "newData.isNumber()" },
+          "$other":    { ".validate": false }
+        }
+      }
+    },
+
+    "suggestions": {
+      ".read": true,
+      "$qid": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['text','timestamp'])",
+        "text":        { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 800" },
+        "timestamp":   { ".validate": "newData.isNumber()" },
+        "queryNumber": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other":      { ".validate": false }
+      }
+    }
+  }
+}

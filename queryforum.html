@@ -760,7 +760,7 @@
 <!-- ── SETUP BANNER ── -->
 <div class="setup-banner" id="setup-banner">
   <strong>⚙ Firebase not configured —</strong>
-  This page is running in demo mode (localStorage only). Open <code>queryforum.html</code>, find the <code>FIREBASE_CONFIG</code> block in the script, and replace the placeholder values with your Firebase Realtime Database credentials. See inline comments for the three setup steps.
+  This page is running in demo mode (localStorage only). Open <code>js/firebase-config.js</code> and replace the placeholder values with your Firebase Realtime Database credentials. See inline comments for the three setup steps.
 </div>
 
 <!-- ── TOP BAR ── -->
@@ -928,37 +928,13 @@
 ═══════════════════════════════════════════ -->
 <script type="module">
 
-// ════════════════════════════════════════════════════
-// FIREBASE SETUP — THREE STEPS
-//
-// Step 1: Create a free Firebase project at
-//         https://console.firebase.google.com
-//         Add a web app → copy the config object below.
-//
-// Step 2: In Firebase console → Build → Realtime Database
-//         Create a database (start in test mode).
-//         Rules: { "rules": { ".read": true, ".write": true } }
-//         Tighten these once you go live.
-//
-// Step 3: Replace every value below with your real config.
-// ════════════════════════════════════════════════════
-
-const FIREBASE_CONFIG = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
-};
+// Firebase config lives in js/firebase-config.js (shared with admin-dashboard.html).
+import { FIREBASE_CONFIG, IS_DEMO } from './js/firebase-config.js';
 
 // ── House PIN (change before launch) ──────────────
 const HOUSE_PIN = "KINGKD";
 
 // ════════════════════════════════════════════════════
-
-const IS_DEMO = FIREBASE_CONFIG.apiKey === "YOUR_API_KEY";
 
 // ── Firebase refs (populated below if not demo) ──────
 let db, FB;
@@ -1330,7 +1306,7 @@ window.showListView = function() {
   renderList();
 };
 
-function renderConversation(qid) {
+async function renderConversation(qid) {
   const q = allQueries[qid];
   if (!q) return;
 
@@ -1419,7 +1395,9 @@ function renderConversation(qid) {
     suggEl.className = 'sugg-section';
     suggEl.id = 'sugg-'+qid;
 
-    const existingSugg = IS_DEMO ? demoRead('suggestions/'+qid) : null;
+    const existingSugg = IS_DEMO
+      ? demoRead('suggestions/'+qid)
+      : (await FB.get(FB.ref(db,'suggestions/'+qid))).val();
 
     if (existingSugg) {
       suggEl.innerHTML = `

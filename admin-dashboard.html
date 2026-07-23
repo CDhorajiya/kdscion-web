@@ -1059,6 +1059,7 @@
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
     import { FABRIC_CATALOG, TWOTONE_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
+    import { FIREBASE_CONFIG, IS_DEMO } from './js/firebase-config.js';
 
     // ── Tab switching ─────────────────────────────────────────────────────────
     window.switchTab = function(tab) {
@@ -2515,9 +2516,9 @@ const ALL_DESIGNS = [
 
     // ════════════════════════════════════════════════════
     // HOUSE FORUM — admin view
-    // Uses the same localStorage namespace (kdf2_) as queryforum.html
-    // When Firebase is configured in queryforum.html, replace demoRead/demoPush
-    // calls below with Firebase Realtime Database equivalents.
+    // Shares Firebase config (js/firebase-config.js) and the same data paths
+    // as queryforum.html. Falls back to the same localStorage namespace
+    // (kdf2_) when Firebase isn't configured, so demo mode still works.
     // ════════════════════════════════════════════════════
 
     const FNS       = 'kdf2_';
@@ -2528,11 +2529,43 @@ const ALL_DESIGNS = [
     const fToFlag   = c => c.toUpperCase().split('').map(ch=>String.fromCodePoint(0x1F1E6+ch.charCodeAt(0)-65)).join('');
     const fStars    = n => n ? Array.from({length:5},(_,i)=>`<span style="color:${i<n?'#800000':'#ddd'}">★</span>`).join('') : '—';
 
-    let fActiveQid = null;
+    let fActiveQid       = null;
+    let fAllQueries      = {};
+    let fListenerStarted = false;
+    let fMsgUnsub        = null;
 
-    window.loadForumQueries = function() {
-      const queries  = fRead('queries') || {};
-      const sorted   = Object.entries(queries).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+    let fDb, fFB;
+    if (!IS_DEMO) {
+      const [{ initializeApp }, fbdb] = await Promise.all([
+        import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
+        import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js")
+      ]);
+      const fApp = initializeApp(FIREBASE_CONFIG);
+      fDb = fbdb.getDatabase(fApp);
+      fFB = fbdb;
+    }
+
+    function startForumListener() {
+      if (IS_DEMO) {
+        fAllQueries = fRead('queries') || {};
+        renderForumList();
+        window.addEventListener('storage', e => {
+          if (e.key === FNS+'queries') {
+            fAllQueries = fRead('queries') || {};
+            renderForumList();
+            if (fActiveQid) openForumConv(fActiveQid);
+          }
+        });
+      } else {
+        fFB.onValue(fFB.ref(fDb,'queries'), snap => {
+          fAllQueries = snap.val() || {};
+          renderForumList();
+        });
+      }
+    }
+
+    function renderForumList() {
+      const sorted   = Object.entries(fAllQueries).sort((a,b)=>b[1].createdAt-a[1].createdAt);
       const listEl   = document.getElementById('forum-query-list');
 
       if (sorted.length === 0) {
@@ -2558,32 +2591,27 @@ const ALL_DESIGNS = [
           </div>`;
         listEl.appendChild(card);
       });
+    }
+
+    window.loadForumQueries = function() {
+      if (!fListenerStarted) { fListenerStarted = true; startForumListener(); }
+      else renderForumList();
     };
 
-    function openForumConv(qid) {
+    async function openForumConv(qid) {
       fActiveQid = qid;
-      loadForumQueries();
+      renderForumList();
 
-      const q       = (fRead('queries')||{})[qid];
-      const msgs    = fRead('messages/'+qid) || {};
-      const sugg    = fRead('suggestions/'+qid);
+      const q = fAllQueries[qid];
+      if (!q) return;
+
+      const sugg = IS_DEMO
+        ? fRead('suggestions/'+qid)
+        : (await fFB.get(fFB.ref(fDb,'suggestions/'+qid))).val();
+
       const convEl  = document.getElementById('forum-conv');
-
       const flag    = q.countryCode ? fToFlag(q.countryCode) : '';
       const loc     = [q.state,q.country].filter(Boolean).join(', ');
-      const sorted  = Object.entries(msgs).sort((a,b)=>a[1].timestamp-b[1].timestamp);
-
-      const msgsHtml = sorted.map(([,m]) => {
-        const hLabel = m.role
-          ? `The House · <span style="font-weight:400;font-style:italic;">${fEsc(m.role)}</span>`
-          : 'The House';
-        return `
-        <div class="fm-msg ${m.author==='house'?'h':'c'}">
-          <div class="fm-label">${m.author==='house' ? hLabel : fEsc(q.customerName)}</div>
-          <div class="fm-bubble">${fEsc(m.text)}</div>
-          <div class="fm-time">${fFmt(m.timestamp)}</div>
-        </div>`;
-      }).join('');
 
       const suggHtml = sugg
         ? `<div style="padding:2rem 2rem 0;">
@@ -2601,9 +2629,7 @@ const ALL_DESIGNS = [
           <div style="font-family:'Times New Roman',serif;font-size:1.8rem;color:#111;margin-bottom:0.3rem;">${fEsc(q.customerName)}</div>
           <div style="font-family:'Times New Roman',serif;font-size:1.3rem;color:#888;">${flag} ${fEsc(loc)} · ${fFmt(q.createdAt)} · <span style="text-transform:uppercase;font-size:1.1rem;letter-spacing:0.1rem;color:${q.status==='resolved'?'#bbb':'#22a06b'}">● ${q.status||'open'}</span>${q.rating?' · '+fStars(q.rating):''}</div>
         </div>
-        <div style="flex:1;overflow-y:auto;max-height:38vh;padding:2rem 2.2rem;display:flex;flex-direction:column;">
-          ${msgsHtml || '<p style="font-family:\'Times New Roman\',serif;color:#ccc;font-size:1.3rem;">No messages.</p>'}
-        </div>
+        <div style="flex:1;overflow-y:auto;max-height:38vh;padding:2rem 2.2rem;display:flex;flex-direction:column;" id="forum-msgbox-${qid}"></div>
         ${suggHtml}
         <div style="padding:1.6rem 2.2rem;border-top:1px solid #e8e0d8;background:#fff;">
           <div style="margin-bottom:1.2rem;">
@@ -2623,23 +2649,64 @@ const ALL_DESIGNS = [
           </div>
           <div style="font-family:'Times New Roman',serif;font-size:1.3rem;color:#800000;margin-top:0.8rem;min-height:1.6rem;" id="forum-reply-status"></div>
         </div>`;
+
+      const msgBox = document.getElementById('forum-msgbox-'+qid);
+      function renderForumMessages(msgs) {
+        const sorted = Object.entries(msgs).sort((a,b)=>a[1].timestamp-b[1].timestamp);
+        const msgsHtml = sorted.map(([,m]) => {
+          const hLabel = m.role
+            ? `The House · <span style="font-weight:400;font-style:italic;">${fEsc(m.role)}</span>`
+            : 'The House';
+          return `
+          <div class="fm-msg ${m.author==='house'?'h':'c'}">
+            <div class="fm-label">${m.author==='house' ? hLabel : fEsc(q.customerName)}</div>
+            <div class="fm-bubble">${fEsc(m.text)}</div>
+            <div class="fm-time">${fFmt(m.timestamp)}</div>
+          </div>`;
+        }).join('');
+        msgBox.innerHTML = msgsHtml || '<p style="font-family:\'Times New Roman\',serif;color:#ccc;font-size:1.3rem;">No messages.</p>';
+      }
+
+      if (fMsgUnsub) { fMsgUnsub(); fMsgUnsub = null; }
+
+      if (IS_DEMO) {
+        renderForumMessages(fRead('messages/'+qid) || {});
+        const handler = e => {
+          if (e.key === FNS+'messages/'+qid) renderForumMessages(fRead('messages/'+qid) || {});
+        };
+        window.addEventListener('storage', handler);
+        fMsgUnsub = () => window.removeEventListener('storage', handler);
+      } else {
+        fMsgUnsub = fFB.onValue(fFB.ref(fDb,'messages/'+qid), snap => {
+          renderForumMessages(snap.val() || {});
+        });
+      }
     }
 
-    window.sendForumReply = function(qid, resolve) {
+    window.sendForumReply = async function(qid, resolve) {
       const ta   = document.getElementById('forum-reply-ta');
       const text = ta.value.trim();
       const role = document.getElementById('forum-role-sel')?.value || 'Chief Executive';
       const stat = document.getElementById('forum-reply-status');
       if (!text) { stat.textContent = 'Please enter a reply.'; return; }
 
-      const msgKey = 'k' + Date.now() + Math.random().toString(36).slice(2,6);
-      const msgs   = fRead('messages/'+qid) || {};
-      msgs[msgKey] = { text, author: 'house', role, timestamp: Date.now() };
-      fWrite('messages/'+qid, msgs);
+      const msg = { text, author: 'house', role, timestamp: Date.now() };
 
-      if (resolve) {
-        const queries = fRead('queries') || {};
-        if (queries[qid]) { queries[qid].status = 'resolved'; fWrite('queries', queries); }
+      if (IS_DEMO) {
+        const msgKey = 'k' + Date.now() + Math.random().toString(36).slice(2,6);
+        const msgs   = fRead('messages/'+qid) || {};
+        msgs[msgKey] = msg;
+        fWrite('messages/'+qid, msgs);
+
+        if (resolve) {
+          const queries = fRead('queries') || {};
+          if (queries[qid]) { queries[qid].status = 'resolved'; fWrite('queries', queries); }
+        }
+        fAllQueries = fRead('queries') || {};
+        renderForumList();
+      } else {
+        await fFB.push(fFB.ref(fDb,'messages/'+qid), msg);
+        if (resolve) await fFB.update(fFB.ref(fDb,'queries/'+qid), {status:'resolved'});
       }
 
       stat.textContent = '✓ Sent.';

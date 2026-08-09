@@ -603,6 +603,174 @@
         }
         .gender-btn:hover { background: #eee; border-color: #bbb; color: #1a1a1a; }
         .gender-btn.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+        /* ────────────────────────────────────────────────────────────
+           Special request — viewer button + translucent modal
+           ──────────────────────────────────────────────────────────── */
+        .special-req-btn {
+            position: absolute;
+            right: 1.1rem;
+            bottom: 1.1rem;
+            z-index: 5;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border: 1px solid rgba(100, 70, 0, 0.28);
+            border-radius: 2px;
+            color: rgba(100, 70, 0, 0.85);
+            font-family: "Times New Roman", serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 0.5rem 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .special-req-btn:hover {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(100, 70, 0, 0.55);
+            color: rgba(70, 45, 0, 1);
+        }
+        .special-req-btn.attached {
+            border-color: rgba(42, 110, 42, 0.5);
+            color: #2a6e2a;
+        }
+
+        .sr-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: rgba(20, 15, 5, 0.22);
+        }
+        .sr-overlay.open { display: flex; }
+
+        .sr-modal {
+            width: min(600px, 100%);
+            max-height: 88vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.22);
+            padding: 2.2rem 2.2rem 1.8rem;
+            animation: srFade 0.3s ease forwards;
+        }
+        @keyframes srFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0);     }
+        }
+
+        .sr-title {
+            font-family: "Times New Roman", serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            line-height: 1.55;
+            letter-spacing: 1px;
+            color: rgba(30, 20, 5, 0.92);
+            margin: 0 0 1.3rem;
+        }
+        .sr-modal textarea {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 120px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(100, 70, 0, 0.22);
+            border-radius: 3px;
+            padding: 0.9rem 1rem;
+            font-family: "Times New Roman", serif;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: #1a1a1a;
+        }
+        .sr-modal textarea:focus {
+            outline: none;
+            border-color: rgba(100, 70, 0, 0.55);
+            background: rgba(255, 255, 255, 0.92);
+        }
+        .sr-modal textarea::placeholder { color: rgba(30, 20, 5, 0.35); }
+
+        .sr-disclaimer {
+            margin: 1.4rem 0 0;
+            padding: 1rem 1.2rem;
+            background: rgba(255, 248, 240, 0.75);
+            border: 1px solid rgba(232, 184, 122, 0.7);
+            border-radius: 3px;
+            font-family: "Times New Roman", serif;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            letter-spacing: 0.4px;
+            color: rgba(90, 55, 10, 0.95);
+        }
+        .sr-disclaimer strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: rgba(140, 80, 10, 0.95);
+        }
+        .sr-question {
+            margin: 1.2rem 0 0.9rem;
+            font-family: "Times New Roman", serif;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: rgba(30, 20, 5, 0.85);
+            text-align: center;
+        }
+        .sr-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .sr-btn {
+            flex: 1;
+            border-radius: 2px;
+            font-family: "Times New Roman", serif;
+            font-size: 1.23rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sr-btn-no {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(30, 20, 5, 0.25);
+            color: rgba(30, 20, 5, 0.7);
+        }
+        .sr-btn-no:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(30, 20, 5, 0.5);
+            color: #1a1a1a;
+        }
+        .sr-btn-yes {
+            background: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            color: #fff;
+        }
+        .sr-btn-yes:hover { background: #333; border-color: #333; }
+        .sr-btn-yes:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .special-req-btn {
+                right: 0.7rem;
+                bottom: 0.7rem;
+                font-size: 1rem;
+                letter-spacing: 2px;
+                padding: 0.45rem 0.8rem;
+            }
+            .sr-modal { padding: 1.6rem 1.3rem 1.4rem; }
+            .sr-title { font-size: 1.41rem; }
+            .sr-actions { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
@@ -632,6 +800,7 @@
                 <canvas id="viewer-canvas"></canvas>
                 <div id="annotation-layer"></div>
                 <p class="viewer-label">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</p>
+                <button class="special-req-btn" id="special-req-btn" type="button">Special Request&nbsp;?</button>
             </div>
 
             <!-- Right: Measurement form -->
@@ -1558,6 +1727,8 @@
 
             panel.style.display = 'none';
             if (unusualNote) data.unusual_note = unusualNote;
+            // Carries through any confirmed special request (see modal below)
+            if (window.__specialRequest) data.special_request = window.__specialRequest;
             btn.disabled = true;
             btn.textContent = 'Saving…';
             try {
@@ -1575,6 +1746,92 @@
         };
     </script>
 
+
+    <!-- ── Special request modal ── -->
+    <div class="sr-overlay" id="sr-overlay" role="dialog" aria-modal="true" aria-labelledby="sr-title">
+        <div class="sr-modal">
+            <h3 class="sr-title" id="sr-title">
+                Let us know if you have any special request regarding measurement&#47;fitting
+            </h3>
+
+            <textarea id="sr-message" placeholder="Your special request…"
+                      aria-label="Your special request"></textarea>
+
+            <p class="sr-disclaimer">
+                <strong>Disclaimer</strong>
+                If our Subject Matter Experts see the down flaw due to the execution of your
+                special request, we might disregard your special request.
+            </p>
+
+            <p class="sr-question">Are you still trusting us to proceed further?</p>
+
+            <div class="sr-actions">
+                <button class="sr-btn sr-btn-no"  id="sr-no"  type="button">No</button>
+                <button class="sr-btn sr-btn-yes" id="sr-yes" type="button">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    /* ── Special request modal ──────────────────────────────────────────
+       "Yes" stores the request and runs the normal save, so the request
+       travels with the measurements as data.special_request.
+       "No" simply closes and leaves the customer on the page.          */
+    (function () {
+        const openBtn  = document.getElementById('special-req-btn');
+        const overlay  = document.getElementById('sr-overlay');
+        const message  = document.getElementById('sr-message');
+        const yesBtn   = document.getElementById('sr-yes');
+        const noBtn    = document.getElementById('sr-no');
+
+        function open() {
+            overlay.classList.add('open');
+            message.focus();
+        }
+
+        function close() {
+            overlay.classList.remove('open');
+            message.style.borderColor = '';
+        }
+
+        openBtn.addEventListener('click', open);
+        noBtn.addEventListener('click', close);
+
+        // Backdrop click / Esc are both "no" — dismiss without saving
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) close();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && overlay.classList.contains('open')) close();
+        });
+
+        yesBtn.addEventListener('click', () => {
+            const text = message.value.trim();
+            if (!text) {
+                message.style.borderColor = '#c0392b';
+                message.focus();
+                return;
+            }
+
+            window.__specialRequest = text;
+            openBtn.classList.add('attached');
+            openBtn.innerHTML = 'Special Request&nbsp;✓';
+            close();
+
+            if (typeof window.kdTrack === 'function') {
+                window.kdTrack('special_request_submitted', { length: text.length });
+            }
+
+            // Runs the normal save; validation may still surface errors there,
+            // in which case the request stays attached for the retry.
+            if (typeof window.saveMeasurements === 'function') {
+                window.saveMeasurements();
+                document.querySelector('.form-panel')
+                        .scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    })();
+    </script>
 
     <script src="js/analytics.js"></script>
 </body>

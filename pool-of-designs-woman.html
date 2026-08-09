@@ -375,6 +375,202 @@
             height: 1.4rem;
             fill: #1a1a1a;
         }
+
+        /* ────────────────────────────────────────────────────────────
+           "Recently added" panel — appears 10s after the page opens.
+           Deliberately mirrors the Bespoke Boutique nav dropdown:
+           translucent white + backdrop blur, hairline top/bottom rules.
+           ──────────────────────────────────────────────────────────── */
+        .recent-drop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            /* Bottom padding is a permanently reserved strip for the scroll
+               arrow — kept constant so nothing shifts when the arrow hides */
+            padding: 2rem 3rem 3.6rem;
+            /* border-box so max-height caps the whole panel, padding included
+               (the site has no global border-box reset) */
+            box-sizing: border-box;
+            max-height: 88vh;
+            display: none;
+            flex-direction: column;
+        }
+        .recent-drop.open {
+            display: flex;
+            animation: recentDropFade 0.35s ease forwards;
+        }
+        /* Grid scrolls inside the shell so the arrow can stay pinned */
+        .recent-drop__scroll {
+            overflow-y: auto;
+            /* min-height:0 is required — without it the flex item refuses to
+               shrink below its content and the panel overruns its max-height */
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        @keyframes recentDropFade {
+            from { opacity: 0; transform: translateY(-18px); }
+            to   { opacity: 1; transform: translateY(0);     }
+        }
+
+        .recent-drop__head {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            position: relative;
+            /* Gutters keep the centred title clear of the × at every width */
+            padding: 0 3rem;
+            margin-bottom: 1.8rem;
+        }
+        .recent-drop__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.7rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.9);
+            margin: 0;
+            text-align: center;
+        }
+        .recent-drop__close {
+            position: absolute;
+            right: 0;
+            top: -0.4rem;
+            background: transparent;
+            border: none;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2rem;
+            line-height: 1;
+            color: rgba(30, 20, 5, 0.5);
+            cursor: pointer;
+            padding: 0.2rem 0.6rem;
+            transition: color 0.2s ease;
+        }
+        .recent-drop__close:hover { color: #000; }
+
+        .recent-drop__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1.6rem;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        .recent-card {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .recent-card:hover { transform: scale(1.05); }
+        .recent-card .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1679 / 2042;
+            overflow: hidden;
+        }
+        .recent-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transform: translateX(var(--rc, 0%));
+        }
+        .recent-card__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.25rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.9);
+            margin: 0.6rem 0 0;
+        }
+        .recent-card__sub {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.05rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.68);
+            margin: 0.3rem 0 0;
+        }
+        .recent-card:hover .recent-card__title,
+        .recent-card:hover .recent-card__sub { color: #000; }
+
+        /* Soft fade at the base so the cut-off row reads as "continues below"
+           and the arrow stays legible over busy thumbnails */
+        .recent-drop.has-more::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 6.5rem;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.75) 55%, rgba(255, 255, 255, 0));
+            pointer-events: none;
+        }
+
+        /* ── Translucent "scroll for more" arrow, pinned to the panel base ── */
+        .recent-drop__more {
+            position: absolute;
+            /* above the .has-more::after fade, which as a pseudo-element
+               would otherwise paint over the button and wash it out */
+            z-index: 1;
+            bottom: 0.4rem;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 3rem;
+            height: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.16);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.2s ease;
+        }
+        .recent-drop__more.visible {
+            display: flex;
+            opacity: 1;
+            animation: recentNudge 1.8s ease-in-out infinite;
+        }
+        .recent-drop__more:hover { background: rgba(255, 255, 255, 0.8); }
+        .recent-drop__more svg {
+            width: 1.4rem;
+            height: 1.4rem;
+            fill: none;
+            stroke: rgba(30, 20, 5, 0.8);
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        @keyframes recentNudge {
+            0%, 100% { transform: translateY(0);     }
+            50%      { transform: translateY(4px);   }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .recent-drop__more.visible { animation: none; }
+        }
+
+        @media (max-width: 900px) {
+            .recent-drop { padding: 1.5rem 1.2rem 1.8rem; }
+            .recent-drop__grid { grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+            .recent-drop__head { padding: 0 2.6rem; margin-bottom: 1.4rem; }
+            .recent-drop__title { font-size: 1.15rem; letter-spacing: 2.5px; line-height: 1.5; }
+            .recent-drop__close { top: -0.2rem; font-size: 1.8rem; }
+            .recent-card__title { font-size: 1.1rem; letter-spacing: 2px; }
+            .recent-card__sub { font-size: 1rem; letter-spacing: 1px; }
+        }
     </style>
 </head>
 <body>
@@ -1512,6 +1708,142 @@
         </div>
     </div>
 
+    <!-- "Recently added" dropdown-style panel, revealed 10s after load -->
+    <div class="recent-drop" id="recentDrop" role="dialog" aria-modal="false" aria-labelledby="recentDropTitle">
+        <div class="recent-drop__head">
+            <h3 class="recent-drop__title" id="recentDropTitle">You may want to take a look at the recent additions to the collection.</h3>
+            <button class="recent-drop__close" id="recentDropClose" type="button" aria-label="Close">&times;</button>
+        </div>
+        <div class="recent-drop__scroll" id="recentDropScroll">
+        <div class="recent-drop__grid">
+
+            <div class="recent-card" data-product-url="p12.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p12-sleeveless A-line dress_Colorway A.webp" style="--rc:-14.56%"
+                    alt="KDscion p12 sleeveless a-line dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P12</p>
+                <p class="recent-card__sub">sleeveless a-line dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p14.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p14-sleeveless swift dress_Colorway A.webp" style="--rc:-10.42%"
+                    alt="KDscion p14 sleeveless swift dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P14</p>
+                <p class="recent-card__sub">sleeveless swift dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p18.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p18-sleeveless maxi dress_Colorway A.webp" style="--rc:-10.69%"
+                    alt="KDscion p18 sleeveless maxi dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P18</p>
+                <p class="recent-card__sub">sleeveless maxi dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p24 design variations.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p24-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.60%"
+                    alt="KDscion p24 full sleeve a-line dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P24</p>
+                <p class="recent-card__sub">full sleeve a-line dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p38 design variations.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p38-sleeveless shift dress_Colorway A.webp" style="--rc:-9.56%"
+                    alt="KDscion p38 sleeveless shift dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P38</p>
+                <p class="recent-card__sub">sleeveless shift dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p40.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p40-sleeveless sheath dress_Colorway A.webp" style="--rc:-14.71%"
+                    alt="KDscion p40 sleeveless sheath dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P40</p>
+                <p class="recent-card__sub">sleeveless sheath dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p44 design variations.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p44-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.04%"
+                    alt="KDscion p44 full sleeve sheath dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P44</p>
+                <p class="recent-card__sub">full sleeve sheath dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p59.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p59-sleeveless sheath dress_Colorway A.webp" style="--rc:-13.67%"
+                    alt="KDscion p59 sleeveless sheath dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P59</p>
+                <p class="recent-card__sub">sleeveless sheath dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p60 design variations.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p60-full sleeve sheath dress_Colorway A.webp" style="--rc:-8.55%"
+                    alt="KDscion p60 full sleeve sheath dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P60</p>
+                <p class="recent-card__sub">full sleeve sheath dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p61.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p61-sleeveless sheath dress_Colorway A.webp" style="--rc:-18.05%"
+                    alt="KDscion p61 sleeveless sheath dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P61</p>
+                <p class="recent-card__sub">sleeveless sheath dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p62 design variations.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p62-full sleeve bodycon dress_Colorway A.webp" style="--rc:-14.23%"
+                    alt="KDscion p62 full sleeve bodycon dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P62</p>
+                <p class="recent-card__sub">full sleeve bodycon dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p63.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p63-sleeveless bodycon dress_Colorway A.webp" style="--rc:-12.42%"
+                    alt="KDscion p63 sleeveless bodycon dress" loading="lazy">
+                </div>
+                <p class="recent-card__title">P63</p>
+                <p class="recent-card__sub">sleeveless bodycon dress</p>
+            </div>
+
+            <div class="recent-card" data-product-url="p64 design variations.html">
+                <div class="img-wrap">
+                    <img src="images/KDscion-p64-full sleeve button up top_Colorway A.webp" style="--rc:-9.26%"
+                    alt="KDscion p64 full sleeve button up top" loading="lazy">
+                </div>
+                <p class="recent-card__title">P64</p>
+                <p class="recent-card__sub">full sleeve button up top</p>
+            </div>
+
+        </div>
+        </div>
+
+        <button class="recent-drop__more" id="recentDropMore" type="button" aria-label="Scroll for more designs">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </button>
+    </div>
+
     <div class="footer">
         <div class="footer_details">
             <a href="foundermessage.html"><h5>About House</h5></a>
@@ -1613,6 +1945,89 @@
                         item.classList.add('hidden');
                     }
                 });
+            });
+        });
+    })();
+    </script>
+
+    <script>
+    /* "Recently added to the collection" — opens 10s after every page load.
+       Dismissed by the close button, Esc, or a click anywhere outside it. */
+    (function () {
+        const panel = document.getElementById('recentDrop');
+        const closeBtn = document.getElementById('recentDropClose');
+        const scroller = document.getElementById('recentDropScroll');
+        const moreBtn = document.getElementById('recentDropMore');
+        if (!panel) return;
+
+        let outsideClickArmed = false;
+
+        // The arrow only appears while there is still content below the fold.
+        function syncArrow() {
+            const remaining = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop;
+            const hasMore = remaining > 8;
+            moreBtn.classList.toggle('visible', hasMore);
+            panel.classList.toggle('has-more', hasMore);
+        }
+
+        function close() {
+            panel.classList.remove('open');
+            panel.classList.remove('has-more');
+            moreBtn.classList.remove('visible');
+            outsideClickArmed = false;
+        }
+
+        function open() {
+            panel.classList.add('open');
+            syncArrow();
+            if (typeof window.kdTrack === 'function') {
+                window.kdTrack('recent_designs_shown', { source: 'pool_of_designs_woman' });
+            }
+            // Armed on the next tick so the click that may be in flight
+            // when the panel appears doesn't immediately dismiss it.
+            setTimeout(() => { outsideClickArmed = true; }, 0);
+        }
+
+        setTimeout(open, 10000);
+
+        closeBtn.addEventListener('click', close);
+
+        scroller.addEventListener('scroll', syncArrow, { passive: true });
+        window.addEventListener('resize', syncArrow);
+        // Lazy-loaded thumbnails change scrollHeight as they arrive
+        panel.querySelectorAll('img').forEach(img => img.addEventListener('load', syncArrow));
+
+        moreBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            scroller.scrollBy({ top: scroller.clientHeight * 0.8, behavior: 'smooth' });
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') close();
+        });
+
+        // Capture phase + swallow: a click outside only dismisses the panel,
+        // it must not also open whichever design card sits underneath it.
+        document.addEventListener('click', e => {
+            if (!outsideClickArmed || panel.contains(e.target)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            close();
+        }, true);
+
+        panel.querySelectorAll('.recent-card[data-product-url]').forEach(card => {
+            card.addEventListener('click', () => {
+                const url = card.dataset.productUrl;
+                const subEl = card.querySelector('.recent-card__sub');
+                sessionStorage.setItem('poolScrollY', window.scrollY);
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack('recent_design_clicked', {
+                        destination: url,
+                        design_name: subEl ? subEl.textContent.trim() : '',
+                        has_variations: url.includes('design variations'),
+                    });
+                }
+                window.location.href = url;
             });
         });
     })();

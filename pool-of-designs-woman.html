@@ -2044,15 +2044,24 @@
     // today's static image — this is a no-op for them, not a placeholder.
     import { getProductSnapConfig, subscribeFabricStock, pickPoolSnap } from './js/fabric-stock.js';
 
+    // Manual per-product --rc overrides for swapped snaps, only while swapped —
+    // borrowed from another product's already-correct margin as a pragmatic fix
+    // (p1 -> p8's, p7 -> p11's) rather than recalculating a value from scratch.
+    const RC_OVERRIDE = { p1: '-20.64%', p7: '-14.41%' };
+
     (async () => {
-        const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
+        const bySlug = new Map(); // 'p60' -> { fallbackUrl, fallbackRc, imgs: [<img>, ...] }
 
         document.querySelectorAll('.img-wrap img').forEach((img) => {
             const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
             if (!m) return;
             const slug = m[1].toLowerCase();
             if (!bySlug.has(slug)) {
-                bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
+                bySlug.set(slug, {
+                    fallbackUrl: img.getAttribute('src'),
+                    fallbackRc: img.style.getPropertyValue('--rc'),
+                    imgs: [],
+                });
             }
             bySlug.get(slug).imgs.push(img);
         });
@@ -2067,18 +2076,19 @@
         }));
 
         function applyStock(stockMap) {
-            for (const [slug, { fallbackUrl, imgs }] of bySlug) {
+            for (const [slug, { fallbackUrl, fallbackRc, imgs }] of bySlug) {
                 const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
+                const isSwapped = chosen !== fallbackUrl;
                 imgs.forEach((img) => {
                     // Compare against the raw attribute, not the .src property —
                     // the browser always resolves .src to an absolute URL, which
                     // would never match our relative `chosen`/`fallbackUrl` paths.
                     if (img.getAttribute('src') !== chosen) img.src = chosen;
-                    // --rc is intentionally left untouched: it corrects for the
-                    // garment/pose's visual balance (arm angle, drape), which is a
-                    // property of the 3D model and camera, not the fabric texture —
-                    // identical between the original colorway and a re-textured
-                    // render of the same GLB, so the existing correction still applies.
+                    if (isSwapped && RC_OVERRIDE[slug]) {
+                        img.style.setProperty('--rc', RC_OVERRIDE[slug]);
+                    } else if (fallbackRc) {
+                        img.style.setProperty('--rc', fallbackRc);
+                    }
                 });
             }
         }

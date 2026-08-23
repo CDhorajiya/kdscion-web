@@ -2051,7 +2051,16 @@
             const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
             if (!m) return;
             const slug = m[1].toLowerCase();
-            if (!bySlug.has(slug)) bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
+            if (!bySlug.has(slug)) {
+                bySlug.set(slug, {
+                    fallbackUrl: img.getAttribute('src'),
+                    // Each original CLO snap has its own hand-calibrated --rc
+                    // centering correction — captured here so it can be restored
+                    // exactly, not just cleared, whenever this card isn't swapped.
+                    fallbackRc: img.style.getPropertyValue('--rc'),
+                    imgs: [],
+                });
+            }
             bySlug.get(slug).imgs.push(img);
         });
 
@@ -2065,17 +2074,24 @@
         }));
 
         function applyStock(stockMap) {
-            for (const [slug, { fallbackUrl, imgs }] of bySlug) {
+            for (const [slug, { fallbackUrl, fallbackRc, imgs }] of bySlug) {
                 const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
                 const isSwapped = chosen !== fallbackUrl;
                 imgs.forEach((img) => {
-                    if (img.src === chosen) return;
-                    img.src = chosen;
-                    // --rc is a per-image legacy centering correction calibrated for
-                    // each original CLO snap's own off-center framing. Our render
-                    // pipeline always centers the garment on its own canvas, so that
-                    // old correction must not be re-applied on top of a swapped snap.
-                    img.style.setProperty('--rc', isSwapped ? '0%' : '');
+                    // Compare against the raw attribute, not the .src property —
+                    // the browser always resolves .src to an absolute URL, which
+                    // would never match our relative `chosen`/`fallbackUrl` paths.
+                    if (img.getAttribute('src') !== chosen) img.src = chosen;
+                    // Our render pipeline always centers the garment on its own
+                    // canvas, so a swapped-in snap needs no correction; anything
+                    // still on its original static image keeps its own calibrated one.
+                    if (isSwapped) {
+                        img.style.setProperty('--rc', '0%');
+                    } else if (fallbackRc) {
+                        img.style.setProperty('--rc', fallbackRc);
+                    } else {
+                        img.style.removeProperty('--rc');
+                    }
                 });
             }
         }

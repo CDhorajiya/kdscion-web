@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TEST — Pool Snap Resolution (Phase 3)</title>
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* Test-harness chrome only — none of this touches real pool page styling */
+  body { background: #0c0c0e; }
+  .test-banner { color: #eee; font-family: -apple-system, sans-serif; padding: 1.2rem 2rem; }
+  .test-banner h1 { font-size: 1.2rem; margin: 0 0 .4rem; }
+  .test-banner p { font-size: .85rem; color: #999; margin: .2rem 0; }
+  .control-panel { color: #eee; font-family: -apple-system, sans-serif; padding: 0 2rem 1.5rem; }
+  .control-panel .row { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin:.3rem 0; }
+  .control-panel button { background:#2a2a2e; color:#eee; border:1px solid #444; border-radius:4px; padding:.35rem .7rem; cursor:pointer; font-size:.8rem; }
+  .control-panel button:hover { background:#3a3a3e; }
+  .control-panel .label { width:110px; font-family:monospace; font-size:.8rem; }
+  .control-panel .state-live { color:#4d8; font-size:.8rem; width:90px; }
+  .control-panel .state-stale { color:#f95; font-size:.8rem; width:90px; }
+  .resolved-tag {
+    position: absolute; top: .4rem; left: .4rem; z-index: 5;
+    background: rgba(0,0,0,0.72); color:#9f9; font-family: monospace;
+    font-size: .68rem; padding: .15rem .4rem; border-radius: 3px;
+    pointer-events: none;
+  }
+  .product-item { position: relative; }
+</style>
+</head>
+<body>
+
+<div class="test-banner">
+  <h1>TEST PAGE — Pool Snap Resolution (Phase 3)</h1>
+  <p>Cards below use the real <code>.product-gallery / .product-item / .img-wrap</code> markup and CSS from css/style.css — same visuals the real pool page would render.</p>
+  <p>Each card's image is resolved from Firebase (fabricOrder + snaps + global stock), with the current static webp as fallback. Toggle a fabric out of stock below and watch the affected card swap live, no reload.</p>
+</div>
+
+<div class="control-panel">
+  <div id="stock-controls">loading stock controls…</div>
+</div>
+
+<div class="product-gallery snap-gallery">
+  <div class="product-column column column1">
+
+    <div class="product-item" data-sku="KD-P60-FSSD" style="--ord:0" data-design-type="solo">
+      <div class="img-wrap">
+        <span class="resolved-tag" data-tag-for="KD-P60-FSSD">…</span>
+        <img data-fallback="images/KDscion-p60-full sleeve sheath dress_Colorway A.webp"
+             src="images/KDscion-p60-full sleeve sheath dress_Colorway A.webp"
+             style="--rc:-8.55%" alt="KDscion p60 full sleeve sheath dress">
+      </div>
+      <div class="product-desc">
+        <p class="product-desc__title">P60 | KD Scion</p>
+        <div class="product-desc__divider"></div>
+        <p class="product-desc__sub">full sleeve sheath dress (two-tone)</p>
+      </div>
+    </div>
+
+    <div class="product-item" data-sku="KD-P78-FSBLTL" style="--ord:1" data-design-type="solo">
+      <div class="img-wrap">
+        <span class="resolved-tag" data-tag-for="KD-P78-FSBLTL">…</span>
+        <img data-fallback="images/KDscion-p78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp"
+             src="images/KDscion-p78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp"
+             style="--rc:-21.41%" alt="KDscion p78 full sleeve sheath dress with belt - two tone layer">
+      </div>
+      <div class="product-desc">
+        <p class="product-desc__title">P78 | KD Scion</p>
+        <div class="product-desc__divider"></div>
+        <p class="product-desc__sub">full sleeve sheath dress with belt - two tone layer</p>
+      </div>
+    </div>
+
+    <div class="product-item" data-sku="KD-P176-FSASD176" style="--ord:2" data-design-type="solo">
+      <div class="img-wrap">
+        <span class="resolved-tag" data-tag-for="KD-P176-FSASD176">…</span>
+        <img data-fallback="images/KDscion-p176-full sleeve Asymmetric shift dress_Colorway A.webp"
+             src="images/KDscion-p176-full sleeve Asymmetric shift dress_Colorway A.webp"
+             style="--rc:0%" alt="KDscion p176 full sleeve asymmetric shift dress">
+      </div>
+      <div class="product-desc">
+        <p class="product-desc__title">P176 | KD Scion</p>
+        <div class="product-desc__divider"></div>
+        <p class="product-desc__sub">full sleeve asymmetric shift dress (single-zone)</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { getProductSnapConfig, getAllFabricStock, subscribeFabricStock, setFabricStock, pickPoolSnap } from './js/fabric-stock.js';
+
+const SKUS = ['KD-P60-FSSD', 'KD-P78-FSBLTL', 'KD-P176-FSASD176'];
+const REAL_SWATCH_IDS = ['cotton-1', 'linen-1', 'wool-1'];
+
+// Cache each product's Firebase config (fabricOrder/snaps) once — stock changes
+// live, but which snaps exist for a product doesn't change on every tick.
+const productConfigs = {};
+
+async function resolveCard(sku, stockMap) {
+  const cfg = productConfigs[sku];
+  const cardImg = document.querySelector(`.product-item[data-sku="${sku}"] img`);
+  const tag = document.querySelector(`.resolved-tag[data-tag-for="${sku}"]`);
+  const fallbackUrl = cardImg.dataset.fallback;
+
+  const chosen = pickPoolSnap({ ...cfg, stockMap, fallbackUrl });
+  cardImg.src = chosen;
+
+  const fabricId = Object.entries(cfg.snaps).find(([, url]) => url === chosen)?.[0];
+  tag.textContent = fabricId ? `live snap: ${fabricId}` : 'fallback (static webp)';
+}
+
+function renderStockControls(stockMap) {
+  const el = document.getElementById('stock-controls');
+  el.innerHTML = '';
+  for (const id of REAL_SWATCH_IDS) {
+    const inStock = stockMap[id]?.inStock !== false;
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <span class="label">${id}</span>
+      <span class="${inStock ? 'state-live' : 'state-stale'}">${inStock ? 'IN STOCK' : 'OUT OF STOCK'}</span>
+      <button data-id="${id}" data-next="${!inStock}">Mark ${inStock ? 'OUT OF STOCK' : 'IN STOCK'}</button>
+    `;
+    el.appendChild(row);
+  }
+  el.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      await setFabricStock(btn.dataset.id, btn.dataset.next === 'true');
+      btn.disabled = false;
+    });
+  });
+}
+
+(async () => {
+  // Each product's config is fetched independently — one failure (network
+  // blocked, offline, ad-blocker) must not stop the others from resolving,
+  // and must leave that card on its already-set static fallback image.
+  await Promise.all(SKUS.map(async (sku) => {
+    try {
+      productConfigs[sku] = await getProductSnapConfig(sku);
+    } catch (err) {
+      console.warn(`[fabric-stock] could not load config for ${sku}, staying on static fallback:`, err);
+      productConfigs[sku] = { fabricOrder: [], snaps: {} };
+    }
+  }));
+
+  try {
+    subscribeFabricStock(async (stockMap) => {
+      renderStockControls(stockMap);
+      for (const sku of SKUS) await resolveCard(sku, stockMap);
+    });
+  } catch (err) {
+    console.warn('[fabric-stock] stock subscription failed, staying on static fallbacks:', err);
+  }
+})();
+</script>
+</body>
+</html>

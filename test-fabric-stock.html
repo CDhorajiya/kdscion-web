@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TEST — Fabric Stock Data Layer</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background:#111; color:#eee; padding:2rem; max-width:900px; margin:0 auto; }
+  h1 { font-size:1.3rem; }
+  h2 { font-size:1rem; color:#bbb; margin-top:2.5rem; border-bottom:1px solid #333; padding-bottom:.4rem; }
+  .row { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin:.5rem 0; }
+  button { background:#2a2a2e; color:#eee; border:1px solid #444; border-radius:4px; padding:.4rem .8rem; cursor:pointer; font-size:.85rem; }
+  button:hover { background:#3a3a3e; }
+  button.out { border-color:#a33; color:#f88; }
+  code { background:#222; padding:.1rem .35rem; border-radius:3px; }
+  pre { background:#0a0a0a; padding:1rem; border-radius:6px; overflow:auto; font-size:.8rem; }
+  .card { display:flex; align-items:center; gap:1rem; background:#1a1a1e; border:1px solid #333; border-radius:6px; padding:1rem; margin:.5rem 0; }
+  .card img { width:90px; height:110px; object-fit:cover; border-radius:4px; background:#333; }
+  .card .meta { font-size:.85rem; color:#aaa; }
+  .status-live { color:#4d8; }
+  .status-stale { color:#f95; }
+</style>
+</head>
+<body>
+
+<h1>TEST PAGE — Fabric Stock Data Layer (Phase 1)</h1>
+<p style="color:#999">
+  Standalone sandbox for <code>js/fabric-stock.js</code>. Reads/writes only
+  <code>fabrics/*</code> (real swatch IDs) and <code>products/TEST-SKU/*</code>
+  in Firebase — does not touch any real product data. Not linked from any
+  real page.
+</p>
+
+<h2>1. Live global fabric stock (fabrics/&lt;id&gt;/inStock)</h2>
+<div id="stock-list"></div>
+
+<h2>2. Simulated pool card for TEST-SKU</h2>
+<p style="color:#999">
+  fabricOrder = <code>['cotton-1','linen-1','wool-1']</code>. Toggle a fabric
+  out of stock above and watch this card swap to the next available one
+  automatically, live, via Firebase — no page reload.
+</p>
+<div class="card">
+  <img id="pool-card-img" src="" alt="pool snap preview">
+  <div class="meta">
+    <div>Resolved fabric: <b id="resolved-fabric">…</b></div>
+    <div id="resolve-status"></div>
+  </div>
+</div>
+
+<h2>3. Raw state</h2>
+<pre id="raw-state">loading…</pre>
+
+<script type="module">
+import {
+  getAllFabricStock, setFabricStock, subscribeFabricStock,
+  setProductFabricOrder, setProductSnap, getProductSnapConfig,
+  pickPoolSnap,
+} from './js/fabric-stock.js';
+
+const TEST_SKU = 'TEST-SKU';
+// Stand-in "snaps" using existing real swatch images so we have something
+// visible to render — Phase 2 replaces these with actual rendered garment snaps.
+const FAKE_SNAPS = {
+  'cotton-1': 'images/cotton-1.webp',
+  'linen-1':  'images/linen-1.webp',
+  'wool-1':   'images/wool-1.webp',
+};
+const REAL_SWATCH_IDS = [
+  'cotton-1','cotton-2','linen-1','linen-2','wool-1','wool-2',
+  'cotton-linen-1','cotton-linen-2','cotton-wool-1',
+];
+
+const stockListEl   = document.getElementById('stock-list');
+const rawStateEl    = document.getElementById('raw-state');
+const cardImgEl     = document.getElementById('pool-card-img');
+const resolvedEl    = document.getElementById('resolved-fabric');
+const resolveStatus = document.getElementById('resolve-status');
+
+let currentStockMap = {};
+
+function renderStockList() {
+  stockListEl.innerHTML = '';
+  for (const id of REAL_SWATCH_IDS) {
+    const inStock = currentStockMap[id]?.inStock !== false;
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <span style="width:140px; font-family:monospace">${id}</span>
+      <span style="width:80px" class="${inStock ? 'status-live' : 'status-stale'}">${inStock ? 'IN STOCK' : 'OUT OF STOCK'}</span>
+      <button class="${inStock ? 'out' : ''}" data-id="${id}" data-next="${!inStock}">
+        Mark ${inStock ? 'OUT OF STOCK' : 'IN STOCK'}
+      </button>
+    `;
+    stockListEl.appendChild(row);
+  }
+  stockListEl.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      await setFabricStock(btn.dataset.id, btn.dataset.next === 'true');
+      btn.disabled = false;
+    });
+  });
+}
+
+async function resolveCard() {
+  const { fabricOrder, snaps } = await getProductSnapConfig(TEST_SKU);
+  const chosen = pickPoolSnap({ fabricOrder, snaps, stockMap: currentStockMap, fallbackUrl: 'images/KD_monogram.png' });
+  cardImgEl.src = chosen;
+  const fabricId = Object.entries(snaps).find(([, url]) => url === chosen)?.[0] || '(fallback)';
+  resolvedEl.textContent = fabricId;
+  resolveStatus.textContent = `updated ${new Date().toLocaleTimeString()}`;
+  rawStateEl.textContent = JSON.stringify({ fabricOrder, snaps, stockMap: currentStockMap }, null, 2);
+}
+
+async function seedTestProduct() {
+  await setProductFabricOrder(TEST_SKU, ['cotton-1', 'linen-1', 'wool-1']);
+  for (const [fabricId, url] of Object.entries(FAKE_SNAPS)) {
+    await setProductSnap(TEST_SKU, fabricId, url);
+  }
+}
+
+(async () => {
+  await seedTestProduct();
+  subscribeFabricStock(async (stockMap) => {
+    currentStockMap = stockMap;
+    renderStockList();
+    await resolveCard();
+  });
+})();
+</script>
+</body>
+</html>

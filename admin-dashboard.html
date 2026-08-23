@@ -616,9 +616,12 @@
       gap: 0.8rem;
       margin-bottom: 0.8rem;
     }
+    .fab-toggle-col { display: flex; flex-direction: column; align-items: center; gap: 0.1rem; }
+    .fab-toggle-col span { font-family: "Times New Roman", serif; font-size: 0.85rem; letter-spacing: 0.5px; color: #999; text-transform: uppercase; }
+    .fab-toggle.stock input:checked + .fab-slider { background: #1a7a3a; }
     .fab-swatch-item {
       display: grid;
-      grid-template-columns: 28px 1fr auto;
+      grid-template-columns: 28px 1fr auto auto;
       align-items: center;
       gap: 0.5rem;
       padding: 0.4rem 0.7rem;
@@ -1060,6 +1063,12 @@
     import { getAllPrices, savePrices } from './js/prices.js';
     import { FABRIC_CATALOG, TWOTONE_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
     import { FIREBASE_CONFIG, IS_DEMO } from './js/firebase-config.js';
+    import { getAllFabricStock, subscribeFabricStock, setFabricStock } from './js/fabric-stock.js';
+
+    // Global fabric stock (Firebase-backed, unlike the localStorage-only
+    // visibility toggles above) — updates live when any admin flips a fabric,
+    // and drives the pool page's automatic out-of-stock snap swap.
+    let fabricStockMap = {};
 
     // ── Tab switching ─────────────────────────────────────────────────────────
     window.switchTab = function(tab) {
@@ -1529,6 +1538,7 @@ const ALL_DESIGNS = [
       function tOn(sku, typeId)           { return vis[`p:${sku}:t:${typeId}`]           ?? true; }
       function cOn(sku, typeId, collId)   { return vis[`p:${sku}:c:${typeId}:${collId}`] ?? true; }
       function sOn(swatchId)              { return vis[`s:${swatchId}`]                   ?? true; }
+      function stockOn(fabricId)          { return fabricStockMap[fabricId]?.inStock      !== false; }
 
       // ── Builds a fabric-type toggle list for a given SKU + optional zone ──────
       function buildTypesHtml(sku, zone) {
@@ -1712,13 +1722,23 @@ const ALL_DESIGNS = [
             const opVal     = (overrides.swatchOpacity ?? {})[s.id];
             const hasOp     = opVal !== undefined;
             const opDisplay = hasOp ? opVal.toFixed(2) : '1.00';
+            const inStock = stockOn(s.id);
             return `<div class="fab-swatch-item" style="flex-wrap:wrap;gap:0.5rem;">
               <img src="${s.image}" alt="${s.label}">
               <span style="flex:1">${s.label}</span>
-              <label class="fab-toggle" title="Show/hide globally">
-                <input type="checkbox" ${visible ? 'checked' : ''}
-                  onchange="setVisibility('s:${s.id}', this.checked)">
-                <span class="fab-slider"></span>
+              <label class="fab-toggle-col"><span>Visible</span>
+                <label class="fab-toggle" title="Show/hide globally">
+                  <input type="checkbox" ${visible ? 'checked' : ''}
+                    onchange="setVisibility('s:${s.id}', this.checked)">
+                  <span class="fab-slider"></span>
+                </label>
+              </label>
+              <label class="fab-toggle-col"><span>Stock</span>
+                <label class="fab-toggle stock" title="In stock — drives the pool page's automatic snap swap">
+                  <input type="checkbox" ${inStock ? 'checked' : ''}
+                    onchange="onFabricStockToggle('${s.id}', this.checked)">
+                  <span class="fab-slider"></span>
+                </label>
               </label>
               ${isExtra ? `<button class="fab-swatch-del" onclick="deleteSwatch('${type.id}','${coll.id}','${s.id}')">✕</button>` : ''}
               <div style="width:100%;display:flex;align-items:center;gap:0.6rem;padding:0.3rem 0 0.2rem 0.2rem;border-top:1px solid #f4f4f4;">
@@ -1778,14 +1798,24 @@ const ALL_DESIGNS = [
         const plainColl  = type.collections[0];
         const swatchItems = plainColl.swatches.map(s => {
           const visible  = sOn(s.id);
+          const inStock  = stockOn(s.id);
           const isExtra  = !!(overrides.ttExtras?.[type.id]?.find(e => e.id === s.id));
           return `<div class="fab-swatch-item">
             <img src="${s.image}" alt="${s.label}">
             <span>${s.label}</span>
-            <label class="fab-toggle" title="Show/hide globally">
-              <input type="checkbox" ${visible ? 'checked' : ''}
-                onchange="setVisibility('s:${s.id}', this.checked)">
-              <span class="fab-slider"></span>
+            <label class="fab-toggle-col"><span>Visible</span>
+              <label class="fab-toggle" title="Show/hide globally">
+                <input type="checkbox" ${visible ? 'checked' : ''}
+                  onchange="setVisibility('s:${s.id}', this.checked)">
+                <span class="fab-slider"></span>
+              </label>
+            </label>
+            <label class="fab-toggle-col"><span>Stock</span>
+              <label class="fab-toggle stock" title="In stock — drives the pool page's automatic snap swap">
+                <input type="checkbox" ${inStock ? 'checked' : ''}
+                  onchange="onFabricStockToggle('${s.id}', this.checked)">
+                <span class="fab-slider"></span>
+              </label>
             </label>
             ${isExtra ? `<button class="fab-swatch-del" onclick="deleteTTSwatch('${type.id}','${s.id}')">✕</button>` : ''}
           </div>`;
@@ -1982,7 +2012,19 @@ const ALL_DESIGNS = [
       }
     };
 
+    window.onFabricStockToggle = async function(fabricId, checked) {
+      // No local re-render call needed — subscribeFabricStock's live listener
+      // (below) receives this same write back and re-renders the panel,
+      // keeping every open tab/admin in sync with a single source of truth.
+      await setFabricStock(fabricId, checked);
+    };
+
     renderFabricsPanel();
+
+    subscribeFabricStock((stockMap) => {
+      fabricStockMap = stockMap;
+      renderFabricsPanel();
+    });
 
     if (!isLoggedIn()) {
       openAuthModal(() => window.location.reload());

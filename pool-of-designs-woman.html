@@ -2067,7 +2067,16 @@
         function applyStock(stockMap) {
             for (const [slug, { fallbackUrl, imgs }] of bySlug) {
                 const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
-                imgs.forEach((img) => { if (img.src !== chosen) img.src = chosen; });
+                const isSwapped = chosen !== fallbackUrl;
+                imgs.forEach((img) => {
+                    if (img.src === chosen) return;
+                    img.src = chosen;
+                    // --rc is a per-image legacy centering correction calibrated for
+                    // each original CLO snap's own off-center framing. Our render
+                    // pipeline always centers the garment on its own canvas, so that
+                    // old correction must not be re-applied on top of a swapped snap.
+                    img.style.setProperty('--rc', isSwapped ? '0%' : '');
+                });
             }
         }
 

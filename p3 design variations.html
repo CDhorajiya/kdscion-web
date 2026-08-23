@@ -342,5 +342,56 @@
 
 
     <script src="js/analytics.js"></script>
+
+    <script type="module">
+    // ── Fabric-accurate, stock-aware pool snaps ──────────────────────────────
+    // For every thumbnail (main grid + recent-additions popup — both use the
+    // same .img-wrap img markup), check Firebase for a pre-rendered snap of
+    // that product's currently in-stock fabric. Products with no Firebase
+    // data yet (the vast majority, until each is migrated) fall back to
+    // today's static image — this is a no-op for them, not a placeholder.
+    import { getProductSnapConfig, subscribeFabricStock, pickPoolSnap } from './js/fabric-stock.js';
+
+    (async () => {
+        const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
+
+        document.querySelectorAll('.img-wrap img').forEach((img) => {
+            const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
+            if (!m) return;
+            const slug = m[1].toLowerCase();
+            if (!bySlug.has(slug)) {
+                bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
+            }
+            bySlug.get(slug).imgs.push(img);
+        });
+
+        const configs = {};
+        await Promise.all([...bySlug.keys()].map(async (slug) => {
+            try {
+                configs[slug] = await getProductSnapConfig(slug);
+            } catch (err) {
+                configs[slug] = { fabricOrder: [], snaps: {} };
+            }
+        }));
+
+        function applyStock(stockMap) {
+            for (const [slug, { fallbackUrl, imgs }] of bySlug) {
+                const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
+                imgs.forEach((img) => {
+                    // Compare against the raw attribute, not the .src property —
+                    // the browser always resolves .src to an absolute URL, which
+                    // would never match our relative `chosen`/`fallbackUrl` paths.
+                    if (img.getAttribute('src') !== chosen) img.src = chosen;
+                });
+            }
+        }
+
+        try {
+            subscribeFabricStock(applyStock);
+        } catch (err) {
+            console.warn('[fabric-stock] pool snaps unavailable, staying on static images:', err);
+        }
+    })();
+    </script>
 </body>
 </html>

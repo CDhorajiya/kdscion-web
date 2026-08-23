@@ -137,7 +137,12 @@
             display: flex;
             gap: 4rem;
             margin-top: 0;
-            margin: 0 5%;
+            /* width + auto-centering, not a left/right margin pair — there is
+               no "one side" value that a future edit could throw out of sync,
+               unlike the margin-right-only bug this replaced. */
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
         }
         .product-column {
             display: flex;

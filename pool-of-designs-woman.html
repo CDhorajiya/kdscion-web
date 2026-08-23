@@ -171,57 +171,57 @@
             display: block;
         }
 
-        /* ── Pointer annotation ── */
+        /* ── Adaptive description ──────────────────────────────────────────
+           Centered directly below its own image, same treatment for every
+           card regardless of column — no per-card side-collision handling
+           needed, and no per-image position correction needed either. */
         .product-desc {
             position: absolute;
-            top: 50%;
-            left: calc(100% - 40px);
-            transform: translateY(-50%);
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 0.7rem;
             white-space: nowrap;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            padding-left: 14px;
+            align-items: center;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.12s ease;
             z-index: 300;
         }
-        .product-column:last-child .product-desc {
-            left: auto;
-            right: calc(100% - 180px);
-            align-items: flex-end;
-            padding-left: 0;
-            padding-right: 14px;
+        .product-item.popup-active .product-desc { opacity: 1; }
+        .product-desc__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(30,20,5,0.9);
+            margin: 0;
+            white-space: nowrap;
+            text-align: center;
         }
-        .product-desc::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(40,25,5,0.8);
-            box-shadow: 0 0 4px rgba(40,25,5,0.4);
+        .product-desc__divider { display: none; }
+        .product-desc__sub {
+            display: block;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: rgba(30,20,5,0.7);
+            text-transform: uppercase;
+            margin: 0.5rem 0 0 0;
+            white-space: normal;
+            max-width: 220px;
+            text-align: center;
         }
-        .product-column:last-child .product-desc::before {
-            left: auto;
-            right: 0;
-        }
-        .product-desc::after { display: none; }
-        .product-item.has-variations .product-desc::before { display: none; }
         .var-dots {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
             display: flex;
-            flex-direction: column;
-            gap: 3px;
+            flex-direction: row;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 0.4rem;
         }
-        .product-column:last-child .var-dots { left: auto; right: 0; }
         .var-dot {
             width: 6px;
             height: 6px;
@@ -236,38 +236,12 @@
             0%, 100% { opacity: 0.15; }
             50% { opacity: 1; }
         }
-        .product-item.popup-active .product-desc { opacity: 1; }
-        .product-desc__title {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 1.45rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: rgba(30,20,5,0.9);
-            margin: 0;
-            white-space: nowrap;
-        }
-        .product-desc__divider { display: none; }
-        .product-desc__sub {
-            display: block;
-            font-family: "Times New Roman", Times, serif;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            color: rgba(30,20,5,0.7);
-            text-transform: uppercase;
-            margin: 0.5rem 0 0 0;
-            white-space: normal;
-            max-width: 160px;
-        }
-        .product-column:last-child .product-desc__title,
-        .product-column:last-child .product-desc__sub { text-align: right; }
 
         @media (max-width: 768px) {
             /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
             .snap-gallery { margin: 0 auto !important; }
             .column { display: contents !important; }
             .product-item { order: var(--ord, 0) !important; }
-            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
             .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
 
             .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
@@ -285,20 +259,10 @@
                 padding: 0.55rem 0.5rem 0.4rem !important;
                 background: none !important;
                 pointer-events: none !important;
+                margin-top: 0 !important;
             }
-            .product-column:last-child .product-desc {
-                left: auto !important;
-                right: auto !important;
-                align-items: center !important;
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-            }
-            .product-desc::before { display: none !important; }
             .product-desc__title { display: none !important; }
             .var-dots {
-                position: static !important;
-                flex-direction: row !important;
-                gap: 5px !important;
                 order: -1 !important;
             }
             .product-desc__sub {
@@ -479,7 +443,6 @@
             height: 100%;
             object-fit: contain;
             display: block;
-            transform: translateX(var(--rc, 0%));
         }
         .recent-card__title {
             font-family: "Times New Roman", Times, serif;
@@ -2044,24 +2007,15 @@
     // today's static image — this is a no-op for them, not a placeholder.
     import { getProductSnapConfig, subscribeFabricStock, pickPoolSnap } from './js/fabric-stock.js';
 
-    // Manual per-product --rc overrides for swapped snaps, only while swapped —
-    // borrowed from another product's already-correct margin as a pragmatic fix
-    // (p1 -> p8's, p7 -> p11's) rather than recalculating a value from scratch.
-    const RC_OVERRIDE = { p1: '-20.64%', p7: '-14.41%' };
-
     (async () => {
-        const bySlug = new Map(); // 'p60' -> { fallbackUrl, fallbackRc, imgs: [<img>, ...] }
+        const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
 
         document.querySelectorAll('.img-wrap img').forEach((img) => {
             const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
             if (!m) return;
             const slug = m[1].toLowerCase();
             if (!bySlug.has(slug)) {
-                bySlug.set(slug, {
-                    fallbackUrl: img.getAttribute('src'),
-                    fallbackRc: img.style.getPropertyValue('--rc'),
-                    imgs: [],
-                });
+                bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
             }
             bySlug.get(slug).imgs.push(img);
         });
@@ -2076,19 +2030,13 @@
         }));
 
         function applyStock(stockMap) {
-            for (const [slug, { fallbackUrl, fallbackRc, imgs }] of bySlug) {
+            for (const [slug, { fallbackUrl, imgs }] of bySlug) {
                 const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
-                const isSwapped = chosen !== fallbackUrl;
                 imgs.forEach((img) => {
                     // Compare against the raw attribute, not the .src property —
                     // the browser always resolves .src to an absolute URL, which
                     // would never match our relative `chosen`/`fallbackUrl` paths.
                     if (img.getAttribute('src') !== chosen) img.src = chosen;
-                    if (isSwapped && RC_OVERRIDE[slug]) {
-                        img.style.setProperty('--rc', RC_OVERRIDE[slug]);
-                    } else if (fallbackRc) {
-                        img.style.setProperty('--rc', fallbackRc);
-                    }
                 });
             }
         }

@@ -129,3 +129,18 @@ export function pickPoolSnap({ fabricOrder = [], snaps = {}, stockMap = {}, fall
   }
   return fallbackUrl;
 }
+
+/**
+ * pickActiveFabricId({ fabricOrder, stockMap })
+ * Same priority walk as pickPoolSnap, but returns the fabric id itself
+ * rather than a snap URL — used on the product page to select the same
+ * fabric on the live 3D model that the pool snap is currently showing.
+ * Returns null if fabricOrder is empty (no-op for un-migrated products).
+ */
+export function pickActiveFabricId({ fabricOrder = [], stockMap = {} }) {
+  for (const fabricId of fabricOrder) {
+    const inStock = stockMap[fabricId]?.inStock !== false; // default true
+    if (inStock) return fabricId;
+  }
+  return null;
+}

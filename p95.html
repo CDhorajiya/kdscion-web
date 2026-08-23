@@ -1298,5 +1298,52 @@
 </div>
 
     <script src="js/analytics.js"></script>
+
+    <script type="module">
+    // ── Default the 3D model to the currently-active pool fabric ────────────
+    // If Firebase has a fabricOrder for this product, select the same
+    // in-stock priority fabric here that the pool page/snap is showing —
+    // so a customer clicking through sees a consistent product, not a
+    // mismatched default colorway. No-op until this product has real
+    // Firebase fabric data (the vast majority, until each is migrated).
+    import { getProductSnapConfig, getAllFabricStock, pickActiveFabricId } from './js/fabric-stock.js';
+
+    (async () => {
+        const slug = decodeURIComponent(window.location.pathname).match(/\/?(p\d+)\.html$/i)?.[1]?.toLowerCase();
+        if (!slug) return;
+
+        let cfg, stockMap;
+        try {
+            [cfg, stockMap] = await Promise.all([getProductSnapConfig(slug), getAllFabricStock()]);
+        } catch (err) {
+            return; // Firebase unavailable — leave the model on its default material.
+        }
+
+        const fabricId = pickActiveFabricId({ fabricOrder: cfg.fabricOrder, stockMap });
+        if (!fabricId) return;
+
+        const waitFor = (check, timeout = 8000, interval = 150) => new Promise((resolve) => {
+            const start = Date.now();
+            const tick = () => {
+                if (check() || Date.now() - start > timeout) return resolve();
+                setTimeout(tick, interval);
+            };
+            tick();
+        });
+
+        // Swatch list renders synchronously via initConfigurator; the 3D model
+        // (GLB + textures) loads asynchronously after — wait for both.
+        await waitFor(() => document.querySelector(`.swatch-card[data-fabric-id="${fabricId}"]`));
+        await new Promise((r) => setTimeout(r, 2500));
+
+        const swatch = document.querySelector(`.swatch-card[data-fabric-id="${fabricId}"]`);
+        if (!swatch) return;
+        swatch.click();
+        // Clicking opens the full-screen fabric-preview overlay — close it
+        // immediately so the customer lands on the normal 3D view.
+        await new Promise((r) => setTimeout(r, 300));
+        document.getElementById('fabric-preview-back')?.click();
+    })();
+    </script>
 </body>
 </html>

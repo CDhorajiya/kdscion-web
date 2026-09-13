@@ -1310,7 +1310,7 @@
                         window.kdTrack('fabric_clicked', {
                             fabric_id:   swatch.dataset.fabricId,
                             fabric_type: typeEl ? typeEl.textContent.trim() : null,
-                            zone:        zone || 'main',
+                            zone:        swatch.closest('#fabric-list-bottom') ? 'two-tone' : 'main',
                             product_sku: document.querySelector('.fabric-panel[data-sku]')?.dataset.sku,
                         });
                     }
@@ -1494,5 +1494,6 @@
         document.getElementById('fabric-preview-back')?.click();
     })();
     </script>
+<script type="module" src="js/drape-ui.js"></script>
 </body>
 </html>

@@ -621,7 +621,7 @@
     .fab-toggle.stock input:checked + .fab-slider { background: #1a7a3a; }
     .fab-swatch-item {
       display: grid;
-      grid-template-columns: 28px 1fr auto auto;
+      grid-template-columns: 28px 1fr auto auto auto; /* img, label, visible, stock, ✕ (added swatches) */
       align-items: center;
       gap: 0.5rem;
       padding: 0.4rem 0.7rem;
@@ -1061,7 +1061,7 @@
     import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
-    import { FABRIC_CATALOG, TWOTONE_CATALOG, loadFabricOverrides, saveFabricOverrides, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
+    import { FABRIC_CATALOG, TWOTONE_CATALOG, DRAPE_TYPES, loadFabricOverrides, saveFabricOverrides, startFabricSettingsSync, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
     import { FIREBASE_CONFIG, IS_DEMO } from './js/firebase-config.js';
     import { getAllFabricStock, subscribeFabricStock, setFabricStock } from './js/fabric-stock.js';
 
@@ -1679,6 +1679,11 @@ const ALL_DESIGNS = [
 
     function renderFabricsPanel() {
       const panel    = document.getElementById('fabrics-panel');
+      // Redraws happen on every save, stock update and cross-tab change; keep the
+      // sections the admin had open (and the scroll position) instead of collapsing them.
+      const openSections = [...panel.querySelectorAll('[id^="acc-"]')]
+        .filter(el => el.style.display !== 'none').map(el => el.id);
+      const scrollY = window.scrollY;
       const overrides = loadFabricOverrides();
       const vis      = overrides.visibility || {};
       const catalog  = getMergedCatalog();
@@ -1860,6 +1865,45 @@ const ALL_DESIGNS = [
       }); // end DESIGN_GROUPS.forEach
 
       // ── Section 2: global swatch catalog — Main Design ────────────────────────
+      const drapeOptions = (selected) => DRAPE_TYPES.map(t =>
+        `<option value="${t}" ${t === selected ? 'selected' : ''}>${t[0].toUpperCase() + t.slice(1)}</option>`
+      ).join('');
+      const rowStyle = "grid-column:1 / -1;display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0 0.25rem 0.2rem;border-top:1px solid #f0f0f0;";
+      const rowLabel = "font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:1px;color:#555;";
+      // Opacity: a saved number = on at that value (1.00 included); false (or legacy null) =
+      // switched off (opaque); nothing saved = the built-in value (cotton-1's 0.7 shows as on).
+      const opacityRow = (s) => {
+        const builtIn = s.opacity ?? null;
+        const saved   = (overrides.swatchOpacity ?? {})[s.id];
+        const on      = saved === undefined ? (builtIn !== null && builtIn < 1) : typeof saved === 'number';
+        const eff     = on ? (typeof saved === 'number' ? saved : builtIn) : 1;
+        return `<div style="${rowStyle}">
+          <label style="${rowLabel}display:flex;align-items:center;gap:0.4rem;cursor:pointer;">
+            <input type="checkbox" ${on ? 'checked' : ''}
+              onchange="toggleSwatchOpacity('${s.id}', this.checked, ${builtIn})"
+              style="width:17px;height:17px;cursor:pointer;accent-color:#1a1a1a;">
+            Opacity
+          </label>
+          <input type="range" min="0.05" max="1" step="0.05" value="${on ? eff : 1}" ${on ? '' : 'disabled'}
+            id="op-slider-${s.id}"
+            oninput="setSwatchOpacity('${s.id}', parseFloat(this.value)); document.getElementById('op-val-${s.id}').textContent=parseFloat(this.value).toFixed(2)"
+            style="flex:1;min-width:70px;accent-color:#1a1a1a;${on ? '' : 'opacity:0.3'}">
+          <span id="op-val-${s.id}"
+            style="font-family:'Courier New',monospace;font-size:1.15rem;color:${on ? '#111' : '#bbb'};min-width:3.2rem;text-align:right;">${on ? eff.toFixed(2) : '1.00'}</span>
+        </div>`;
+      };
+      const drapeRow = (s) => {
+        const drape = (overrides.swatchDrape ?? {})[s.id] ?? s.drape ?? '';
+        return `<div style="${rowStyle}">
+          <label for="drape-sel-${s.id}" style="${rowLabel}">Drape</label>
+          <select id="drape-sel-${s.id}" onchange="setSwatchDrape('${s.id}', this.value)"
+            title="Drape shown in the product page's Fabric Drape window"
+            style="font-family:'Times New Roman',serif;font-size:1.2rem;letter-spacing:1px;color:#111;background:#fff;border:1px solid #bbb;border-radius:2px;padding:0.3rem 0.5rem;min-width:9rem;cursor:pointer;">
+            <option value="" ${drape ? '' : 'selected'}>No drape</option>
+            ${drapeOptions(drape)}
+          </select>
+        </div>`;
+      };
       let swatchMgmtHtml = '';
       catalog.forEach(type => {
         let collsHtml = '';
@@ -1867,9 +1911,6 @@ const ALL_DESIGNS = [
           const swatchItems = coll.swatches.map(s => {
             const visible   = sOn(s.id);
             const isExtra   = !!(overrides.extras?.[`${type.id}:${coll.id}`]?.find(e => e.id === s.id));
-            const opVal     = (overrides.swatchOpacity ?? {})[s.id];
-            const hasOp     = opVal !== undefined;
-            const opDisplay = hasOp ? opVal.toFixed(2) : '1.00';
             const inStock = stockOn(s.id);
             return `<div class="fab-swatch-item" style="flex-wrap:wrap;gap:0.5rem;">
               <img src="${s.image}" alt="${s.label}">
@@ -1889,24 +1930,8 @@ const ALL_DESIGNS = [
                 </label>
               </label>
               ${isExtra ? `<button class="fab-swatch-del" onclick="deleteSwatch('${type.id}','${coll.id}','${s.id}')">✕</button>` : ''}
-              <div style="width:100%;display:flex;align-items:center;gap:0.6rem;padding:0.3rem 0 0.2rem 0.2rem;border-top:1px solid #f4f4f4;">
-                <label style="display:flex;align-items:center;gap:0.3rem;font-family:'Times New Roman',serif;font-size:1rem;letter-spacing:1px;color:#888;cursor:pointer;">
-                  <input type="checkbox" ${hasOp ? 'checked' : ''}
-                    onchange="toggleSwatchOpacity('${s.id}', this.checked)"
-                    style="width:13px;height:13px;cursor:pointer;">
-                  Opacity
-                </label>
-                <input type="range" min="0.05" max="1" step="0.05"
-                  value="${hasOp ? opVal : 1}"
-                  ${hasOp ? '' : 'disabled'}
-                  id="op-slider-${s.id}"
-                  oninput="setSwatchOpacity('${s.id}', parseFloat(this.value)); document.getElementById('op-val-${s.id}').textContent=parseFloat(this.value).toFixed(2)"
-                  style="flex:1;min-width:60px;accent-color:#1a1a1a;${hasOp ? '' : 'opacity:0.3'}">
-                <span id="op-val-${s.id}"
-                  style="font-family:'Courier New',monospace;font-size:0.95rem;color:${hasOp ? '#111' : '#ccc'};min-width:2.8rem;text-align:right;">
-                  ${opDisplay}
-                </span>
-              </div>
+              ${opacityRow(s)}
+              ${drapeRow(s)}
             </div>`;
           }).join('');
 
@@ -1921,6 +1946,12 @@ const ALL_DESIGNS = [
                   id="lbl-${type.id}-${coll.id}" style="width:140px">
                 <input class="fab-add-input" placeholder="images/filename.jpg"
                   id="img-${type.id}-${coll.id}" style="width:200px">
+                <select class="fab-add-input" id="drape-${type.id}-${coll.id}"
+                  title="Drape shown in the product page's Fabric Drape window" style="width:150px;cursor:pointer;">
+                  <option value="" disabled selected>Drape type…</option>
+                  ${drapeOptions('')}
+                  <option value="none">No drape</option>
+                </select>
                 <button class="fab-add-btn" onclick="addSwatch('${type.id}','${coll.id}')">+ Add</button>
               </div>
             </div>`;
@@ -1966,6 +1997,8 @@ const ALL_DESIGNS = [
               </label>
             </label>
             ${isExtra ? `<button class="fab-swatch-del" onclick="deleteTTSwatch('${type.id}','${s.id}')">✕</button>` : ''}
+            ${opacityRow(s)}
+            ${drapeRow(s)}
           </div>`;
         }).join('');
 
@@ -1984,6 +2017,12 @@ const ALL_DESIGNS = [
                   id="tt-lbl-${type.id}" style="width:160px">
                 <input class="fab-add-input" placeholder="images/tt-filename.jpg"
                   id="tt-img-${type.id}" style="width:200px">
+                <select class="fab-add-input" id="tt-drape-${type.id}"
+                  title="Drape shown in the product page's Fabric Drape window" style="width:150px;cursor:pointer;">
+                  <option value="" disabled selected>Drape type…</option>
+                  ${drapeOptions('')}
+                  <option value="none">No drape</option>
+                </select>
                 <button class="fab-add-btn" onclick="addTTSwatch('${type.id}')">+ Add</button>
               </div>
             </div>
@@ -2036,6 +2075,15 @@ const ALL_DESIGNS = [
           </div>
         </div>
       `;
+
+      openSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.display = 'block';
+        const arrow = document.getElementById(`arrow-${id.replace('acc-', '')}`);
+        if (arrow) arrow.style.transform = 'rotate(90deg)';
+      });
+      window.scrollTo(0, scrollY);
     }
 
     // Toggle accordion
@@ -2063,32 +2111,37 @@ const ALL_DESIGNS = [
     };
 
     // ── Per-swatch opacity ────────────────────────────────────────────────────
-    // Stored in localStorage under overrides.swatchOpacity = { 'cotton-1': 0.7, ... }
+    // Stored in overrides.swatchOpacity = { 'cotton-1': 0.7, ... } (Firebase fabricSettings/live, cached in localStorage)
     // renderFabricList() reads this and emits data-opacity on every swatch card.
     // All product pages read data-opacity and pass it to applyFabric() / applyFabricToMeshSet().
 
-    window.toggleSwatchOpacity = function(swatchId, on) {
+    // builtIn = the swatch's own opacity from fabrics.js (null if none).
+    // Saved value: a number = on at that value; false = switched off over a translucent built-in.
+    window.toggleSwatchOpacity = function(swatchId, on, builtIn = null) {
       const overrides = loadFabricOverrides();
       if (!overrides.swatchOpacity) overrides.swatchOpacity = {};
+      const cur = overrides.swatchOpacity[swatchId];
       if (on) {
-        // Default to 0.7 when first enabled
-        overrides.swatchOpacity[swatchId] = overrides.swatchOpacity[swatchId] ?? 0.7;
+        // Keep a previously saved value; otherwise start from the built-in value, else 0.7.
+        overrides.swatchOpacity[swatchId] = typeof cur === 'number' ? cur
+          : (builtIn !== null && builtIn < 1 ? builtIn : 0.7);
+      } else if (builtIn !== null && builtIn < 1) {
+        overrides.swatchOpacity[swatchId] = false;
       } else {
         delete overrides.swatchOpacity[swatchId];
       }
       saveFabricOverrides(overrides);
-      // Enable/disable the slider in-place
+      const value  = on ? overrides.swatchOpacity[swatchId] : 1;
       const slider = document.getElementById(`op-slider-${swatchId}`);
       const valEl  = document.getElementById(`op-val-${swatchId}`);
       if (slider) {
         slider.disabled = !on;
         slider.style.opacity = on ? '1' : '0.3';
-        slider.value = overrides.swatchOpacity?.[swatchId] ?? 1;
+        slider.value = value;
       }
       if (valEl) {
-        const v = overrides.swatchOpacity?.[swatchId];
-        valEl.textContent = v !== undefined ? v.toFixed(2) : '1.00';
-        valEl.style.color = on ? '#111' : '#ccc';
+        valEl.textContent = value.toFixed(2);
+        valEl.style.color = on ? '#111' : '#bbb';
       }
     };
 
@@ -2099,19 +2152,35 @@ const ALL_DESIGNS = [
       saveFabricOverrides(overrides);
     };
 
+    // ── Per-swatch drape ──────────────────────────────────────────────────────
+    // Stored under overrides.swatchDrape = { 'cotton-2': 'medium', ... } ('' = no drape).
+    // renderFabricList() emits it as data-drape on each swatch card, which the
+    // product page's Fabric Drape window reads.
+    window.setSwatchDrape = function(swatchId, drape) {
+      const overrides = loadFabricOverrides();
+      if (!overrides.swatchDrape) overrides.swatchDrape = {};
+      overrides.swatchDrape[swatchId] = drape;
+      saveFabricOverrides(overrides);
+    };
+
     window.addSwatch = function(typeId, collId) {
-      const lblEl = document.getElementById(`lbl-${typeId}-${collId}`);
-      const imgEl = document.getElementById(`img-${typeId}-${collId}`);
+      const lblEl   = document.getElementById(`lbl-${typeId}-${collId}`);
+      const imgEl   = document.getElementById(`img-${typeId}-${collId}`);
+      const drapeEl = document.getElementById(`drape-${typeId}-${collId}`);
       const label = lblEl.value.trim();
       const image = imgEl.value.trim();
+      const drape = drapeEl.value;
       if (!label || !image) { alert('Enter both a label and an image path.'); return; }
+      if (!drape) { alert('Choose a drape type for this swatch (or "No drape").'); return; }
 
       const id        = `${typeId}-${collId}-${Date.now()}`;
       const overrides = loadFabricOverrides();
       if (!overrides.extras) overrides.extras = {};
       const key = `${typeId}:${collId}`;
       if (!overrides.extras[key]) overrides.extras[key] = [];
-      overrides.extras[key].push({ id, label, image });
+      const swatch = { id, label, image };
+      if (drape !== 'none') swatch.drape = drape;
+      overrides.extras[key].push(swatch);
       saveFabricOverrides(overrides);
 
       lblEl.value = '';
@@ -2130,11 +2199,15 @@ const ALL_DESIGNS = [
     };
 
     window.addTTSwatch = function(typeId) {
-      const lblEl = document.getElementById(`tt-lbl-${typeId}`);
-      const imgEl = document.getElementById(`tt-img-${typeId}`);
+      const lblEl   = document.getElementById(`tt-lbl-${typeId}`);
+      const imgEl   = document.getElementById(`tt-img-${typeId}`);
+      const drapeEl = document.getElementById(`tt-drape-${typeId}`);
       const label = lblEl.value.trim();
       const image = imgEl.value.trim();
+      const drape = drapeEl.value;
       if (!label || !image) { alert('Enter both a label and an image path.'); return; }
+      if (!drape) { alert('Choose a drape type for this swatch (or "No drape").'); return; }
+      if (/[.#$\[\]\/]/.test(label)) { alert('The label is also the swatch ID, so it can\'t contain . # $ [ ] or /'); return; }
 
       const id        = label;   // id = label = filename stem for consistency
       const overrides = loadFabricOverrides();
@@ -2143,7 +2216,9 @@ const ALL_DESIGNS = [
       if (overrides.ttExtras[typeId].some(s => s.id === id)) {
         alert('A swatch with that name already exists.'); return;
       }
-      overrides.ttExtras[typeId].push({ id, label, image });
+      const swatch = { id, label, image };
+      if (drape !== 'none') swatch.drape = drape;
+      overrides.ttExtras[typeId].push(swatch);
       saveFabricOverrides(overrides);
 
       lblEl.value = '';
@@ -2173,6 +2248,16 @@ const ALL_DESIGNS = [
       fabricStockMap = stockMap;
       renderFabricsPanel();
     });
+
+    // Live sync: redraw when the fabric settings change in another tab.
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'kd_fabrics' || e.key === null) renderFabricsPanel();
+    });
+
+    // Settings live in Firebase (fabricSettings/live): start the live sync — the first
+    // time, this also publishes this browser's saved settings — and redraw on any change.
+    startFabricSettingsSync({ seedFromLocal: true });
+    window.addEventListener('kd:fabric-settings', renderFabricsPanel);
 
     if (!isLoggedIn()) {
       openAuthModal(() => window.location.reload());

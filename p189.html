@@ -892,7 +892,8 @@
                     <span id="viewer-loading-text" style="font-family:'Times New Roman',serif;font-size:0.85rem;letter-spacing:2px;color:#888;text-transform:uppercase;"></span>
                 </div>
                 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-                                <div id="detail-layer"></div>
+                                <a class="kd-viewer-logo" href="index.html" aria-label="Ask the House Colourist"></a>
+                <div id="detail-layer"></div>
                 <button class="design-only-btn" id="design-only-btn">Design Only</button>
                 <button class="design-details-btn" id="design-details-btn">Design Details</button>
                 <div id="fabric-preview" class="fabric-preview">
@@ -1495,5 +1496,9 @@
     })();
     </script>
 <script type="module" src="js/drape-ui.js"></script>
+<script type="module" src="js/search-ui.js?anchor=viewer"></script>
+<!-- The KD monogram under the search glass opens the Colourist. If this module
+     fails to load the monogram stays an ordinary link to the home page. -->
+<script type="module" src="js/colourist/index.js"></script>
 </body>
 </html>

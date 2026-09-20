@@ -101,10 +101,8 @@ export function createDrapeDemo(canvas) {
   sphere.position.copy(sphereCenter);
   sphere.rotation.x = 0.4;          // the same tilt the home page globe carries
   scene.add(sphere);
-  // Turned slowly, and only when it is the globe. The cloth rests on the
-  // sphere rather than being attached to it, so the physics is untouched —
-  // this is the world turning underneath the fabric.
-  const spins = document.documentElement.dataset.drapeSphere !== 'matte';
+  // The globe is held still. Drag rotates the camera, so the fabric can be
+  // walked around without the form moving underneath it.
 
   // Soft contact shadow rather than a flat disc — on the white panel a hard-edged
   // circle reads as a grey slab, so fade it out towards the rim.
@@ -263,7 +261,6 @@ export function createDrapeDemo(canvas) {
       steps++;
     }
     if (steps) syncGeometry();
-    if (spins) sphere.rotation.y += 0.0016;
     controls.update();
     renderer.render(scene, camera);
   }

@@ -16,7 +16,7 @@ const CSS = `
     position: fixed; inset: 0; z-index: 2000;
     display: flex; align-items: center; justify-content: center;
     padding: 1rem;
-    background: rgba(12,12,14,0.45);
+    background: rgba(20,20,24,0.55);
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
   .drape-modal[hidden] { display: none; }
@@ -25,10 +25,9 @@ const CSS = `
     width: min(1440px, 100%); height: min(980px, 100%);
     display: flex; flex-direction: column;
     border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.22);
-    background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05));
-    backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid #e3e3e3;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
     overflow: hidden;
   }
   .drape-glass-head {
@@ -38,14 +37,14 @@ const CSS = `
   .drape-glass-title {
     margin: 0;
     font-family: "Times New Roman", Times, serif; font-size: 1.25rem;
-    letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,0.9);
+    letter-spacing: 5px; text-transform: uppercase; color: #1a1a1a;
   }
   .drape-glass-close {
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff;
+    background: #f5f5f5; border: 1px solid #ddd; color: #555;
     font-size: 1.4rem; line-height: 1; width: 2.4rem; height: 2.4rem;
     border-radius: 50%; cursor: pointer; transition: background 0.2s;
   }
-  .drape-glass-close:hover { background: rgba(255,255,255,0.25); }
+  .drape-glass-close:hover { background: #ebebeb; border-color: #bbb; color: #1a1a1a; }
   .drape-cat-row {
     display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem;
     padding: 0.25rem 1.25rem 0;
@@ -70,8 +69,8 @@ const CSS = `
     align-self: center;
     margin: 0.6rem 1.25rem 0; padding: 0.45rem 1rem;
     font-family: "Times New Roman", Times, serif; font-size: 1.155rem; letter-spacing: 2px;
-    text-align: center; color: #fff;
-    background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.28); border-radius: 2px;
+    text-align: center; color: #333;
+    background: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 2px;
   }
   .drape-glass-foot {
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
@@ -80,9 +79,13 @@ const CSS = `
   .drape-glass-hint {
     margin: 0;
     font-family: "Times New Roman", Times, serif; font-size: 1.1rem; letter-spacing: 1.5px;
-    color: rgba(255,255,255,0.6);
+    color: #777;
   }
-  .drape-glass-foot .fabric-preview-back { position: static; margin-left: auto; }
+  .drape-glass-foot .fabric-preview-back {
+    position: static; margin-left: auto;
+    background: #fff; border: 1px solid #ccc; color: #333;
+  }
+  .drape-glass-foot .fabric-preview-back:hover { background: #f2f2f2; color: #1a1a1a; }
 `;
 
 const MODAL_HTML = `

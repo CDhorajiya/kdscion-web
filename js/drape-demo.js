@@ -71,9 +71,24 @@ export function createDrapeDemo(canvas) {
   sphere.position.copy(sphereCenter);
   scene.add(sphere);
 
+  // Soft contact shadow rather than a flat disc — on the white panel a hard-edged
+  // circle reads as a grey slab, so fade it out towards the rim.
+  const shadowCanvas = document.createElement('canvas');
+  shadowCanvas.width = shadowCanvas.height = 256;
+  const sctx = shadowCanvas.getContext('2d');
+  const grad = sctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  grad.addColorStop(0,    'rgba(0,0,0,0.38)');
+  grad.addColorStop(0.32, 'rgba(0,0,0,0.13)');
+  grad.addColorStop(0.62, 'rgba(0,0,0,0.02)');
+  grad.addColorStop(1,    'rgba(0,0,0,0)');
+  sctx.fillStyle = grad;
+  sctx.fillRect(0, 0, 256, 256);
+  const shadowTex = new THREE.CanvasTexture(shadowCanvas);
+  shadowTex.colorSpace = THREE.SRGBColorSpace;
+
   const floor = new THREE.Mesh(
     new THREE.CircleGeometry(3.4, 72),
-    new THREE.MeshStandardMaterial({ color: 0x000000, roughness: 1, transparent: true, opacity: 0.28 })
+    new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false })
   );
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = FLOOR_Y - 0.002;

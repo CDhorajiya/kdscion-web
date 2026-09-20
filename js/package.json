@@ -1,0 +1,4 @@
+{
+  "//": "Marks js/ as ES modules for Node-based tools (tools/*.mjs import js/colourist/color.js). Browsers ignore this file; it exists so the root package.json can stay CommonJS for gen-palette-pdf.js and backup/backup-orders.js.",
+  "type": "module"
+}

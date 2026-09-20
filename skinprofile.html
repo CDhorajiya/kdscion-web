@@ -894,8 +894,28 @@
             return Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
         }
 
+        // How many of the three tests agreed with the computed undertone — shown
+        // to the customer and used later to decide whether to re-ask.
+        function undertoneConfidence(undertone) {
+            return state.tests.filter(t => t === undertone).length + 'of3';
+        }
+
         function revealProfile() {
             const undertone = computeUndertone();
+
+            // Remember the result. Before this, the palette was drawn on screen
+            // and then lost when the tab closed — so every other page on the
+            // site had no idea the visitor had ever completed their profile.
+            // Written through js/profile.js (localStorage 'kd_profile').
+            if (window.kdSaveProfile) {
+                window.kdSaveProfile({
+                    skinType:   state.skinType,
+                    undertone:  undertone,
+                    confidence: undertoneConfidence(undertone),
+                    source:     'profile-tool',
+                });
+            }
+
             document.getElementById('popupSkinLabel').textContent =
                 { 'fair-light': 'Fair / Light', 'medium-olive': 'Medium / Olive', 'tan': 'Tan', 'dark-deep': 'Dark / Deep' }[state.skinType];
             document.getElementById('popupUndertoneLabel').textContent =
@@ -909,6 +929,13 @@
         }
 
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+    </script>
+
+    <!-- Bridges the profile store into the classic script above. The page uses
+         inline onclick handlers, so its script cannot itself be a module. -->
+    <script type="module">
+      import { saveProfile } from './js/profile.js';
+      window.kdSaveProfile = saveProfile;
     </script>
 
     <script src="js/analytics.js"></script>

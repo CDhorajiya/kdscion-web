@@ -12,12 +12,15 @@ const DRAPE_LABELS = { crisp: 'Crisp', medium: 'Medium', flowing: 'Flowing', hea
 
 const CSS = `
   .fabric-preview-back.fabric-drape-btn { bottom: 4.9rem; }
+  /* Lightly translucent rather than a solid pane, so the garment behind stays
+     present while a fabric is being judged. The scrim is light to match — a
+     white pane over a dark scrim reads grey, not translucent. */
   .drape-modal {
     position: fixed; inset: 0; z-index: 2000;
     display: flex; align-items: center; justify-content: center;
     padding: 1rem;
-    background: rgba(20,20,24,0.55);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    background: rgba(248,246,243,0.42);
+    backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);
   }
   .drape-modal[hidden] { display: none; }
   .drape-glass {
@@ -25,9 +28,12 @@ const CSS = `
     width: min(1440px, 100%); height: min(980px, 100%);
     display: flex; flex-direction: column;
     border-radius: 18px;
-    border: 1px solid #e3e3e3;
-    background: #fff;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    border: 1px solid rgba(128,0,0,0.22);
+    background: #fff;                       /* fallback without backdrop-filter */
+    background: rgba(255,255,255,0.80);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow: 0 28px 70px rgba(30,20,10,0.24);
     overflow: hidden;
   }
   .drape-glass-head {
@@ -70,7 +76,7 @@ const CSS = `
     margin: 0.6rem 1.25rem 0; padding: 0.45rem 1rem;
     font-family: "Times New Roman", Times, serif; font-size: 1.155rem; letter-spacing: 2px;
     text-align: center; color: #333;
-    background: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 2px;
+    background: rgba(255,255,255,0.55); border: 1px solid #e0e0e0; border-radius: 2px;
   }
   .drape-glass-foot {
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;

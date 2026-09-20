@@ -39,6 +39,36 @@ const CONTACT_GAP   = 0.025;  // keeps triangle faces from cutting into the sphe
 const STEP_SECONDS  = 1 / 60; // fixed timestep, so 120Hz screens don't run 2x fast
 const FIT_ASPECT    = 1.12;   // below this width/height ratio the camera backs off to fit the cloth
 
+/**
+ * The form the cloth is draped over.
+ *
+ * The globe from the home page — same texture, same material values — so the
+ * drape reads as the House dressing the world rather than as a physics prop.
+ *
+ * A page can opt out with <html data-drape-sphere="matte"> and get the plain
+ * ball back. The texture is loaded lazily, and if it fails the sphere simply
+ * stays matte: a quieter look, never a broken one.
+ */
+const EARTH_TEXTURE = 'images/earth_atmos_4096.webp';
+
+function sphereMaterial() {
+  const style = typeof document !== 'undefined'
+    ? document.documentElement.dataset.drapeSphere : null;
+  const matte = new THREE.MeshStandardMaterial({ color: 0xd8d3cb, roughness: 0.7 });
+  if (style === 'matte') return matte;
+
+  // Matches js/earth.js on the home page: roughness 0.6, no metalness.
+  matte.roughness = 0.6;
+  new THREE.TextureLoader().load(EARTH_TEXTURE, (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 4;
+    matte.map = tex;
+    matte.color.set(0xffffff);      // let the map carry the colour
+    matte.needsUpdate = true;
+  });
+  return matte;
+}
+
 export function createDrapeDemo(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setClearColor(0x000000, 0);
@@ -65,11 +95,16 @@ export function createDrapeDemo(canvas) {
 
   const sphereCenter = new THREE.Vector3(0, SPHERE_Y, 0);
   const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(SPHERE_RADIUS * 0.97, 48, 32),
-    new THREE.MeshStandardMaterial({ color: 0xd8d3cb, roughness: 0.7 })
+    new THREE.SphereGeometry(SPHERE_RADIUS * 0.97, 64, 48),
+    sphereMaterial()
   );
   sphere.position.copy(sphereCenter);
+  sphere.rotation.x = 0.4;          // the same tilt the home page globe carries
   scene.add(sphere);
+  // Turned slowly, and only when it is the globe. The cloth rests on the
+  // sphere rather than being attached to it, so the physics is untouched —
+  // this is the world turning underneath the fabric.
+  const spins = document.documentElement.dataset.drapeSphere !== 'matte';
 
   // Soft contact shadow rather than a flat disc — on the white panel a hard-edged
   // circle reads as a grey slab, so fade it out towards the rim.
@@ -228,6 +263,7 @@ export function createDrapeDemo(canvas) {
       steps++;
     }
     if (steps) syncGeometry();
+    if (spins) sphere.rotation.y += 0.0016;
     controls.update();
     renderer.render(scene, camera);
   }

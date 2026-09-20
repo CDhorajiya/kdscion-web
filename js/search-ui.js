@@ -67,49 +67,76 @@ const CSS = `
   }
 
 
+  /* ── The search window ──
+     White translucent rather than dark glass, so it belongs to the same
+     material as the Colourist panel and the page it floats over stays
+     faintly visible. Maroon accents and Times New Roman throughout, to
+     read as the House rather than as a browser control. */
   .kd-search-modal {
     position: fixed; inset: 0; z-index: 3000;
     display: flex; align-items: flex-start; justify-content: center;
     padding: 6vh 1rem 1rem;
-    background: rgba(12,12,14,0.55);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    background: rgba(28,24,20,0.22);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   }
   .kd-search-modal[hidden] { display: none; }
   .kd-search-glass {
     width: min(760px, 100%); max-height: 84vh; display: flex; flex-direction: column;
-    border-radius: 14px; border: 1px solid rgba(255,255,255,0.22);
-    background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05));
-    backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    border-radius: 4px;                       /* the House squares its corners */
+    border: 1px solid rgba(128,0,0,0.30);
+    background: #fdfcfa;
+    background: rgba(253,252,250,0.86);
+    backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%);
+    box-shadow: 0 28px 70px rgba(30,20,10,0.22);
     overflow: hidden;
   }
-  .kd-search-head { display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.18); }
+  .kd-search-head {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.4rem 1.6rem; border-bottom: 1px solid rgba(128,0,0,0.18);
+    background: rgba(255,255,255,0.35);
+  }
   .kd-search-input {
-    flex: 1; background: transparent; border: none; outline: none; color: #fff;
-    font-family: "Times New Roman", Times, serif; font-size: 1.5rem; letter-spacing: 2px;
+    flex: 1; background: transparent; border: none; outline: none; color: #1a1a1a;
+    font-family: "Times New Roman", Times, serif; font-size: 1.85rem; letter-spacing: 2px;
+    caret-color: #800000;
   }
-  .kd-search-input::placeholder { color: rgba(255,255,255,0.45); }
+  .kd-search-input::placeholder { color: #a39a8e; }
+  /* The browser's own clear button for input[type=search]: invisible against
+     the old dark glass, a blue cross against this one. The House has its own
+     close control. */
+  .kd-search-input::-webkit-search-cancel-button,
+  .kd-search-input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
   .kd-search-close {
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff;
-    width: 2.2rem; height: 2.2rem; border-radius: 50%; font-size: 1.3rem; line-height: 1; cursor: pointer;
+    background: none; border: 1px solid rgba(0,0,0,0.20); color: #6a6258;
+    width: 2.6rem; height: 2.6rem; border-radius: 50%; font-size: 1.6rem; line-height: 1;
+    cursor: pointer; transition: border-color 0.2s, color 0.2s;
   }
-  .kd-search-close:hover { background: rgba(255,255,255,0.25); }
-  .kd-search-results { overflow-y: auto; padding: 0.4rem 0 0.8rem; }
+  .kd-search-close:hover { border-color: #800000; color: #800000; }
+  .kd-search-results { overflow-y: auto; padding: 0.5rem 0 1rem; }
   .kd-search-group {
-    padding: 0.9rem 1.2rem 0.3rem;
-    font-family: "Times New Roman", Times, serif; font-size: 1rem; letter-spacing: 4px;
-    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    margin: 0; padding: 1.1rem 1.6rem 0.4rem;
+    font-family: "Times New Roman", Times, serif; font-size: 1.12rem; letter-spacing: 4px;
+    text-transform: uppercase; color: #9a8f80;
   }
   .kd-search-hit {
-    display: flex; align-items: center; gap: 0.9rem; width: 100%;
-    padding: 0.6rem 1.2rem; background: none; border: none; cursor: pointer; text-align: left;
-    font-family: "Times New Roman", Times, serif; color: rgba(255,255,255,0.92);
+    display: flex; align-items: center; gap: 1.1rem; width: 100%;
+    padding: 0.75rem 1.6rem; background: none; border: none; cursor: pointer; text-align: left;
+    font-family: "Times New Roman", Times, serif; color: #1a1a1a;
+    border-left: 2px solid transparent;
   }
-  .kd-search-hit:hover, .kd-search-hit.sel { background: rgba(255,255,255,0.12); }
-  .kd-search-hit img { width: 2.6rem; height: 2.6rem; object-fit: cover; border-radius: 2px; background: rgba(255,255,255,0.1); }
-  .kd-search-hit b { font-weight: normal; font-size: 1.25rem; letter-spacing: 1px; display: block; }
-  .kd-search-hit span { font-size: 1.05rem; letter-spacing: 1px; color: rgba(255,255,255,0.6); display: block; }
-  .kd-search-empty { padding: 1.4rem 1.2rem; font-family: "Times New Roman", Times, serif; font-size: 1.15rem; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
+  .kd-search-hit:hover, .kd-search-hit.sel {
+    background: rgba(128,0,0,0.05); border-left-color: #800000;
+  }
+  .kd-search-hit img {
+    width: 3.2rem; height: 3.2rem; object-fit: cover; border-radius: 2px;
+    border: 1px solid rgba(0,0,0,0.12); background: rgba(0,0,0,0.04);
+  }
+  .kd-search-hit b { font-weight: normal; font-size: 1.45rem; letter-spacing: 1px; display: block; }
+  .kd-search-hit span { font-size: 1.2rem; letter-spacing: 1px; color: #7a7266; display: block; }
+  .kd-search-empty {
+    margin: 0; padding: 1.8rem 1.6rem; font-family: "Times New Roman", Times, serif;
+    font-size: 1.35rem; letter-spacing: 1px; line-height: 1.6; color: #7a7266;
+  }
 `;
 
 const ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
@@ -151,7 +178,7 @@ function init() {
     <div class="kd-search-modal" id="kd-search-modal" role="dialog" aria-modal="true" aria-label="Search" hidden>
       <div class="kd-search-glass">
         <div class="kd-search-head">
-          ${ICON.replace('<svg', '<svg style="width:1.4rem;height:1.4rem;color:rgba(255,255,255,0.6)"')}
+          ${ICON.replace('<svg', '<svg style="width:1.75rem;height:1.75rem;color:#800000;opacity:0.75"')}
           <input class="kd-search-input" id="kd-search-input" type="search" autocomplete="off"
                  placeholder="Search designs, fabrics, guides…" aria-label="Search">
           <button class="kd-search-close" id="kd-search-close" aria-label="Close search">&times;</button>

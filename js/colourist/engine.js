@@ -120,25 +120,42 @@ export function recommend({ profile, palettes, colorData, fabrics }) {
   }
   const picks = [...byFabric.values()].sort((a, b) => a.weight - b.weight);
 
-  // Two-tone pairings: the palette's curated colour pairs, resolved to real
-  // fabrics. Only pairs where BOTH halves can be bought are offered.
-  const pairs = [];
-  for (const combo of palette.bestCombos) {
-    const a = rankAgainst(combo.a, fabrics, colorData)[0];
-    const b = rankAgainst(combo.b, fabrics, colorData)[0];
-    if (!a || !b || a.id === b.id) continue;
-    if (a.dE > SERVED_OK || b.dE > SERVED_OK) continue;
-    pairs.push({
-      a: { swatch: a, colour: { hex: combo.a, name: combo.al } },
-      b: { swatch: b, colour: { hex: combo.b, name: combo.bl } },
-      dE: +((a.dE + b.dE) / 2).toFixed(1),
-    });
-  }
+  // The palette's curated colour pairs, resolved to real cloth. Both tiers are
+  // carried: a palette holds twenty entries — five best colours, five that are
+  // also becoming, and five pairings of each — and the customer is entitled to
+  // see all twenty. A pair with a half the House cannot supply is still shown,
+  // marked, for the same reason a single colour is: the gap is the honest
+  // answer and it is also the demand signal.
+  const resolveHalf = (hex, name) => {
+    const hit = rankAgainst(hex, fabrics, colorData)[0];
+    // The nearest cloth is always carried, even when it is only a related
+    // tone, so a colour cannot read as stocked in one part of the panel and
+    // missing in another. `held` is the stricter judgement used for whether
+    // the pair can actually be cut.
+    return { colour: { hex, name }, swatch: hit || null,
+             held: !!hit && hit.dE <= SERVED_OK,
+             nearestDE: hit ? +hit.dE.toFixed(1) : null };
+  };
+  const buildPairs = (combos, tier) => combos.map((c) => {
+    const a = resolveHalf(c.a, c.al);
+    const b = resolveHalf(c.b, c.bl);
+    return {
+      tier, a, b,
+      // Wearable only when both halves exist and are different cloths — two
+      // zones cut from the same bolt is not a pairing.
+      wearable: a.held && b.held && a.swatch.id !== b.swatch.id,
+      dE: a.swatch && b.swatch ? +((a.swatch.dE + b.swatch.dE) / 2).toFixed(1) : null,
+    };
+  });
+  const pairs   = buildPairs(palette.bestCombos, 'best');
+  const haPairs = buildPairs(palette.haCombos, 'acceptable');
 
   // Colours the House cannot serve. Shown, not hidden: it is the honest answer
   // and it is also the demand signal that tells the House what to buy.
   const gaps = colours.filter((c) => !c.served && c.tier === 'best');
 
-  return { palette, colours, best, acceptable, picks, pairs, gaps,
-           servedCount: best.filter((c) => c.served).length, bestTotal: best.length };
+  return { palette, colours, best, acceptable, picks, pairs, haPairs, gaps,
+           servedCount: best.filter((c) => c.served).length, bestTotal: best.length,
+           // Every entry the palette holds, so the panel can prove it shows them all.
+           paletteEntries: best.length + acceptable.length + pairs.length + haPairs.length };
 }

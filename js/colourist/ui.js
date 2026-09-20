@@ -100,14 +100,47 @@ const PANEL_CSS = `
     text-transform: uppercase; text-decoration: underline; text-underline-offset: 3px; padding: 0;
   }
 
-  /* ── palette strip ── */
-  .kdc-strip { display: flex; flex-wrap: wrap; gap: 0.75rem 0.6rem; }
-  .kdc-chip { width: 5.7rem; text-align: center; }
-  .kdc-chip i {
-    display: block; height: 3.3rem; border-radius: 2px; border: 1px solid rgba(0,0,0,0.10);
+  /* ── the palette, laid out as the Skin Tone Profile lays it out ── */
+  .kdc-pal-head { display: flex; align-items: center; gap: 0.6rem; margin: 1.6rem 0 0.8rem; }
+  .kdc-pal-head:first-child { margin-top: 0; }
+  .kdc-dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; flex: none; }
+  .kdc-dot--best { background: #4CAF50; }
+  .kdc-dot--ha   { background: #64B5F6; }
+  .kdc-sec-label {
+    font-family: "Times New Roman", Times, serif; font-size: 1.32rem;
+    letter-spacing: 3px; text-transform: uppercase; color: #111;
   }
-  .kdc-chip span { display: block; font-size: 1.28rem; letter-spacing: 0.3px; color: #7a7266; margin-top: 0.3rem; line-height: 1.25; hyphens: auto; }
-  .kdc-chip.muted i { opacity: 0.55; }
+  .kdc-pal-divider { height: 1px; background: rgba(0,0,0,0.12); margin: 1.8rem 0 0.4rem; }
+  .kdc-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.4rem, 1fr)); gap: 1.2rem 0.9rem; }
+  /* A combination label carries two colour names and two hex codes, so it
+     gets roughly twice the width — otherwise every one wraps to three lines. */
+  .kdc-row--combo { grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); }
+
+  .kdc-sw, .kdc-cb { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+  .kdc-sw-box {
+    width: 100%; height: 3.1rem; border-radius: 2px; border: 1px solid rgba(0,0,0,0.14);
+  }
+  .kdc-cb-box {
+    width: 100%; height: 3.1rem; display: flex; border-radius: 2px;
+    border: 1px solid rgba(0,0,0,0.14); overflow: hidden;
+  }
+  .kdc-cb-half { flex: 1; }
+  .kdc-sw-name {
+    font-family: "Times New Roman", Times, serif; font-size: 1.18rem; letter-spacing: 0.8px;
+    text-transform: uppercase; color: #111; text-align: center; line-height: 1.3;
+  }
+  .kdc-sw-hex {
+    font-family: "Courier New", monospace; font-size: 1.08rem; color: #6a6258;
+    letter-spacing: 0.5px; text-align: center; line-height: 1.2;
+  }
+  /* What the House can actually supply for that colour — the Colourist's own
+     addition, kept visually subordinate to the palette itself. */
+  .kdc-held {
+    font-family: "Times New Roman", Times, serif; font-size: 1.05rem; letter-spacing: 0.5px;
+    color: #2a6e2a; text-align: center; line-height: 1.25;
+  }
+  .kdc-held--no { color: #b03030; }
+  .kdc-held--near { color: #8a6a00; }
 
   /* ── fabric picks ── */
   .kdc-pick {
@@ -132,6 +165,7 @@ const PANEL_CSS = `
   /* ── pairings ── */
   .kdc-pair { display: flex; gap: 0.9rem; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid rgba(0,0,0,0.07); }
   .kdc-pair-sw { display: flex; flex: none; border: 1px solid rgba(0,0,0,0.12); border-radius: 2px; overflow: hidden; }
+  .kdc-pair-sw.kdc-pair-part { border-color: #c05050; border-style: dashed; }
   .kdc-pair-sw i { display: block; width: 2.3rem; height: 4.6rem; }
   .kdc-pair-txt { flex: 1; font-size: 1.43rem; letter-spacing: 1px; line-height: 1.5; }
   .kdc-pair-txt span { display: block; font-size: 1.28rem; color: #7a7266; }
@@ -326,9 +360,55 @@ function quickProfileHtml(draft) {
       the more reliable reading. This shortcut is enough to begin.</p>`;
 }
 
-function chipHtml(c, muted) {
-  return `<span class="kdc-chip${muted ? ' muted' : ''}">
-    <i style="background:${c.hex}"></i><span>${esc(c.name)}</span></span>`;
+// The palette is shown exactly as the Skin Tone Profile shows it: the same
+// four sections in the same order, the same headings, the same green/blue
+// section markers, and every colour with its hex. The Colourist's own
+// contribution — what the House actually holds for each colour — is layered
+// underneath rather than replacing any of it.
+const SEC_BEST = 'best', SEC_HA = 'ha';
+
+function singleHtml(c, held) {
+  return `<div class="kdc-sw">
+      <div class="kdc-sw-box" style="background:${c.c}"></div>
+      <span class="kdc-sw-name">${esc(c.n)}</span>
+      <span class="kdc-sw-hex">${c.c.toUpperCase()}</span>
+      ${held}
+    </div>`;
+}
+
+function comboHtml(c, held) {
+  return `<div class="kdc-cb">
+      <div class="kdc-cb-box">
+        <div class="kdc-cb-half" style="background:${c.a}"></div>
+        <div class="kdc-cb-half" style="background:${c.b}"></div>
+      </div>
+      <span class="kdc-sw-name">${esc(c.al)} · ${esc(c.bl)}</span>
+      <span class="kdc-sw-hex">${c.a.toUpperCase()} · ${c.b.toUpperCase()}</span>
+      ${held}
+    </div>`;
+}
+
+function secHead(kind, label) {
+  return `<div class="kdc-pal-head"><span class="kdc-dot kdc-dot--${kind}"></span><span class="kdc-sec-label">${label}</span></div>`;
+}
+
+/** The one line under a colour saying what the House can supply for it.
+ *  Uses the same reach and the same words as the "In the House now" list, so
+ *  a colour cannot read "not held" here while a fabric for it is offered
+ *  below. Green = close enough to call it that colour; amber = only a related
+ *  tone; red = nothing within reach at all. */
+function heldLine(entry) {
+  const m = entry?.matches?.[0];
+  if (!m) return `<span class="kdc-held kdc-held--no">not held</span>`;
+  return `<span class="kdc-held${entry.served ? '' : ' kdc-held--near'}">${esc(m.label)} · ΔE ${m.dE.toFixed(1)}</span>`;
+}
+
+function pairHeldLine(pr) {
+  // Same three tiers as a single colour, so the two readings never disagree.
+  const one = (h) => (h.swatch ? esc(h.swatch.label) : 'not held');
+  const cls = (!pr.a.swatch || !pr.b.swatch) ? ' kdc-held--no'
+            : (pr.a.held && pr.b.held) ? '' : ' kdc-held--near';
+  return `<span class="kdc-held${cls}">${one(pr.a)} · ${one(pr.b)}</span>`;
 }
 
 function resultHtml(rec, profile, opts) {
@@ -345,12 +425,23 @@ function resultHtml(rec, profile, opts) {
       <button class="kdc-change" type="button" data-act="reset">Change</button>
     </div>`;
 
+  const byHex = Object.fromEntries(rec.colours.map((c) => [c.hex, c]));
+  const P = rec.palette;
   const palette = `
-    <div class="kdc-sec">
-      <p class="kdc-sec-title">Your colours</p>
-      <div class="kdc-strip">${p.best.map((c) => chipHtml({ hex: c.c, name: c.n }, false)).join('')}</div>
-      <p class="kdc-sec-title" style="margin:1.2rem 0 0.7rem">Also becoming</p>
-      <div class="kdc-strip">${p.acceptable.map((c) => chipHtml({ hex: c.c, name: c.n }, true)).join('')}</div>
+    <div class="kdc-sec kdc-pal">
+      ${secHead(SEC_BEST, 'Best — Single Colours')}
+      <div class="kdc-row">${P.best.map((c) => singleHtml(c, heldLine(byHex[c.c]))).join('')}</div>
+
+      ${secHead(SEC_HA, 'Highly Acceptable — Single Colours')}
+      <div class="kdc-row">${P.acceptable.map((c) => singleHtml(c, heldLine(byHex[c.c]))).join('')}</div>
+
+      <div class="kdc-pal-divider"></div>
+
+      ${secHead(SEC_BEST, 'Best — Combinations')}
+      <div class="kdc-row kdc-row--combo">${P.bestCombos.map((c, i) => comboHtml(c, pairHeldLine(rec.pairs[i]))).join('')}</div>
+
+      ${secHead(SEC_HA, 'Highly Acceptable — Combinations')}
+      <div class="kdc-row kdc-row--combo">${P.haCombos.map((c, i) => comboHtml(c, pairHeldLine(rec.haPairs[i]))).join('')}</div>
     </div>`;
 
   const picks = rec.picks.length ? `
@@ -375,16 +466,7 @@ function resultHtml(rec, profile, opts) {
         your colours for the House to recommend one honestly.</p>
     </div>`;
 
-  const pairs = (opts.twoTone && rec.pairs.length) ? `
-    <div class="kdc-sec">
-      <p class="kdc-sec-title">Pairings for two tones</p>
-      ${rec.pairs.slice(0, 4).map((pr) => `
-        <div class="kdc-pair">
-          <span class="kdc-pair-sw"><i style="background:${pr.a.swatch.hex}"></i><i style="background:${pr.b.swatch.hex}"></i></span>
-          <span class="kdc-pair-txt">${esc(pr.a.colour.name)} with ${esc(pr.b.colour.name)}
-            <span>${esc(pr.a.swatch.label)} · ${esc(pr.b.swatch.label)}</span></span>
-        </div>`).join('')}
-    </div>` : '';
+  const pairs = '';
 
   const gaps = rec.gaps.length ? `
     <div class="kdc-sec">

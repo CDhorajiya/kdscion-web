@@ -651,7 +651,7 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
 
     // Build the wreath images row for the category card header.
     const wreathImgs = type.wreaths
-      .map(w => `<img src="${w}" alt="${type.label}">`)
+      .map(w => `<img src="${w}" alt="${type.label}" loading="lazy" decoding="async">`)
       .join('');
 
     // Build HTML for each collection within this type.
@@ -686,6 +686,12 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
         const sheen = sheenOverride !== undefined ? sheenOverride
           : (s.sheen !== undefined ? s.sheen : typeDefaults.sheen);
 
+        // The swatch photos are full-resolution fabric shots (the largest is
+        // several MB) shown here at thumbnail size, and every category starts
+        // collapsed. Loading them eagerly fetched and decoded the entire
+        // catalogue on page load — tens of MB of images nobody had asked to
+        // see, which is the other half of why iOS Safari killed product pages.
+        // loading="lazy" holds each one back until its category is opened.
         // drape: which sphere-drop simulation preset this fabric uses (see DRAPE_TYPES).
         // Priority: 1) admin override ('' = explicitly none)  2) swatch definition.
         const drape = (overrides.swatchDrape ?? {})[s.id] ?? s.drape;
@@ -697,7 +703,7 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
           : '';
 
         return `<div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}" data-roughness="${roughness}" data-sheen="${sheen}"${drapeAttr}>
-          <img src="${s.image}" alt="${s.label}">
+          <img src="${s.image}" alt="${s.label}" loading="lazy" decoding="async">
           <span>${s.label}${drapeTag}</span>
         </div>`;
       }).join('');

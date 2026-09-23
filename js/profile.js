@@ -109,7 +109,11 @@ export function getProfile() {
  */
 export function saveProfile(patch) {
   const next = sanitize({ ...(getProfile() || {}), ...patch });
-  if (!next) return null;
+  // Nulling out the last thing the record held is a clear, not a no-op. It has
+  // to be treated as one: sanitize() drops an empty profile, and simply
+  // returning here left the stale record in storage AND in `cache`, so the
+  // Colourist's "Change" button appeared to do nothing at all.
+  if (!next) { clearProfile(); return null; }
   next.setAt = new Date().toISOString();
   next.vid   = next.vid || visitorId();
   const ok = writeRaw(JSON.stringify(next));

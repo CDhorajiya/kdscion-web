@@ -729,9 +729,15 @@
 </head>
 <body>
 
-    <!-- ── Pool of Designs gallery as background ── -->
-    <iframe class="bg-frame" src="pool-of-designs-woman.html" tabindex="-1" aria-hidden="true"></iframe>
-    <div class="bg-overlay"></div>
+    <!-- The Pool of Designs gallery used to sit behind this page as a blurred
+         background. The white theme in this page's <head> hides it
+         (".bg-frame, .bg-overlay { display: none }"), but display:none does
+         not stop an iframe loading: every
+         product page was still fetching and decoding the whole 200-design
+         gallery — ~100 images, ~27 MB — that nobody could see. Together with the
+         3D model that was enough to exhaust iOS Safari and give "a problem
+         repeatedly occurred". The frame is gone; its CSS is left in place so the
+         background can be restored deliberately if it is ever wanted again. -->
 
     <div class="product-page-wrap">
 
@@ -849,9 +855,41 @@
             } catch(e) { return null; }
         }
 
-        function preSampleAll() {
-            TONE_DEFS.forEach(({ key, glb, darken }) => {
-                (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load(glb, (refGltf) => {
+        /* The reference avatar for a tone is a 20-26 MB model and all three were
+           fetched on every page load, purely to read one average skin colour off
+           each. That is ~68 MB of GLB decoded into memory before the customer has
+           touched anything, which is enough on its own to kill the tab on iOS
+           Safari ("a problem repeatedly occurred"). Fair is the default and needs
+           no reference model, so a tone's avatar is now fetched the first time
+           that tone is actually asked for, and released the moment its colour has
+           been read. */
+        const tonePending = new Map();
+
+        function disposeScene(root) {
+            root.traverse((node) => {
+                if (!node.isMesh) return;
+                node.geometry?.dispose?.();
+                const mats = Array.isArray(node.material) ? node.material : [node.material];
+                mats.forEach((m) => {
+                    if (!m) return;
+                    for (const k in m) { const v = m[k]; if (v && v.isTexture) v.dispose(); }
+                    m.dispose();
+                });
+            });
+        }
+
+        function ensureTone(key) {
+            if (skinPalette.has(key)) return Promise.resolve();
+            if (tonePending.has(key)) return tonePending.get(key);
+            const def = TONE_DEFS.find((t) => t.key === key);
+            if (!def) return Promise.resolve();
+            const { glb, darken } = def;
+            const p = new Promise((resolve) => {
+                const _l = new GLTFLoader();
+                const _d = new DRACOLoader();
+                _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+                _l.setDRACOLoader(_d);
+                _l.load(glb, (refGltf) => {
                     let color = null;
                     refGltf.scene.traverse((node) => {
                         if (color || !node.isMesh || !node.material) return;
@@ -867,13 +905,26 @@
                         color = c;
                     });
                     if (color) skinPalette.set(key, color);
-                    refGltf.scene.traverse((node) => { if (node.isMesh) node.geometry.dispose(); });
-                }, undefined, () => {});
+                    disposeScene(refGltf.scene);   // only the colour was wanted, not the avatar
+                    _d.dispose();
+                    resolve();
+                }, undefined, () => { _d.dispose(); resolve(); });
             });
+            tonePending.set(key, p);
+            return p;
         }
 
         function applySkinTone(toneKey) {
             if (!currentModel) return;
+            // A tone's reference avatar is fetched on demand; re-enter once it lands.
+            if (toneKey && !skinPalette.has(toneKey)) {
+                ensureTone(toneKey).then(() => {
+                    // They may have chosen a different tone while it was loading.
+                    if (document.querySelector('.skin-btn.active')?.dataset.skin === toneKey)
+                        applySkinTone(toneKey);
+                });
+                return;
+            }
             currentModel.traverse((node) => {
                 if (!node.isMesh || !isBodyMesh(node)) return;
                 if (SKIP_PARTS.some(kw => node.name.toLowerCase().includes(kw))) return;
@@ -903,7 +954,7 @@
             const H = panel.clientHeight || 700;
             rendererS = new THREE.WebGLRenderer({ canvas, antialias: true });
             rendererS.setClearColor(0xe8e8e8, 1);
-            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 2));
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -942,7 +993,6 @@
                             origBodyMats.set(node.uuid, node.material.clone());
                     }
                 });
-                preSampleAll();
             }, (xhr) => {
                 if (_vt && xhr.total) _vt.textContent = Math.round(xhr.loaded / xhr.total * 100) + '%';
             }, (err) => {
@@ -1204,7 +1254,7 @@
     </div>
     <div class="footer_branding">
         <div class="monogram"><a href="index.html"><img src="images/KD_monogram.png" alt="KD monogram home page link"></a></div>
-        <p>KD - Monogram: Registered Trademark | Copyright 2026 KING DHORAJIYA</p>
+        <p class="footer_legal"><span class="footer_legal_line">KD - Monogram: Registered Trademark</span><span class="footer_legal_sep"> | </span><span class="footer_legal_line">Copyright 2026 KING DHORAJIYA</span></p>
     </div>
 </div>
 

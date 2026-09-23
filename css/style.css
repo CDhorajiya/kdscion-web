@@ -1287,6 +1287,12 @@ a {
   .monogram img { max-width: 160px; }
   .footer_branding { display: flex; flex-direction: column; align-items: center; }
   .footer_branding p { letter-spacing: 4px; font-size: 1.1rem; }
+  /* On a phone the trademark and the copyright are two separate statements on
+     two centred lines; the " | " that joins them on desktop is dropped rather
+     than left dangling at the end of the first line. */
+  .footer_branding .footer_legal { text-align: center; }
+  .footer_legal_line { display: block; }
+  .footer_legal_sep  { display: none; }
 
   /* ── Contact House page ───────────── */
   .footer_contacthouse h4 { font-size: 2rem; letter-spacing: 4px; white-space: normal; padding: 0 4%; }

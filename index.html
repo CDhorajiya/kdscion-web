@@ -462,16 +462,71 @@
     <script>
       (function(){
         var codes=["AD","AE","AF","AG","AL","AM","AO","AR","AT","AU","AZ","BA","BB","BD","BE","BF","BG","BH","BI","BJ","BN","BO","BR","BS","BT","BW","BY","BZ","CA","CD","CF","CG","CH","CI","CL","CM","CN","CO","CR","CU","CV","CY","CZ","DE","DJ","DK","DM","DO","DZ","EC","EE","EG","ER","ES","ET","FI","FJ","FM","FR","GA","GB","GD","GE","GH","GM","GN","GQ","GR","GT","GW","GY","HN","HR","HT","HU","ID","IE","IL","IN","IQ","IR","IS","IT","JM","JO","JP","KE","KG","KH","KI","KM","KN","KP","KR","KW","KZ","LA","LB","LC","LI","LK","LR","LS","LT","LU","LV","LY","MA","MC","MD","ME","MG","MH","ML","MM","MN","MR","MT","MU","MV","MW","MX","MY","MZ","NA","NE","NG","NI","NL","NO","NP","NR","NZ","OM","PA","PE","PG","PH","PK","PL","PT","PW","PY","QA","RO","RS","RU","RW","SA","SB","SC","SD","SE","SG","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SY","SZ","TD","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TZ","UA","UG","US","UY","UZ","VA","VC","VE","VN","VU","WS","YE","ZA","ZM","ZW"];
-        var names=new Intl.DisplayNames(["en"],{type:"region"});
+        var names;
+        try { names = new Intl.DisplayNames(["en"],{type:"region"}); } catch(e) { names = null; }
+        function countryName(c){ try { return (names && names.of(c)) || c; } catch(e) { return c; } }
         function toFlag(c){return c.split("").map(function(l){return String.fromCodePoint(0x1F1E6+l.charCodeAt(0)-65);}).join("");}
-        var inner=document.getElementById("flag-ticker-inner");
+
+        /* Windows ships no country-flag glyphs in Segoe UI Emoji, so a pair of
+           regional-indicator characters falls back to the two letters of the
+           code — which is why the rail read "AD AE AF…" on a Windows PC instead
+           of showing flags. There is no font to switch to, so the only fix is to
+           stop relying on the emoji there and draw the flags as images.
+
+           Detection is done by rendering one flag and looking for colour: a real
+           flag is coloured, the letter fallback is not. macOS, iOS and Android
+           therefore keep the native emoji exactly as before, and fetch nothing. */
+        function emojiFlagsSupported(){
+          try {
+            var c = document.createElement("canvas");
+            c.width = 24; c.height = 24;
+            var ctx = c.getContext("2d", { willReadFrequently: true });
+            if (!ctx) return false;
+            ctx.textBaseline = "top";
+            ctx.font = '20px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+            ctx.fillText(toFlag("US"), 0, 0);
+            var d = ctx.getImageData(0, 0, 24, 24).data;
+            for (var i = 0; i < d.length; i += 4) {
+              if (d[i+3] < 128) continue;
+              var r = d[i], g = d[i+1], b = d[i+2];
+              if (Math.max(r,g,b) - Math.min(r,g,b) > 60) return true;
+            }
+            return false;
+          } catch(e) { return false; }
+        }
+
+        var useImages = !emojiFlagsSupported();
+        var inner = document.getElementById("flag-ticker-inner");
+        var frag  = document.createDocumentFragment();
+
         [].concat(codes,codes).forEach(function(code){
-          var s=document.createElement("span");
-          s.className="flag-item";
-          s.setAttribute("data-country",names.of(code)||code);
-          s.textContent=toFlag(code);
-          inner.appendChild(s);
+          var s = document.createElement("span");
+          s.className = "flag-item";
+          s.setAttribute("data-country", countryName(code));
+          if (useImages) {
+            s.classList.add("flag-item--img");
+            var img = document.createElement("img");
+            var lc  = code.toLowerCase();
+            img.src    = "https://flagcdn.com/w40/" + lc + ".png";
+            img.srcset = "https://flagcdn.com/w80/" + lc + ".png 2x";
+            img.width  = 40; img.height = 30;
+            img.alt = "";
+            /* Not lazy: the rail is moved with a CSS transform, and an image
+               that only loads when it scrolls into view would leave a gap where
+               a flag should be. The whole set is ~40 KB, so it is loaded up
+               front at low priority instead. */
+            img.decoding = "async";
+            img.fetchPriority = "low";
+            /* If the image service cannot be reached, show the code rather than
+               an empty gap — no worse than what Windows shows today. */
+            img.onerror = function(){ s.classList.remove("flag-item--img"); s.textContent = code; };
+            s.appendChild(img);
+          } else {
+            s.textContent = toFlag(code);
+          }
+          frag.appendChild(s);
         });
+        inner.appendChild(frag);
       })();
     </script>
     <style>
@@ -479,13 +534,17 @@
       #flag-ticker-inner{animation:flagTicker 120s linear infinite;}
       #flag-ticker-wrap:hover #flag-ticker-inner{animation-play-state:paused;}
       .flag-item{font-size:2.5rem;padding:0 8px;display:inline-block;position:relative;cursor:default;transition:transform 0.2s ease;transform-origin:bottom center;}
+      /* Image fallback for platforms with no flag emoji (Windows). Sized to sit
+         on the same baseline as the emoji it replaces, so the rail is unchanged. */
+      .flag-item--img{font-size:0;}
+      .flag-item--img img{display:block;height:1.9rem;width:auto;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,0.08);}
       .flag-item:hover{transform:scale(2.2);z-index:100;}
       .flag-item::after{content:attr(data-country);position:absolute;bottom:115%;left:50%;transform:translateX(-50%);color:#8B1A1A;font-size:0.75rem;letter-spacing:0.1em;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s ease;font-family:"Times New Roman",Times,serif;text-transform:uppercase;background:rgba(255,255,255,0.92);padding:2px 6px;border-radius:3px;}
       .flag-item:hover::after{opacity:1;}
-      @media(max-width:768px){.flag-item{font-size:1.8rem;padding:0 4px;}}
+      @media(max-width:768px){.flag-item{font-size:1.8rem;padding:0 4px;}.flag-item--img img{height:1.4rem;}}
     </style>
 
-    <p>KD - Monogram: Registered Trademark | Copyright 2026 KING DHORAJIYA</p>
+    <p class="footer_legal"><span class="footer_legal_line">KD - Monogram: Registered Trademark</span><span class="footer_legal_sep"> | </span><span class="footer_legal_line">Copyright 2026 KING DHORAJIYA</span></p>
     <script>
       (function() {
         var clicks = 0, timer = null;

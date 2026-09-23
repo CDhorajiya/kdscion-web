@@ -121,63 +121,77 @@ function ensureModal() {
 function injectStyles() {
   const style = document.createElement('style');
   style.textContent = `
-    /* The full-screen dark overlay */
+    /* The House Colourist's hover card (.kdc-tip in js/colourist/ui.js) is the
+       reference for this box: the same pale translucent pane, maroon hairline,
+       backdrop blur and Times New Roman. The old near-black card was the one
+       dark surface left on the site and read as a different product. */
+
+    /* The full-screen scrim. Light, like the drape window's — a dark scrim
+       under a pale card makes the card read grey rather than translucent. */
     .auth-modal {
       display: none;                    /* hidden by default */
       position: fixed;
       inset: 0;                         /* covers the entire viewport */
       z-index: 9000;                    /* above everything else on the page */
-      background: rgba(0,0,0,0.75);    /* semi-transparent dark background */
-      backdrop-filter: blur(8px);       /* blurs the page behind the modal */
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(248,246,243,0.42);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
       align-items: center;
       justify-content: center;
     }
     /* When the .open class is added, switch display to flex to show it */
     .auth-modal.open { display: flex; }
 
-    /* The centred white/dark card */
+    /* The centred card — same pane as .kdc-tip */
     .auth-modal__box {
       position: relative;
       width: min(420px, 92vw);          /* responsive: max 420px, or 92% of screen */
-      background: rgba(18,14,24,0.97); /* very dark, near-black background */
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 4px;
+      background: #e2e0dd;              /* fallback without backdrop-filter */
+      background: rgba(226,224,221,0.88);
+      backdrop-filter: blur(22px) saturate(150%);
+      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      border: 1px solid #800000;
+      border-radius: 3px;
       padding: 3.2rem 3.2rem 2.8rem;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.20);
+      font-family: "Times New Roman", Times, serif;
+      color: #3a3a3a;
     }
 
     /* ✕ close button */
     .auth-modal__close {
       position: absolute;
-      top: 1.4rem; right: 1.6rem;
-      background: none; border: none;
-      color: rgba(255,255,255,0.4);
-      font-size: 1.2rem; cursor: pointer;
-      transition: color .2s;
+      top: 1.2rem; right: 1.2rem;
+      background: none;
+      border: 1px solid rgba(0,0,0,0.18);
+      border-radius: 50%;
+      width: 2.6rem; height: 2.6rem;
+      color: #6a6258;
+      font-size: 1.3rem; line-height: 1; cursor: pointer;
+      transition: color .2s, border-color .2s;
     }
-    .auth-modal__close:hover { color: #fff; }
+    .auth-modal__close:hover { color: #1a1a1a; border-color: #1a1a1a; }
 
     /* Tab row: "Sign In" | "Register" */
     .auth-modal__tabs {
       display: flex;
       gap: 2rem;
       margin-bottom: 2.4rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(0,0,0,0.12);
       padding-bottom: 1.2rem;
     }
     .auth-tab {
       background: none; border: none;
-      font-family: "Times New Roman", serif;
-      font-size: 1.2rem;
-      letter-spacing: 4px;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.42rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);    /* dim by default */
+      color: #8a8378;                   /* muted by default */
       cursor: pointer; padding: 0;
       transition: color .2s;
     }
-    .auth-tab.active { color: #fff; }   /* bright white when active */
-    .auth-tab:hover  { color: rgba(255,255,255,0.8); }
+    .auth-tab.active { color: #800000; }   /* the Colourist's heading maroon */
+    .auth-tab:hover  { color: #1a1a1a; }
 
     /* Each form — hidden by default, shown when its tab is active */
     .auth-form        { display: none;  flex-direction: column; gap: 1.4rem; }
@@ -186,44 +200,47 @@ function injectStyles() {
     /* Label + input stacked vertically */
     .auth-form label {
       display: flex; flex-direction: column; gap: 0.5rem;
-      font-family: "Times New Roman", serif;
-      font-size: 1.3rem; letter-spacing: 2px;
-      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.32rem; letter-spacing: 2px;
+      text-transform: uppercase; color: #6a6258;
     }
     .auth-form input {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15); border-radius: 2px;
+      background: rgba(255,255,255,0.62);
+      border: 1px solid rgba(0,0,0,0.18); border-radius: 2px;
       padding: 0.8rem 1rem;
-      color: rgba(255,255,255,0.9);
-      font-family: "Times New Roman", serif; font-size: 1.4rem;
+      color: #1a1a1a;
+      font-family: "Times New Roman", Times, serif; font-size: 1.45rem;
       letter-spacing: 1px; outline: none;
-      transition: border-color .2s;
+      transition: border-color .2s, background .2s;
     }
-    .auth-form input:focus { border-color: rgba(255,255,255,0.5); }
+    .auth-form input:focus {
+      border-color: #800000;
+      background: rgba(255,255,255,0.85);
+    }
 
-    /* Red error message shown on failed login/register */
+    /* Error message shown on failed login/register */
     .auth-error {
       margin: 0; min-height: 1.4rem;
-      font-family: "Times New Roman", serif;
-      font-size: 1.2rem; letter-spacing: 1px;
-      color: rgba(220,140,140,0.9);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.28rem; letter-spacing: 1px;
+      color: #b03030;
     }
 
-    /* Submit button */
+    /* Submit button — the Colourist's .kdc-notify */
     .auth-submit {
       margin-top: 0.4rem; padding: 1rem;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.85);
-      font-family: "Times New Roman", serif;
-      font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase;
-      cursor: pointer; border-radius: 3px;
+      background: none;
+      border: 1px solid rgba(128,0,0,0.35); color: #800000;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.3rem; letter-spacing: 4px; text-transform: uppercase;
+      cursor: pointer; border-radius: 2px;
       transition: background .2s, border-color .2s;
     }
     .auth-submit:hover:not(:disabled) {
-      background: rgba(255,255,255,0.16);
-      border-color: rgba(255,255,255,0.6); color: #fff;
+      background: rgba(128,0,0,0.07);
+      border-color: #800000;
     }
-    .auth-submit:disabled { opacity: 0.5; cursor: default; }
+    .auth-submit:disabled { opacity: 0.55; cursor: default; border-style: dashed; }
   `;
   document.head.appendChild(style);
 }

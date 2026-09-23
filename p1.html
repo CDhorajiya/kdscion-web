@@ -955,7 +955,13 @@
             const H = panel.clientHeight || 700;
             rendererS = new THREE.WebGLRenderer({ canvas, antialias: true });
             rendererS.setClearColor(0xe8e8e8, 1);
-            rendererS.setPixelRatio(Math.min(window.devicePixelRatio * 2, 2));
+            // Never below devicePixelRatio, or the buffer is stretched onto the
+            // screen and the garment goes soft — on a DPR-3 phone a ratio of 2
+            // renders 718x1012 into a 1077x1518 area. The ceiling of 3 caps the
+            // buffer instead of the sharpness: the old value of 4 supersampled
+            // well past native and cost twice the memory for it, and on a low-DPR
+            // desktop the floor of 2 keeps the supersampling it had before.
+            rendererS.setPixelRatio(Math.min(Math.max(window.devicePixelRatio, 2), 3));
             rendererS.setSize(W, H, false);
             rendererS.outputColorSpace = THREE.SRGBColorSpace;
 

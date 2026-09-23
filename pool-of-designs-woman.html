@@ -351,7 +351,11 @@
             display: none;
         }
 
-        /* ── Back-to-top: avoids scrolling back through hundreds of designs ── */
+        /* ── Back-to-top: avoids scrolling back through hundreds of designs ──
+           Drawn exactly like the search glass stacked above it: a bare maroon
+           mark, no plate and no circle, fully opaque, growing a little on hover.
+           The 3rem box is kept even though none of it is painted, so the touch
+           target stays comfortable on a phone. */
         .back-to-top {
             position: fixed;
             right: 1.5rem;
@@ -359,26 +363,43 @@
             width: 3rem;
             height: 3rem;
             border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            background: none;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0;
             cursor: pointer;
-            opacity: 0.5;
+            color: #800000;
             z-index: 500;
-            transition: opacity 0.25s ease;
+            transition: transform 0.2s;
         }
         .back-to-top:hover,
         .back-to-top:focus-visible {
-            opacity: 0.9;
+            transform: scale(1.05);
+            outline: none;
         }
         .back-to-top svg {
-            width: 1.4rem;
-            height: 1.4rem;
-            fill: #1a1a1a;
+            width: 1.9rem;
+            height: 1.9rem;
+            fill: currentColor;
+        }
+        /* Matches the step search-ui.js takes at the same breakpoint. */
+        @media (max-width: 768px) {
+            .back-to-top svg { width: 1.6rem; height: 1.6rem; }
+        }
+
+        /* ── Search glass, stacked above the back-to-top button ──
+           search-ui.js appends its own stylesheet to <head> after this one, so
+           .kd-search-btn--float would otherwise win on source order. The id
+           selector outranks it without needing !important. */
+        #kd-search-btn.kd-search-btn--float {
+            /* An identical 3rem box stacked straight on top of the back-to-top
+               one, so the two marks share a centre line and keep an even gap at
+               whatever size the breakpoint draws them. */
+            width: 3rem;
+            height: 3rem;
+            right: 1.5rem;
+            bottom: 4.5rem;
         }
 
         /* ────────────────────────────────────────────────────────────
@@ -2210,5 +2231,7 @@
         }
     })();
     </script>
+
+    <script type="module" src="js/search-ui.js"></script>
 </body>
 </html>

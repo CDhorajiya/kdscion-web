@@ -72,7 +72,7 @@ const PINS = [
     { label: 'ITALY',        fabrics: ['LEATHER'],          lat:  42, lon:   12, ao: -20 },
     { label: 'EGYPT',        fabrics: ['COTTON'],           lat:  26, lon:   30, ao:  80 },
     { label: 'USA',          fabrics: ['COTTON'],           lat:  38, lon:  -97, ao:   0 },
-    { label: 'INDIA',        fabrics: ['COTTON', 'SILK', 'LEATHER'], lat:  20, lon:   77, ao:   0 },
+    { label: 'INDIA',        fabrics: ['COTTON', 'SILK'],   lat:  20, lon:   77, ao:   0 },
 ];
 
 // Build annotation DOM elements

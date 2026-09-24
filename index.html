@@ -534,14 +534,18 @@
       #flag-ticker-inner{animation:flagTicker 120s linear infinite;}
       #flag-ticker-wrap:hover #flag-ticker-inner{animation-play-state:paused;}
       .flag-item{font-size:2.5rem;padding:0 8px;display:inline-block;position:relative;cursor:default;transition:transform 0.2s ease;transform-origin:bottom center;}
-      /* Image fallback for platforms with no flag emoji (Windows). Sized to sit
-         on the same baseline as the emoji it replaces, so the rail is unchanged. */
-      .flag-item--img{font-size:0;}
-      .flag-item--img img{display:block;height:1.9rem;width:auto;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,0.08);}
+      /* Image fallback for platforms with no flag emoji (Windows). 1.33rem is
+         70% of the 1.9rem the emoji sit at: the drawn flags are solid
+         rectangles where the emoji are glyphs carrying their own margins, so at
+         matching heights they read much larger. The extra 2px of padding a side
+         opens the rail back up now each mark is smaller. Nothing here touches
+         the emoji path — only the fallback carries .flag-item--img. */
+      .flag-item--img{font-size:0;padding:0 10px;}
+      .flag-item--img img{display:block;height:1.33rem;width:auto;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,0.08);}
       .flag-item:hover{transform:scale(2.2);z-index:100;}
       .flag-item::after{content:attr(data-country);position:absolute;bottom:115%;left:50%;transform:translateX(-50%);color:#8B1A1A;font-size:0.75rem;letter-spacing:0.1em;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s ease;font-family:"Times New Roman",Times,serif;text-transform:uppercase;background:rgba(255,255,255,0.92);padding:2px 6px;border-radius:3px;}
       .flag-item:hover::after{opacity:1;}
-      @media(max-width:768px){.flag-item{font-size:1.8rem;padding:0 4px;}.flag-item--img img{height:1.4rem;}}
+      @media(max-width:768px){.flag-item{font-size:1.8rem;padding:0 4px;}.flag-item--img{padding:0 5px;}.flag-item--img img{height:0.98rem;}}
     </style>
 
     <p class="footer_legal"><span class="footer_legal_line">KD - Monogram: Registered Trademark</span><span class="footer_legal_sep"> | </span><span class="footer_legal_line">Copyright 2026 KING DHORAJIYA</span></p>

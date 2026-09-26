@@ -1,13 +1,13 @@
 {
-  "generated": "2026-09-20T15:55:15.544Z",
+  "generated": "2026-09-26T19:43:55.850Z",
   "thresholds": {
     "strong": 8,
     "ok": 16
   },
   "summary": {
     "profiles": 12,
-    "dressable": 11,
-    "wellServed": 8,
+    "dressable": 12,
+    "wellServed": 12,
     "heldSwatches": 14
   },
   "profiles": [
@@ -20,82 +20,374 @@
       "accServed": 5,
       "accTotal": 5,
       "strongest": 0,
-      "meanDE": 12.4,
+      "meanDE": 10,
       "colours": [
         {
-          "hex": "#89CFF0",
-          "name": "Icy Blue",
+          "hex": "#A7BFDC",
+          "name": "Powder Blue",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 13.7,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 13.7
-          }
-        },
-        {
-          "hex": "#C3B1E1",
-          "name": "Lavender",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 21.2,
+          "nearestDE": 14.5,
           "match": {
             "id": "tt-silk-1",
             "label": "tt-silk-1",
             "hex": "#C5C5C2",
             "image": "images/tt-silk-1.webp",
-            "dE": 21.2
+            "dE": 14.5
           }
         },
         {
-          "hex": "#F4B8C8",
-          "name": "Rose Pink",
+          "hex": "#D8A6B3",
+          "name": "Rose Quartz",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 17.9,
+          "nearestDE": 16.1,
           "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 17.9
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 16.1
           }
         },
         {
-          "hex": "#8B2252",
-          "name": "Berry",
+          "hex": "#AFA2C8",
+          "name": "Heather Lilac",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 19.2,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 19.2
+          }
+        },
+        {
+          "hex": "#7C3656",
+          "name": "Mulberry",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 9.7,
+          "nearestDE": 11.1,
           "match": {
             "id": "cotton-2",
             "label": "Cotton 2",
             "hex": "#B23A68",
             "image": "images/cotton-2.webp",
-            "dE": 9.7
+            "dE": 11.1
           }
         },
         {
-          "hex": "#0F52BA",
-          "name": "Sapphire",
+          "hex": "#34425F",
+          "name": "Slate Navy",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 29.9,
+          "nearestDE": 25.7,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 25.7
+          }
+        },
+        {
+          "hex": "#F1F0EC",
+          "name": "Chalk White",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 5.3,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 5.3
+          }
+        },
+        {
+          "hex": "#BFC0C4",
+          "name": "Dove Grey",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 4.1,
+          "match": {
+            "id": "tt-silk-1",
+            "label": "tt-silk-1",
+            "hex": "#C5C5C2",
+            "image": "images/tt-silk-1.webp",
+            "dE": 4.1
+          }
+        },
+        {
+          "hex": "#868B94",
+          "name": "Pewter",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 13.3,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 13.3
+          }
+        },
+        {
+          "hex": "#A38E98",
+          "name": "Mauve Taupe",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 9.4,
+          "match": {
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 9.4
+          }
+        },
+        {
+          "hex": "#8BA79F",
+          "name": "Eucalyptus",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 12,
           "match": {
             "id": "linen-2",
             "label": "Linen 2",
             "hex": "#6C9FB1",
             "image": "images/linen-2.webp",
-            "dE": 29.9
+            "dE": 12
+          }
+        }
+      ]
+    },
+    {
+      "skin": "fair-light",
+      "under": "warm",
+      "label": "Fair / Light · warm",
+      "bestServed": 5,
+      "bestTotal": 5,
+      "accServed": 4,
+      "accTotal": 5,
+      "strongest": 1,
+      "meanDE": 10.9,
+      "colours": [
+        {
+          "hex": "#E07E69",
+          "name": "Soft Coral",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 14.5,
+          "match": {
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 14.5
           }
         },
         {
-          "hex": "#9AAAB8",
-          "name": "Cool Gray",
+          "hex": "#EDAE86",
+          "name": "Apricot",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 14.3,
+          "match": {
+            "id": "linen-1",
+            "label": "Linen 1",
+            "hex": "#DAC69A",
+            "image": "images/linen-1.webp",
+            "dE": 14.3
+          }
+        },
+        {
+          "hex": "#5FA69E",
+          "name": "Lagoon",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 12.6,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 12.6
+          }
+        },
+        {
+          "hex": "#BF976A",
+          "name": "Camel",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 13.8,
+          "match": {
+            "id": "linen-1",
+            "label": "Linen 1",
+            "hex": "#DAC69A",
+            "image": "images/linen-1.webp",
+            "dE": 13.8
+          }
+        },
+        {
+          "hex": "#EBD088",
+          "name": "Primrose",
+          "tier": "best",
+          "status": "strong",
+          "nearestDE": 6.4,
+          "match": {
+            "id": "linen-1",
+            "label": "Linen 1",
+            "hex": "#DAC69A",
+            "image": "images/linen-1.webp",
+            "dE": 6.4
+          }
+        },
+        {
+          "hex": "#FAF6EC",
+          "name": "Ivory",
           "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 4.3,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 4.3
+          }
+        },
+        {
+          "hex": "#3A4A6A",
+          "name": "Marine Navy",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 27.2,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 27.2
+          }
+        },
+        {
+          "hex": "#A5774F",
+          "name": "Toffee",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 12.5,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 12.5
+          }
+        },
+        {
+          "hex": "#A8B383",
+          "name": "Pistachio",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 12.6,
+          "match": {
+            "id": "linen-1",
+            "label": "Linen 1",
+            "hex": "#DAC69A",
+            "image": "images/linen-1.webp",
+            "dE": 12.6
+          }
+        },
+        {
+          "hex": "#B4A48B",
+          "name": "Warm Stone",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 7.1,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 7.1
+          }
+        }
+      ]
+    },
+    {
+      "skin": "fair-light",
+      "under": "neutral",
+      "label": "Fair / Light · neutral",
+      "bestServed": 5,
+      "bestTotal": 5,
+      "accServed": 4,
+      "accTotal": 5,
+      "strongest": 0,
+      "meanDE": 9.9,
+      "colours": [
+        {
+          "hex": "#C68F96",
+          "name": "Dusty Rose",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 10.3,
+          "match": {
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 10.3
+          }
+        },
+        {
+          "hex": "#9CAD94",
+          "name": "Sage",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 14.3,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 14.3
+          }
+        },
+        {
+          "hex": "#5C8A88",
+          "name": "Soft Teal",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 11.6,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 11.6
+          }
+        },
+        {
+          "hex": "#8A5A63",
+          "name": "Rosewood",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 12,
+          "match": {
+            "id": "cotton-2",
+            "label": "Cotton 2",
+            "hex": "#B23A68",
+            "image": "images/cotton-2.webp",
+            "dE": 12
+          }
+        },
+        {
+          "hex": "#7F98B8",
+          "name": "Chambray",
+          "tier": "best",
           "status": "ok",
           "nearestDE": 10.5,
           "match": {
@@ -107,119 +399,731 @@
           }
         },
         {
-          "hex": "#F5F0FF",
-          "name": "Soft White",
+          "hex": "#F7F6F3",
+          "name": "Porcelain",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 11.5,
+          "status": "strong",
+          "nearestDE": 6.2,
           "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 11.5
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 6.2
           }
         },
         {
-          "hex": "#D4A0A8",
-          "name": "Dusty Pink",
+          "hex": "#B3AA9F",
+          "name": "Greige",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.1,
+          "status": "strong",
+          "nearestDE": 1.8,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 14.1
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 1.8
           }
         },
         {
-          "hex": "#B4C8E8",
-          "name": "Pale Blue",
+          "hex": "#857A72",
+          "name": "Mushroom",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 14.8,
+          "nearestDE": 8.3,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 14.8
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 8.3
           }
         },
         {
-          "hex": "#B097A8",
-          "name": "Mauve",
+          "hex": "#2E3A52",
+          "name": "Ink Navy",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 24.6,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 24.6
+          }
+        },
+        {
+          "hex": "#A79BB0",
+          "name": "Dusk Lilac",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 12.7,
+          "nearestDE": 14.3,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 12.7
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 14.3
           }
         }
       ]
     },
     {
-      "skin": "fair-light",
+      "skin": "medium-olive",
+      "under": "cool",
+      "label": "Medium / Olive · cool",
+      "bestServed": 2,
+      "bestTotal": 5,
+      "accServed": 3,
+      "accTotal": 5,
+      "strongest": 1,
+      "meanDE": 9.8,
+      "colours": [
+        {
+          "hex": "#1B7A60",
+          "name": "Emerald",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 24.6,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 24.6
+          }
+        },
+        {
+          "hex": "#2B4E8E",
+          "name": "Sapphire",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 30.9,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 30.9
+          }
+        },
+        {
+          "hex": "#5C2E5B",
+          "name": "Aubergine",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 14.2,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 14.2
+          }
+        },
+        {
+          "hex": "#A3325A",
+          "name": "Raspberry",
+          "tier": "best",
+          "status": "strong",
+          "nearestDE": 4,
+          "match": {
+            "id": "cotton-2",
+            "label": "Cotton 2",
+            "hex": "#B23A68",
+            "image": "images/cotton-2.webp",
+            "dE": 4
+          }
+        },
+        {
+          "hex": "#23596A",
+          "name": "Petrol",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 27.4,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 27.4
+          }
+        },
+        {
+          "hex": "#EFEEEA",
+          "name": "Soft White",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 5.1,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 5.1
+          }
+        },
+        {
+          "hex": "#8E929A",
+          "name": "Cool Grey",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 11.3,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 11.3
+          }
+        },
+        {
+          "hex": "#3B3E45",
+          "name": "Charcoal",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 22.7,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 22.7
+          }
+        },
+        {
+          "hex": "#CDAAC0",
+          "name": "Orchid Mist",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 17.5,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 17.5
+          }
+        },
+        {
+          "hex": "#5A7A96",
+          "name": "Steel Blue",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 14.2,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 14.2
+          }
+        }
+      ]
+    },
+    {
+      "skin": "medium-olive",
       "under": "warm",
-      "label": "Fair / Light · warm",
+      "label": "Medium / Olive · warm",
+      "bestServed": 4,
+      "bestTotal": 5,
+      "accServed": 3,
+      "accTotal": 5,
+      "strongest": 0,
+      "meanDE": 10.2,
+      "colours": [
+        {
+          "hex": "#6C6A38",
+          "name": "Olive",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 10.4,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 10.4
+          }
+        },
+        {
+          "hex": "#B45E3E",
+          "name": "Terracotta",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 9.9,
+          "match": {
+            "id": "tt-wool-1",
+            "label": "tt-wool-1",
+            "hex": "#C14844",
+            "image": "images/tt-wool-1.webp",
+            "dE": 9.9
+          }
+        },
+        {
+          "hex": "#9C7424",
+          "name": "Antique Mustard",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 14,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 14
+          }
+        },
+        {
+          "hex": "#1F6D69",
+          "name": "Deep Teal",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 23.7,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 23.7
+          }
+        },
+        {
+          "hex": "#8C4F2E",
+          "name": "Cognac",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 15.2,
+          "match": {
+            "id": "tt-wool-1",
+            "label": "tt-wool-1",
+            "hex": "#C14844",
+            "image": "images/tt-wool-1.webp",
+            "dE": 15.2
+          }
+        },
+        {
+          "hex": "#EEE4CF",
+          "name": "Ecru",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 3,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 3
+          }
+        },
+        {
+          "hex": "#9E946C",
+          "name": "Khaki",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 13.6,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 13.6
+          }
+        },
+        {
+          "hex": "#4B3325",
+          "name": "Chocolate",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 16.5,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 16.5
+          }
+        },
+        {
+          "hex": "#2F4A3A",
+          "name": "Bottle Green",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 24.2,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 24.2
+          }
+        },
+        {
+          "hex": "#6A2A26",
+          "name": "Oxblood",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 5.1,
+          "match": {
+            "id": "cotton-wool-1",
+            "label": "Blend 1",
+            "hex": "#781D28",
+            "image": "images/wool-blend-2.avif",
+            "dE": 5.1
+          }
+        }
+      ]
+    },
+    {
+      "skin": "medium-olive",
+      "under": "neutral",
+      "label": "Medium / Olive · neutral",
+      "bestServed": 2,
+      "bestTotal": 5,
+      "accServed": 4,
+      "accTotal": 5,
+      "strongest": 2,
+      "meanDE": 6.2,
+      "colours": [
+        {
+          "hex": "#3E7876",
+          "name": "Muted Teal",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 18,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 18
+          }
+        },
+        {
+          "hex": "#A66E6E",
+          "name": "Rose Clay",
+          "tier": "best",
+          "status": "strong",
+          "nearestDE": 6.8,
+          "match": {
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 6.8
+          }
+        },
+        {
+          "hex": "#2F5642",
+          "name": "Forest",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 23.9,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 23.9
+          }
+        },
+        {
+          "hex": "#56708F",
+          "name": "Denim",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 18.7,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 18.7
+          }
+        },
+        {
+          "hex": "#7A2E3C",
+          "name": "Garnet",
+          "tier": "best",
+          "status": "strong",
+          "nearestDE": 5.6,
+          "match": {
+            "id": "cotton-wool-1",
+            "label": "Blend 1",
+            "hex": "#781D28",
+            "image": "images/wool-blend-2.avif",
+            "dE": 5.6
+          }
+        },
+        {
+          "hex": "#EFE9DC",
+          "name": "Parchment",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 1.6,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 1.6
+          }
+        },
+        {
+          "hex": "#B8AFA2",
+          "name": "Stone",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 3.4,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 3.4
+          }
+        },
+        {
+          "hex": "#7E7268",
+          "name": "Taupe",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 6.5,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 6.5
+          }
+        },
+        {
+          "hex": "#93A08A",
+          "name": "Sage",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 13.2,
+          "match": {
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 13.2
+          }
+        },
+        {
+          "hex": "#3E3431",
+          "name": "Espresso",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 17.2,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 17.2
+          }
+        }
+      ]
+    },
+    {
+      "skin": "tan",
+      "under": "cool",
+      "label": "Tan · cool",
+      "bestServed": 2,
+      "bestTotal": 5,
+      "accServed": 3,
+      "accTotal": 5,
+      "strongest": 2,
+      "meanDE": 7.2,
+      "colours": [
+        {
+          "hex": "#224A9C",
+          "name": "Cobalt",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 31.2,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 31.2
+          }
+        },
+        {
+          "hex": "#AE2A6E",
+          "name": "Fuchsia",
+          "tier": "best",
+          "status": "strong",
+          "nearestDE": 4.5,
+          "match": {
+            "id": "cotton-2",
+            "label": "Cotton 2",
+            "hex": "#B23A68",
+            "image": "images/cotton-2.webp",
+            "dE": 4.5
+          }
+        },
+        {
+          "hex": "#4E2B78",
+          "name": "Royal Purple",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 21.8,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 21.8
+          }
+        },
+        {
+          "hex": "#6E1F35",
+          "name": "Bordeaux",
+          "tier": "best",
+          "status": "strong",
+          "nearestDE": 6.5,
+          "match": {
+            "id": "cotton-wool-1",
+            "label": "Blend 1",
+            "hex": "#781D28",
+            "image": "images/wool-blend-2.avif",
+            "dE": 6.5
+          }
+        },
+        {
+          "hex": "#0F6B5C",
+          "name": "Pine",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 25.7,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 25.7
+          }
+        },
+        {
+          "hex": "#F6F6F3",
+          "name": "Optic White",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 6.4,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 6.4
+          }
+        },
+        {
+          "hex": "#33363C",
+          "name": "Charcoal",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 22.3,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 22.3
+          }
+        },
+        {
+          "hex": "#C2E0D7",
+          "name": "Icy Mint",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 12.7,
+          "match": {
+            "id": "tt-silk-1",
+            "label": "tt-silk-1",
+            "hex": "#C5C5C2",
+            "image": "images/tt-silk-1.webp",
+            "dE": 12.7
+          }
+        },
+        {
+          "hex": "#B4B7BD",
+          "name": "Silver Grey",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 6.1,
+          "match": {
+            "id": "tt-silk-1",
+            "label": "tt-silk-1",
+            "hex": "#C5C5C2",
+            "image": "images/tt-silk-1.webp",
+            "dE": 6.1
+          }
+        },
+        {
+          "hex": "#1D2641",
+          "name": "Midnight Navy",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 22.3,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 22.3
+          }
+        }
+      ]
+    },
+    {
+      "skin": "tan",
+      "under": "warm",
+      "label": "Tan · warm",
       "bestServed": 3,
       "bestTotal": 5,
       "accServed": 5,
       "accTotal": 5,
       "strongest": 1,
-      "meanDE": 10.6,
+      "meanDE": 10.7,
       "colours": [
         {
-          "hex": "#E87060",
-          "name": "Coral",
+          "hex": "#B5521F",
+          "name": "Burnt Orange",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 13.5,
+          "nearestDE": 13.2,
           "match": {
             "id": "tt-wool-1",
             "label": "tt-wool-1",
             "hex": "#C14844",
             "image": "images/tt-wool-1.webp",
-            "dE": 13.5
+            "dE": 13.2
           }
         },
         {
-          "hex": "#F8B080",
-          "name": "Peach",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 15.1,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 15.1
-          }
-        },
-        {
-          "hex": "#C83020",
-          "name": "Warm Red",
+          "hex": "#A6362A",
+          "name": "Paprika",
           "tier": "best",
           "status": "strong",
-          "nearestDE": 7.3,
+          "nearestDE": 7.5,
           "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 7.3
+            "id": "wool-2",
+            "label": "Wool 2",
+            "hex": "#96242F",
+            "image": "images/woolen fabric.webp",
+            "dE": 7.5
           }
         },
         {
-          "hex": "#D8A020",
-          "name": "Mustard",
+          "hex": "#D29A2E",
+          "name": "Marigold",
           "tier": "best",
           "status": "unserved",
           "nearestDE": 16.8,
@@ -232,662 +1136,189 @@
           }
         },
         {
-          "hex": "#F09060",
-          "name": "Apricot",
+          "hex": "#1F8680",
+          "name": "Warm Teal",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 19.8,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 19.8
-          }
-        },
-        {
-          "hex": "#FFF0D8",
-          "name": "Cream",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 4.9,
-          "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 4.9
-          }
-        },
-        {
-          "hex": "#EED8B8",
-          "name": "Warm Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 6.2,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 6.2
-          }
-        },
-        {
-          "hex": "#A8A858",
-          "name": "Soft Olive",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 14
-          }
-        },
-        {
-          "hex": "#E09078",
-          "name": "Light Terra",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.7,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 14.7
-          }
-        },
-        {
-          "hex": "#C8A880",
-          "name": "Warm Taupe",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 8.9,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 8.9
-          }
-        }
-      ]
-    },
-    {
-      "skin": "fair-light",
-      "under": "neutral",
-      "label": "Fair / Light · neutral",
-      "bestServed": 4,
-      "bestTotal": 5,
-      "accServed": 5,
-      "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 9.4,
-      "colours": [
-        {
-          "hex": "#F0B8B8",
-          "name": "Blush",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 15.2,
-          "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 15.2
-          }
-        },
-        {
-          "hex": "#B8D4B8",
-          "name": "Sage",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 14.1,
-          "match": {
-            "id": "wool-1",
-            "label": "Wool 1",
-            "hex": "#D5CDB9",
-            "image": "images/wool-1.webp",
-            "dE": 14.1
-          }
-        },
-        {
-          "hex": "#98C4E0",
-          "name": "Soft Blue",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 12,
+          "nearestDE": 17.3,
           "match": {
             "id": "linen-2",
             "label": "Linen 2",
             "hex": "#6C9FB1",
             "image": "images/linen-2.webp",
-            "dE": 12
+            "dE": 17.3
           }
         },
         {
-          "hex": "#B88090",
-          "name": "Rosewood",
+          "hex": "#5E5D2F",
+          "name": "Olive Drab",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 9.9,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 9.9
-          }
-        },
-        {
-          "hex": "#B8A8C8",
-          "name": "Muted Lavender",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 17.8,
-          "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 17.8
-          }
-        },
-        {
-          "hex": "#F8F5F0",
-          "name": "White",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 5.2,
-          "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 5.2
-          }
-        },
-        {
-          "hex": "#C8C8C4",
-          "name": "Light Gray",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 0.8,
-          "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 0.8
-          }
-        },
-        {
-          "hex": "#F0E0D0",
-          "name": "Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 3.1,
-          "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 3.1
-          }
-        },
-        {
-          "hex": "#F8C8B8",
-          "name": "Soft Peach",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 10.9,
-          "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 10.9
-          }
-        },
-        {
-          "hex": "#B8D0E8",
-          "name": "Pale Blue",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 13.1,
-          "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 13.1
-          }
-        }
-      ]
-    },
-    {
-      "skin": "medium-olive",
-      "under": "cool",
-      "label": "Medium / Olive · cool",
-      "bestServed": 1,
-      "bestTotal": 5,
-      "accServed": 4,
-      "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 9.4,
-      "colours": [
-        {
-          "hex": "#009A50",
-          "name": "Emerald",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 27.4,
+          "nearestDE": 12.8,
           "match": {
             "id": "cotton-1",
             "label": "Cotton 1",
             "hex": "#7E7158",
             "image": "images/cotton-1.webp",
-            "dE": 27.4
+            "dE": 12.8
           }
         },
         {
-          "hex": "#1A3C9A",
-          "name": "Sapphire",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 29.6,
+          "hex": "#F1E6CF",
+          "name": "Cream",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 3.7,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 3.7
+          }
+        },
+        {
+          "hex": "#452E22",
+          "name": "Chocolate",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 15.5,
           "match": {
             "id": "cotton-linen-2",
             "label": "Blend 2",
             "hex": "#4D1726",
             "image": "images/cotton-linen blend-2.webp",
-            "dE": 29.6
+            "dE": 15.5
           }
         },
         {
-          "hex": "#6A1E90",
-          "name": "Plum",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 23.1,
-          "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 23.1
-          }
-        },
-        {
-          "hex": "#CA0068",
-          "name": "Magenta",
-          "tier": "best",
-          "status": "strong",
-          "nearestDE": 5.1,
-          "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 5.1
-          }
-        },
-        {
-          "hex": "#5C6B80",
-          "name": "Slate",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 20.7,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 20.7
-          }
-        },
-        {
-          "hex": "#9AAAB0",
-          "name": "Cool Gray",
+          "hex": "#6D4A2D",
+          "name": "Tobacco",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 10.2,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 10.2
-          }
-        },
-        {
-          "hex": "#6898C8",
-          "name": "Soft Blue",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 10.3,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 10.3
-          }
-        },
-        {
-          "hex": "#D0A0A8",
-          "name": "Dusty Rose",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 13.6,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 13.6
-          }
-        },
-        {
-          "hex": "#C0C0CC",
-          "name": "Lavender Gray",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 7.9,
-          "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 7.9
-          }
-        },
-        {
-          "hex": "#4A7098",
-          "name": "Steel Blue",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 19,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 19
-          }
-        }
-      ]
-    },
-    {
-      "skin": "medium-olive",
-      "under": "warm",
-      "label": "Medium / Olive · warm",
-      "bestServed": 2,
-      "bestTotal": 5,
-      "accServed": 3,
-      "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 7.8,
-      "colours": [
-        {
-          "hex": "#7A8830",
-          "name": "Olive",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 17.4,
+          "nearestDE": 15.6,
           "match": {
             "id": "cotton-1",
             "label": "Cotton 1",
             "hex": "#7E7158",
             "image": "images/cotton-1.webp",
-            "dE": 17.4
+            "dE": 15.6
           }
         },
         {
-          "hex": "#C05A38",
-          "name": "Terracotta",
+          "hex": "#B5A57F",
+          "name": "Khaki",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 9.2,
+          "match": {
+            "id": "linen-1",
+            "label": "Linen 1",
+            "hex": "#DAC69A",
+            "image": "images/linen-1.webp",
+            "dE": 9.2
+          }
+        },
+        {
+          "hex": "#EAC29A",
+          "name": "Apricot Cream",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 7.7,
+          "match": {
+            "id": "linen-1",
+            "label": "Linen 1",
+            "hex": "#DAC69A",
+            "image": "images/linen-1.webp",
+            "dE": 7.7
+          }
+        }
+      ]
+    },
+    {
+      "skin": "tan",
+      "under": "neutral",
+      "label": "Tan · neutral",
+      "bestServed": 2,
+      "bestTotal": 5,
+      "accServed": 4,
+      "accTotal": 5,
+      "strongest": 0,
+      "meanDE": 8.2,
+      "colours": [
+        {
+          "hex": "#1F5E61",
+          "name": "Deep Teal",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 26.4,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 26.4
+          }
+        },
+        {
+          "hex": "#A4545A",
+          "name": "Burnt Rose",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 9.3,
+          "nearestDE": 8.7,
           "match": {
             "id": "tt-wool-1",
             "label": "tt-wool-1",
             "hex": "#C14844",
             "image": "images/tt-wool-1.webp",
-            "dE": 9.3
+            "dE": 8.7
           }
         },
         {
-          "hex": "#A82E1C",
-          "name": "Rust",
+          "hex": "#6D7342",
+          "name": "Moss",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 9.3,
-          "match": {
-            "id": "wool-2",
-            "label": "Wool 2",
-            "hex": "#96242F",
-            "image": "images/woolen fabric.webp",
-            "dE": 9.3
-          }
-        },
-        {
-          "hex": "#E8A818",
-          "name": "Golden Yellow",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 17,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 17
-          }
-        },
-        {
-          "hex": "#1A9080",
-          "name": "Teal",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 18.8,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 18.8
-          }
-        },
-        {
-          "hex": "#DEC898",
-          "name": "Warm Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 1.2,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 1.2
-          }
-        },
-        {
-          "hex": "#C89A50",
-          "name": "Camel",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.1,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 14.1
-          }
-        },
-        {
-          "hex": "#E88868",
-          "name": "Soft Coral",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 16.7,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 16.7
-          }
-        },
-        {
-          "hex": "#7A9040",
-          "name": "Moss Green",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 18.8,
+          "nearestDE": 11.6,
           "match": {
             "id": "cotton-1",
             "label": "Cotton 1",
             "hex": "#7E7158",
             "image": "images/cotton-1.webp",
-            "dE": 18.8
+            "dE": 11.6
           }
         },
         {
-          "hex": "#D4B890",
-          "name": "Sand",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 4.9,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 4.9
-          }
-        }
-      ]
-    },
-    {
-      "skin": "medium-olive",
-      "under": "neutral",
-      "label": "Medium / Olive · neutral",
-      "bestServed": 2,
-      "bestTotal": 5,
-      "accServed": 5,
-      "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 7.6,
-      "colours": [
-        {
-          "hex": "#287880",
-          "name": "Teal",
+          "hex": "#3F5E80",
+          "name": "Slate Blue",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 17.1,
+          "nearestDE": 26,
           "match": {
             "id": "linen-2",
             "label": "Linen 2",
             "hex": "#6C9FB1",
             "image": "images/linen-2.webp",
-            "dE": 17.1
+            "dE": 26
           }
         },
         {
-          "hex": "#C07880",
-          "name": "Rose",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 9.6,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 9.6
-          }
-        },
-        {
-          "hex": "#D4B890",
-          "name": "Sand",
-          "tier": "best",
-          "status": "strong",
-          "nearestDE": 4.9,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 4.9
-          }
-        },
-        {
-          "hex": "#B89830",
-          "name": "Muted Gold",
+          "hex": "#BE8B32",
+          "name": "Amber",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 16.7,
+          "nearestDE": 18.9,
           "match": {
             "id": "linen-1",
             "label": "Linen 1",
             "hex": "#DAC69A",
             "image": "images/linen-1.webp",
-            "dE": 16.7
+            "dE": 18.9
           }
         },
         {
-          "hex": "#2A6828",
-          "name": "Forest Green",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 23.1,
-          "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 23.1
-          }
-        },
-        {
-          "hex": "#D8C0A0",
-          "name": "Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 4.9,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 4.9
-          }
-        },
-        {
-          "hex": "#A0A8A8",
-          "name": "Soft Gray",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 8,
-          "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 8
-          }
-        },
-        {
-          "hex": "#F5EDDC",
-          "name": "Cream",
+          "hex": "#F1ECE2",
+          "name": "Ivory",
           "tier": "acceptable",
           "status": "strong",
           "nearestDE": 2.5,
@@ -900,62 +1331,90 @@
           }
         },
         {
-          "hex": "#D09080",
-          "name": "Muted Coral",
+          "hex": "#A9A499",
+          "name": "Stone Grey",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 11.2,
+          "status": "strong",
+          "nearestDE": 2.9,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 11.2
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 2.9
           }
         },
         {
-          "hex": "#B0B870",
-          "name": "Pale Olive",
+          "hex": "#6A5C53",
+          "name": "Mocha",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 12.1,
+          "nearestDE": 10.5,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 12.1
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 10.5
           }
-        }
-      ]
-    },
-    {
-      "skin": "tan",
-      "under": "cool",
-      "label": "Tan · cool",
-      "bestServed": 1,
-      "bestTotal": 5,
-      "accServed": 2,
-      "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 10.1,
-      "colours": [
+        },
         {
-          "hex": "#1F40AE",
-          "name": "Royal Blue",
-          "tier": "best",
+          "hex": "#243150",
+          "name": "Navy",
+          "tier": "acceptable",
           "status": "unserved",
-          "nearestDE": 31.1,
+          "nearestDE": 23.8,
           "match": {
             "id": "cotton-linen-2",
             "label": "Blend 2",
             "hex": "#4D1726",
             "image": "images/cotton-linen blend-2.webp",
-            "dE": 31.1
+            "dE": 23.8
           }
         },
         {
-          "hex": "#CC187A",
+          "hex": "#D69A87",
+          "name": "Soft Coral",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 13.1,
+          "match": {
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 13.1
+          }
+        }
+      ]
+    },
+    {
+      "skin": "dark-deep",
+      "under": "cool",
+      "label": "Dark / Deep · cool",
+      "bestServed": 2,
+      "bestTotal": 5,
+      "accServed": 3,
+      "accTotal": 5,
+      "strongest": 2,
+      "meanDE": 6.6,
+      "colours": [
+        {
+          "hex": "#2150A8",
+          "name": "Cobalt",
+          "tier": "best",
+          "status": "unserved",
+          "nearestDE": 31,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 31
+          }
+        },
+        {
+          "hex": "#A8236C",
           "name": "Fuchsia",
           "tier": "best",
           "status": "strong",
@@ -969,574 +1428,115 @@
           }
         },
         {
-          "hex": "#44087A",
-          "name": "Deep Purple",
+          "hex": "#0E7C5A",
+          "name": "Emerald",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 23.5,
-          "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 23.5
-          }
-        },
-        {
-          "hex": "#68D8C0",
-          "name": "Mint",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 22.8,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 22.8
-          }
-        },
-        {
-          "hex": "#3A4050",
-          "name": "Charcoal",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 23.5,
-          "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 23.5
-          }
-        },
-        {
-          "hex": "#9AAAB0",
-          "name": "Cool Gray",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 10.2,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 10.2
-          }
-        },
-        {
-          "hex": "#C8B4D8",
-          "name": "Soft Lilac",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 18.9,
-          "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 18.9
-          }
-        },
-        {
-          "hex": "#4A7098",
-          "name": "Steel Blue",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 19,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 19
-          }
-        },
-        {
-          "hex": "#D4A0A8",
-          "name": "Dusty Pink",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.1,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 14.1
-          }
-        },
-        {
-          "hex": "#1A2A60",
-          "name": "Navy",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 24.4,
-          "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 24.4
-          }
-        }
-      ]
-    },
-    {
-      "skin": "tan",
-      "under": "warm",
-      "label": "Tan · warm",
-      "bestServed": 3,
-      "bestTotal": 5,
-      "accServed": 4,
-      "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 10,
-      "colours": [
-        {
-          "hex": "#C84A20",
-          "name": "Burnt Orange",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 10.4,
-          "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 10.4
-          }
-        },
-        {
-          "hex": "#D83828",
-          "name": "Coral Red",
-          "tier": "best",
-          "status": "strong",
-          "nearestDE": 7.2,
-          "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 7.2
-          }
-        },
-        {
-          "hex": "#28B8A8",
-          "name": "Turquoise",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 18,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 18
-          }
-        },
-        {
-          "hex": "#E09020",
-          "name": "Honey",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 20.1,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 20.1
-          }
-        },
-        {
-          "hex": "#A07030",
-          "name": "Bronze",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 13.3,
+          "nearestDE": 24.7,
           "match": {
             "id": "cotton-1",
             "label": "Cotton 1",
             "hex": "#7E7158",
             "image": "images/cotton-1.webp",
-            "dE": 13.3
+            "dE": 24.7
           }
         },
         {
-          "hex": "#DEC898",
-          "name": "Warm Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 1.2,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 1.2
-          }
-        },
-        {
-          "hex": "#F8B898",
-          "name": "Peach",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 15.4,
-          "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 15.4
-          }
-        },
-        {
-          "hex": "#C8A830",
-          "name": "Soft Gold",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.9,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 14.9
-          }
-        },
-        {
-          "hex": "#9A9850",
-          "name": "Light Olive",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 16.9,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 16.9
-          }
-        },
-        {
-          "hex": "#9A9888",
-          "name": "Warm Gray",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 7.8,
-          "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 7.8
-          }
-        }
-      ]
-    },
-    {
-      "skin": "tan",
-      "under": "neutral",
-      "label": "Tan · neutral",
-      "bestServed": 0,
-      "bestTotal": 5,
-      "accServed": 5,
-      "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 9.9,
-      "colours": [
-        {
-          "hex": "#F28482",
-          "name": "Coral",
+          "hex": "#52308A",
+          "name": "Royal Violet",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 16.5,
-          "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 16.5
-          }
-        },
-        {
-          "hex": "#577590",
-          "name": "Steel Blue",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 16,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 16
-          }
-        },
-        {
-          "hex": "#90A955",
-          "name": "Moss",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 18.5,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 18.5
-          }
-        },
-        {
-          "hex": "#FFB703",
-          "name": "Amber",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 17.8,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 17.8
-          }
-        },
-        {
-          "hex": "#2A9D8F",
-          "name": "Teal",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 16.7,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 16.7
-          }
-        },
-        {
-          "hex": "#E6CCB2",
-          "name": "Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 7.3,
-          "match": {
-            "id": "wool-1",
-            "label": "Wool 1",
-            "hex": "#D5CDB9",
-            "image": "images/wool-1.webp",
-            "dE": 7.3
-          }
-        },
-        {
-          "hex": "#FAF3DD",
-          "name": "Cream",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 4.9,
-          "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 4.9
-          }
-        },
-        {
-          "hex": "#B7B7A4",
-          "name": "Soft Gray",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 7.2,
-          "match": {
-            "id": "wool-1",
-            "label": "Wool 1",
-            "hex": "#D5CDB9",
-            "image": "images/wool-1.webp",
-            "dE": 7.2
-          }
-        },
-        {
-          "hex": "#FFCAD4",
-          "name": "Pale Coral",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 15,
-          "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 15
-          }
-        },
-        {
-          "hex": "#D8F3DC",
-          "name": "Light Sage",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.9,
-          "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 14.9
-          }
-        }
-      ]
-    },
-    {
-      "skin": "dark-deep",
-      "under": "cool",
-      "label": "Dark / Deep · cool",
-      "bestServed": 2,
-      "bestTotal": 5,
-      "accServed": 3,
-      "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 11.3,
-      "colours": [
-        {
-          "hex": "#0047AB",
-          "name": "Cobalt",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 32.3,
+          "nearestDE": 24.3,
           "match": {
             "id": "cotton-linen-2",
             "label": "Blend 2",
             "hex": "#4D1726",
             "image": "images/cotton-linen blend-2.webp",
-            "dE": 32.3
+            "dE": 24.3
           }
         },
         {
-          "hex": "#8020C8",
-          "name": "Violet",
+          "hex": "#A81C33",
+          "name": "Cherry Red",
           "tier": "best",
+          "status": "strong",
+          "nearestDE": 3.5,
+          "match": {
+            "id": "wool-2",
+            "label": "Wool 2",
+            "hex": "#96242F",
+            "image": "images/woolen fabric.webp",
+            "dE": 3.5
+          }
+        },
+        {
+          "hex": "#F8F8F6",
+          "name": "Optic White",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 7,
+          "match": {
+            "id": "cotton-linen-1",
+            "label": "Blend 1",
+            "hex": "#EDE4D7",
+            "image": "images/cotton-linen blend-1.webp",
+            "dE": 7
+          }
+        },
+        {
+          "hex": "#141416",
+          "name": "Jet Black",
+          "tier": "acceptable",
           "status": "unserved",
-          "nearestDE": 24.4,
+          "nearestDE": 21.7,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 24.4
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 21.7
           }
         },
         {
-          "hex": "#E81878",
-          "name": "Hot Pink",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 9.7,
+          "hex": "#BFC2C7",
+          "name": "Silver",
+          "tier": "acceptable",
+          "status": "strong",
+          "nearestDE": 4.4,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 9.7
+            "id": "tt-silk-1",
+            "label": "tt-silk-1",
+            "hex": "#C5C5C2",
+            "image": "images/tt-silk-1.webp",
+            "dE": 4.4
           }
         },
         {
-          "hex": "#A0D0E0",
+          "hex": "#BCD6E8",
           "name": "Ice Blue",
-          "tier": "best",
-          "status": "ok",
-          "nearestDE": 13.8,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 13.8
-          }
-        },
-        {
-          "hex": "#4A1258",
-          "name": "Deep Plum",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 17.1,
-          "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 17.1
-          }
-        },
-        {
-          "hex": "#FFFFFF",
-          "name": "Pure White",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 8.4,
-          "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 8.4
-          }
-        },
-        {
-          "hex": "#9AAAB0",
-          "name": "Cool Gray",
-          "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 10.2,
-          "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 10.2
-          }
-        },
-        {
-          "hex": "#C8B4D8",
-          "name": "Soft Lavender",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 18.9,
+          "nearestDE": 12.2,
           "match": {
             "id": "tt-silk-1",
             "label": "tt-silk-1",
             "hex": "#C5C5C2",
             "image": "images/tt-silk-1.webp",
-            "dE": 18.9
+            "dE": 12.2
           }
         },
         {
-          "hex": "#B8D4F0",
-          "name": "Light Blue",
+          "hex": "#D4C8E6",
+          "name": "Icy Lilac",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.5,
+          "status": "unserved",
+          "nearestDE": 16.1,
           "match": {
             "id": "tt-silk-1",
             "label": "tt-silk-1",
             "hex": "#C5C5C2",
             "image": "images/tt-silk-1.webp",
-            "dE": 14.5
-          }
-        },
-        {
-          "hex": "#404858",
-          "name": "Charcoal",
-          "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 25.4,
-          "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 25.4
+            "dE": 16.1
           }
         }
       ]
@@ -1545,151 +1545,151 @@
       "skin": "dark-deep",
       "under": "warm",
       "label": "Dark / Deep · warm",
-      "bestServed": 1,
+      "bestServed": 3,
       "bestTotal": 5,
-      "accServed": 5,
+      "accServed": 4,
       "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 8.8,
+      "strongest": 1,
+      "meanDE": 10.6,
       "colours": [
         {
-          "hex": "#FFD60A",
-          "name": "Gold",
+          "hex": "#C99A30",
+          "name": "Saffron",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 18,
+          "nearestDE": 16.3,
           "match": {
             "id": "linen-1",
             "label": "Linen 1",
             "hex": "#DAC69A",
             "image": "images/linen-1.webp",
-            "dE": 18
+            "dE": 16.3
           }
         },
         {
-          "hex": "#B87333",
+          "hex": "#B0643A",
           "name": "Copper",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 17.6,
+          "status": "ok",
+          "nearestDE": 14,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 17.6
+            "id": "tt-wool-1",
+            "label": "tt-wool-1",
+            "hex": "#C14844",
+            "image": "images/tt-wool-1.webp",
+            "dE": 14
           }
         },
         {
-          "hex": "#8B0000",
+          "hex": "#8E2B22",
           "name": "Brick Red",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 9.9,
+          "status": "strong",
+          "nearestDE": 5.4,
           "match": {
             "id": "wool-2",
             "label": "Wool 2",
             "hex": "#96242F",
             "image": "images/woolen fabric.webp",
-            "dE": 9.9
+            "dE": 5.4
           }
         },
         {
-          "hex": "#708238",
-          "name": "Olive",
+          "hex": "#0F6B67",
+          "name": "Peacock",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 16.2,
+          "nearestDE": 24.9,
+          "match": {
+            "id": "linen-2",
+            "label": "Linen 2",
+            "hex": "#6C9FB1",
+            "image": "images/linen-2.webp",
+            "dE": 24.9
+          }
+        },
+        {
+          "hex": "#6F7336",
+          "name": "Olive",
+          "tier": "best",
+          "status": "ok",
+          "nearestDE": 12.3,
           "match": {
             "id": "cotton-1",
             "label": "Cotton 1",
             "hex": "#7E7158",
             "image": "images/cotton-1.webp",
-            "dE": 16.2
+            "dE": 12.3
           }
         },
         {
-          "hex": "#FF8C00",
-          "name": "Amber",
-          "tier": "best",
-          "status": "unserved",
-          "nearestDE": 23.5,
-          "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 23.5
-          }
-        },
-        {
-          "hex": "#FFF1D6",
+          "hex": "#F3E7CF",
           "name": "Cream",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 5.6,
+          "nearestDE": 4,
           "match": {
             "id": "cotton-linen-1",
             "label": "Blend 1",
             "hex": "#EDE4D7",
             "image": "images/cotton-linen blend-1.webp",
-            "dE": 5.6
+            "dE": 4
           }
         },
         {
-          "hex": "#EED9C4",
-          "name": "Warm Beige",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 5.2,
-          "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 5.2
-          }
-        },
-        {
-          "hex": "#A47149",
-          "name": "Soft Brown",
+          "hex": "#BB9164",
+          "name": "Camel",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 13.1,
+          "nearestDE": 15.6,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 13.1
+            "id": "tt-cotton-1",
+            "label": "tt-cotton-1",
+            "hex": "#AFA7A0",
+            "image": "images/tt-cotton-1.webp",
+            "dE": 15.6
           }
         },
         {
-          "hex": "#E6BE8A",
-          "name": "Muted Gold",
+          "hex": "#B3A582",
+          "name": "Khaki",
           "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 6.5,
+          "status": "ok",
+          "nearestDE": 9.5,
           "match": {
             "id": "linen-1",
             "label": "Linen 1",
             "hex": "#DAC69A",
             "image": "images/linen-1.webp",
-            "dE": 6.5
+            "dE": 9.5
           }
         },
         {
-          "hex": "#B08968",
-          "name": "Warm Taupe",
+          "hex": "#CF8565",
+          "name": "Terracotta",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 12.3,
+          "nearestDE": 13.3,
           "match": {
             "id": "tt-leather-1",
             "label": "tt-leather-1",
             "hex": "#A27D79",
             "image": "images/tt-leather-1.webp",
-            "dE": 12.3
+            "dE": 13.3
+          }
+        },
+        {
+          "hex": "#274D36",
+          "name": "Forest",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 25.4,
+          "match": {
+            "id": "cotton-1",
+            "label": "Cotton 1",
+            "hex": "#7E7158",
+            "image": "images/cotton-1.webp",
+            "dE": 25.4
           }
         }
       ]
@@ -1700,149 +1700,149 @@
       "label": "Dark / Deep · neutral",
       "bestServed": 3,
       "bestTotal": 5,
-      "accServed": 5,
+      "accServed": 4,
       "accTotal": 5,
       "strongest": 2,
-      "meanDE": 7.9,
+      "meanDE": 7.4,
       "colours": [
         {
-          "hex": "#FFFFFF",
-          "name": "White",
+          "hex": "#A3182F",
+          "name": "Ruby",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 8.4,
+          "status": "strong",
+          "nearestDE": 2.6,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 8.4
+            "id": "wool-2",
+            "label": "Wool 2",
+            "hex": "#96242F",
+            "image": "images/woolen fabric.webp",
+            "dE": 2.6
           }
         },
         {
-          "hex": "#008080",
+          "hex": "#0B6E73",
           "name": "Teal",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 17.8,
+          "nearestDE": 22.1,
           "match": {
             "id": "linen-2",
             "label": "Linen 2",
             "hex": "#6C9FB1",
             "image": "images/linen-2.webp",
-            "dE": 17.8
+            "dE": 22.1
           }
         },
         {
-          "hex": "#DC143C",
-          "name": "Crimson",
+          "hex": "#C8A04A",
+          "name": "Antique Gold",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 6.4,
-          "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 6.4
-          }
-        },
-        {
-          "hex": "#E6BE8A",
-          "name": "Gold",
-          "tier": "best",
-          "status": "strong",
-          "nearestDE": 6.5,
+          "status": "ok",
+          "nearestDE": 13.4,
           "match": {
             "id": "linen-1",
             "label": "Linen 1",
             "hex": "#DAC69A",
             "image": "images/linen-1.webp",
-            "dE": 6.5
+            "dE": 13.4
           }
         },
         {
-          "hex": "#3A0CA3",
-          "name": "Indigo",
+          "hex": "#2F4DA0",
+          "name": "Ultramarine",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 27.9,
+          "nearestDE": 31.3,
           "match": {
             "id": "cotton-linen-2",
             "label": "Blend 2",
             "hex": "#4D1726",
             "image": "images/cotton-linen blend-2.webp",
-            "dE": 27.9
+            "dE": 31.3
           }
         },
         {
-          "hex": "#EDE0D4",
-          "name": "Beige",
-          "tier": "acceptable",
+          "hex": "#9A2B69",
+          "name": "Berry",
+          "tier": "best",
           "status": "strong",
-          "nearestDE": 2.3,
+          "nearestDE": 7.5,
           "match": {
-            "id": "tt-linen-1",
-            "label": "tt-linen-1",
-            "hex": "#EBDCD4",
-            "image": "images/tt-linen-1.webp",
-            "dE": 2.3
+            "id": "cotton-2",
+            "label": "Cotton 2",
+            "hex": "#B23A68",
+            "image": "images/cotton-2.webp",
+            "dE": 7.5
           }
         },
         {
-          "hex": "#ADB5BD",
-          "name": "Soft Gray",
+          "hex": "#F7F6F2",
+          "name": "Optic White",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 7.6,
-          "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 7.6
-          }
-        },
-        {
-          "hex": "#FAEDCD",
-          "name": "Cream",
-          "tier": "acceptable",
-          "status": "strong",
-          "nearestDE": 6.7,
+          "nearestDE": 6,
           "match": {
             "id": "cotton-linen-1",
             "label": "Blend 1",
             "hex": "#EDE4D7",
             "image": "images/cotton-linen blend-1.webp",
-            "dE": 6.7
+            "dE": 6
           }
         },
         {
-          "hex": "#E5989B",
-          "name": "Muted Pink",
+          "hex": "#B9B8B4",
+          "name": "Dove Grey",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 15.3,
+          "status": "strong",
+          "nearestDE": 3.5,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 15.3
+            "id": "tt-silk-1",
+            "label": "tt-silk-1",
+            "hex": "#C5C5C2",
+            "image": "images/tt-silk-1.webp",
+            "dE": 3.5
           }
         },
         {
-          "hex": "#CCD5AE",
-          "name": "Sage",
+          "hex": "#CDBFA8",
+          "name": "Sand",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 10,
+          "status": "strong",
+          "nearestDE": 4.1,
           "match": {
             "id": "wool-1",
             "label": "Wool 1",
             "hex": "#D5CDB9",
             "image": "images/wool-1.webp",
-            "dE": 10
+            "dE": 4.1
+          }
+        },
+        {
+          "hex": "#DCA3A7",
+          "name": "Blush Rose",
+          "tier": "acceptable",
+          "status": "ok",
+          "nearestDE": 15,
+          "match": {
+            "id": "tt-leather-1",
+            "label": "tt-leather-1",
+            "hex": "#A27D79",
+            "image": "images/tt-leather-1.webp",
+            "dE": 15
+          }
+        },
+        {
+          "hex": "#1F2A44",
+          "name": "Midnight Navy",
+          "tier": "acceptable",
+          "status": "unserved",
+          "nearestDE": 23.1,
+          "match": {
+            "id": "cotton-linen-2",
+            "label": "Blend 2",
+            "hex": "#4D1726",
+            "image": "images/cotton-linen blend-2.webp",
+            "dE": 23.1
           }
         }
       ]
@@ -1850,157 +1850,89 @@
   ],
   "buyNext": [
     {
-      "hex": "#D8A020",
+      "hex": "#1B7A60",
       "names": [
-        "Mustard",
-        "Golden Yellow",
-        "Muted Gold",
-        "Honey",
-        "Amber",
-        "Gold",
-        "Copper"
+        "Emerald",
+        "Deep Teal",
+        "Muted Teal",
+        "Forest",
+        "Pine",
+        "Warm Teal",
+        "Peacock",
+        "Teal"
       ],
-      "newlyDressable": 1,
-      "addsChoice": 5,
+      "newlyDressable": 0,
+      "addsChoice": 9,
       "serves": [
-        "Fair / Light · warm",
+        "Medium / Olive · cool",
         "Medium / Olive · warm",
         "Medium / Olive · neutral",
+        "Tan · cool",
+        "Tan · warm",
+        "Tan · neutral",
+        "Dark / Deep · cool",
+        "Dark / Deep · warm",
+        "Dark / Deep · neutral"
+      ]
+    },
+    {
+      "hex": "#34425F",
+      "names": [
+        "Slate Navy",
+        "Sapphire",
+        "Petrol",
+        "Denim",
+        "Cobalt",
+        "Royal Purple",
+        "Slate Blue",
+        "Royal Violet",
+        "Ultramarine"
+      ],
+      "newlyDressable": 0,
+      "addsChoice": 7,
+      "serves": [
+        "Fair / Light · cool",
+        "Medium / Olive · cool",
+        "Medium / Olive · neutral",
+        "Tan · cool",
+        "Tan · neutral",
+        "Dark / Deep · cool",
+        "Dark / Deep · neutral"
+      ]
+    },
+    {
+      "hex": "#D29A2E",
+      "names": [
+        "Marigold",
+        "Amber",
+        "Saffron"
+      ],
+      "newlyDressable": 0,
+      "addsChoice": 3,
+      "serves": [
         "Tan · warm",
         "Tan · neutral",
         "Dark / Deep · warm"
       ]
     },
     {
-      "hex": "#0F52BA",
+      "hex": "#D8A6B3",
       "names": [
-        "Sapphire",
-        "Slate",
-        "Royal Blue",
-        "Steel Blue",
-        "Cobalt"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 5,
-      "serves": [
-        "Fair / Light · cool",
-        "Medium / Olive · cool",
-        "Tan · cool",
-        "Tan · neutral",
-        "Dark / Deep · cool"
-      ]
-    },
-    {
-      "hex": "#009A50",
-      "names": [
-        "Emerald",
-        "Olive",
-        "Teal",
-        "Forest Green",
-        "Moss"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 5,
-      "serves": [
-        "Medium / Olive · cool",
-        "Medium / Olive · warm",
-        "Medium / Olive · neutral",
-        "Tan · neutral",
-        "Dark / Deep · warm"
-      ]
-    },
-    {
-      "hex": "#6A1E90",
-      "names": [
-        "Plum",
-        "Deep Purple",
-        "Violet",
-        "Deep Plum",
-        "Indigo"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 4,
-      "serves": [
-        "Medium / Olive · cool",
-        "Tan · cool",
-        "Dark / Deep · cool",
-        "Dark / Deep · neutral"
-      ]
-    },
-    {
-      "hex": "#C3B1E1",
-      "names": [
-        "Lavender",
-        "Rose Pink",
-        "Muted Lavender"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 2,
-      "serves": [
-        "Fair / Light · cool",
-        "Fair / Light · neutral"
-      ]
-    },
-    {
-      "hex": "#F09060",
-      "names": [
-        "Apricot",
-        "Coral"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 2,
-      "serves": [
-        "Fair / Light · warm",
-        "Tan · neutral"
-      ]
-    },
-    {
-      "hex": "#287880",
-      "names": [
-        "Teal"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 2,
-      "serves": [
-        "Medium / Olive · neutral",
-        "Dark / Deep · neutral"
-      ]
-    },
-    {
-      "hex": "#68D8C0",
-      "names": [
-        "Mint",
-        "Turquoise"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 2,
-      "serves": [
-        "Tan · cool",
-        "Tan · warm"
-      ]
-    },
-    {
-      "hex": "#3A4050",
-      "names": [
-        "Charcoal"
+        "Rose Quartz",
+        "Heather Lilac"
       ],
       "newlyDressable": 0,
       "addsChoice": 1,
       "serves": [
-        "Tan · cool"
+        "Fair / Light · cool"
       ]
     }
   ],
   "idle": [
     {
-      "id": "cotton-linen-2",
-      "hex": "#4D1726",
-      "label": "Blend 2"
-    },
-    {
-      "id": "cotton-wool-1",
-      "hex": "#781D28",
-      "label": "Blend 1"
+      "id": "tt-linen-1",
+      "hex": "#EBDCD4",
+      "label": "tt-linen-1"
     }
   ]
 }

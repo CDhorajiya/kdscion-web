@@ -9,6 +9,7 @@ scripts build that data. Run them in this order; each depends on the one above.
 | 2 | `python3 tools/build_fabric_colors.py` | `data/fabric-color.json` | a swatch image is added or replaced |
 | 3 | `node tools/fabric_gap_report.mjs` | `data/fabric-gap.json` | after step 2, or before a fabric-buying decision |
 | — | `node tools/test_color.mjs` | — | after touching `js/colourist/color.js` |
+| — | `node tools/build_palette_study.mjs` | `skin-palette-compare.html`, `data/palettes-v2.json` | the second-edition palettes in `tools/palettes_v2.mjs` are edited |
 
 ## What each one is for
 

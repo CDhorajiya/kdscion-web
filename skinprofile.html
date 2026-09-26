@@ -402,100 +402,102 @@
     <script>
         const state = { skinType: null, tests: [null, null, null] };
 
-        // ── All 12 palettes — colours matched from the reference images ──
+        // ── All 12 palettes — second edition, built from classic fabric colours and
+        //    measured against each skin reference (see skin-palette-compare.html).
+        //    Authored in tools/palettes_v2.mjs; rebuild with tools/build_palette_study.mjs.
         const PALETTES = {
             'fair-light': {
                 cool: {
                     title: 'Fair / Light Skin', under: 'COOL UNDERTONE',
                     best: [
-                        { c: '#89CFF0', n: 'Icy Blue' },
-                        { c: '#C3B1E1', n: 'Lavender' },
-                        { c: '#F4B8C8', n: 'Rose Pink' },
-                        { c: '#8B2252', n: 'Berry' },
-                        { c: '#0F52BA', n: 'Sapphire' }
+                        { c: '#A7BFDC', n: 'Powder Blue' },
+                        { c: '#D8A6B3', n: 'Rose Quartz' },
+                        { c: '#AFA2C8', n: 'Heather Lilac' },
+                        { c: '#7C3656', n: 'Mulberry' },
+                        { c: '#34425F', n: 'Slate Navy' }
                     ],
                     acceptable: [
-                        { c: '#9AAAB8', n: 'Cool Gray' },
-                        { c: '#F5F0FF', n: 'Soft White' },
-                        { c: '#D4A0A8', n: 'Dusty Pink' },
-                        { c: '#B4C8E8', n: 'Pale Blue' },
-                        { c: '#B097A8', n: 'Mauve' }
+                        { c: '#F1F0EC', n: 'Chalk White' },
+                        { c: '#BFC0C4', n: 'Dove Grey' },
+                        { c: '#868B94', n: 'Pewter' },
+                        { c: '#A38E98', n: 'Mauve Taupe' },
+                        { c: '#8BA79F', n: 'Eucalyptus' }
                     ],
                     bestCombos: [
-                        { a: '#C3B1E1', al: 'Lavender', b: '#89CFF0', bl: 'Icy Blue' },
-                        { a: '#F4B8C8', al: 'Rose Pink', b: '#9AAAB8', bl: 'Cool Gray' },
-                        { a: '#D4A0A8', al: 'Dusty Pink', b: '#B4C8E8', bl: 'Pale Blue' },
-                        { a: '#8B2252', al: 'Berry', b: '#F5F0FF', bl: 'Soft White' },
-                        { a: '#0F52BA', al: 'Sapphire', b: '#B4C8E8', bl: 'Pale Blue' }
+                        { a: '#34425F', al: 'Slate Navy', b: '#F1F0EC', bl: 'Chalk White' },
+                        { a: '#A7BFDC', al: 'Powder Blue', b: '#34425F', bl: 'Slate Navy' },
+                        { a: '#D8A6B3', al: 'Rose Quartz', b: '#BFC0C4', bl: 'Dove Grey' },
+                        { a: '#7C3656', al: 'Mulberry', b: '#BFC0C4', bl: 'Dove Grey' },
+                        { a: '#AFA2C8', al: 'Heather Lilac', b: '#868B94', bl: 'Pewter' }
                     ],
                     haCombos: [
-                        { a: '#F5F0FF', al: 'Soft White', b: '#9AAAB8', bl: 'Cool Gray' },
-                        { a: '#D4A0A8', al: 'Dusty Pink', b: '#B4C8E8', bl: 'Pale Blue' },
-                        { a: '#B097A8', al: 'Mauve', b: '#C8C8D0', bl: 'Light Gray' },
-                        { a: '#C4C0D8', al: 'Lavender Gray', b: '#FFFFFF', bl: 'White' },
-                        { a: '#B4D0F0', al: 'Powder Blue', b: '#C4C8CC', bl: 'Silver' }
+                        { a: '#F1F0EC', al: 'Chalk White', b: '#BFC0C4', bl: 'Dove Grey' },
+                        { a: '#A38E98', al: 'Mauve Taupe', b: '#F1F0EC', bl: 'Chalk White' },
+                        { a: '#8BA79F', al: 'Eucalyptus', b: '#868B94', bl: 'Pewter' },
+                        { a: '#868B94', al: 'Pewter', b: '#A7BFDC', bl: 'Powder Blue' },
+                        { a: '#A38E98', al: 'Mauve Taupe', b: '#AFA2C8', bl: 'Heather Lilac' }
                     ]
                 },
                 warm: {
                     title: 'Fair / Light Skin', under: 'WARM UNDERTONE',
                     best: [
-                        { c: '#E87060', n: 'Coral' },
-                        { c: '#F8B080', n: 'Peach' },
-                        { c: '#C83020', n: 'Warm Red' },
-                        { c: '#D8A020', n: 'Mustard' },
-                        { c: '#F09060', n: 'Apricot' }
+                        { c: '#E07E69', n: 'Soft Coral' },
+                        { c: '#EDAE86', n: 'Apricot' },
+                        { c: '#5FA69E', n: 'Lagoon' },
+                        { c: '#BF976A', n: 'Camel' },
+                        { c: '#EBD088', n: 'Primrose' }
                     ],
                     acceptable: [
-                        { c: '#FFF0D8', n: 'Cream' },
-                        { c: '#EED8B8', n: 'Warm Beige' },
-                        { c: '#A8A858', n: 'Soft Olive' },
-                        { c: '#E09078', n: 'Light Terra' },
-                        { c: '#C8A880', n: 'Warm Taupe' }
+                        { c: '#FAF6EC', n: 'Ivory' },
+                        { c: '#3A4A6A', n: 'Marine Navy' },
+                        { c: '#A5774F', n: 'Toffee' },
+                        { c: '#A8B383', n: 'Pistachio' },
+                        { c: '#B4A48B', n: 'Warm Stone' }
                     ],
                     bestCombos: [
-                        { a: '#E87060', al: 'Coral', b: '#FFF0D8', bl: 'Cream' },
-                        { a: '#F8B080', al: 'Peach', b: '#EED8B8', bl: 'Warm Beige' },
-                        { a: '#D8A020', al: 'Mustard', b: '#A07040', bl: 'Soft Brown' },
-                        { a: '#F09060', al: 'Apricot', b: '#EED8B8', bl: 'Beige' },
-                        { a: '#C85038', al: 'Terracotta', b: '#FFF5E8', bl: 'Ivory' }
+                        { a: '#E07E69', al: 'Soft Coral', b: '#FAF6EC', bl: 'Ivory' },
+                        { a: '#BF976A', al: 'Camel', b: '#3A4A6A', bl: 'Marine Navy' },
+                        { a: '#5FA69E', al: 'Lagoon', b: '#BF976A', bl: 'Camel' },
+                        { a: '#EDAE86', al: 'Apricot', b: '#B4A48B', bl: 'Warm Stone' },
+                        { a: '#EBD088', al: 'Primrose', b: '#3A4A6A', bl: 'Marine Navy' }
                     ],
                     haCombos: [
-                        { a: '#FFF0D8', al: 'Cream', b: '#FFF5E8', bl: 'Ivory' },
-                        { a: '#A8A858', al: 'Light Olive', b: '#EED8B8', bl: 'Beige' },
-                        { a: '#B0A898', al: 'Warm Gray', b: '#F8B080', bl: 'Peach' },
-                        { a: '#E89070', al: 'Soft Coral', b: '#D4B890', bl: 'Sand' },
-                        { a: '#C89A60', al: 'Camel', b: '#808840', bl: 'Olive' }
+                        { a: '#FAF6EC', al: 'Ivory', b: '#BF976A', bl: 'Camel' },
+                        { a: '#B4A48B', al: 'Warm Stone', b: '#3A4A6A', bl: 'Marine Navy' },
+                        { a: '#A8B383', al: 'Pistachio', b: '#FAF6EC', bl: 'Ivory' },
+                        { a: '#A5774F', al: 'Toffee', b: '#FAF6EC', bl: 'Ivory' },
+                        { a: '#A8B383', al: 'Pistachio', b: '#A5774F', bl: 'Toffee' }
                     ]
                 },
                 neutral: {
                     title: 'Fair / Light Skin', under: 'NEUTRAL UNDERTONE',
                     best: [
-                        { c: '#F0B8B8', n: 'Blush' },
-                        { c: '#B8D4B8', n: 'Sage' },
-                        { c: '#98C4E0', n: 'Soft Blue' },
-                        { c: '#B88090', n: 'Rosewood' },
-                        { c: '#B8A8C8', n: 'Muted Lavender' }
+                        { c: '#C68F96', n: 'Dusty Rose' },
+                        { c: '#9CAD94', n: 'Sage' },
+                        { c: '#5C8A88', n: 'Soft Teal' },
+                        { c: '#8A5A63', n: 'Rosewood' },
+                        { c: '#7F98B8', n: 'Chambray' }
                     ],
                     acceptable: [
-                        { c: '#F8F5F0', n: 'White' },
-                        { c: '#C8C8C4', n: 'Light Gray' },
-                        { c: '#F0E0D0', n: 'Beige' },
-                        { c: '#F8C8B8', n: 'Soft Peach' },
-                        { c: '#B8D0E8', n: 'Pale Blue' }
+                        { c: '#F7F6F3', n: 'Porcelain' },
+                        { c: '#B3AA9F', n: 'Greige' },
+                        { c: '#857A72', n: 'Mushroom' },
+                        { c: '#2E3A52', n: 'Ink Navy' },
+                        { c: '#A79BB0', n: 'Dusk Lilac' }
                     ],
                     bestCombos: [
-                        { a: '#F0B8B8', al: 'Blush', b: '#B8D4B8', bl: 'Sage' },
-                        { a: '#98C4E0', al: 'Soft Blue', b: '#F0E0D0', bl: 'Beige' },
-                        { a: '#B88090', al: 'Rosewood', b: '#F8F4F0', bl: 'Cream' },
-                        { a: '#B8A8C8', al: 'Muted Lavender', b: '#C8C8C4', bl: 'Soft Gray' },
-                        { a: '#F8C8B8', al: 'Peach', b: '#C8E4CC', bl: 'Pale Mint' }
+                        { a: '#C68F96', al: 'Dusty Rose', b: '#B3AA9F', bl: 'Greige' },
+                        { a: '#9CAD94', al: 'Sage', b: '#F7F6F3', bl: 'Porcelain' },
+                        { a: '#5C8A88', al: 'Soft Teal', b: '#857A72', bl: 'Mushroom' },
+                        { a: '#8A5A63', al: 'Rosewood', b: '#F7F6F3', bl: 'Porcelain' },
+                        { a: '#7F98B8', al: 'Chambray', b: '#2E3A52', bl: 'Ink Navy' }
                     ],
                     haCombos: [
-                        { a: '#F8F5F0', al: 'White', b: '#C8C8C4', bl: 'Light Gray' },
-                        { a: '#F0E0D0', al: 'Beige', b: '#F4C0C0', bl: 'Soft Pink' },
-                        { a: '#F8F4F0', al: 'Cream', b: '#B8D4B8', bl: 'Sage' },
-                        { a: '#B8D0E8', al: 'Pale Blue', b: '#C0A8B8', bl: 'Mauve' },
-                        { a: '#F8C8B8', al: 'Soft Peach', b: '#C8E4CC', bl: 'Pale Mint' }
+                        { a: '#F7F6F3', al: 'Porcelain', b: '#B3AA9F', bl: 'Greige' },
+                        { a: '#2E3A52', al: 'Ink Navy', b: '#B3AA9F', bl: 'Greige' },
+                        { a: '#857A72', al: 'Mushroom', b: '#A79BB0', bl: 'Dusk Lilac' },
+                        { a: '#A79BB0', al: 'Dusk Lilac', b: '#F7F6F3', bl: 'Porcelain' },
+                        { a: '#9CAD94', al: 'Sage', b: '#857A72', bl: 'Mushroom' }
                     ]
                 }
             },
@@ -503,94 +505,94 @@
                 cool: {
                     title: 'Medium / Olive Skin', under: 'COOL UNDERTONE',
                     best: [
-                        { c: '#009A50', n: 'Emerald' },
-                        { c: '#1A3C9A', n: 'Sapphire' },
-                        { c: '#6A1E90', n: 'Plum' },
-                        { c: '#CA0068', n: 'Magenta' },
-                        { c: '#5C6B80', n: 'Slate' }
+                        { c: '#1B7A60', n: 'Emerald' },
+                        { c: '#2B4E8E', n: 'Sapphire' },
+                        { c: '#5C2E5B', n: 'Aubergine' },
+                        { c: '#A3325A', n: 'Raspberry' },
+                        { c: '#23596A', n: 'Petrol' }
                     ],
                     acceptable: [
-                        { c: '#9AAAB0', n: 'Cool Gray' },
-                        { c: '#6898C8', n: 'Soft Blue' },
-                        { c: '#D0A0A8', n: 'Dusty Rose' },
-                        { c: '#C0C0CC', n: 'Lavender Gray' },
-                        { c: '#4A7098', n: 'Steel Blue' }
+                        { c: '#EFEEEA', n: 'Soft White' },
+                        { c: '#8E929A', n: 'Cool Grey' },
+                        { c: '#3B3E45', n: 'Charcoal' },
+                        { c: '#CDAAC0', n: 'Orchid Mist' },
+                        { c: '#5A7A96', n: 'Steel Blue' }
                     ],
                     bestCombos: [
-                        { a: '#009A50', al: 'Emerald', b: '#1A2A60', bl: 'Navy' },
-                        { a: '#1A3C9A', al: 'Sapphire', b: '#C8C8C8', bl: 'Light Gray' },
-                        { a: '#6A1E90', al: 'Plum', b: '#F0C0D0', bl: 'Soft Pink' },
-                        { a: '#CA0068', al: 'Magenta', b: '#404048', bl: 'Charcoal' },
-                        { a: '#2A0880', al: 'Indigo', b: '#C0D8F0', bl: 'Pale Blue' }
+                        { a: '#2B4E8E', al: 'Sapphire', b: '#EFEEEA', bl: 'Soft White' },
+                        { a: '#1B7A60', al: 'Emerald', b: '#3B3E45', bl: 'Charcoal' },
+                        { a: '#5C2E5B', al: 'Aubergine', b: '#CDAAC0', bl: 'Orchid Mist' },
+                        { a: '#A3325A', al: 'Raspberry', b: '#8E929A', bl: 'Cool Grey' },
+                        { a: '#23596A', al: 'Petrol', b: '#EFEEEA', bl: 'Soft White' }
                     ],
                     haCombos: [
-                        { a: '#9AAAB0', al: 'Cool Gray', b: '#B8D0E8', bl: 'Powder Blue' },
-                        { a: '#4A7098', al: 'Steel Blue', b: '#C8C8C8', bl: 'Light Gray' },
-                        { a: '#F5F5FF', al: 'Soft White', b: '#C0C0CC', bl: 'Lavender Gray' },
-                        { a: '#607080', al: 'Slate', b: '#C0D8F0', bl: 'Pale Blue' },
-                        { a: '#D0A0A8', al: 'Dusty Rose', b: '#C0C0CC', bl: 'Lavender Gray' }
+                        { a: '#3B3E45', al: 'Charcoal', b: '#EFEEEA', bl: 'Soft White' },
+                        { a: '#5A7A96', al: 'Steel Blue', b: '#8E929A', bl: 'Cool Grey' },
+                        { a: '#CDAAC0', al: 'Orchid Mist', b: '#3B3E45', bl: 'Charcoal' },
+                        { a: '#5A7A96', al: 'Steel Blue', b: '#EFEEEA', bl: 'Soft White' },
+                        { a: '#8E929A', al: 'Cool Grey', b: '#5C2E5B', bl: 'Aubergine' }
                     ]
                 },
                 warm: {
                     title: 'Medium / Olive Skin', under: 'WARM UNDERTONE',
                     best: [
-                        { c: '#7A8830', n: 'Olive' },
-                        { c: '#C05A38', n: 'Terracotta' },
-                        { c: '#A82E1C', n: 'Rust' },
-                        { c: '#E8A818', n: 'Golden Yellow' },
-                        { c: '#1A9080', n: 'Teal' }
+                        { c: '#6C6A38', n: 'Olive' },
+                        { c: '#B45E3E', n: 'Terracotta' },
+                        { c: '#9C7424', n: 'Antique Mustard' },
+                        { c: '#1F6D69', n: 'Deep Teal' },
+                        { c: '#8C4F2E', n: 'Cognac' }
                     ],
                     acceptable: [
-                        { c: '#DEC898', n: 'Warm Beige' },
-                        { c: '#C89A50', n: 'Camel' },
-                        { c: '#E88868', n: 'Soft Coral' },
-                        { c: '#7A9040', n: 'Moss Green' },
-                        { c: '#D4B890', n: 'Sand' }
+                        { c: '#EEE4CF', n: 'Ecru' },
+                        { c: '#9E946C', n: 'Khaki' },
+                        { c: '#4B3325', n: 'Chocolate' },
+                        { c: '#2F4A3A', n: 'Bottle Green' },
+                        { c: '#6A2A26', n: 'Oxblood' }
                     ],
                     bestCombos: [
-                        { a: '#7A8830', al: 'Olive', b: '#C05A38', bl: 'Terracotta' },
-                        { a: '#A82E1C', al: 'Rust', b: '#E8A818', bl: 'Gold' },
-                        { a: '#1A9080', al: 'Teal', b: '#D4B890', bl: 'Sand' },
-                        { a: '#D8A020', al: 'Mustard', b: '#7A5020', bl: 'Brown' },
-                        { a: '#C85028', al: 'Burnt Orange', b: '#FFF0D8', bl: 'Cream' }
+                        { a: '#6C6A38', al: 'Olive', b: '#EEE4CF', bl: 'Ecru' },
+                        { a: '#B45E3E', al: 'Terracotta', b: '#9E946C', bl: 'Khaki' },
+                        { a: '#1F6D69', al: 'Deep Teal', b: '#9C7424', bl: 'Antique Mustard' },
+                        { a: '#8C4F2E', al: 'Cognac', b: '#EEE4CF', bl: 'Ecru' },
+                        { a: '#9C7424', al: 'Antique Mustard', b: '#4B3325', bl: 'Chocolate' }
                     ],
                     haCombos: [
-                        { a: '#C89A50', al: 'Camel', b: '#DEC898', bl: 'Beige' },
-                        { a: '#7A9040', al: 'Moss', b: '#D4B890', bl: 'Sand' },
-                        { a: '#E88868', al: 'Soft Coral', b: '#B0A898', bl: 'Warm Gray' },
-                        { a: '#C89A60', al: 'Tan', b: '#7A8830', bl: 'Olive' },
-                        { a: '#9A7030', al: 'Bronze', b: '#FFF0D8', bl: 'Cream' }
+                        { a: '#9E946C', al: 'Khaki', b: '#EEE4CF', bl: 'Ecru' },
+                        { a: '#4B3325', al: 'Chocolate', b: '#EEE4CF', bl: 'Ecru' },
+                        { a: '#2F4A3A', al: 'Bottle Green', b: '#9E946C', bl: 'Khaki' },
+                        { a: '#6A2A26', al: 'Oxblood', b: '#9E946C', bl: 'Khaki' },
+                        { a: '#6C6A38', al: 'Olive', b: '#8C4F2E', bl: 'Cognac' }
                     ]
                 },
                 neutral: {
                     title: 'Medium / Olive Skin', under: 'NEUTRAL UNDERTONE',
                     best: [
-                        { c: '#287880', n: 'Teal' },
-                        { c: '#C07880', n: 'Rose' },
-                        { c: '#D4B890', n: 'Sand' },
-                        { c: '#B89830', n: 'Muted Gold' },
-                        { c: '#2A6828', n: 'Forest Green' }
+                        { c: '#3E7876', n: 'Muted Teal' },
+                        { c: '#A66E6E', n: 'Rose Clay' },
+                        { c: '#2F5642', n: 'Forest' },
+                        { c: '#56708F', n: 'Denim' },
+                        { c: '#7A2E3C', n: 'Garnet' }
                     ],
                     acceptable: [
-                        { c: '#D8C0A0', n: 'Beige' },
-                        { c: '#A0A8A8', n: 'Soft Gray' },
-                        { c: '#F5EDDC', n: 'Cream' },
-                        { c: '#D09080', n: 'Muted Coral' },
-                        { c: '#B0B870', n: 'Pale Olive' }
+                        { c: '#EFE9DC', n: 'Parchment' },
+                        { c: '#B8AFA2', n: 'Stone' },
+                        { c: '#7E7268', n: 'Taupe' },
+                        { c: '#93A08A', n: 'Sage' },
+                        { c: '#3E3431', n: 'Espresso' }
                     ],
                     bestCombos: [
-                        { a: '#287880', al: 'Teal', b: '#D4B890', bl: 'Sand' },
-                        { a: '#C07880', al: 'Rose', b: '#F5EDDC', bl: 'Cream' },
-                        { a: '#2A6828', al: 'Forest Green', b: '#D8C0A0', bl: 'Beige' },
-                        { a: '#B89830', al: 'Muted Gold', b: '#7A8040', bl: 'Olive' },
-                        { a: '#D09080', al: 'Coral', b: '#C8B098', bl: 'Soft Clay' }
+                        { a: '#3E7876', al: 'Muted Teal', b: '#B8AFA2', bl: 'Stone' },
+                        { a: '#A66E6E', al: 'Rose Clay', b: '#EFE9DC', bl: 'Parchment' },
+                        { a: '#2F5642', al: 'Forest', b: '#EFE9DC', bl: 'Parchment' },
+                        { a: '#56708F', al: 'Denim', b: '#3E3431', bl: 'Espresso' },
+                        { a: '#7A2E3C', al: 'Garnet', b: '#7E7268', bl: 'Taupe' }
                     ],
                     haCombos: [
-                        { a: '#D8C0A0', al: 'Beige', b: '#F5EDDC', bl: 'Cream' },
-                        { a: '#A0A8A8', al: 'Soft Gray', b: '#C0D0E0', bl: 'Pale Blue' },
-                        { a: '#D4B890', al: 'Sand', b: '#A8B870', bl: 'Sage' },
-                        { a: '#B0B870', al: 'Light Olive', b: '#B0A898', bl: 'Warm Gray' },
-                        { a: '#D09080', al: 'Muted Coral', b: '#A0A8A8', bl: 'Soft Gray' }
+                        { a: '#B8AFA2', al: 'Stone', b: '#EFE9DC', bl: 'Parchment' },
+                        { a: '#7E7268', al: 'Taupe', b: '#EFE9DC', bl: 'Parchment' },
+                        { a: '#93A08A', al: 'Sage', b: '#B8AFA2', bl: 'Stone' },
+                        { a: '#3E3431', al: 'Espresso', b: '#B8AFA2', bl: 'Stone' },
+                        { a: '#93A08A', al: 'Sage', b: '#7E7268', bl: 'Taupe' }
                     ]
                 }
             },
@@ -598,94 +600,94 @@
                 cool: {
                     title: 'Tan Skin', under: 'COOL UNDERTONE',
                     best: [
-                        { c: '#1F40AE', n: 'Royal Blue' },
-                        { c: '#CC187A', n: 'Fuchsia' },
-                        { c: '#44087A', n: 'Deep Purple' },
-                        { c: '#68D8C0', n: 'Mint' },
-                        { c: '#3A4050', n: 'Charcoal' }
+                        { c: '#224A9C', n: 'Cobalt' },
+                        { c: '#AE2A6E', n: 'Fuchsia' },
+                        { c: '#4E2B78', n: 'Royal Purple' },
+                        { c: '#6E1F35', n: 'Bordeaux' },
+                        { c: '#0F6B5C', n: 'Pine' }
                     ],
                     acceptable: [
-                        { c: '#9AAAB0', n: 'Cool Gray' },
-                        { c: '#C8B4D8', n: 'Soft Lilac' },
-                        { c: '#4A7098', n: 'Steel Blue' },
-                        { c: '#D4A0A8', n: 'Dusty Pink' },
-                        { c: '#1A2A60', n: 'Navy' }
+                        { c: '#F6F6F3', n: 'Optic White' },
+                        { c: '#33363C', n: 'Charcoal' },
+                        { c: '#C2E0D7', n: 'Icy Mint' },
+                        { c: '#B4B7BD', n: 'Silver Grey' },
+                        { c: '#1D2641', n: 'Midnight Navy' }
                     ],
                     bestCombos: [
-                        { a: '#1F40AE', al: 'Royal Blue', b: '#FFFFFF', bl: 'White' },
-                        { a: '#CC187A', al: 'Fuchsia', b: '#3A4050', bl: 'Charcoal' },
-                        { a: '#44087A', al: 'Deep Purple', b: '#C8C8C8', bl: 'Light Gray' },
-                        { a: '#68D8C0', al: 'Mint', b: '#1A2A60', bl: 'Navy' },
-                        { a: '#1A3A9A', al: 'Cobalt', b: '#C0D8F0', bl: 'Pale Blue' }
+                        { a: '#224A9C', al: 'Cobalt', b: '#F6F6F3', bl: 'Optic White' },
+                        { a: '#AE2A6E', al: 'Fuchsia', b: '#33363C', bl: 'Charcoal' },
+                        { a: '#4E2B78', al: 'Royal Purple', b: '#B4B7BD', bl: 'Silver Grey' },
+                        { a: '#6E1F35', al: 'Bordeaux', b: '#1D2641', bl: 'Midnight Navy' },
+                        { a: '#0F6B5C', al: 'Pine', b: '#F6F6F3', bl: 'Optic White' }
                     ],
                     haCombos: [
-                        { a: '#9AAAB0', al: 'Cool Gray', b: '#FFFFFF', bl: 'White' },
-                        { a: '#4A7098', al: 'Steel Blue', b: '#C8C8C8', bl: 'Light Gray' },
-                        { a: '#D4A0A8', al: 'Dusty Pink', b: '#C0D8F0', bl: 'Pale Blue' },
-                        { a: '#C8B4D8', al: 'Lilac', b: '#9AAAB0', bl: 'Gray' },
-                        { a: '#607888', al: 'Slate', b: '#B4CCE8', bl: 'Powder Blue' }
+                        { a: '#1D2641', al: 'Midnight Navy', b: '#F6F6F3', bl: 'Optic White' },
+                        { a: '#33363C', al: 'Charcoal', b: '#C2E0D7', bl: 'Icy Mint' },
+                        { a: '#B4B7BD', al: 'Silver Grey', b: '#1D2641', bl: 'Midnight Navy' },
+                        { a: '#33363C', al: 'Charcoal', b: '#B4B7BD', bl: 'Silver Grey' },
+                        { a: '#C2E0D7', al: 'Icy Mint', b: '#1D2641', bl: 'Midnight Navy' }
                     ]
                 },
                 warm: {
                     title: 'Tan Skin', under: 'WARM UNDERTONE',
                     best: [
-                        { c: '#C84A20', n: 'Burnt Orange' },
-                        { c: '#D83828', n: 'Coral Red' },
-                        { c: '#28B8A8', n: 'Turquoise' },
-                        { c: '#E09020', n: 'Honey' },
-                        { c: '#A07030', n: 'Bronze' }
+                        { c: '#B5521F', n: 'Burnt Orange' },
+                        { c: '#A6362A', n: 'Paprika' },
+                        { c: '#D29A2E', n: 'Marigold' },
+                        { c: '#1F8680', n: 'Warm Teal' },
+                        { c: '#5E5D2F', n: 'Olive Drab' }
                     ],
                     acceptable: [
-                        { c: '#DEC898', n: 'Warm Beige' },
-                        { c: '#F8B898', n: 'Peach' },
-                        { c: '#C8A830', n: 'Soft Gold' },
-                        { c: '#9A9850', n: 'Light Olive' },
-                        { c: '#9A9888', n: 'Warm Gray' }
+                        { c: '#F1E6CF', n: 'Cream' },
+                        { c: '#452E22', n: 'Chocolate' },
+                        { c: '#6D4A2D', n: 'Tobacco' },
+                        { c: '#B5A57F', n: 'Khaki' },
+                        { c: '#EAC29A', n: 'Apricot Cream' }
                     ],
                     bestCombos: [
-                        { a: '#C84A20', al: 'Burnt Orange', b: '#28B8A8', bl: 'Turquoise' },
-                        { a: '#D83828', al: 'Coral Red', b: '#E09020', bl: 'Gold' },
-                        { a: '#A07030', al: 'Bronze', b: '#FFF0D8', bl: 'Cream' },
-                        { a: '#E09020', al: 'Honey', b: '#7A5020', bl: 'Brown' },
-                        { a: '#9A9850', al: 'Olive', b: '#C84A20', bl: 'Burnt Orange' }
+                        { a: '#B5521F', al: 'Burnt Orange', b: '#F1E6CF', bl: 'Cream' },
+                        { a: '#A6362A', al: 'Paprika', b: '#B5A57F', bl: 'Khaki' },
+                        { a: '#D29A2E', al: 'Marigold', b: '#452E22', bl: 'Chocolate' },
+                        { a: '#1F8680', al: 'Warm Teal', b: '#F1E6CF', bl: 'Cream' },
+                        { a: '#5E5D2F', al: 'Olive Drab', b: '#EAC29A', bl: 'Apricot Cream' }
                     ],
                     haCombos: [
-                        { a: '#DEC898', al: 'Warm Beige', b: '#FFF0D8', bl: 'Cream' },
-                        { a: '#F8B898', al: 'Peach', b: '#D4B890', bl: 'Sand' },
-                        { a: '#C8A830', al: 'Soft Gold', b: '#9A9850', bl: 'Olive' },
-                        { a: '#C09050', al: 'Light Brown', b: '#DEC898', bl: 'Beige' },
-                        { a: '#9A9888', al: 'Warm Gray', b: '#E08070', bl: 'Coral' }
+                        { a: '#F1E6CF', al: 'Cream', b: '#6D4A2D', bl: 'Tobacco' },
+                        { a: '#B5A57F', al: 'Khaki', b: '#452E22', bl: 'Chocolate' },
+                        { a: '#EAC29A', al: 'Apricot Cream', b: '#6D4A2D', bl: 'Tobacco' },
+                        { a: '#F1E6CF', al: 'Cream', b: '#B5A57F', bl: 'Khaki' },
+                        { a: '#5E5D2F', al: 'Olive Drab', b: '#6D4A2D', bl: 'Tobacco' }
                     ]
                 },
                 neutral: {
                     title: 'Tan Skin', under: 'NEUTRAL UNDERTONE',
                     best: [
-                        { c: '#F28482', n: 'Coral' },
-                        { c: '#577590', n: 'Steel Blue' },
-                        { c: '#90A955', n: 'Moss' },
-                        { c: '#FFB703', n: 'Amber' },
-                        { c: '#2A9D8F', n: 'Teal' }
+                        { c: '#1F5E61', n: 'Deep Teal' },
+                        { c: '#A4545A', n: 'Burnt Rose' },
+                        { c: '#6D7342', n: 'Moss' },
+                        { c: '#3F5E80', n: 'Slate Blue' },
+                        { c: '#BE8B32', n: 'Amber' }
                     ],
                     acceptable: [
-                        { c: '#E6CCB2', n: 'Beige' },
-                        { c: '#FAF3DD', n: 'Cream' },
-                        { c: '#B7B7A4', n: 'Soft Gray' },
-                        { c: '#FFCAD4', n: 'Pale Coral' },
-                        { c: '#D8F3DC', n: 'Light Sage' }
+                        { c: '#F1ECE2', n: 'Ivory' },
+                        { c: '#A9A499', n: 'Stone Grey' },
+                        { c: '#6A5C53', n: 'Mocha' },
+                        { c: '#243150', n: 'Navy' },
+                        { c: '#D69A87', n: 'Soft Coral' }
                     ],
                     bestCombos: [
-                        { a: '#F28482', al: 'Coral', b: '#2A9D8F', bl: 'Teal' },
-                        { a: '#577590', al: 'Steel Blue', b: '#E6CCB2', bl: 'Beige' },
-                        { a: '#90A955', al: 'Moss', b: '#FAEDCD', bl: 'Cream' },
-                        { a: '#FFB703', al: 'Amber', b: '#ADB5BD', bl: 'Gray' },
-                        { a: '#008080', al: 'Teal', b: '#DDB892', bl: 'Sand' }
+                        { a: '#1F5E61', al: 'Deep Teal', b: '#F1ECE2', bl: 'Ivory' },
+                        { a: '#A4545A', al: 'Burnt Rose', b: '#A9A499', bl: 'Stone Grey' },
+                        { a: '#6D7342', al: 'Moss', b: '#F1ECE2', bl: 'Ivory' },
+                        { a: '#3F5E80', al: 'Slate Blue', b: '#6A5C53', bl: 'Mocha' },
+                        { a: '#BE8B32', al: 'Amber', b: '#243150', bl: 'Navy' }
                     ],
                     haCombos: [
-                        { a: '#E6CCB2', al: 'Beige', b: '#FAEDCD', bl: 'Cream' },
-                        { a: '#B7B7A4', al: 'Soft Gray', b: '#FFCAD4', bl: 'Pale Coral' },
-                        { a: '#CCD5AE', al: 'Sage', b: '#DDB892', bl: 'Sand' },
-                        { a: '#BDE0FE', al: 'Light Blue', b: '#EDE0D4', bl: 'Beige' },
-                        { a: '#A5A58D', al: 'Warm Gray', b: '#FFDAB9', bl: 'Soft Peach' }
+                        { a: '#243150', al: 'Navy', b: '#F1ECE2', bl: 'Ivory' },
+                        { a: '#A9A499', al: 'Stone Grey', b: '#243150', bl: 'Navy' },
+                        { a: '#6A5C53', al: 'Mocha', b: '#F1ECE2', bl: 'Ivory' },
+                        { a: '#D69A87', al: 'Soft Coral', b: '#A9A499', bl: 'Stone Grey' },
+                        { a: '#6A5C53', al: 'Mocha', b: '#D69A87', bl: 'Soft Coral' }
                     ]
                 }
             },
@@ -693,94 +695,94 @@
                 cool: {
                     title: 'Dark / Deep Skin', under: 'COOL UNDERTONE',
                     best: [
-                        { c: '#0047AB', n: 'Cobalt' },
-                        { c: '#8020C8', n: 'Violet' },
-                        { c: '#E81878', n: 'Hot Pink' },
-                        { c: '#A0D0E0', n: 'Ice Blue' },
-                        { c: '#4A1258', n: 'Deep Plum' }
+                        { c: '#2150A8', n: 'Cobalt' },
+                        { c: '#A8236C', n: 'Fuchsia' },
+                        { c: '#0E7C5A', n: 'Emerald' },
+                        { c: '#52308A', n: 'Royal Violet' },
+                        { c: '#A81C33', n: 'Cherry Red' }
                     ],
                     acceptable: [
-                        { c: '#FFFFFF', n: 'Pure White' },
-                        { c: '#9AAAB0', n: 'Cool Gray' },
-                        { c: '#C8B4D8', n: 'Soft Lavender' },
-                        { c: '#B8D4F0', n: 'Light Blue' },
-                        { c: '#404858', n: 'Charcoal' }
+                        { c: '#F8F8F6', n: 'Optic White' },
+                        { c: '#141416', n: 'Jet Black' },
+                        { c: '#BFC2C7', n: 'Silver' },
+                        { c: '#BCD6E8', n: 'Ice Blue' },
+                        { c: '#D4C8E6', n: 'Icy Lilac' }
                     ],
                     bestCombos: [
-                        { a: '#0047AB', al: 'Cobalt', b: '#FFFFFF', bl: 'White' },
-                        { a: '#8020C8', al: 'Violet', b: '#C0C8D0', bl: 'Silver' },
-                        { a: '#E81878', al: 'Hot Pink', b: '#000000', bl: 'Black' },
-                        { a: '#A0D0E0', al: 'Ice Blue', b: '#1A2A60', bl: 'Navy' },
-                        { a: '#4A1258', al: 'Deep Plum', b: '#C8C8C8', bl: 'Light Gray' }
+                        { a: '#2150A8', al: 'Cobalt', b: '#F8F8F6', bl: 'Optic White' },
+                        { a: '#A8236C', al: 'Fuchsia', b: '#141416', bl: 'Jet Black' },
+                        { a: '#0E7C5A', al: 'Emerald', b: '#F8F8F6', bl: 'Optic White' },
+                        { a: '#52308A', al: 'Royal Violet', b: '#BFC2C7', bl: 'Silver' },
+                        { a: '#A81C33', al: 'Cherry Red', b: '#141416', bl: 'Jet Black' }
                     ],
                     haCombos: [
-                        { a: '#FFFFFF', al: 'White', b: '#9AAAB0', bl: 'Gray' },
-                        { a: '#9AAAB0', al: 'Cool Gray', b: '#6898C8', bl: 'Blue' },
-                        { a: '#C8B4D8', al: 'Lavender', b: '#FFFFFF', bl: 'White' },
-                        { a: '#B8D4F0', al: 'Light Blue', b: '#404858', bl: 'Charcoal' },
-                        { a: '#C0C8D0', al: 'Silver', b: '#1A2A60', bl: 'Navy' }
+                        { a: '#141416', al: 'Jet Black', b: '#F8F8F6', bl: 'Optic White' },
+                        { a: '#BCD6E8', al: 'Ice Blue', b: '#141416', bl: 'Jet Black' },
+                        { a: '#BFC2C7', al: 'Silver', b: '#141416', bl: 'Jet Black' },
+                        { a: '#D4C8E6', al: 'Icy Lilac', b: '#F8F8F6', bl: 'Optic White' },
+                        { a: '#BCD6E8', al: 'Ice Blue', b: '#BFC2C7', bl: 'Silver' }
                     ]
                 },
                 warm: {
                     title: 'Dark / Deep Skin', under: 'WARM UNDERTONE',
                     best: [
-                        { c: '#FFD60A', n: 'Gold' },
-                        { c: '#B87333', n: 'Copper' },
-                        { c: '#8B0000', n: 'Brick Red' },
-                        { c: '#708238', n: 'Olive' },
-                        { c: '#FF8C00', n: 'Amber' }
+                        { c: '#C99A30', n: 'Saffron' },
+                        { c: '#B0643A', n: 'Copper' },
+                        { c: '#8E2B22', n: 'Brick Red' },
+                        { c: '#0F6B67', n: 'Peacock' },
+                        { c: '#6F7336', n: 'Olive' }
                     ],
                     acceptable: [
-                        { c: '#FFF1D6', n: 'Cream' },
-                        { c: '#EED9C4', n: 'Warm Beige' },
-                        { c: '#A47149', n: 'Soft Brown' },
-                        { c: '#E6BE8A', n: 'Muted Gold' },
-                        { c: '#B08968', n: 'Warm Taupe' }
+                        { c: '#F3E7CF', n: 'Cream' },
+                        { c: '#BB9164', n: 'Camel' },
+                        { c: '#B3A582', n: 'Khaki' },
+                        { c: '#CF8565', n: 'Terracotta' },
+                        { c: '#274D36', n: 'Forest' }
                     ],
                     bestCombos: [
-                        { a: '#FFD60A', al: 'Gold', b: '#000000', bl: 'Black' },
-                        { a: '#B87333', al: 'Copper', b: '#FFF1D6', bl: 'Cream' },
-                        { a: '#8B0000', al: 'Brick Red', b: '#EED9C4', bl: 'Beige' },
-                        { a: '#FF8C00', al: 'Amber', b: '#5C3A21', bl: 'Brown' },
-                        { a: '#708238', al: 'Olive', b: '#E6BE8A', bl: 'Gold' }
+                        { a: '#C99A30', al: 'Saffron', b: '#274D36', bl: 'Forest' },
+                        { a: '#B0643A', al: 'Copper', b: '#F3E7CF', bl: 'Cream' },
+                        { a: '#8E2B22', al: 'Brick Red', b: '#BB9164', bl: 'Camel' },
+                        { a: '#0F6B67', al: 'Peacock', b: '#F3E7CF', bl: 'Cream' },
+                        { a: '#6F7336', al: 'Olive', b: '#B3A582', bl: 'Khaki' }
                     ],
                     haCombos: [
-                        { a: '#FFF1D6', al: 'Cream', b: '#8B5E34', bl: 'Brown' },
-                        { a: '#EED9C4', al: 'Warm Beige', b: '#E6BE8A', bl: 'Gold' },
-                        { a: '#A47149', al: 'Soft Brown', b: '#FAEDCD', bl: 'Cream' },
-                        { a: '#B08968', al: 'Taupe', b: '#EDE0D4', bl: 'Beige' },
-                        { a: '#C19A6B', al: 'Camel', b: '#6B8E23', bl: 'Olive' }
+                        { a: '#F3E7CF', al: 'Cream', b: '#BB9164', bl: 'Camel' },
+                        { a: '#B3A582', al: 'Khaki', b: '#274D36', bl: 'Forest' },
+                        { a: '#CF8565', al: 'Terracotta', b: '#F3E7CF', bl: 'Cream' },
+                        { a: '#BB9164', al: 'Camel', b: '#274D36', bl: 'Forest' },
+                        { a: '#B3A582', al: 'Khaki', b: '#F3E7CF', bl: 'Cream' }
                     ]
                 },
                 neutral: {
                     title: 'Dark / Deep Skin', under: 'NEUTRAL UNDERTONE',
                     best: [
-                        { c: '#FFFFFF', n: 'White' },
-                        { c: '#008080', n: 'Teal' },
-                        { c: '#DC143C', n: 'Crimson' },
-                        { c: '#E6BE8A', n: 'Gold' },
-                        { c: '#3A0CA3', n: 'Indigo' }
+                        { c: '#A3182F', n: 'Ruby' },
+                        { c: '#0B6E73', n: 'Teal' },
+                        { c: '#C8A04A', n: 'Antique Gold' },
+                        { c: '#2F4DA0', n: 'Ultramarine' },
+                        { c: '#9A2B69', n: 'Berry' }
                     ],
                     acceptable: [
-                        { c: '#EDE0D4', n: 'Beige' },
-                        { c: '#ADB5BD', n: 'Soft Gray' },
-                        { c: '#FAEDCD', n: 'Cream' },
-                        { c: '#E5989B', n: 'Muted Pink' },
-                        { c: '#CCD5AE', n: 'Sage' }
+                        { c: '#F7F6F2', n: 'Optic White' },
+                        { c: '#B9B8B4', n: 'Dove Grey' },
+                        { c: '#CDBFA8', n: 'Sand' },
+                        { c: '#DCA3A7', n: 'Blush Rose' },
+                        { c: '#1F2A44', n: 'Midnight Navy' }
                     ],
                     bestCombos: [
-                        { a: '#FFFFFF', al: 'White', b: '#008080', bl: 'Teal' },
-                        { a: '#DC143C', al: 'Crimson', b: '#E6BE8A', bl: 'Gold' },
-                        { a: '#3A0CA3', al: 'Indigo', b: '#ADB5BD', bl: 'Gray' },
-                        { a: '#2ECC71', al: 'Emerald', b: '#000000', bl: 'Black' },
-                        { a: '#4361EE', al: 'Royal Blue', b: '#EDE0D4', bl: 'Beige' }
+                        { a: '#A3182F', al: 'Ruby', b: '#CDBFA8', bl: 'Sand' },
+                        { a: '#0B6E73', al: 'Teal', b: '#F7F6F2', bl: 'Optic White' },
+                        { a: '#C8A04A', al: 'Antique Gold', b: '#0B6E73', bl: 'Teal' },
+                        { a: '#2F4DA0', al: 'Ultramarine', b: '#F7F6F2', bl: 'Optic White' },
+                        { a: '#9A2B69', al: 'Berry', b: '#B9B8B4', bl: 'Dove Grey' }
                     ],
                     haCombos: [
-                        { a: '#EDE0D4', al: 'Beige', b: '#FAEDCD', bl: 'Cream' },
-                        { a: '#ADB5BD', al: 'Soft Gray', b: '#FFFFFF', bl: 'White' },
-                        { a: '#CCD5AE', al: 'Sage', b: '#DDB892', bl: 'Sand' },
-                        { a: '#E5989B', al: 'Muted Pink', b: '#FAEDCD', bl: 'Cream' },
-                        { a: '#BDE0FE', al: 'Light Blue', b: '#CED4DA', bl: 'Gray' }
+                        { a: '#F7F6F2', al: 'Optic White', b: '#B9B8B4', bl: 'Dove Grey' },
+                        { a: '#CDBFA8', al: 'Sand', b: '#F7F6F2', bl: 'Optic White' },
+                        { a: '#DCA3A7', al: 'Blush Rose', b: '#B9B8B4', bl: 'Dove Grey' },
+                        { a: '#1F2A44', al: 'Midnight Navy', b: '#CDBFA8', bl: 'Sand' },
+                        { a: '#B9B8B4', al: 'Dove Grey', b: '#1F2A44', bl: 'Midnight Navy' }
                     ]
                 }
             }

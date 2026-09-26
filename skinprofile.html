@@ -126,7 +126,7 @@
             flex-direction: column;
             padding: 1.4rem 2.2rem 1.2rem;
             gap: 0.6rem;
-            overflow: hidden;
+            overflow-y: auto;
             position: relative;
         }
 
@@ -195,6 +195,10 @@
         .combo-name { font-family: "Times New Roman", serif; font-size: 1.05rem; letter-spacing: 1.3px; text-transform: uppercase; color: #000000; text-align: center; line-height: 1.35; }
         .combo-hex  { font-family: "Courier New", monospace; font-size: 1.05rem; color: #000000; letter-spacing: 0.5px; text-align: center; line-height: 1.2; }
 
+        /* Wearing note — the client's own white and black, and how to wear the rest */
+        .pal-wear-note { font-family: "Times New Roman", serif; font-size: 1.2rem; letter-spacing: 0.5px; color: #222; line-height: 1.6; margin: 0; }
+        .pal-wear-note b { font-weight: 400; color: #7a5200; letter-spacing: 1.3px; text-transform: uppercase; }
+
         /* ── Popup right column ── */
         .popup-details { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 4rem 3.6rem 3.5rem; }
         .popup-details-top { display: flex; flex-direction: column; align-items: center; }
@@ -250,6 +254,7 @@
             .swatch-item, .combo-item { gap: 0.2rem !important; }
             .swatch-name, .combo-name { font-size: 0.77rem !important; letter-spacing: 0.5px !important; line-height: 1.2 !important; }
             .swatch-hex, .combo-hex { font-size: 0.66rem !important; line-height: 1.15 !important; }
+            .pal-wear-note { font-size: 0.85rem !important; line-height: 1.5 !important; }
 
             /* Details — fixed bottom 30 % */
             .popup-details { flex: 3 !important; min-height: 0; padding: 0.8rem 1.1rem !important; justify-content: space-between !important; overflow: hidden; }
@@ -408,6 +413,7 @@
             'fair-light': {
                 cool: {
                     title: 'Fair / Light Skin', under: 'COOL UNDERTONE',
+                    light: 'Chalk White', dark: 'Slate Navy',
                     best: [
                         { c: '#A7BFDC', n: 'Powder Blue' },
                         { c: '#D8A6B3', n: 'Rose Quartz' },
@@ -439,6 +445,7 @@
                 },
                 warm: {
                     title: 'Fair / Light Skin', under: 'WARM UNDERTONE',
+                    light: 'Ivory', dark: 'Marine Navy',
                     best: [
                         { c: '#E07E69', n: 'Soft Coral' },
                         { c: '#EDAE86', n: 'Apricot' },
@@ -470,6 +477,7 @@
                 },
                 neutral: {
                     title: 'Fair / Light Skin', under: 'NEUTRAL UNDERTONE',
+                    light: 'Porcelain', dark: 'Ink Navy',
                     best: [
                         { c: '#C68F96', n: 'Dusty Rose' },
                         { c: '#9CAD94', n: 'Sage' },
@@ -503,6 +511,7 @@
             'medium-olive': {
                 cool: {
                     title: 'Medium / Olive Skin', under: 'COOL UNDERTONE',
+                    light: 'Soft White', dark: 'Charcoal',
                     best: [
                         { c: '#1B7A60', n: 'Emerald' },
                         { c: '#2B4E8E', n: 'Sapphire' },
@@ -534,6 +543,7 @@
                 },
                 warm: {
                     title: 'Medium / Olive Skin', under: 'WARM UNDERTONE',
+                    light: 'Ecru', dark: 'Chocolate',
                     best: [
                         { c: '#6C6A38', n: 'Olive' },
                         { c: '#B45E3E', n: 'Terracotta' },
@@ -565,6 +575,7 @@
                 },
                 neutral: {
                     title: 'Medium / Olive Skin', under: 'NEUTRAL UNDERTONE',
+                    light: 'Parchment', dark: 'Espresso',
                     best: [
                         { c: '#3E7876', n: 'Muted Teal' },
                         { c: '#A66E6E', n: 'Rose Clay' },
@@ -598,6 +609,7 @@
             'tan': {
                 cool: {
                     title: 'Tan Skin', under: 'COOL UNDERTONE',
+                    light: 'Optic White', dark: 'Charcoal',
                     best: [
                         { c: '#224A9C', n: 'Cobalt' },
                         { c: '#AE2A6E', n: 'Fuchsia' },
@@ -629,6 +641,7 @@
                 },
                 warm: {
                     title: 'Tan Skin', under: 'WARM UNDERTONE',
+                    light: 'Cream', dark: 'Chocolate',
                     best: [
                         { c: '#B5521F', n: 'Burnt Orange' },
                         { c: '#A6362A', n: 'Paprika' },
@@ -660,6 +673,7 @@
                 },
                 neutral: {
                     title: 'Tan Skin', under: 'NEUTRAL UNDERTONE',
+                    light: 'Ivory', dark: 'Navy',
                     best: [
                         { c: '#1F5E61', n: 'Deep Teal' },
                         { c: '#A4545A', n: 'Burnt Rose' },
@@ -693,6 +707,7 @@
             'dark-deep': {
                 cool: {
                     title: 'Dark / Deep Skin', under: 'COOL UNDERTONE',
+                    light: 'Optic White', dark: 'Jet Black',
                     best: [
                         { c: '#2150A8', n: 'Cobalt' },
                         { c: '#A8236C', n: 'Fuchsia' },
@@ -724,6 +739,7 @@
                 },
                 warm: {
                     title: 'Dark / Deep Skin', under: 'WARM UNDERTONE',
+                    light: 'Cream', dark: 'Forest',
                     best: [
                         { c: '#C99A30', n: 'Saffron' },
                         { c: '#B0643A', n: 'Copper' },
@@ -755,6 +771,7 @@
                 },
                 neutral: {
                     title: 'Dark / Deep Skin', under: 'NEUTRAL UNDERTONE',
+                    light: 'Optic White', dark: 'Midnight Navy',
                     best: [
                         { c: '#A3182F', n: 'Ruby' },
                         { c: '#0B6E73', n: 'Teal' },
@@ -786,6 +803,15 @@
                 }
             }
         };
+
+        // Pure black and white flatter only high-contrast colouring near the face, so
+        // each palette names its own white and black; anything else is worn away from it.
+        function wearNote(p) {
+            const own = p.light === 'Optic White' && p.dark === 'Jet Black'
+                ? `Your colouring carries true <b>${p.light}</b> and <b>${p.dark}</b> close to the face.`
+                : `Your white is <b>${p.light}</b> and your black is <b>${p.dark}</b> — the shades to wear closest to the face.`;
+            return `${own} Pure black, pure white and any colour outside this palette can still be worn with confidence away from the face — trousers, skirts, shoes and outerwear — with one of your palette colours at the neckline, collar or lining.`;
+        }
 
         // ── Render the frosted-glass palette panel ──
         function renderPalette(skinType, undertone) {
@@ -835,6 +861,13 @@
                 <div class="pal-section">
                     <div class="pal-sec-head"><span class="sec-dot ha-dot"></span><span class="sec-label">Highly Acceptable — Combinations</span></div>
                     <div class="combos-row">${p.haCombos.map(comboHtml).join('')}</div>
+                </div>
+
+                <div class="pal-divider"></div>
+
+                <div class="pal-section">
+                    <div class="pal-sec-head"><span class="sec-dot ha-dot"></span><span class="sec-label">Black, White &amp; Beyond Your Palette</span></div>
+                    <p class="pal-wear-note">${wearNote(p)}</p>
                 </div>`;
         }
 

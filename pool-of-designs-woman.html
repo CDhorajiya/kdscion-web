@@ -2074,6 +2074,27 @@
 
     <script>
     (function () {
+        /* Lay the shown cards out in p# order, three per row (col1, col2, col3),
+           whatever filter is active — so the HTML column a card sits in never
+           matters, and "Pair"/"Solo" keep the same 3-across reading order. */
+        const cols = [...document.querySelectorAll('.snap-gallery > .product-column')];
+        const all = [...document.querySelectorAll('.snap-gallery .product-item[data-design-type]')];
+        const pnum = el => parseInt((el.dataset.productUrl.match(/^p(\d+)/) || [])[1], 10) || 0;
+        all.sort((a, b) => pnum(a) - pnum(b));
+        function layout(f) {
+            let i = 0;
+            all.forEach(item => {
+                const show = f === 'all' || item.dataset.designType === f;
+                item.classList.toggle('hidden', !show);
+                if (show) {
+                    cols[i % 3].appendChild(item);
+                    item.style.setProperty('--ord', i);   // mobile single-column order
+                    i++;
+                }
+            });
+        }
+        layout('all');
+
         const btns = document.querySelectorAll('.filter-btn');
         btns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2084,13 +2105,7 @@
                 if (typeof window.kdTrack === 'function') {
                     window.kdTrack('pool_filter_used', { filter: f });
                 }
-                document.querySelectorAll('.product-item[data-design-type]').forEach(item => {
-                    if (f === 'all' || item.dataset.designType === f) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                });
+                layout(f);
             });
         });
     })();

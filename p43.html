@@ -808,6 +808,7 @@
         import { GLTFLoader }    from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
         import { DRACOLoader }   from 'https://esm.sh/three@0.169.0/examples/jsm/loaders/DRACOLoader.js';
         import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+        import { createShowcase } from './js/showcase.js';
 
         const canvas = document.getElementById('viewer-canvas');
 
@@ -978,6 +979,7 @@
             controlsS.enableDamping = true;
             controlsS.dampingFactor = 0.08;
             controlsS.target.set(0, 0, 0);
+            showcase.attach(controlsS, cameraS);   // Showcase: auto-turn + cloth cycle, js/showcase.js
             controlsS.update();
 
             const _vl = document.getElementById('viewer-loading');
@@ -997,6 +999,7 @@
                             origBodyMats.set(node.uuid, node.material.clone());
                     }
                 });
+                showcase.modelReady(currentModel);
             }, (xhr) => {
                 if (_vt && xhr.total) _vt.textContent = Math.round(xhr.loaded / xhr.total * 100) + '%';
             }, (err) => {
@@ -1006,7 +1009,7 @@
 
             (function animate() {
                 animIdS = requestAnimationFrame(animate);
-                controlsS.update();
+                controlsS.update(showcase.frame());
                 rendererS.render(sceneS, cameraS);
                 updateDetailAnnotations();
             })();
@@ -1052,47 +1055,95 @@
             uvNormCache = { gMinU, gMinV, gScale };
         }
 
-        function applyFabric(texturePath, opacity = 1) {
-            texLoader.load(texturePath, (tex) => {
-                tex.colorSpace = THREE.SRGBColorSpace;
-                tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-                tex.repeat.set(1, 1);
-                tex.anisotropy = rendererS.capabilities.getMaxAnisotropy();
-                tex.needsUpdate = true;
-                if (!currentModel) return;
+        const origMaterials  = new Map();   // node uuid → the GLB's own material, for "As designed"
+        const normGeometries = new Map();   // node uuid → UV-normalised geometry, built once
+        const texCache = new Map();         // path → Promise<Texture>, so cycling never refetches
+        const matCache = new Map();         // path|opacity → material
 
-                initFabricData();
+        function loadFabricTexture(path) {
+            if (!texCache.has(path)) {
+                texCache.set(path, new Promise((resolve, reject) => texLoader.load(path, (tex) => {
+                    tex.colorSpace = THREE.SRGBColorSpace;
+                    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                    tex.repeat.set(1, 1);
+                    tex.anisotropy = rendererS.capabilities.getMaxAnisotropy();
+                    tex.needsUpdate = true;
+                    resolve(tex);
+                }, undefined, (err) => { texCache.delete(path); reject(err); })));
+            }
+            return texCache.get(path);
+        }
+        function fabricMaterial(path, tex, opacity) {
+            const key = `${path}|${opacity}`;
+            if (!matCache.has(key)) matCache.set(key, new THREE.MeshBasicMaterial({
+                map: tex,
+                side: THREE.DoubleSide,
+                opacity: opacity,
+                transparent: opacity < 1,
+            }));
+            return matCache.get(key);
+        }
+        function dressNode(node, mat) {
+            const orig = origGeometries.get(node.uuid);
+            if (!orig) return;
+            if (!origMaterials.has(node.uuid)) origMaterials.set(node.uuid, node.material);
+            if (!normGeometries.has(node.uuid)) {
                 const { gMinU, gMinV, gScale } = uvNormCache;
+                const geo = orig.clone();
+                const uv  = geo.attributes.uv;
+                if (uv) {
+                    for (let i = 0; i < uv.count; i++) {
+                        uv.setXY(i,
+                            (uv.getX(i) - gMinU) / gScale,
+                            (uv.getY(i) - gMinV) / gScale
+                        );
+                    }
+                    uv.needsUpdate = true;
+                }
+                normGeometries.set(node.uuid, geo);
+            }
+            node.geometry = normGeometries.get(node.uuid);
+            node.material = mat;
+        }
+        function undressNode(node) {
+            if (!origMaterials.has(node.uuid)) return;
+            node.geometry = origGeometries.get(node.uuid);
+            node.material = origMaterials.get(node.uuid);
+        }
 
+        let fabricGen = 0;   // only the latest request lands, whichever texture loads first
+        function applyFabric(texturePath, opacity = 1) {
+            const gen = ++fabricGen;
+            return loadFabricTexture(texturePath).then((tex) => {
+                if (!currentModel || gen !== fabricGen) return false;   // superseded
+                initFabricData();
+                const mat = fabricMaterial(texturePath, tex, opacity);
                 currentModel.traverse((node) => {
                     if (!node.isMesh || isBodyMesh(node)) return;
-                    const orig = origGeometries.get(node.uuid);
-                    if (!orig) return;
-                    const geo = orig.clone();
-                    const uv  = geo.attributes.uv;
-                    if (uv) {
-                        for (let i = 0; i < uv.count; i++) {
-                            uv.setXY(i,
-                                (uv.getX(i) - gMinU) / gScale,
-                                (uv.getY(i) - gMinV) / gScale
-                            );
-                        }
-                        uv.needsUpdate = true;
-                    }
-                    node.geometry = geo;
-                    const t = tex.clone();
-                    t.wrapS = t.wrapT = THREE.RepeatWrapping;
-                    t.needsUpdate = true;
-                    node.material = new THREE.MeshBasicMaterial({
-                        map: t,
-                        side: THREE.DoubleSide,
-                        opacity: opacity,
-                        transparent: opacity < 1,
-                    });
+                    dressNode(node, mat);
                 });
-                console.log('[fabric] applied:', texturePath);
-            }, undefined, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
+                console.log('[fabric] applied:', texturePath, 'opacity:', opacity);
+                return true;
+            }, (err) => console.error('[fabric] LOAD ERROR:', texturePath, err));
         }
+
+        /* Puts the garment back in the GLB's own cloth, as designed */
+        function restoreOriginalFabric() {
+            if (!currentModel) return;
+            fabricGen++;
+            currentModel.traverse((node) => { if (node.isMesh) undressNode(node); });
+        }
+
+        /* ── Showcase: auto-turn + auto cloth cycle (js/showcase.js) ── */
+        const showcase = createShowcase({
+            canvas,
+            list: document.querySelector('.fabric-list'),
+            designType: 'N° 43 · Sleeveless loose fit button up dress',
+            applyCloth: (texture, opacity) => applyFabric(texture, opacity),
+            restoreOriginal: restoreOriginalFabric,
+            cancelPending: () => { fabricGen++; },
+            loadTexture: loadFabricTexture,
+        });
 
         /* ── Fabric preview overlay ── */
         const fabricPreview    = document.getElementById('fabric-preview');
@@ -1130,6 +1181,9 @@
             const swatch = e.target.closest('.swatch-card');
             if (swatch) {
                 e.stopPropagation();
+                // a real tap ends the auto cycle; the page's own default-fabric click doesn't
+                if (e.isTrusted) showcase.userPicked();
+                else showcase.landed(swatch);
                 fabricList.querySelectorAll('.swatch-card').forEach(s => s.classList.remove('active'));
                 swatch.classList.add('active');
                 applyFabric(swatch.dataset.texture, parseFloat(swatch.dataset.opacity ?? '1'));

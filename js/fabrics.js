@@ -78,6 +78,7 @@ export const TYPE_MATERIAL_DEFAULTS = {
   'silk':          { roughness: 0.25, sheen: 0.10 },
   'cotton-linen':  { roughness: 0.80, sheen: 0    },
   'cotton-wool':   { roughness: 0.85, sheen: 0.15 },
+  'cotton-spandex':{ roughness: 0.80, sheen: 0.10 },
   'leather':       { roughness: 0.45, sheen: 0    },
 };
 const FALLBACK_MATERIAL_DEFAULTS = { roughness: 0.75, sheen: 0 };
@@ -200,6 +201,15 @@ export const FABRIC_CATALOG = [
       { id: 'lining', label: 'Lining Collection',  swatches: [] },
       { id: 'chex',   label: 'Chex Collection',    swatches: [] },
       { id: 'print',  label: 'Print Collection',   swatches: [] },
+    ],
+  },
+  {
+    id: 'cotton-spandex',
+    label: 'Cotton Spandex Blend',
+    wreaths: ['images/Cotton Wreath.webp', 'images/Spandex Wreath.webp'],
+    collections: [
+      { id: 'denim',    label: 'Denim Collection',    swatches: [] },
+      { id: 'corduroy', label: 'Corduroy Collection', swatches: [] },
     ],
   },
   {

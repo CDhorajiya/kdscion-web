@@ -1098,7 +1098,7 @@
             controlsS.target.set(0, 0, 0);
             // one slow turn every ~34 s, like the Instagram 3D post; it holds
             // still while the dress is being dragged and picks up after
-            controlsS.autoRotate = showcaseOn && turnOn;
+            controlsS.autoRotate = showcaseOn && turnOn && !hoverHold;
             controlsS.autoRotateSpeed = 60 / 33.6;
             controlsS.addEventListener('start', () => { frontTween = null; });   // a drag takes over
             controlsS.update();
@@ -1288,6 +1288,7 @@
         let showcaseOn = !REDUCED_MOTION;
         let turnOn     = !REDUCED_MOTION;   // Showcase's second option: cycle cloths while turning, or standing still
         let cloths = null, cycleTimer = null, cycleIdx = 0;
+        let hoverHold = false;   // mouse resting on the model: hold the cloth in front view
 
         function clothArgs(c) {
             if (c.id === 'original') return null;
@@ -1330,7 +1331,7 @@
         }
         let stepId = 0;   // only the newest step may finish, if Showcase is flicked off and on mid-fade
         async function cycleStep() {
-            if (!showcaseOn) return;
+            if (!showcaseOn || hoverHold) return;
             const id = ++stepId;
             // hold while the tab is hidden or the viewer is scrolled away
             if (document.hidden || !viewerOnScreen) { cycleTimer = setTimeout(cycleStep, 500); return; }
@@ -1403,7 +1404,7 @@
             showcaseBtn.setAttribute('aria-pressed', showcaseOn);
             turnBtn.setAttribute('aria-pressed', turnOn);
             turnBtn.tabIndex = showcaseOn ? 0 : -1;
-            if (controlsS) controlsS.autoRotate = showcaseOn && turnOn;
+            if (controlsS) controlsS.autoRotate = showcaseOn && turnOn && !hoverHold;
         }
         function setShowcase(on) {
             const wasTurning = showcaseOn && turnOn;
@@ -1427,6 +1428,76 @@
             if (on) frontTween = null;
             else returnToFront();
         }
+        /* Hover hold: while the mouse rests on the model itself (not the empty
+           viewer around it), Showcase pauses on the cloth that's on — the turn
+           stops, the model glides to its front view and no further cloth swaps.
+           The moment the mouse is off the model, the turn and the cloth cycle
+           pick up again. A swap already mid-fade still lands; the next one waits.
+           Mouse only, so a touch drag on phones doesn't count as hovering. */
+        function setHoverHold(on) {
+            if (hoverHold === on) return;
+            hoverHold = on;
+            syncShowcaseUI();
+            if (!showcaseOn) return;
+            clearTimeout(cycleTimer);
+            if (on) returnToFront();
+            else {
+                if (turnOn) frontTween = null;
+                if (cloths) cycleTimer = setTimeout(cycleStep, CLOTH_HOLD_MS);
+            }
+        }
+        const hoverRay = new THREE.Raycaster();
+        const hoverNdc = new THREE.Vector2();
+        let hoverPt = null, hoverQueued = false;
+        /* The avatar's skinned meshes (body, hair, shoes) miss three.js's CPU
+           skinning raycast on these CLO exports, so they're tested in their
+           rest shape, which is the standing pose on screen. */
+        let hoverTargets = null, hoverTargetsOf = null;
+        function hoverTargetsFor(model) {
+            if (hoverTargetsOf === model) return hoverTargets;
+            hoverTargets = [];
+            model.traverse((n) => {
+                if (!n.isMesh) return;
+                if (!n.isSkinnedMesh) { hoverTargets.push(n); return; }
+                const proxy = new THREE.Mesh(n.geometry, new THREE.MeshBasicMaterial({ side: THREE.DoubleSide }));
+                proxy.matrixAutoUpdate = false;
+                proxy.userData.of = n;
+                hoverTargets.push(proxy);
+            });
+            hoverTargetsOf = model;
+            return hoverTargets;
+        }
+        function overModel() {
+            if (!hoverPt || !currentModel || !cameraS) return false;
+            const r = canvas.getBoundingClientRect();
+            hoverNdc.set((hoverPt.x - r.left) / r.width * 2 - 1, -(hoverPt.y - r.top) / r.height * 2 + 1);
+            hoverRay.setFromCamera(hoverNdc, cameraS);
+            return hoverTargetsFor(currentModel).some((m) => {
+                const src = m.userData.of || m;
+                if (!src.visible) return false;
+                if (m !== src) m.matrixWorld.copy(src.matrixWorld);
+                return hoverRay.intersectObject(m, false).length > 0;
+            });
+        }
+        function checkHover() {
+            hoverQueued = false;
+            // mid-glide the model slides under a still cursor: judge once it's settled
+            if (hoverHold && frontTween) { queueHoverCheck(); return; }
+            setHoverHold(overModel());
+        }
+        function queueHoverCheck() {
+            if (!hoverQueued) { hoverQueued = true; requestAnimationFrame(checkHover); }
+        }
+        canvas.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'mouse') return;
+            hoverPt = { x: e.clientX, y: e.clientY };
+            queueHoverCheck();
+        });
+        canvas.addEventListener('pointerleave', (e) => {
+            if (e.pointerType !== 'mouse') return;
+            hoverPt = null;
+            setHoverHold(false);
+        });
         syncShowcaseUI();
         showcaseBtn.addEventListener('click', () => setShowcase(!showcaseOn));
         turnBtn.addEventListener('click', () => setTurn(!turnOn));

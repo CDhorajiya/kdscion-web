@@ -41,14 +41,16 @@ const STEP_SECONDS  = 1 / 60; // fixed timestep, so 120Hz screens don't run 2x f
 const FIT_ASPECT    = 1.12;   // below this width/height ratio the camera backs off to fit the cloth
 
 /**
- * The form the cloth is draped over: a frosted glass sphere.
+ * The form the cloth is draped over: a translucent glass sphere.
  *
- * Milky and see-through, with soft studio highlights and a brighter rim
- * where the glass is seen edge-on, like sandblasted glass. (True
- * transmission has nothing to refract on this transparent canvas and
- * renders as a flat white disc, so the frost is built from translucency.)
- * The studio environment is set on the sphere only, so the cloth keeps the
- * scene's plain lights.
+ * Clear glass: the centre is almost see-through, so the cloth hanging
+ * behind it shows, while the edge, seen at a glancing angle, thickens into
+ * a cool grey-blue rim, and a polished surface carries crisp studio
+ * reflections. On the white drape panel that rim and those reflections are
+ * what draw the ball. (True transmission has nothing to refract on this
+ * transparent canvas and renders as a flat white disc, so the glass is
+ * built from transparency plus a rim term.) The studio environment is set
+ * on the sphere only, so the cloth keeps the scene's plain lights.
  *
  * A page can opt out with <html data-drape-sphere="matte"> and get the plain
  * ball back.
@@ -62,26 +64,27 @@ function sphereMaterial(renderer) {
   const envMap = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   pmrem.dispose();
   const glass = new THREE.MeshPhysicalMaterial({
-    color: 0x9fadb3,          // cool grey-blue of thick glass; the lights lift it
-    roughness: 0.6,           // frosted: highlights spread soft
+    color: 0xc4d0d6,          // faint cool tint of glass
+    roughness: 0.06,          // polished: reflections stay sharp
     metalness: 0,
-    clearcoat: 0.35,          // a faint sheen over the frost, never a mirror
-    clearcoatRoughness: 0.45,
+    clearcoat: 1,
+    clearcoatRoughness: 0.04,
     envMap,
-    envMapIntensity: 0.7,
+    envMapIntensity: 1.0,
     transparent: true,
-    opacity: 0.3,
-    depthWrite: false,        // the cloth behind it still shows, hazily
+    opacity: 0.1,
+    depthWrite: false,        // the cloth behind it shows through
+    side: THREE.DoubleSide,   // the far wall too, as in a real glass ball
   });
-  // Frost scatters more light at grazing angles: lift the opacity and
-  // whiten towards the rim so the ball keeps its edge on a white panel.
+  // Glass looks thicker edge-on: deepen to a cool grey-blue and firm up
+  // towards the rim so the ball keeps a clean edge on a white panel.
   glass.onBeforeCompile = (shader) => {
     shader.fragmentShader = shader.fragmentShader.replace(
       '#include <dithering_fragment>',
       `#include <dithering_fragment>
-       float rim = pow(1.0 - abs(dot(normalize(vViewPosition), normal)), 2.2);
-       gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(0.97, 0.98, 0.99), rim * 0.55);
-       gl_FragColor.a = clamp(gl_FragColor.a + rim * 0.5, 0.0, 0.9);`
+       float rim = pow(1.0 - abs(dot(normalize(vViewPosition), normal)), 3.0);
+       gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(0.55, 0.63, 0.68), rim * 0.6);
+       gl_FragColor.a = clamp(gl_FragColor.a + rim * 0.75, 0.0, 0.9);`
     );
   };
   return glass;

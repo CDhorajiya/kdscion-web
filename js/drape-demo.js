@@ -9,6 +9,7 @@
  */
 import * as THREE from 'https://esm.sh/three@0.169.0';
 import { OrbitControls } from 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+import { RoomEnvironment } from 'https://esm.sh/three@0.169.0/examples/jsm/environments/RoomEnvironment.js';
 
 export const DRAPE_CATEGORIES = ['crisp', 'medium', 'flowing', 'heavy'];
 
@@ -40,33 +41,50 @@ const STEP_SECONDS  = 1 / 60; // fixed timestep, so 120Hz screens don't run 2x f
 const FIT_ASPECT    = 1.12;   // below this width/height ratio the camera backs off to fit the cloth
 
 /**
- * The form the cloth is draped over.
+ * The form the cloth is draped over: a frosted glass sphere.
  *
- * The globe from the home page — same texture, same material values — so the
- * drape reads as the House dressing the world rather than as a physics prop.
+ * Milky and see-through, with soft studio highlights and a brighter rim
+ * where the glass is seen edge-on, like sandblasted glass. (True
+ * transmission has nothing to refract on this transparent canvas and
+ * renders as a flat white disc, so the frost is built from translucency.)
+ * The studio environment is set on the sphere only, so the cloth keeps the
+ * scene's plain lights.
  *
  * A page can opt out with <html data-drape-sphere="matte"> and get the plain
- * ball back. The texture is loaded lazily, and if it fails the sphere simply
- * stays matte: a quieter look, never a broken one.
+ * ball back.
  */
-const EARTH_TEXTURE = 'images/earth_atmos_4096.webp';
-
-function sphereMaterial() {
+function sphereMaterial(renderer) {
   const style = typeof document !== 'undefined'
     ? document.documentElement.dataset.drapeSphere : null;
-  const matte = new THREE.MeshStandardMaterial({ color: 0xd8d3cb, roughness: 0.7 });
-  if (style === 'matte') return matte;
+  if (style === 'matte') return new THREE.MeshStandardMaterial({ color: 0xd8d3cb, roughness: 0.7 });
 
-  // Matches js/earth.js on the home page: roughness 0.6, no metalness.
-  matte.roughness = 0.6;
-  new THREE.TextureLoader().load(EARTH_TEXTURE, (tex) => {
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 4;
-    matte.map = tex;
-    matte.color.set(0xffffff);      // let the map carry the colour
-    matte.needsUpdate = true;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envMap = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.dispose();
+  const glass = new THREE.MeshPhysicalMaterial({
+    color: 0x9fadb3,          // cool grey-blue of thick glass; the lights lift it
+    roughness: 0.6,           // frosted: highlights spread soft
+    metalness: 0,
+    clearcoat: 0.35,          // a faint sheen over the frost, never a mirror
+    clearcoatRoughness: 0.45,
+    envMap,
+    envMapIntensity: 0.7,
+    transparent: true,
+    opacity: 0.3,
+    depthWrite: false,        // the cloth behind it still shows, hazily
   });
-  return matte;
+  // Frost scatters more light at grazing angles: lift the opacity and
+  // whiten towards the rim so the ball keeps its edge on a white panel.
+  glass.onBeforeCompile = (shader) => {
+    shader.fragmentShader = shader.fragmentShader.replace(
+      '#include <dithering_fragment>',
+      `#include <dithering_fragment>
+       float rim = pow(1.0 - abs(dot(normalize(vViewPosition), normal)), 2.2);
+       gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(0.97, 0.98, 0.99), rim * 0.55);
+       gl_FragColor.a = clamp(gl_FragColor.a + rim * 0.5, 0.0, 0.9);`
+    );
+  };
+  return glass;
 }
 
 export function createDrapeDemo(canvas) {
@@ -96,12 +114,11 @@ export function createDrapeDemo(canvas) {
   const sphereCenter = new THREE.Vector3(0, SPHERE_Y, 0);
   const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(SPHERE_RADIUS * 0.97, 64, 48),
-    sphereMaterial()
+    sphereMaterial(renderer)
   );
   sphere.position.copy(sphereCenter);
-  sphere.rotation.x = 0.4;          // the same tilt the home page globe carries
   scene.add(sphere);
-  // The globe is held still. Drag rotates the camera, so the fabric can be
+  // The sphere is held still. Drag rotates the camera, so the fabric can be
   // walked around without the form moving underneath it.
 
   // Soft contact shadow rather than a flat disc — on the white panel a hard-edged

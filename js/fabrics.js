@@ -856,8 +856,7 @@ let seedFromLocalRequested = false;
 // tab may already have cached an update this page hasn't shown yet — compare per page.
 let appliedJson = null;
 // Global stock (Firebase fabrics/{id}/inStock, written by the admin's Stock toggles).
-// Out-of-stock swatches still show on product pages, greyed out with an
-// "Out of stock" tag, and can't be picked; Showcase skips them.
+// Out-of-stock swatches are left off product pages entirely, like hidden ones.
 let stockMap = {};
 
 function getDb() {
@@ -1169,10 +1168,10 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
       // Skip hidden collections.
       if (!collOn(type.id, coll.id)) return;
 
-      // Filter swatches to only those that are globally visible.
-      const visibleSwatches = coll.swatches.filter(s => swatchOn(s.id));
+      // Filter swatches to only those that are globally visible and in stock.
+      const visibleSwatches = coll.swatches.filter(s => swatchOn(s.id) && stockMap[s.id]?.inStock !== false);
 
-      // If the collection has swatches defined but ALL are hidden, skip it entirely.
+      // If the collection has swatches defined but ALL are hidden / out of stock, skip it entirely.
       if (coll.swatches.length > 0 && visibleSwatches.length === 0) return;
 
       // Build one clickable swatch card per visible swatch.
@@ -1211,16 +1210,9 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
           ? `<em class="swatch-drape-tag" style="display:block;font-style:normal;color:rgba(120,90,10,0.95);">${drape} drape</em>`
           : '';
 
-        // Out of stock: shown greyed, not pickable (pointer-events off, so the page's click handler never sees it)
-        const out = stockMap[s.id]?.inStock === false;
-        const outAttr = out ? ' aria-disabled="true" title="Out of stock" style="opacity:0.42;pointer-events:none;filter:grayscale(0.6);"' : '';
-        const outTag = out
-          ? `<em class="swatch-stock-tag" style="display:block;font-style:normal;color:#9b2c2c;">Out of stock</em>`
-          : '';
-
-        return `<div class="swatch-card${out ? ' is-out' : ''}" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}" data-roughness="${roughness}" data-sheen="${sheen}"${drapeAttr}${outAttr}>
+        return `<div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}" data-roughness="${roughness}" data-sheen="${sheen}"${drapeAttr}>
           <img src="${s.thumb || s.image}" alt="${s.label}" loading="lazy" decoding="async">
-          <span>${s.label}${out ? outTag : drapeTag}</span>
+          <span>${s.label}${drapeTag}</span>
         </div>`;
       }).join('');
 

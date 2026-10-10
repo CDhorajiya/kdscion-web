@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-26T19:43:55.850Z",
+  "generated": "2026-10-10T17:44:06.497Z",
   "thresholds": {
     "strong": 8,
     "ok": 16
@@ -8,60 +8,60 @@
     "profiles": 12,
     "dressable": 12,
     "wellServed": 12,
-    "heldSwatches": 14
+    "heldSwatches": 355
   },
   "profiles": [
     {
       "skin": "fair-light",
       "under": "cool",
       "label": "Fair / Light · cool",
-      "bestServed": 2,
+      "bestServed": 5,
       "bestTotal": 5,
       "accServed": 5,
       "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 10,
+      "strongest": 2,
+      "meanDE": 7.4,
       "colours": [
         {
           "hex": "#A7BFDC",
           "name": "Powder Blue",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 14.5,
+          "status": "strong",
+          "nearestDE": 5.2,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 14.5
+            "id": "cotton-lining-9",
+            "label": "Sky Pocketing",
+            "hex": "#97AFC5",
+            "image": "images/fabrics/cotton-lining-9.webp#r20.392",
+            "dE": 5.2
           }
         },
         {
           "hex": "#D8A6B3",
           "name": "Rose Quartz",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 16.1,
+          "status": "ok",
+          "nearestDE": 11.3,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 16.1
+            "id": "silk-lining-8",
+            "label": "Blush Silk Lining",
+            "hex": "#CFB4AC",
+            "image": "images/fabrics/silk-lining-8.webp#r27.344",
+            "dE": 11.3
           }
         },
         {
           "hex": "#AFA2C8",
           "name": "Heather Lilac",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 19.2,
+          "status": "ok",
+          "nearestDE": 15.8,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 19.2
+            "id": "linen-lining-10",
+            "label": "Sky Lining",
+            "hex": "#94ABC1",
+            "image": "images/fabrics/linen-lining-10.webp#r9.375",
+            "dE": 15.8
           }
         },
         {
@@ -69,27 +69,27 @@
           "name": "Mulberry",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 11.1,
+          "nearestDE": 10,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 11.1
+            "id": "silk-satin-5",
+            "label": "Ruby Satin",
+            "hex": "#852237",
+            "image": "images/fabrics/silk-satin-5.webp#r13.636",
+            "dE": 10
           }
         },
         {
           "hex": "#34425F",
           "name": "Slate Navy",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 25.7,
+          "status": "strong",
+          "nearestDE": 3.1,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 25.7
+            "id": "cotton-spandex-denim-3",
+            "label": "Rinse Wash Denim",
+            "hex": "#3D4B65",
+            "image": "images/fabrics/cotton-spandex-denim-3.webp#r10.938",
+            "dE": 3.1
           }
         },
         {
@@ -97,13 +97,13 @@
           "name": "Chalk White",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 5.3,
+          "nearestDE": 3.4,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 5.3
+            "id": "linen-print-6",
+            "label": "Navy Pin Dot",
+            "hex": "#E1E0DC",
+            "image": "images/fabrics/linen-print-6.webp#r8.0",
+            "dE": 3.4
           }
         },
         {
@@ -111,27 +111,27 @@
           "name": "Dove Grey",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 4.1,
+          "nearestDE": 3.6,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 4.1
+            "id": "linen-dobies-2",
+            "label": "White Bird's-Eye Linen",
+            "hex": "#BFBDBB",
+            "image": "images/fabrics/linen-dobies-2.webp#r6.25",
+            "dE": 3.6
           }
         },
         {
           "hex": "#868B94",
           "name": "Pewter",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 13.3,
+          "status": "strong",
+          "nearestDE": 3.9,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 13.3
+            "id": "silk-satin-10",
+            "label": "Pewter Satin",
+            "hex": "#838487",
+            "image": "images/fabrics/silk-satin-10.webp#r13.636",
+            "dE": 3.9
           }
         },
         {
@@ -153,13 +153,13 @@
           "name": "Eucalyptus",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 12,
+          "nearestDE": 8.5,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 12
+            "id": "linen-dobies-8",
+            "label": "Sage Twill",
+            "hex": "#969F8A",
+            "image": "images/fabrics/linen-dobies-8.webp#r6.25",
+            "dE": 8.5
           }
         }
       ]
@@ -170,37 +170,37 @@
       "label": "Fair / Light · warm",
       "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 4,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 10.9,
+      "strongest": 2,
+      "meanDE": 6.8,
       "colours": [
         {
           "hex": "#E07E69",
           "name": "Soft Coral",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 14.5,
+          "nearestDE": 12.7,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 14.5
+            "id": "linen-chex-2",
+            "label": "Terracotta Gingham",
+            "hex": "#B28C75",
+            "image": "images/fabrics/linen-chex-2.webp#r6.25",
+            "dE": 12.7
           }
         },
         {
           "hex": "#EDAE86",
           "name": "Apricot",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 14.3,
+          "status": "strong",
+          "nearestDE": 8,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 14.3
+            "id": "leather-patent-5",
+            "label": "Nude Patent",
+            "hex": "#D6B69F",
+            "image": "images/fabrics/leather-patent-5.webp#r16.667",
+            "dE": 8
           }
         },
         {
@@ -208,41 +208,41 @@
           "name": "Lagoon",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 12.6,
+          "nearestDE": 15.7,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 12.6
+            "id": "linen-dobies-8",
+            "label": "Sage Twill",
+            "hex": "#969F8A",
+            "image": "images/fabrics/linen-dobies-8.webp#r6.25",
+            "dE": 15.7
           }
         },
         {
           "hex": "#BF976A",
           "name": "Camel",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 13.8,
+          "status": "strong",
+          "nearestDE": 3.6,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 13.8
+            "id": "cotton-spandex-corduroy-2",
+            "label": "Camel Corduroy",
+            "hex": "#B78C5A",
+            "image": "images/fabrics/cotton-spandex-corduroy-2.webp#r8.269",
+            "dE": 3.6
           }
         },
         {
           "hex": "#EBD088",
           "name": "Primrose",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 6.4,
+          "status": "ok",
+          "nearestDE": 8.3,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 6.4
+            "id": "leather-patent-9",
+            "label": "Champagne Patent",
+            "hex": "#E3D1AE",
+            "image": "images/fabrics/leather-patent-9.webp#r16.667",
+            "dE": 8.3
           }
         },
         {
@@ -250,41 +250,41 @@
           "name": "Ivory",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 4.3,
+          "nearestDE": 3.3,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 4.3
+            "id": "leather-patent-2",
+            "label": "Ivory Patent",
+            "hex": "#F2ECDC",
+            "image": "images/fabrics/leather-patent-2.webp#r16.667",
+            "dE": 3.3
           }
         },
         {
           "hex": "#3A4A6A",
           "name": "Marine Navy",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 27.2,
+          "status": "strong",
+          "nearestDE": 2,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 27.2
+            "id": "cotton-spandex-denim-3",
+            "label": "Rinse Wash Denim",
+            "hex": "#3D4B65",
+            "image": "images/fabrics/cotton-spandex-denim-3.webp#r10.938",
+            "dE": 2
           }
         },
         {
           "hex": "#A5774F",
           "name": "Toffee",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 12.5,
+          "status": "strong",
+          "nearestDE": 3.2,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 12.5
+            "id": "wool-print-4",
+            "label": "Tobacco Ogee",
+            "hex": "#A37A4B",
+            "image": "images/fabrics/wool-print-4.webp#r9.091",
+            "dE": 3.2
           }
         },
         {
@@ -292,13 +292,13 @@
           "name": "Pistachio",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 12.6,
+          "nearestDE": 8.2,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 12.6
+            "id": "cotton-linen-chex-2",
+            "label": "Sage Gingham",
+            "hex": "#AEAF99",
+            "image": "images/fabrics/cotton-linen-chex-2.webp#r10.156",
+            "dE": 8.2
           }
         },
         {
@@ -306,13 +306,13 @@
           "name": "Warm Stone",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 7.1,
+          "nearestDE": 2.8,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 7.1
+            "id": "cotton-linen-print-7",
+            "label": "Quatrefoil",
+            "hex": "#B7A786",
+            "image": "images/fabrics/cotton-linen-print-7.webp#r8.667",
+            "dE": 2.8
           }
         }
       ]
@@ -323,10 +323,10 @@
       "label": "Fair / Light · neutral",
       "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 4,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 9.9,
+      "strongest": 2,
+      "meanDE": 7.2,
       "colours": [
         {
           "hex": "#C68F96",
@@ -346,14 +346,14 @@
           "hex": "#9CAD94",
           "name": "Sage",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 14.3,
+          "status": "strong",
+          "nearestDE": 4.9,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 14.3
+            "id": "linen-dobies-8",
+            "label": "Sage Twill",
+            "hex": "#969F8A",
+            "image": "images/fabrics/linen-dobies-8.webp#r6.25",
+            "dE": 4.9
           }
         },
         {
@@ -361,13 +361,13 @@
           "name": "Soft Teal",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 11.6,
+          "nearestDE": 14,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 11.6
+            "id": "linen-lining-6",
+            "label": "Sage Lining",
+            "hex": "#859078",
+            "image": "images/fabrics/linen-lining-6.webp#r9.375",
+            "dE": 14
           }
         },
         {
@@ -375,27 +375,27 @@
           "name": "Rosewood",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 12,
+          "nearestDE": 12.2,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 12
+            "id": "wool-tweed-5",
+            "label": "Heather Twill",
+            "hex": "#75696F",
+            "image": "images/fabrics/wool-tweed-5.webp#r3.906",
+            "dE": 12.2
           }
         },
         {
           "hex": "#7F98B8",
           "name": "Chambray",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 10.5,
+          "status": "strong",
+          "nearestDE": 6.7,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 10.5
+            "id": "linen-lining-10",
+            "label": "Sky Lining",
+            "hex": "#94ABC1",
+            "image": "images/fabrics/linen-lining-10.webp#r9.375",
+            "dE": 6.7
           }
         },
         {
@@ -403,13 +403,13 @@
           "name": "Porcelain",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 6.2,
+          "nearestDE": 4.7,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 6.2
+            "id": "linen-print-6",
+            "label": "Navy Pin Dot",
+            "hex": "#E1E0DC",
+            "image": "images/fabrics/linen-print-6.webp#r8.0",
+            "dE": 4.7
           }
         },
         {
@@ -430,28 +430,28 @@
           "hex": "#857A72",
           "name": "Mushroom",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 8.3,
+          "status": "strong",
+          "nearestDE": 3.2,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 8.3
+            "id": "leather-suede-5",
+            "label": "Taupe Suede",
+            "hex": "#837769",
+            "image": "images/fabrics/leather-suede-5.webp#r16.667",
+            "dE": 3.2
           }
         },
         {
           "hex": "#2E3A52",
           "name": "Ink Navy",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 24.6,
+          "status": "strong",
+          "nearestDE": 1.1,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 24.6
+            "id": "cotton-spandex-denim-1",
+            "label": "Raw Indigo Denim",
+            "hex": "#303B50",
+            "image": "images/fabrics/cotton-spandex-denim-1.webp#r10.938",
+            "dE": 1.1
           }
         },
         {
@@ -459,13 +459,13 @@
           "name": "Dusk Lilac",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 14.3,
+          "nearestDE": 12.9,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 14.3
+            "id": "silk-lining-9",
+            "label": "Silver Silk Lining",
+            "hex": "#B0B2B4",
+            "image": "images/fabrics/silk-lining-9.webp#r27.451",
+            "dE": 12.9
           }
         }
       ]
@@ -474,81 +474,81 @@
       "skin": "medium-olive",
       "under": "cool",
       "label": "Medium / Olive · cool",
-      "bestServed": 2,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 3,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 9.8,
+      "strongest": 2,
+      "meanDE": 7.3,
       "colours": [
         {
           "hex": "#1B7A60",
           "name": "Emerald",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 24.6,
+          "status": "ok",
+          "nearestDE": 10.2,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 24.6
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 10.2
           }
         },
         {
           "hex": "#2B4E8E",
           "name": "Sapphire",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 30.9,
+          "status": "strong",
+          "nearestDE": 4.9,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 30.9
+            "id": "silk-satin-7",
+            "label": "Sapphire Satin",
+            "hex": "#284373",
+            "image": "images/fabrics/silk-satin-7.webp#r13.636",
+            "dE": 4.9
           }
         },
         {
           "hex": "#5C2E5B",
           "name": "Aubergine",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 14.2,
+          "status": "strong",
+          "nearestDE": 7.4,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 14.2
+            "id": "cotton-lining-10",
+            "label": "Plum Sateen Lining",
+            "hex": "#4B273F",
+            "image": "images/fabrics/cotton-lining-10.webp#r20.392",
+            "dE": 7.4
           }
         },
         {
           "hex": "#A3325A",
           "name": "Raspberry",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 4,
+          "status": "ok",
+          "nearestDE": 9.3,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 4
+            "id": "silk-satin-5",
+            "label": "Ruby Satin",
+            "hex": "#852237",
+            "image": "images/fabrics/silk-satin-5.webp#r13.636",
+            "dE": 9.3
           }
         },
         {
           "hex": "#23596A",
           "name": "Petrol",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 27.4,
+          "status": "ok",
+          "nearestDE": 13.2,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 27.4
+            "id": "cotton-spandex-denim-7",
+            "label": "Grey Denim",
+            "hex": "#4F5357",
+            "image": "images/fabrics/cotton-spandex-denim-7.webp#r10.938",
+            "dE": 13.2
           }
         },
         {
@@ -556,69 +556,69 @@
           "name": "Soft White",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 5.1,
+          "nearestDE": 3,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 5.1
+            "id": "linen-print-6",
+            "label": "Navy Pin Dot",
+            "hex": "#E1E0DC",
+            "image": "images/fabrics/linen-print-6.webp#r8.0",
+            "dE": 3
           }
         },
         {
           "hex": "#8E929A",
           "name": "Cool Grey",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 11.3,
+          "status": "strong",
+          "nearestDE": 5.1,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 11.3
+            "id": "cotton-chex-7",
+            "label": "Prince of Wales Check",
+            "hex": "#868889",
+            "image": "images/fabrics/cotton-chex-7.webp#r13.889",
+            "dE": 5.1
           }
         },
         {
           "hex": "#3B3E45",
           "name": "Charcoal",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 22.7,
+          "status": "strong",
+          "nearestDE": 3.1,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 22.7
+            "id": "wool-tweed-3",
+            "label": "Charcoal Donegal",
+            "hex": "#3C3B3E",
+            "image": "images/fabrics/wool-tweed-3.webp#r3.125",
+            "dE": 3.1
           }
         },
         {
           "hex": "#CDAAC0",
           "name": "Orchid Mist",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 17.5,
+          "status": "ok",
+          "nearestDE": 12.5,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 17.5
+            "id": "silk-satin-8",
+            "label": "Blush Satin",
+            "hex": "#D1B7B0",
+            "image": "images/fabrics/silk-satin-8.webp#r13.636",
+            "dE": 12.5
           }
         },
         {
           "hex": "#5A7A96",
           "name": "Steel Blue",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 14.2,
+          "status": "strong",
+          "nearestDE": 4.3,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 14.2
+            "id": "cotton-spandex-denim-5",
+            "label": "Light Vintage Wash",
+            "hex": "#697D97",
+            "image": "images/fabrics/cotton-spandex-denim-5.webp#r10.938",
+            "dE": 4.3
           }
         }
       ]
@@ -627,81 +627,81 @@
       "skin": "medium-olive",
       "under": "warm",
       "label": "Medium / Olive · warm",
-      "bestServed": 4,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 3,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 10.2,
+      "strongest": 4,
+      "meanDE": 5.3,
       "colours": [
         {
           "hex": "#6C6A38",
           "name": "Olive",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 10.4,
+          "status": "strong",
+          "nearestDE": 7.3,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 10.4
+            "id": "cotton-wool-print-6",
+            "label": "Deco Fans",
+            "hex": "#7A6942",
+            "image": "images/fabrics/cotton-wool-print-6.webp#r9.091",
+            "dE": 7.3
           }
         },
         {
           "hex": "#B45E3E",
           "name": "Terracotta",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 9.9,
+          "status": "strong",
+          "nearestDE": 6.5,
           "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 9.9
+            "id": "cotton-spandex-corduroy-9",
+            "label": "Rust Jumbo Cord",
+            "hex": "#9C5132",
+            "image": "images/fabrics/cotton-spandex-corduroy-9.webp#r8.333",
+            "dE": 6.5
           }
         },
         {
           "hex": "#9C7424",
           "name": "Antique Mustard",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 14,
+          "status": "strong",
+          "nearestDE": 7.2,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 14
+            "id": "wool-print-9",
+            "label": "Sprig on Camel",
+            "hex": "#A1784A",
+            "image": "images/fabrics/wool-print-9.webp#r9.091",
+            "dE": 7.2
           }
         },
         {
           "hex": "#1F6D69",
           "name": "Deep Teal",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 23.7,
+          "status": "ok",
+          "nearestDE": 9.2,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 23.7
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 9.2
           }
         },
         {
           "hex": "#8C4F2E",
           "name": "Cognac",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 15.2,
+          "status": "strong",
+          "nearestDE": 3.5,
           "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 15.2
+            "id": "linen-plain-7",
+            "label": "Terracotta Linen",
+            "hex": "#914D33",
+            "image": "images/fabrics/linen-plain-7.webp#r6.25",
+            "dE": 3.5
           }
         },
         {
@@ -709,55 +709,55 @@
           "name": "Ecru",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 3,
+          "nearestDE": 1,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 3
+            "id": "cotton-spandex-corduroy-6",
+            "label": "Cream Jumbo Cord",
+            "hex": "#ECE4CF",
+            "image": "images/fabrics/cotton-spandex-corduroy-6.webp#r8.333",
+            "dE": 1
           }
         },
         {
           "hex": "#9E946C",
           "name": "Khaki",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 13.6,
+          "status": "strong",
+          "nearestDE": 6.6,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 13.6
+            "id": "wool-tweed-2",
+            "label": "Donegal Oatmeal",
+            "hex": "#958972",
+            "image": "images/fabrics/wool-tweed-2.webp#r3.125",
+            "dE": 6.6
           }
         },
         {
           "hex": "#4B3325",
           "name": "Chocolate",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 16.5,
+          "status": "strong",
+          "nearestDE": 1.8,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 16.5
+            "id": "leather-patent-8",
+            "label": "Chocolate Patent",
+            "hex": "#4A2F1F",
+            "image": "images/fabrics/leather-patent-8.webp#r16.667",
+            "dE": 1.8
           }
         },
         {
           "hex": "#2F4A3A",
           "name": "Bottle Green",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 24.2,
+          "status": "strong",
+          "nearestDE": 4.5,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 24.2
+            "id": "leather-plain-8",
+            "label": "Forest Calf",
+            "hex": "#213C2C",
+            "image": "images/fabrics/leather-plain-8.webp#r14.286",
+            "dE": 4.5
           }
         },
         {
@@ -767,10 +767,10 @@
           "status": "strong",
           "nearestDE": 5.1,
           "match": {
-            "id": "cotton-wool-1",
-            "label": "Blend 1",
-            "hex": "#781D28",
-            "image": "images/wool-blend-2.avif",
+            "id": "cotton-wool-chex-7",
+            "label": "Dress Tartan",
+            "hex": "#561E20",
+            "image": "images/fabrics/cotton-wool-chex-7.webp#r13.208",
             "dE": 5.1
           }
         }
@@ -780,25 +780,25 @@
       "skin": "medium-olive",
       "under": "neutral",
       "label": "Medium / Olive · neutral",
-      "bestServed": 2,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 4,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 2,
-      "meanDE": 6.2,
+      "strongest": 4,
+      "meanDE": 4.7,
       "colours": [
         {
           "hex": "#3E7876",
           "name": "Muted Teal",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 18,
+          "status": "ok",
+          "nearestDE": 13.1,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 18
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 13.1
           }
         },
         {
@@ -819,28 +819,28 @@
           "hex": "#2F5642",
           "name": "Forest",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 23.9,
+          "status": "strong",
+          "nearestDE": 3.8,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 23.9
+            "id": "silk-print-4",
+            "label": "Emerald Ogee",
+            "hex": "#165540",
+            "image": "images/fabrics/silk-print-4.webp#r12.5",
+            "dE": 3.8
           }
         },
         {
           "hex": "#56708F",
           "name": "Denim",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 18.7,
+          "status": "strong",
+          "nearestDE": 5.6,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 18.7
+            "id": "cotton-spandex-denim-5",
+            "label": "Light Vintage Wash",
+            "hex": "#697D97",
+            "image": "images/fabrics/cotton-spandex-denim-5.webp#r10.938",
+            "dE": 5.6
           }
         },
         {
@@ -848,13 +848,13 @@
           "name": "Garnet",
           "tier": "best",
           "status": "strong",
-          "nearestDE": 5.6,
+          "nearestDE": 3.5,
           "match": {
-            "id": "cotton-wool-1",
-            "label": "Blend 1",
-            "hex": "#781D28",
-            "image": "images/wool-blend-2.avif",
-            "dE": 5.6
+            "id": "silk-satin-5",
+            "label": "Ruby Satin",
+            "hex": "#852237",
+            "image": "images/fabrics/silk-satin-5.webp#r13.636",
+            "dE": 3.5
           }
         },
         {
@@ -862,13 +862,13 @@
           "name": "Parchment",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 1.6,
+          "nearestDE": 1.3,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 1.6
+            "id": "leather-patent-2",
+            "label": "Ivory Patent",
+            "hex": "#F2ECDC",
+            "image": "images/fabrics/leather-patent-2.webp#r16.667",
+            "dE": 1.3
           }
         },
         {
@@ -876,13 +876,13 @@
           "name": "Stone",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 3.4,
+          "nearestDE": 2.3,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 3.4
+            "id": "cotton-dobies-3",
+            "label": "Ivory Piqué",
+            "hex": "#B8B3A7",
+            "image": "images/fabrics/cotton-dobies-3.webp#r13.953",
+            "dE": 2.3
           }
         },
         {
@@ -890,41 +890,41 @@
           "name": "Taupe",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 6.5,
+          "nearestDE": 2.7,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 6.5
+            "id": "leather-suede-5",
+            "label": "Taupe Suede",
+            "hex": "#837769",
+            "image": "images/fabrics/leather-suede-5.webp#r16.667",
+            "dE": 2.7
           }
         },
         {
           "hex": "#93A08A",
           "name": "Sage",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 13.2,
+          "status": "strong",
+          "nearestDE": 1.6,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 13.2
+            "id": "linen-dobies-8",
+            "label": "Sage Twill",
+            "hex": "#969F8A",
+            "image": "images/fabrics/linen-dobies-8.webp#r6.25",
+            "dE": 1.6
           }
         },
         {
           "hex": "#3E3431",
           "name": "Espresso",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 17.2,
+          "status": "strong",
+          "nearestDE": 6.2,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 17.2
+            "id": "wool-tweed-3",
+            "label": "Charcoal Donegal",
+            "hex": "#3C3B3E",
+            "image": "images/fabrics/wool-tweed-3.webp#r3.125",
+            "dE": 6.2
           }
         }
       ]
@@ -933,53 +933,53 @@
       "skin": "tan",
       "under": "cool",
       "label": "Tan · cool",
-      "bestServed": 2,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 3,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 2,
-      "meanDE": 7.2,
+      "strongest": 3,
+      "meanDE": 6.3,
       "colours": [
         {
           "hex": "#224A9C",
           "name": "Cobalt",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 31.2,
+          "status": "strong",
+          "nearestDE": 5.9,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 31.2
+            "id": "silk-satin-7",
+            "label": "Sapphire Satin",
+            "hex": "#284373",
+            "image": "images/fabrics/silk-satin-7.webp#r13.636",
+            "dE": 5.9
           }
         },
         {
           "hex": "#AE2A6E",
           "name": "Fuchsia",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 4.5,
+          "status": "ok",
+          "nearestDE": 14,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 4.5
+            "id": "silk-satin-5",
+            "label": "Ruby Satin",
+            "hex": "#852237",
+            "image": "images/fabrics/silk-satin-5.webp#r13.636",
+            "dE": 14
           }
         },
         {
           "hex": "#4E2B78",
           "name": "Royal Purple",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 21.8,
+          "status": "ok",
+          "nearestDE": 13.7,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 21.8
+            "id": "silk-plain-6",
+            "label": "Sapphire Silk Twill",
+            "hex": "#1F3C6F",
+            "image": "images/fabrics/silk-plain-6.webp#r23.438",
+            "dE": 13.7
           }
         },
         {
@@ -987,27 +987,27 @@
           "name": "Bordeaux",
           "tier": "best",
           "status": "strong",
-          "nearestDE": 6.5,
+          "nearestDE": 2.6,
           "match": {
-            "id": "cotton-wool-1",
-            "label": "Blend 1",
-            "hex": "#781D28",
-            "image": "images/wool-blend-2.avif",
-            "dE": 6.5
+            "id": "cotton-lining-3",
+            "label": "Burgundy Sateen Lining",
+            "hex": "#672330",
+            "image": "images/fabrics/cotton-lining-3.webp#r20.392",
+            "dE": 2.6
           }
         },
         {
           "hex": "#0F6B5C",
           "name": "Pine",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 25.7,
+          "status": "strong",
+          "nearestDE": 5.8,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 25.7
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 5.8
           }
         },
         {
@@ -1015,27 +1015,27 @@
           "name": "Optic White",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 6.4,
+          "nearestDE": 4.7,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 6.4
+            "id": "linen-print-6",
+            "label": "Navy Pin Dot",
+            "hex": "#E1E0DC",
+            "image": "images/fabrics/linen-print-6.webp#r8.0",
+            "dE": 4.7
           }
         },
         {
           "hex": "#33363C",
           "name": "Charcoal",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 22.3,
+          "status": "strong",
+          "nearestDE": 1.8,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 22.3
+            "id": "cotton-wool-print-3",
+            "label": "Pin Dot",
+            "hex": "#303236",
+            "image": "images/fabrics/cotton-wool-print-3.webp#r9.091",
+            "dE": 1.8
           }
         },
         {
@@ -1043,13 +1043,13 @@
           "name": "Icy Mint",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 12.7,
+          "nearestDE": 11.8,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 12.7
+            "id": "cotton-linen-print-10",
+            "label": "Seaside Stripe",
+            "hex": "#D6D6D4",
+            "image": "images/fabrics/cotton-linen-print-10.webp#r8.667",
+            "dE": 11.8
           }
         },
         {
@@ -1057,27 +1057,27 @@
           "name": "Silver Grey",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 6.1,
+          "nearestDE": 2.7,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 6.1
+            "id": "silk-lining-9",
+            "label": "Silver Silk Lining",
+            "hex": "#B0B2B4",
+            "image": "images/fabrics/silk-lining-9.webp#r27.451",
+            "dE": 2.7
           }
         },
         {
           "hex": "#1D2641",
           "name": "Midnight Navy",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 22.3,
+          "status": "strong",
+          "nearestDE": 0,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 22.3
+            "id": "leather-patent-4",
+            "label": "Navy Patent",
+            "hex": "#1D2641",
+            "image": "images/fabrics/leather-patent-4.webp#r16.667",
+            "dE": 0
           }
         }
       ]
@@ -1086,25 +1086,25 @@
       "skin": "tan",
       "under": "warm",
       "label": "Tan · warm",
-      "bestServed": 3,
+      "bestServed": 4,
       "bestTotal": 5,
       "accServed": 5,
       "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 10.7,
+      "strongest": 4,
+      "meanDE": 4.4,
       "colours": [
         {
           "hex": "#B5521F",
           "name": "Burnt Orange",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 13.2,
+          "status": "strong",
+          "nearestDE": 6.7,
           "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 13.2
+            "id": "cotton-spandex-corduroy-9",
+            "label": "Rust Jumbo Cord",
+            "hex": "#9C5132",
+            "image": "images/fabrics/cotton-spandex-corduroy-9.webp#r8.333",
+            "dE": 6.7
           }
         },
         {
@@ -1112,27 +1112,27 @@
           "name": "Paprika",
           "tier": "best",
           "status": "strong",
-          "nearestDE": 7.5,
+          "nearestDE": 7.9,
           "match": {
-            "id": "wool-2",
-            "label": "Wool 2",
-            "hex": "#96242F",
-            "image": "images/woolen fabric.webp",
-            "dE": 7.5
+            "id": "linen-plain-7",
+            "label": "Terracotta Linen",
+            "hex": "#914D33",
+            "image": "images/fabrics/linen-plain-7.webp#r6.25",
+            "dE": 7.9
           }
         },
         {
           "hex": "#D29A2E",
           "name": "Marigold",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 16.8,
+          "status": "strong",
+          "nearestDE": 7.3,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 16.8
+            "id": "silk-plain-9",
+            "label": "Gold Shantung",
+            "hex": "#B49243",
+            "image": "images/fabrics/silk-plain-9.webp#r15.625",
+            "dE": 7.3
           }
         },
         {
@@ -1140,27 +1140,27 @@
           "name": "Warm Teal",
           "tier": "best",
           "status": "unserved",
-          "nearestDE": 17.3,
+          "nearestDE": 16.2,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 17.3
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 16.2
           }
         },
         {
           "hex": "#5E5D2F",
           "name": "Olive Drab",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 12.8,
+          "status": "strong",
+          "nearestDE": 5.5,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 12.8
+            "id": "leather-suede-6",
+            "label": "Olive Suede",
+            "hex": "#545335",
+            "image": "images/fabrics/leather-suede-6.webp#r16.667",
+            "dE": 5.5
           }
         },
         {
@@ -1168,55 +1168,55 @@
           "name": "Cream",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 3.7,
+          "nearestDE": 1.5,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 3.7
+            "id": "cotton-spandex-corduroy-6",
+            "label": "Cream Jumbo Cord",
+            "hex": "#ECE4CF",
+            "image": "images/fabrics/cotton-spandex-corduroy-6.webp#r8.333",
+            "dE": 1.5
           }
         },
         {
           "hex": "#452E22",
           "name": "Chocolate",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 15.5,
+          "status": "strong",
+          "nearestDE": 1.6,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 15.5
+            "id": "leather-plain-4",
+            "label": "Chocolate Calf",
+            "hex": "#442D1E",
+            "image": "images/fabrics/leather-plain-4.webp#r14.286",
+            "dE": 1.6
           }
         },
         {
           "hex": "#6D4A2D",
           "name": "Tobacco",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 15.6,
+          "status": "strong",
+          "nearestDE": 1.3,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 15.6
+            "id": "cotton-wool-dobies-4",
+            "label": "Brown Hopsack",
+            "hex": "#6C482E",
+            "image": "images/fabrics/cotton-wool-dobies-4.webp#r10.853",
+            "dE": 1.3
           }
         },
         {
           "hex": "#B5A57F",
           "name": "Khaki",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 9.2,
+          "status": "strong",
+          "nearestDE": 1.8,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 9.2
+            "id": "cotton-linen-print-7",
+            "label": "Quatrefoil",
+            "hex": "#B7A786",
+            "image": "images/fabrics/cotton-linen-print-7.webp#r8.667",
+            "dE": 1.8
           }
         },
         {
@@ -1224,13 +1224,13 @@
           "name": "Apricot Cream",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 7.7,
+          "nearestDE": 6.2,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 7.7
+            "id": "leather-patent-5",
+            "label": "Nude Patent",
+            "hex": "#D6B69F",
+            "image": "images/fabrics/leather-patent-5.webp#r16.667",
+            "dE": 6.2
           }
         }
       ]
@@ -1239,25 +1239,25 @@
       "skin": "tan",
       "under": "neutral",
       "label": "Tan · neutral",
-      "bestServed": 2,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 4,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 0,
-      "meanDE": 8.2,
+      "strongest": 3,
+      "meanDE": 6,
       "colours": [
         {
           "hex": "#1F5E61",
           "name": "Deep Teal",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 26.4,
+          "status": "ok",
+          "nearestDE": 10.4,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 26.4
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 10.4
           }
         },
         {
@@ -1278,42 +1278,42 @@
           "hex": "#6D7342",
           "name": "Moss",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 11.6,
+          "status": "strong",
+          "nearestDE": 6.7,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 11.6
+            "id": "cotton-wool-dobies-7",
+            "label": "Olive Honeycomb",
+            "hex": "#6F745A",
+            "image": "images/fabrics/cotton-wool-dobies-7.webp#r10.938",
+            "dE": 6.7
           }
         },
         {
           "hex": "#3F5E80",
           "name": "Slate Blue",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 26,
+          "status": "strong",
+          "nearestDE": 4.3,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 26
+            "id": "cotton-spandex-denim-4",
+            "label": "Mid Stone Wash",
+            "hex": "#50607B",
+            "image": "images/fabrics/cotton-spandex-denim-4.webp#r10.938",
+            "dE": 4.3
           }
         },
         {
           "hex": "#BE8B32",
           "name": "Amber",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 18.9,
+          "status": "strong",
+          "nearestDE": 4.9,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 18.9
+            "id": "silk-plain-9",
+            "label": "Gold Shantung",
+            "hex": "#B49243",
+            "image": "images/fabrics/silk-plain-9.webp#r15.625",
+            "dE": 4.9
           }
         },
         {
@@ -1321,13 +1321,13 @@
           "name": "Ivory",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 2.5,
+          "nearestDE": 2.4,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 2.5
+            "id": "leather-patent-2",
+            "label": "Ivory Patent",
+            "hex": "#F2ECDC",
+            "image": "images/fabrics/leather-patent-2.webp#r16.667",
+            "dE": 2.4
           }
         },
         {
@@ -1348,28 +1348,28 @@
           "hex": "#6A5C53",
           "name": "Mocha",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 10.5,
+          "status": "strong",
+          "nearestDE": 6.8,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 10.5
+            "id": "wool-tweed-6",
+            "label": "Salt & Pepper",
+            "hex": "#5B5A57",
+            "image": "images/fabrics/wool-tweed-6.webp#r3.906",
+            "dE": 6.8
           }
         },
         {
           "hex": "#243150",
           "name": "Navy",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 23.8,
+          "status": "strong",
+          "nearestDE": 3.8,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 23.8
+            "id": "leather-patent-4",
+            "label": "Navy Patent",
+            "hex": "#1D2641",
+            "image": "images/fabrics/leather-patent-4.webp#r16.667",
+            "dE": 3.8
           }
         },
         {
@@ -1377,13 +1377,13 @@
           "name": "Soft Coral",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 13.1,
+          "nearestDE": 8.8,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 13.1
+            "id": "linen-chex-2",
+            "label": "Terracotta Gingham",
+            "hex": "#B28C75",
+            "image": "images/fabrics/linen-chex-2.webp#r6.25",
+            "dE": 8.8
           }
         }
       ]
@@ -1392,67 +1392,67 @@
       "skin": "dark-deep",
       "under": "cool",
       "label": "Dark / Deep · cool",
-      "bestServed": 2,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 3,
+      "accServed": 5,
       "accTotal": 5,
       "strongest": 2,
-      "meanDE": 6.6,
+      "meanDE": 8,
       "colours": [
         {
           "hex": "#2150A8",
           "name": "Cobalt",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 31,
+          "status": "strong",
+          "nearestDE": 7.9,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 31
+            "id": "silk-satin-7",
+            "label": "Sapphire Satin",
+            "hex": "#284373",
+            "image": "images/fabrics/silk-satin-7.webp#r13.636",
+            "dE": 7.9
           }
         },
         {
           "hex": "#A8236C",
           "name": "Fuchsia",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 6.1,
+          "status": "ok",
+          "nearestDE": 13.6,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 6.1
+            "id": "silk-satin-5",
+            "label": "Ruby Satin",
+            "hex": "#852237",
+            "image": "images/fabrics/silk-satin-5.webp#r13.636",
+            "dE": 13.6
           }
         },
         {
           "hex": "#0E7C5A",
           "name": "Emerald",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 24.7,
+          "status": "ok",
+          "nearestDE": 10.9,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 24.7
+            "id": "leather-patent-7",
+            "label": "Emerald Patent",
+            "hex": "#135C44",
+            "image": "images/fabrics/leather-patent-7.webp#r16.667",
+            "dE": 10.9
           }
         },
         {
           "hex": "#52308A",
           "name": "Royal Violet",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 24.3,
+          "status": "ok",
+          "nearestDE": 13.3,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 24.3
+            "id": "silk-plain-6",
+            "label": "Sapphire Silk Twill",
+            "hex": "#1F3C6F",
+            "image": "images/fabrics/silk-plain-6.webp#r23.438",
+            "dE": 13.3
           }
         },
         {
@@ -1460,13 +1460,13 @@
           "name": "Cherry Red",
           "tier": "best",
           "status": "strong",
-          "nearestDE": 3.5,
+          "nearestDE": 5.5,
           "match": {
-            "id": "wool-2",
-            "label": "Wool 2",
-            "hex": "#96242F",
-            "image": "images/woolen fabric.webp",
-            "dE": 3.5
+            "id": "leather-patent-3",
+            "label": "Ruby Patent",
+            "hex": "#8F1730",
+            "image": "images/fabrics/leather-patent-3.webp#r16.667",
+            "dE": 5.5
           }
         },
         {
@@ -1474,27 +1474,27 @@
           "name": "Optic White",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 7,
+          "nearestDE": 5.1,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 7
+            "id": "linen-print-6",
+            "label": "Navy Pin Dot",
+            "hex": "#E1E0DC",
+            "image": "images/fabrics/linen-print-6.webp#r8.0",
+            "dE": 5.1
           }
         },
         {
           "hex": "#141416",
           "name": "Jet Black",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 21.7,
+          "status": "strong",
+          "nearestDE": 1,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 21.7
+            "id": "cotton-lining-4",
+            "label": "Black Twill Lining",
+            "hex": "#161619",
+            "image": "images/fabrics/cotton-lining-4.webp#r20.392",
+            "dE": 1
           }
         },
         {
@@ -1502,41 +1502,41 @@
           "name": "Silver",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 4.4,
+          "nearestDE": 2.7,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 4.4
+            "id": "cotton-linen-dobies-5",
+            "label": "Sky Bird's-Eye",
+            "hex": "#BFC8CF",
+            "image": "images/fabrics/cotton-linen-dobies-5.webp#r10.156",
+            "dE": 2.7
           }
         },
         {
           "hex": "#BCD6E8",
           "name": "Ice Blue",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 12.2,
+          "status": "strong",
+          "nearestDE": 6.3,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 12.2
+            "id": "cotton-chex-2",
+            "label": "Sky Mini Gingham",
+            "hex": "#B8C4CD",
+            "image": "images/fabrics/cotton-chex-2.webp#r15.625",
+            "dE": 6.3
           }
         },
         {
           "hex": "#D4C8E6",
           "name": "Icy Lilac",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 16.1,
+          "status": "ok",
+          "nearestDE": 13.7,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 16.1
+            "id": "cotton-dobies-5",
+            "label": "Powder Blue Dot Dobby",
+            "hex": "#C4CBD1",
+            "image": "images/fabrics/cotton-dobies-5.webp#r14.062",
+            "dE": 13.7
           }
         }
       ]
@@ -1545,67 +1545,67 @@
       "skin": "dark-deep",
       "under": "warm",
       "label": "Dark / Deep · warm",
-      "bestServed": 3,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 4,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 1,
-      "meanDE": 10.6,
+      "strongest": 2,
+      "meanDE": 5.7,
       "colours": [
         {
           "hex": "#C99A30",
           "name": "Saffron",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 16.3,
+          "status": "strong",
+          "nearestDE": 5.5,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 16.3
+            "id": "silk-plain-9",
+            "label": "Gold Shantung",
+            "hex": "#B49243",
+            "image": "images/fabrics/silk-plain-9.webp#r15.625",
+            "dE": 5.5
           }
         },
         {
           "hex": "#B0643A",
           "name": "Copper",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 14,
+          "status": "strong",
+          "nearestDE": 6.8,
           "match": {
-            "id": "tt-wool-1",
-            "label": "tt-wool-1",
-            "hex": "#C14844",
-            "image": "images/tt-wool-1.webp",
-            "dE": 14
+            "id": "leather-plain-3",
+            "label": "Tan Calf",
+            "hex": "#9A6A44",
+            "image": "images/fabrics/leather-plain-3.webp#r14.286",
+            "dE": 6.8
           }
         },
         {
           "hex": "#8E2B22",
           "name": "Brick Red",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 5.4,
+          "status": "ok",
+          "nearestDE": 8.5,
           "match": {
-            "id": "wool-2",
-            "label": "Wool 2",
-            "hex": "#96242F",
-            "image": "images/woolen fabric.webp",
-            "dE": 5.4
+            "id": "leather-patent-3",
+            "label": "Ruby Patent",
+            "hex": "#8F1730",
+            "image": "images/fabrics/leather-patent-3.webp#r16.667",
+            "dE": 8.5
           }
         },
         {
           "hex": "#0F6B67",
           "name": "Peacock",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 24.9,
+          "status": "ok",
+          "nearestDE": 8.8,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 24.9
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 8.8
           }
         },
         {
@@ -1613,13 +1613,13 @@
           "name": "Olive",
           "tier": "best",
           "status": "ok",
-          "nearestDE": 12.3,
+          "nearestDE": 9.3,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 12.3
+            "id": "cotton-wool-dobies-7",
+            "label": "Olive Honeycomb",
+            "hex": "#6F745A",
+            "image": "images/fabrics/cotton-wool-dobies-7.webp#r10.938",
+            "dE": 9.3
           }
         },
         {
@@ -1627,41 +1627,41 @@
           "name": "Cream",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 4,
+          "nearestDE": 2,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 4
+            "id": "cotton-spandex-corduroy-6",
+            "label": "Cream Jumbo Cord",
+            "hex": "#ECE4CF",
+            "image": "images/fabrics/cotton-spandex-corduroy-6.webp#r8.333",
+            "dE": 2
           }
         },
         {
           "hex": "#BB9164",
           "name": "Camel",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 15.6,
+          "status": "strong",
+          "nearestDE": 2.1,
           "match": {
-            "id": "tt-cotton-1",
-            "label": "tt-cotton-1",
-            "hex": "#AFA7A0",
-            "image": "images/tt-cotton-1.webp",
-            "dE": 15.6
+            "id": "cotton-spandex-corduroy-2",
+            "label": "Camel Corduroy",
+            "hex": "#B78C5A",
+            "image": "images/fabrics/cotton-spandex-corduroy-2.webp#r8.269",
+            "dE": 2.1
           }
         },
         {
           "hex": "#B3A582",
           "name": "Khaki",
           "tier": "acceptable",
-          "status": "ok",
-          "nearestDE": 9.5,
+          "status": "strong",
+          "nearestDE": 1.6,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 9.5
+            "id": "cotton-linen-print-7",
+            "label": "Quatrefoil",
+            "hex": "#B7A786",
+            "image": "images/fabrics/cotton-linen-print-7.webp#r8.667",
+            "dE": 1.6
           }
         },
         {
@@ -1669,27 +1669,27 @@
           "name": "Terracotta",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 13.3,
+          "nearestDE": 8.2,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 13.3
+            "id": "linen-chex-2",
+            "label": "Terracotta Gingham",
+            "hex": "#B28C75",
+            "image": "images/fabrics/linen-chex-2.webp#r6.25",
+            "dE": 8.2
           }
         },
         {
           "hex": "#274D36",
           "name": "Forest",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 25.4,
+          "status": "strong",
+          "nearestDE": 4.2,
           "match": {
-            "id": "cotton-1",
-            "label": "Cotton 1",
-            "hex": "#7E7158",
-            "image": "images/cotton-1.webp",
-            "dE": 25.4
+            "id": "silk-plain-5",
+            "label": "Emerald Taffeta",
+            "hex": "#13523E",
+            "image": "images/fabrics/silk-plain-5.webp#r21.875",
+            "dE": 4.2
           }
         }
       ]
@@ -1698,81 +1698,81 @@
       "skin": "dark-deep",
       "under": "neutral",
       "label": "Dark / Deep · neutral",
-      "bestServed": 3,
+      "bestServed": 5,
       "bestTotal": 5,
-      "accServed": 4,
+      "accServed": 5,
       "accTotal": 5,
-      "strongest": 2,
-      "meanDE": 7.4,
+      "strongest": 3,
+      "meanDE": 6.1,
       "colours": [
         {
           "hex": "#A3182F",
           "name": "Ruby",
           "tier": "best",
           "status": "strong",
-          "nearestDE": 2.6,
+          "nearestDE": 4.7,
           "match": {
-            "id": "wool-2",
-            "label": "Wool 2",
-            "hex": "#96242F",
-            "image": "images/woolen fabric.webp",
-            "dE": 2.6
+            "id": "leather-patent-3",
+            "label": "Ruby Patent",
+            "hex": "#8F1730",
+            "image": "images/fabrics/leather-patent-3.webp#r16.667",
+            "dE": 4.7
           }
         },
         {
           "hex": "#0B6E73",
           "name": "Teal",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 22.1,
+          "status": "ok",
+          "nearestDE": 12.8,
           "match": {
-            "id": "linen-2",
-            "label": "Linen 2",
-            "hex": "#6C9FB1",
-            "image": "images/linen-2.webp",
-            "dE": 22.1
+            "id": "silk-satin-6",
+            "label": "Emerald Satin",
+            "hex": "#1F5C49",
+            "image": "images/fabrics/silk-satin-6.webp#r13.636",
+            "dE": 12.8
           }
         },
         {
           "hex": "#C8A04A",
           "name": "Antique Gold",
           "tier": "best",
-          "status": "ok",
-          "nearestDE": 13.4,
+          "status": "strong",
+          "nearestDE": 4.3,
           "match": {
-            "id": "linen-1",
-            "label": "Linen 1",
-            "hex": "#DAC69A",
-            "image": "images/linen-1.webp",
-            "dE": 13.4
+            "id": "silk-satin-9",
+            "label": "Gold Satin",
+            "hex": "#B6964C",
+            "image": "images/fabrics/silk-satin-9.webp#r13.636",
+            "dE": 4.3
           }
         },
         {
           "hex": "#2F4DA0",
           "name": "Ultramarine",
           "tier": "best",
-          "status": "unserved",
-          "nearestDE": 31.3,
+          "status": "strong",
+          "nearestDE": 6.8,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 31.3
+            "id": "silk-satin-7",
+            "label": "Sapphire Satin",
+            "hex": "#284373",
+            "image": "images/fabrics/silk-satin-7.webp#r13.636",
+            "dE": 6.8
           }
         },
         {
           "hex": "#9A2B69",
           "name": "Berry",
           "tier": "best",
-          "status": "strong",
-          "nearestDE": 7.5,
+          "status": "ok",
+          "nearestDE": 13,
           "match": {
-            "id": "cotton-2",
-            "label": "Cotton 2",
-            "hex": "#B23A68",
-            "image": "images/cotton-2.webp",
-            "dE": 7.5
+            "id": "silk-satin-5",
+            "label": "Ruby Satin",
+            "hex": "#852237",
+            "image": "images/fabrics/silk-satin-5.webp#r13.636",
+            "dE": 13
           }
         },
         {
@@ -1780,13 +1780,13 @@
           "name": "Optic White",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 6,
+          "nearestDE": 4.6,
           "match": {
-            "id": "cotton-linen-1",
-            "label": "Blend 1",
-            "hex": "#EDE4D7",
-            "image": "images/cotton-linen blend-1.webp",
-            "dE": 6
+            "id": "linen-print-6",
+            "label": "Navy Pin Dot",
+            "hex": "#E1E0DC",
+            "image": "images/fabrics/linen-print-6.webp#r8.0",
+            "dE": 4.6
           }
         },
         {
@@ -1794,13 +1794,13 @@
           "name": "Dove Grey",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 3.5,
+          "nearestDE": 1.3,
           "match": {
-            "id": "tt-silk-1",
-            "label": "tt-silk-1",
-            "hex": "#C5C5C2",
-            "image": "images/tt-silk-1.webp",
-            "dE": 3.5
+            "id": "cotton-linen-dobies-3",
+            "label": "White Piqué",
+            "hex": "#BDBCB9",
+            "image": "images/fabrics/cotton-linen-dobies-3.webp#r10.078",
+            "dE": 1.3
           }
         },
         {
@@ -1808,13 +1808,13 @@
           "name": "Sand",
           "tier": "acceptable",
           "status": "strong",
-          "nearestDE": 4.1,
+          "nearestDE": 1.8,
           "match": {
-            "id": "wool-1",
-            "label": "Wool 1",
-            "hex": "#D5CDB9",
-            "image": "images/wool-1.webp",
-            "dE": 4.1
+            "id": "linen-print-1",
+            "label": "Linen Print 1",
+            "hex": "#C5B9A3",
+            "image": "images/linen-print-1.webp",
+            "dE": 1.8
           }
         },
         {
@@ -1822,27 +1822,27 @@
           "name": "Blush Rose",
           "tier": "acceptable",
           "status": "ok",
-          "nearestDE": 15,
+          "nearestDE": 10.4,
           "match": {
-            "id": "tt-leather-1",
-            "label": "tt-leather-1",
-            "hex": "#A27D79",
-            "image": "images/tt-leather-1.webp",
-            "dE": 15
+            "id": "silk-lining-8",
+            "label": "Blush Silk Lining",
+            "hex": "#CFB4AC",
+            "image": "images/fabrics/silk-lining-8.webp#r27.344",
+            "dE": 10.4
           }
         },
         {
           "hex": "#1F2A44",
           "name": "Midnight Navy",
           "tier": "acceptable",
-          "status": "unserved",
-          "nearestDE": 23.1,
+          "status": "strong",
+          "nearestDE": 1.4,
           "match": {
-            "id": "cotton-linen-2",
-            "label": "Blend 2",
-            "hex": "#4D1726",
-            "image": "images/cotton-linen blend-2.webp",
-            "dE": 23.1
+            "id": "silk-print-5",
+            "label": "Gold Pin Dot",
+            "hex": "#1E273E",
+            "image": "images/fabrics/silk-print-5.webp#r12.5",
+            "dE": 1.4
           }
         }
       ]
@@ -1850,89 +1850,1452 @@
   ],
   "buyNext": [
     {
-      "hex": "#1B7A60",
+      "hex": "#1F8680",
       "names": [
-        "Emerald",
-        "Deep Teal",
-        "Muted Teal",
-        "Forest",
-        "Pine",
-        "Warm Teal",
-        "Peacock",
-        "Teal"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 9,
-      "serves": [
-        "Medium / Olive · cool",
-        "Medium / Olive · warm",
-        "Medium / Olive · neutral",
-        "Tan · cool",
-        "Tan · warm",
-        "Tan · neutral",
-        "Dark / Deep · cool",
-        "Dark / Deep · warm",
-        "Dark / Deep · neutral"
-      ]
-    },
-    {
-      "hex": "#34425F",
-      "names": [
-        "Slate Navy",
-        "Sapphire",
-        "Petrol",
-        "Denim",
-        "Cobalt",
-        "Royal Purple",
-        "Slate Blue",
-        "Royal Violet",
-        "Ultramarine"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 7,
-      "serves": [
-        "Fair / Light · cool",
-        "Medium / Olive · cool",
-        "Medium / Olive · neutral",
-        "Tan · cool",
-        "Tan · neutral",
-        "Dark / Deep · cool",
-        "Dark / Deep · neutral"
-      ]
-    },
-    {
-      "hex": "#D29A2E",
-      "names": [
-        "Marigold",
-        "Amber",
-        "Saffron"
-      ],
-      "newlyDressable": 0,
-      "addsChoice": 3,
-      "serves": [
-        "Tan · warm",
-        "Tan · neutral",
-        "Dark / Deep · warm"
-      ]
-    },
-    {
-      "hex": "#D8A6B3",
-      "names": [
-        "Rose Quartz",
-        "Heather Lilac"
+        "Warm Teal"
       ],
       "newlyDressable": 0,
       "addsChoice": 1,
       "serves": [
-        "Fair / Light · cool"
+        "Tan · warm"
       ]
     }
   ],
   "idle": [
     {
+      "id": "cotton-plain-1",
+      "hex": "#D9D8D3",
+      "label": "Chalk White Poplin"
+    },
+    {
+      "id": "cotton-plain-2",
+      "hex": "#D6D2C3",
+      "label": "Ivory Pinpoint Oxford"
+    },
+    {
+      "id": "cotton-plain-3",
+      "hex": "#19233B",
+      "label": "Navy Gabardine Twill"
+    },
+    {
+      "id": "cotton-plain-4",
+      "hex": "#CEC6B1",
+      "label": "Ecru Sateen"
+    },
+    {
+      "id": "cotton-plain-5",
+      "hex": "#1B3628",
+      "label": "Bottle Green Drill"
+    },
+    {
+      "id": "cotton-plain-6",
+      "hex": "#A37A4B",
+      "label": "Camel Chino Twill"
+    },
+    {
+      "id": "cotton-plain-7",
+      "hex": "#101626",
+      "label": "Midnight Voile"
+    },
+    {
+      "id": "cotton-plain-8",
+      "hex": "#51171D",
+      "label": "Oxblood Poplin"
+    },
+    {
+      "id": "cotton-plain-9",
+      "hex": "#B8C3CD",
+      "label": "Sky Blue End-on-End"
+    },
+    {
+      "id": "cotton-plain-10",
+      "hex": "#787F8E",
+      "label": "Indigo Chambray"
+    },
+    {
+      "id": "cotton-dobies-1",
+      "hex": "#BEBDBA",
+      "label": "White Bird's-Eye Dobby"
+    },
+    {
+      "id": "cotton-dobies-2",
+      "hex": "#B3C0CB",
+      "label": "Sky Diamond Dobby"
+    },
+    {
+      "id": "cotton-dobies-4",
+      "hex": "#384055",
+      "label": "Navy Honeycomb"
+    },
+    {
+      "id": "cotton-dobies-6",
+      "hex": "#D0C8B4",
+      "label": "Ecru Herringbone"
+    },
+    {
+      "id": "cotton-dobies-7",
+      "hex": "#B7AD97",
+      "label": "Stone Barleycorn"
+    },
+    {
+      "id": "cotton-dobies-8",
+      "hex": "#D2CEC4",
+      "label": "Chalk Hopsack"
+    },
+    {
+      "id": "cotton-dobies-9",
+      "hex": "#D5C7C1",
+      "label": "Blush Royal Oxford"
+    },
+    {
+      "id": "cotton-dobies-10",
+      "hex": "#5C636D",
+      "label": "Slate Bedford Cord"
+    },
+    {
+      "id": "cotton-lining-1",
+      "hex": "#CABB9C",
+      "label": "Champagne Silesia"
+    },
+    {
+      "id": "cotton-lining-2",
+      "hex": "#1C253D",
+      "label": "Navy Silesia"
+    },
+    {
+      "id": "cotton-lining-5",
+      "hex": "#7F8184",
+      "label": "Pewter Sateen Lining"
+    },
+    {
+      "id": "cotton-lining-6",
+      "hex": "#1D382A",
+      "label": "Bottle Green Lining"
+    },
+    {
+      "id": "cotton-lining-7",
+      "hex": "#B59448",
+      "label": "Gold Sateen Lining"
+    },
+    {
+      "id": "cotton-lining-8",
+      "hex": "#D6D1C3",
+      "label": "Ivory Batiste"
+    },
+    {
+      "id": "cotton-chex-1",
+      "hex": "#787D88",
+      "label": "Navy Gingham"
+    },
+    {
+      "id": "cotton-chex-3",
+      "hex": "#D4CCB8",
+      "label": "Country Tattersall"
+    },
+    {
+      "id": "cotton-chex-4",
+      "hex": "#DBDAD6",
+      "label": "Navy Windowpane"
+    },
+    {
+      "id": "cotton-chex-5",
+      "hex": "#DAD9D6",
+      "label": "Blue Graph Check"
+    },
+    {
+      "id": "cotton-chex-6",
+      "hex": "#73706B",
+      "label": "Black Houndstooth"
+    },
+    {
+      "id": "cotton-chex-8",
+      "hex": "#48141E",
+      "label": "Red Buffalo Check"
+    },
+    {
+      "id": "cotton-chex-9",
+      "hex": "#1A2931",
+      "label": "Black Watch Tartan"
+    },
+    {
+      "id": "cotton-chex-10",
+      "hex": "#8A7A69",
+      "label": "Brown Shepherd's Check"
+    },
+    {
+      "id": "cotton-print-1",
+      "hex": "#D5D1C2",
+      "label": "Indigo Paisley"
+    },
+    {
+      "id": "cotton-print-2",
+      "hex": "#19223A",
+      "label": "Navy Foulard"
+    },
+    {
+      "id": "cotton-print-3",
+      "hex": "#1A233B",
+      "label": "Ivory Polka Dot"
+    },
+    {
+      "id": "cotton-print-4",
+      "hex": "#D5CDB9",
+      "label": "Madder Floral Buti"
+    },
+    {
+      "id": "cotton-print-5",
+      "hex": "#CBC3AD",
+      "label": "Damask Ogee"
+    },
+    {
+      "id": "cotton-print-6",
+      "hex": "#DAD9D4",
+      "label": "Botanical Vine"
+    },
+    {
+      "id": "cotton-print-7",
+      "hex": "#515662",
+      "label": "Art Deco Fans"
+    },
+    {
+      "id": "cotton-print-8",
+      "hex": "#D4CCB8",
+      "label": "Garden Trellis"
+    },
+    {
+      "id": "cotton-print-9",
+      "hex": "#DCDBD7",
+      "label": "Heritage Sprig"
+    },
+    {
+      "id": "cotton-print-10",
+      "hex": "#D4D0C1",
+      "label": "Regency Stripe"
+    },
+    {
+      "id": "linen-plain-1",
+      "hex": "#C0B395",
+      "label": "Natural Flax"
+    },
+    {
+      "id": "linen-plain-2",
+      "hex": "#D9D8D4",
+      "label": "Optic White Linen"
+    },
+    {
+      "id": "linen-plain-3",
+      "hex": "#CCC5AE",
+      "label": "Ecru Linen"
+    },
+    {
+      "id": "linen-plain-4",
+      "hex": "#BFB49C",
+      "label": "Oatmeal Linen"
+    },
+    {
+      "id": "linen-plain-5",
+      "hex": "#19233B",
+      "label": "Navy Linen"
+    },
+    {
+      "id": "linen-plain-6",
+      "hex": "#505033",
+      "label": "Olive Linen"
+    },
+    {
+      "id": "linen-plain-8",
+      "hex": "#96AEC4",
+      "label": "Sky Linen"
+    },
+    {
+      "id": "linen-plain-9",
+      "hex": "#303135",
+      "label": "Charcoal Linen"
+    },
+    {
+      "id": "linen-plain-10",
+      "hex": "#1B3628",
+      "label": "Bottle Green Linen"
+    },
+    {
+      "id": "linen-dobies-1",
+      "hex": "#C0B499",
+      "label": "Flax Herringbone"
+    },
+    {
+      "id": "linen-dobies-3",
+      "hex": "#C0B499",
+      "label": "Natural Hopsack"
+    },
+    {
+      "id": "linen-dobies-4",
+      "hex": "#363E52",
+      "label": "Navy Basket Weave"
+    },
+    {
+      "id": "linen-dobies-5",
+      "hex": "#C1B49B",
+      "label": "Sand Diamond Dobby"
+    },
+    {
+      "id": "linen-dobies-6",
+      "hex": "#BDB8AC",
+      "label": "Ivory Honeycomb"
+    },
+    {
+      "id": "linen-dobies-7",
+      "hex": "#B8AC94",
+      "label": "Stone Barleycorn"
+    },
+    {
+      "id": "linen-dobies-9",
+      "hex": "#79808E",
+      "label": "Chambray Linen"
+    },
+    {
+      "id": "linen-dobies-10",
+      "hex": "#B0A996",
+      "label": "Ecru Piqué"
+    },
+    {
+      "id": "linen-lining-1",
+      "hex": "#D3CFC1",
+      "label": "Ivory Linen Voile"
+    },
+    {
+      "id": "linen-lining-2",
+      "hex": "#BDB093",
+      "label": "Natural Batiste"
+    },
+    {
+      "id": "linen-lining-3",
+      "hex": "#C6B798",
+      "label": "Champagne Linen Lining"
+    },
+    {
+      "id": "linen-lining-4",
+      "hex": "#19233B",
+      "label": "Navy Linen Lining"
+    },
+    {
+      "id": "linen-lining-5",
+      "hex": "#ABA290",
+      "label": "Stone Lining"
+    },
+    {
+      "id": "linen-lining-7",
+      "hex": "#CAAFA7",
+      "label": "Blush Lining"
+    },
+    {
+      "id": "linen-lining-8",
+      "hex": "#6B4A2A",
+      "label": "Tobacco Lining"
+    },
+    {
+      "id": "linen-lining-9",
+      "hex": "#D7D6D2",
+      "label": "White Handkerchief Linen"
+    },
+    {
+      "id": "linen-chex-1",
+      "hex": "#7A7E89",
+      "label": "Navy Linen Gingham"
+    },
+    {
+      "id": "linen-chex-3",
+      "hex": "#C0B295",
+      "label": "Flax Windowpane"
+    },
+    {
+      "id": "linen-chex-4",
+      "hex": "#CCC4AE",
+      "label": "Country Tattersall"
+    },
+    {
+      "id": "linen-chex-5",
+      "hex": "#DAD9D5",
+      "label": "Indigo Graph Check"
+    },
+    {
+      "id": "linen-chex-6",
+      "hex": "#AFB29F",
+      "label": "Sage Shepherd's Check"
+    },
+    {
+      "id": "linen-chex-7",
+      "hex": "#967F60",
+      "label": "Tobacco Glen Check"
+    },
+    {
+      "id": "linen-chex-8",
+      "hex": "#B7C3CD",
+      "label": "Sky Gingham"
+    },
+    {
+      "id": "linen-chex-9",
+      "hex": "#717174",
+      "label": "Navy Buffalo Check"
+    },
+    {
+      "id": "linen-chex-10",
+      "hex": "#888267",
+      "label": "Olive Houndstooth"
+    },
+    {
+      "id": "linen-print-2",
+      "hex": "#C6B79A",
+      "label": "Indigo Ikat"
+    },
+    {
+      "id": "linen-print-3",
+      "hex": "#C9C0AA",
+      "label": "Madder Paisley"
+    },
+    {
+      "id": "linen-print-4",
+      "hex": "#BCB299",
+      "label": "Olive Leaf Trail"
+    },
+    {
+      "id": "linen-print-5",
+      "hex": "#BEB093",
+      "label": "Terracotta Foulard"
+    },
+    {
+      "id": "linen-print-7",
+      "hex": "#C9C1AB",
+      "label": "Saffron Quatrefoil"
+    },
+    {
+      "id": "linen-print-8",
+      "hex": "#BDB093",
+      "label": "Botanical Sprig"
+    },
+    {
+      "id": "linen-print-9",
+      "hex": "#C4B699",
+      "label": "Deco Fans"
+    },
+    {
+      "id": "linen-print-10",
+      "hex": "#DCDBD7",
+      "label": "Riviera Stripe"
+    },
+    {
+      "id": "wool-plain-1",
+      "hex": "#1A233B",
+      "label": "Navy Worsted"
+    },
+    {
+      "id": "wool-plain-2",
+      "hex": "#2F3135",
+      "label": "Charcoal Worsted"
+    },
+    {
+      "id": "wool-plain-3",
+      "hex": "#686A6E",
+      "label": "Mid Grey Flannel"
+    },
+    {
+      "id": "wool-plain-4",
+      "hex": "#A47A4B",
+      "label": "Camel Hair Twill"
+    },
+    {
+      "id": "wool-plain-5",
+      "hex": "#141317",
+      "label": "Black Barathea"
+    },
+    {
+      "id": "wool-plain-6",
+      "hex": "#412A1B",
+      "label": "Chocolate Gabardine"
+    },
+    {
+      "id": "wool-plain-7",
+      "hex": "#1B3628",
+      "label": "Bottle Green Serge"
+    },
+    {
+      "id": "wool-plain-8",
+      "hex": "#52171D",
+      "label": "Oxblood Hopsack"
+    },
+    {
+      "id": "wool-plain-9",
+      "hex": "#D6D1C3",
+      "label": "Ivory Cashmere Flannel"
+    },
+    {
+      "id": "wool-plain-10",
+      "hex": "#111728",
+      "label": "Midnight Super 120s"
+    },
+    {
+      "id": "wool-dobies-1",
+      "hex": "#777D8B",
+      "label": "Navy Bird's-Eye"
+    },
+    {
+      "id": "wool-dobies-2",
+      "hex": "#656768",
+      "label": "Charcoal Nailhead"
+    },
+    {
+      "id": "wool-dobies-3",
+      "hex": "#7A7A79",
+      "label": "Grey Herringbone"
+    },
+    {
+      "id": "wool-dobies-4",
+      "hex": "#283145",
+      "label": "Navy Barleycorn"
+    },
+    {
+      "id": "wool-dobies-5",
+      "hex": "#5F3F29",
+      "label": "Brown Sharkskin"
+    },
+    {
+      "id": "wool-dobies-6",
+      "hex": "#2B3241",
+      "label": "Midnight Pick-and-Pick"
+    },
+    {
+      "id": "wool-dobies-7",
+      "hex": "#4D4F53",
+      "label": "Charcoal Hopsack"
+    },
+    {
+      "id": "wool-dobies-8",
+      "hex": "#182036",
+      "label": "Navy Basket Weave"
+    },
+    {
+      "id": "wool-dobies-9",
+      "hex": "#998E7E",
+      "label": "Taupe Honeycomb"
+    },
+    {
+      "id": "wool-dobies-10",
+      "hex": "#1C3729",
+      "label": "Bottle Bedford Cord"
+    },
+    {
+      "id": "wool-lining-1",
+      "hex": "#631E2B",
+      "label": "Burgundy Twill Lining"
+    },
+    {
+      "id": "wool-lining-2",
+      "hex": "#B59449",
+      "label": "Gold Satin Lining"
+    },
+    {
+      "id": "wool-lining-3",
+      "hex": "#1C263E",
+      "label": "Navy Twill Lining"
+    },
+    {
+      "id": "wool-lining-4",
+      "hex": "#1D382A",
+      "label": "Bottle Green Lining"
+    },
+    {
+      "id": "wool-lining-5",
+      "hex": "#CCBD9E",
+      "label": "Champagne Satin Lining"
+    },
+    {
+      "id": "wool-lining-6",
+      "hex": "#17161A",
+      "label": "Black Lining"
+    },
+    {
+      "id": "wool-lining-7",
+      "hex": "#808285",
+      "label": "Pewter Satin Lining"
+    },
+    {
+      "id": "wool-lining-8",
+      "hex": "#49233C",
+      "label": "Plum Lining"
+    },
+    {
+      "id": "wool-lining-9",
+      "hex": "#841D32",
+      "label": "Ruby Satin Lining"
+    },
+    {
+      "id": "wool-lining-10",
+      "hex": "#6C4D2C",
+      "label": "Tobacco Lining"
+    },
+    {
+      "id": "wool-chex-1",
+      "hex": "#676869",
+      "label": "Prince of Wales Check"
+    },
+    {
+      "id": "wool-chex-2",
+      "hex": "#757474",
+      "label": "Glen Urquhart Check"
+    },
+    {
+      "id": "wool-chex-3",
+      "hex": "#76736E",
+      "label": "Black Houndstooth"
+    },
+    {
+      "id": "wool-chex-4",
+      "hex": "#1A233B",
+      "label": "Navy Windowpane"
+    },
+    {
+      "id": "wool-chex-5",
+      "hex": "#A0836E",
+      "label": "Gun Club Check"
+    },
+    {
+      "id": "wool-chex-6",
+      "hex": "#1A2931",
+      "label": "Black Watch Tartan"
+    },
+    {
+      "id": "wool-chex-7",
+      "hex": "#7F1B2C",
+      "label": "Royal Dress Tartan"
+    },
+    {
+      "id": "wool-chex-8",
+      "hex": "#848484",
+      "label": "Grey Shepherd's Check"
+    },
+    {
+      "id": "wool-chex-9",
+      "hex": "#5A3E27",
+      "label": "Brown Dogtooth"
+    },
+    {
+      "id": "wool-chex-10",
+      "hex": "#212227",
+      "label": "Charcoal Buffalo Check"
+    },
+    {
+      "id": "wool-print-1",
+      "hex": "#611B27",
+      "label": "Challis Paisley"
+    },
+    {
+      "id": "wool-print-2",
+      "hex": "#182139",
+      "label": "Navy Challis Foulard"
+    },
+    {
+      "id": "wool-print-3",
+      "hex": "#303236",
+      "label": "Ivory Pin Dot"
+    },
+    {
+      "id": "wool-print-5",
+      "hex": "#1B3628",
+      "label": "Forest Leaf Trail"
+    },
+    {
+      "id": "wool-print-6",
+      "hex": "#83827E",
+      "label": "Deco Fans"
+    },
+    {
+      "id": "wool-print-7",
+      "hex": "#51171D",
+      "label": "Oxblood Quatrefoil"
+    },
+    {
+      "id": "wool-print-8",
+      "hex": "#18213A",
+      "label": "Heritage Trellis"
+    },
+    {
+      "id": "wool-print-10",
+      "hex": "#18223A",
+      "label": "Club Stripe"
+    },
+    {
+      "id": "wool-tweed-1",
+      "hex": "#5F5543",
+      "label": "Harris Herringbone"
+    },
+    {
+      "id": "wool-tweed-4",
+      "hex": "#535438",
+      "label": "Moss Barleycorn"
+    },
+    {
+      "id": "wool-tweed-7",
+      "hex": "#5F4730",
+      "label": "Brown Herringbone"
+    },
+    {
+      "id": "wool-tweed-8",
+      "hex": "#616A58",
+      "label": "Lovat Hopsack"
+    },
+    {
+      "id": "wool-tweed-9",
+      "hex": "#5B5E64",
+      "label": "Birdseye Tweed"
+    },
+    {
+      "id": "wool-tweed-10",
+      "hex": "#7D5F46",
+      "label": "Rust Houndstooth Tweed"
+    },
+    {
+      "id": "silk-plain-1",
+      "hex": "#D7D3C4",
+      "label": "Ivory Habotai"
+    },
+    {
+      "id": "silk-plain-2",
+      "hex": "#CBBC9C",
+      "label": "Champagne Shantung"
+    },
+    {
+      "id": "silk-plain-3",
+      "hex": "#151B2B",
+      "label": "Midnight Silk Twill"
+    },
+    {
+      "id": "silk-plain-4",
+      "hex": "#7F162C",
+      "label": "Ruby Dupioni"
+    },
+    {
+      "id": "silk-plain-7",
+      "hex": "#CFB3AB",
+      "label": "Blush Crêpe de Chine"
+    },
+    {
+      "id": "silk-plain-8",
+      "hex": "#19181C",
+      "label": "Black Silk Faille"
+    },
+    {
+      "id": "silk-plain-10",
+      "hex": "#7E8083",
+      "label": "Pewter Silk Twill"
+    },
+    {
+      "id": "silk-lining-1",
+      "hex": "#D8D3C5",
+      "label": "Ivory Silk Lining"
+    },
+    {
+      "id": "silk-lining-2",
+      "hex": "#CBBC9D",
+      "label": "Champagne Twill Lining"
+    },
+    {
+      "id": "silk-lining-3",
+      "hex": "#1C263E",
+      "label": "Navy Silk Lining"
+    },
+    {
+      "id": "silk-lining-4",
+      "hex": "#651F2C",
+      "label": "Burgundy Silk Lining"
+    },
+    {
+      "id": "silk-lining-5",
+      "hex": "#161518",
+      "label": "Black Silk Lining"
+    },
+    {
+      "id": "silk-lining-6",
+      "hex": "#B49244",
+      "label": "Gold Silk Lining"
+    },
+    {
+      "id": "silk-lining-7",
+      "hex": "#1E392B",
+      "label": "Bottle Green Silk Lining"
+    },
+    {
+      "id": "silk-lining-10",
+      "hex": "#47233A",
+      "label": "Plum Silk Lining"
+    },
+    {
+      "id": "silk-print-1",
+      "hex": "#1D263E",
+      "label": "Navy Foulard"
+    },
+    {
+      "id": "silk-print-2",
+      "hex": "#65202D",
+      "label": "Burgundy Paisley"
+    },
+    {
+      "id": "silk-print-3",
+      "hex": "#161B2C",
+      "label": "Ivory Polka Dot"
+    },
+    {
+      "id": "silk-print-6",
+      "hex": "#777264",
+      "label": "Deco Fans"
+    },
+    {
+      "id": "silk-print-7",
+      "hex": "#1E3B6E",
+      "label": "Sapphire Trellis"
+    },
+    {
+      "id": "silk-print-8",
+      "hex": "#D0B5AD",
+      "label": "Blush Botanical"
+    },
+    {
+      "id": "silk-print-9",
+      "hex": "#80192E",
+      "label": "Ruby Quatrefoil"
+    },
+    {
+      "id": "silk-print-10",
+      "hex": "#CCBD9D",
+      "label": "Champagne Sprig"
+    },
+    {
+      "id": "silk-satin-1",
+      "hex": "#D9D4C6",
+      "label": "Ivory Charmeuse"
+    },
+    {
+      "id": "silk-satin-2",
+      "hex": "#CCBFA1",
+      "label": "Champagne Satin"
+    },
+    {
+      "id": "silk-satin-3",
+      "hex": "#212123",
+      "label": "Black Duchess Satin"
+    },
+    {
+      "id": "silk-satin-4",
+      "hex": "#1F2434",
+      "label": "Midnight Satin"
+    },
+    {
+      "id": "cotton-linen-plain-1",
+      "hex": "#C1B395",
+      "label": "Natural Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-2",
+      "hex": "#DBDAD6",
+      "label": "White Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-3",
+      "hex": "#AEA593",
+      "label": "Stone Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-4",
+      "hex": "#19223A",
+      "label": "Navy Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-5",
+      "hex": "#88937A",
+      "label": "Sage Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-6",
+      "hex": "#BAA988",
+      "label": "Sand Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-7",
+      "hex": "#96ADC4",
+      "label": "Sky Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-8",
+      "hex": "#6C4B2A",
+      "label": "Tobacco Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-9",
+      "hex": "#CBC3AD",
+      "label": "Ecru Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-plain-10",
+      "hex": "#505033",
+      "label": "Olive Cotton-Linen"
+    },
+    {
+      "id": "cotton-linen-dobies-1",
+      "hex": "#C6BCA5",
+      "label": "Ecru Herringbone"
+    },
+    {
+      "id": "cotton-linen-dobies-2",
+      "hex": "#182036",
+      "label": "Navy Hopsack"
+    },
+    {
+      "id": "cotton-linen-dobies-4",
+      "hex": "#B7AD98",
+      "label": "Stone Basket Weave"
+    },
+    {
+      "id": "cotton-linen-dobies-6",
+      "hex": "#C5B99D",
+      "label": "Sand Diamond Dobby"
+    },
+    {
+      "id": "cotton-linen-dobies-7",
+      "hex": "#65644B",
+      "label": "Olive Twill"
+    },
+    {
+      "id": "cotton-linen-dobies-8",
+      "hex": "#7A808F",
+      "label": "Chambray"
+    },
+    {
+      "id": "cotton-linen-dobies-9",
+      "hex": "#BCB8AB",
+      "label": "Ivory Honeycomb"
+    },
+    {
+      "id": "cotton-linen-dobies-10",
+      "hex": "#968B7C",
+      "label": "Taupe Barleycorn"
+    },
+    {
+      "id": "cotton-linen-lining-1",
+      "hex": "#D4CFC1",
+      "label": "Ivory Voile Lining"
+    },
+    {
+      "id": "cotton-linen-lining-2",
+      "hex": "#BEB093",
+      "label": "Natural Lining"
+    },
+    {
+      "id": "cotton-linen-lining-3",
+      "hex": "#C6B898",
+      "label": "Champagne Lining"
+    },
+    {
+      "id": "cotton-linen-lining-4",
+      "hex": "#19223A",
+      "label": "Navy Lining"
+    },
+    {
+      "id": "cotton-linen-lining-5",
+      "hex": "#ABA290",
+      "label": "Stone Lining"
+    },
+    {
+      "id": "cotton-linen-lining-6",
+      "hex": "#869179",
+      "label": "Sage Lining"
+    },
+    {
+      "id": "cotton-linen-lining-7",
+      "hex": "#CCB1A8",
+      "label": "Blush Lining"
+    },
+    {
+      "id": "cotton-linen-lining-8",
+      "hex": "#94ABC2",
+      "label": "Sky Lining"
+    },
+    {
+      "id": "cotton-linen-lining-9",
+      "hex": "#6B4B2A",
+      "label": "Tobacco Lining"
+    },
+    {
+      "id": "cotton-linen-lining-10",
+      "hex": "#D9D8D4",
+      "label": "White Batiste"
+    },
+    {
+      "id": "cotton-linen-chex-1",
+      "hex": "#797D88",
+      "label": "Navy Gingham"
+    },
+    {
+      "id": "cotton-linen-chex-3",
+      "hex": "#A9A08F",
+      "label": "Stone Windowpane"
+    },
+    {
+      "id": "cotton-linen-chex-4",
+      "hex": "#D3CBB7",
+      "label": "Tattersall"
+    },
+    {
+      "id": "cotton-linen-chex-5",
+      "hex": "#DAD9D5",
+      "label": "Indigo Graph Check"
+    },
+    {
+      "id": "cotton-linen-chex-6",
+      "hex": "#A18C71",
+      "label": "Tobacco Shepherd's Check"
+    },
+    {
+      "id": "cotton-linen-chex-7",
+      "hex": "#888987",
+      "label": "Glen Check"
+    },
+    {
+      "id": "cotton-linen-chex-8",
+      "hex": "#B8C3CD",
+      "label": "Sky Gingham"
+    },
+    {
+      "id": "cotton-linen-chex-9",
+      "hex": "#6B6A6B",
+      "label": "Navy Buffalo Check"
+    },
+    {
+      "id": "cotton-linen-chex-10",
+      "hex": "#8F8B75",
+      "label": "Olive Houndstooth"
+    },
+    {
+      "id": "cotton-linen-print-1",
+      "hex": "#D7D0BC",
+      "label": "Indigo Paisley"
+    },
+    {
+      "id": "cotton-linen-print-2",
+      "hex": "#BEB29A",
+      "label": "Terracotta Foulard"
+    },
+    {
+      "id": "cotton-linen-print-3",
+      "hex": "#D8D7D3",
+      "label": "Navy Pin Dot"
+    },
+    {
+      "id": "cotton-linen-print-4",
+      "hex": "#C9C1AB",
+      "label": "Floral Buti"
+    },
+    {
+      "id": "cotton-linen-print-5",
+      "hex": "#BCAF92",
+      "label": "Leaf Trail"
+    },
+    {
+      "id": "cotton-linen-print-6",
+      "hex": "#D4CDB9",
+      "label": "Indigo Ikat"
+    },
+    {
+      "id": "cotton-linen-print-8",
+      "hex": "#DCDBD7",
+      "label": "Trellis"
+    },
+    {
+      "id": "cotton-linen-print-9",
+      "hex": "#D0C9B5",
+      "label": "Sprig"
+    },
+    {
+      "id": "cotton-wool-plain-1",
+      "hex": "#182139",
+      "label": "Navy Cotton-Wool Twill"
+    },
+    {
+      "id": "cotton-wool-plain-2",
+      "hex": "#2F3135",
+      "label": "Charcoal Flannel"
+    },
+    {
+      "id": "cotton-wool-plain-3",
+      "hex": "#A37A4B",
+      "label": "Camel Twill"
+    },
+    {
+      "id": "cotton-wool-plain-4",
+      "hex": "#6A6B6F",
+      "label": "Grey Melange"
+    },
+    {
+      "id": "cotton-wool-plain-5",
+      "hex": "#1A3527",
+      "label": "Bottle Green Twill"
+    },
+    {
+      "id": "cotton-wool-plain-6",
+      "hex": "#412A1B",
+      "label": "Chocolate Twill"
+    },
+    {
+      "id": "cotton-wool-plain-7",
+      "hex": "#52161D",
+      "label": "Oxblood Twill"
+    },
+    {
+      "id": "cotton-wool-plain-8",
+      "hex": "#AEA492",
+      "label": "Stone Gabardine"
+    },
+    {
+      "id": "cotton-wool-plain-9",
+      "hex": "#D6D1C3",
+      "label": "Ivory Twill"
+    },
+    {
+      "id": "cotton-wool-plain-10",
+      "hex": "#6C4B2A",
+      "label": "Tobacco Brushed Twill"
+    },
+    {
+      "id": "cotton-wool-dobies-1",
+      "hex": "#343C4D",
+      "label": "Navy Bird's-Eye"
+    },
+    {
+      "id": "cotton-wool-dobies-2",
+      "hex": "#565656",
+      "label": "Charcoal Herringbone"
+    },
+    {
+      "id": "cotton-wool-dobies-3",
+      "hex": "#AE9169",
+      "label": "Camel Barleycorn"
+    },
+    {
+      "id": "cotton-wool-dobies-5",
+      "hex": "#48494D",
+      "label": "Grey Nailhead"
+    },
+    {
+      "id": "cotton-wool-dobies-6",
+      "hex": "#182036",
+      "label": "Navy Basket Weave"
+    },
+    {
+      "id": "cotton-wool-dobies-8",
+      "hex": "#948979",
+      "label": "Taupe Piqué"
+    },
+    {
+      "id": "cotton-wool-dobies-9",
+      "hex": "#1C3729",
+      "label": "Bottle Bedford Cord"
+    },
+    {
+      "id": "cotton-wool-dobies-10",
+      "hex": "#2B3241",
+      "label": "Midnight Pick-and-Pick"
+    },
+    {
+      "id": "cotton-wool-lining-1",
+      "hex": "#651E2C",
+      "label": "Burgundy Twill Lining"
+    },
+    {
+      "id": "cotton-wool-lining-2",
+      "hex": "#B59448",
+      "label": "Gold Sateen Lining"
+    },
+    {
+      "id": "cotton-wool-lining-3",
+      "hex": "#1B253D",
+      "label": "Navy Twill Lining"
+    },
+    {
+      "id": "cotton-wool-lining-4",
+      "hex": "#CBBD9D",
+      "label": "Champagne Sateen Lining"
+    },
+    {
+      "id": "cotton-wool-lining-5",
+      "hex": "#1D382A",
+      "label": "Bottle Green Lining"
+    },
+    {
+      "id": "cotton-wool-lining-6",
+      "hex": "#161519",
+      "label": "Black Lining"
+    },
+    {
+      "id": "cotton-wool-lining-7",
+      "hex": "#7F8184",
+      "label": "Pewter Sateen Lining"
+    },
+    {
+      "id": "cotton-wool-lining-8",
+      "hex": "#47223B",
+      "label": "Plum Lining"
+    },
+    {
+      "id": "cotton-wool-lining-9",
+      "hex": "#6E4D2C",
+      "label": "Tobacco Lining"
+    },
+    {
+      "id": "cotton-wool-lining-10",
+      "hex": "#D8D4C5",
+      "label": "Ivory Sateen Lining"
+    },
+    {
+      "id": "cotton-wool-chex-1",
+      "hex": "#6B6967",
+      "label": "Prince of Wales Check"
+    },
+    {
+      "id": "cotton-wool-chex-2",
+      "hex": "#6F7076",
+      "label": "Glen Check"
+    },
+    {
+      "id": "cotton-wool-chex-3",
+      "hex": "#74726D",
+      "label": "Black Houndstooth"
+    },
+    {
+      "id": "cotton-wool-chex-4",
+      "hex": "#A47B4B",
+      "label": "Brown Windowpane"
+    },
+    {
+      "id": "cotton-wool-chex-5",
+      "hex": "#978570",
+      "label": "Gun Club Check"
+    },
+    {
+      "id": "cotton-wool-chex-6",
+      "hex": "#192931",
+      "label": "Black Watch Tartan"
+    },
+    {
+      "id": "cotton-wool-chex-8",
+      "hex": "#8B7C6A",
+      "label": "Shepherd's Check"
+    },
+    {
+      "id": "cotton-wool-chex-9",
+      "hex": "#9F9C97",
+      "label": "Navy Dogtooth"
+    },
+    {
+      "id": "cotton-wool-chex-10",
+      "hex": "#32151A",
+      "label": "Buffalo Check"
+    },
+    {
+      "id": "cotton-wool-print-1",
+      "hex": "#19223A",
+      "label": "Paisley"
+    },
+    {
+      "id": "cotton-wool-print-2",
+      "hex": "#1B3629",
+      "label": "Foulard"
+    },
+    {
+      "id": "cotton-wool-print-4",
+      "hex": "#A37A4B",
+      "label": "Ogee"
+    },
+    {
+      "id": "cotton-wool-print-5",
+      "hex": "#51171D",
+      "label": "Leaf Trail"
+    },
+    {
+      "id": "cotton-wool-print-7",
+      "hex": "#41291B",
+      "label": "Quatrefoil"
+    },
+    {
+      "id": "cotton-wool-print-8",
+      "hex": "#1D3828",
+      "label": "Trellis"
+    },
+    {
+      "id": "cotton-wool-print-9",
+      "hex": "#C2B79E",
+      "label": "Sprig"
+    },
+    {
+      "id": "cotton-wool-print-10",
+      "hex": "#1B3628",
+      "label": "Club Stripe"
+    },
+    {
+      "id": "cotton-spandex-denim-2",
+      "hex": "#31384A",
+      "label": "Selvedge Indigo"
+    },
+    {
+      "id": "cotton-spandex-denim-6",
+      "hex": "#1C1B1E",
+      "label": "Black Denim"
+    },
+    {
+      "id": "cotton-spandex-denim-8",
+      "hex": "#CAC3B4",
+      "label": "Ecru Denim"
+    },
+    {
+      "id": "cotton-spandex-denim-9",
+      "hex": "#141B2A",
+      "label": "Indigo-Black Overdye"
+    },
+    {
+      "id": "cotton-spandex-denim-10",
+      "hex": "#D6D5CF",
+      "label": "White Denim"
+    },
+    {
+      "id": "cotton-spandex-corduroy-1",
+      "hex": "#785734",
+      "label": "Tobacco Needlecord"
+    },
+    {
+      "id": "cotton-spandex-corduroy-3",
+      "hex": "#19223A",
+      "label": "Navy Corduroy"
+    },
+    {
+      "id": "cotton-spandex-corduroy-4",
+      "hex": "#1B3528",
+      "label": "Bottle Green Corduroy"
+    },
+    {
+      "id": "cotton-spandex-corduroy-5",
+      "hex": "#5F1B27",
+      "label": "Burgundy Corduroy"
+    },
+    {
+      "id": "cotton-spandex-corduroy-7",
+      "hex": "#412A1B",
+      "label": "Chocolate Corduroy"
+    },
+    {
+      "id": "cotton-spandex-corduroy-8",
+      "hex": "#525134",
+      "label": "Olive Needlecord"
+    },
+    {
+      "id": "cotton-spandex-corduroy-10",
+      "hex": "#797B7F",
+      "label": "Grey Corduroy"
+    },
+    {
+      "id": "leather-plain-1",
+      "hex": "#16151A",
+      "label": "Black Calf"
+    },
+    {
+      "id": "leather-plain-2",
+      "hex": "#7E4524",
+      "label": "Cognac Calf"
+    },
+    {
+      "id": "leather-plain-5",
+      "hex": "#551920",
+      "label": "Oxblood Calf"
+    },
+    {
+      "id": "leather-plain-6",
+      "hex": "#1B253D",
+      "label": "Navy Calf"
+    },
+    {
+      "id": "leather-plain-7",
+      "hex": "#CEC8B8",
+      "label": "Bone Calf"
+    },
+    {
+      "id": "leather-plain-9",
+      "hex": "#6C6E72",
+      "label": "Grey Pebble Grain"
+    },
+    {
+      "id": "leather-plain-10",
+      "hex": "#671F2D",
+      "label": "Burgundy Pebble Grain"
+    },
+    {
+      "id": "leather-suede-1",
+      "hex": "#C1B08D",
+      "label": "Sand Suede"
+    },
+    {
+      "id": "leather-suede-2",
+      "hex": "#704E2C",
+      "label": "Tobacco Suede"
+    },
+    {
+      "id": "leather-suede-3",
+      "hex": "#422B1C",
+      "label": "Chocolate Suede"
+    },
+    {
+      "id": "leather-suede-4",
+      "hex": "#1A243C",
+      "label": "Navy Suede"
+    },
+    {
+      "id": "leather-suede-7",
+      "hex": "#141318",
+      "label": "Black Suede"
+    },
+    {
+      "id": "leather-suede-8",
+      "hex": "#631B28",
+      "label": "Burgundy Suede"
+    },
+    {
+      "id": "leather-suede-9",
+      "hex": "#A97F4E",
+      "label": "Camel Suede"
+    },
+    {
+      "id": "leather-suede-10",
+      "hex": "#6C6E72",
+      "label": "Grey Suede"
+    },
+    {
+      "id": "leather-patent-1",
+      "hex": "#16151A",
+      "label": "Black Patent"
+    },
+    {
+      "id": "leather-patent-6",
+      "hex": "#6E1E2E",
+      "label": "Burgundy Patent"
+    },
+    {
+      "id": "leather-patent-10",
+      "hex": "#141A2F",
+      "label": "Midnight Patent"
+    },
+    {
       "id": "tt-linen-1",
       "hex": "#EBDCD4",
       "label": "tt-linen-1"
+    },
+    {
+      "id": "tt-silk-1",
+      "hex": "#C5C5C2",
+      "label": "tt-silk-1"
     }
   ]
 }

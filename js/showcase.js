@@ -234,7 +234,7 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
     function clothArgs(c) {
         if (c.id === 'original') return null;
         const card = list.querySelector(`.swatch-card[data-fabric-id="${window.CSS.escape(c.id)}"]`);
-        if (!card) return undefined;    // not offered on this page
+        if (!card || card.classList.contains('is-out')) return undefined;    // not offered here, or out of stock
         return [card.dataset.texture,
                 parseFloat(card.dataset.opacity ?? '1'),
                 parseFloat(card.dataset.roughness ?? '0.75'),
@@ -285,7 +285,7 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
        turns inside each, so neighbouring cloths always differ */
     function buildCycle() {
         const byColl = new Map();
-        for (const card of list.querySelectorAll('.swatch-card[data-fabric-id]')) {
+        for (const card of list.querySelectorAll('.swatch-card[data-fabric-id]:not(.is-out)')) {
             const c = clothOf(card);
             if (!byColl.has(c.coll)) byColl.set(c.coll, new Map());
             const byType = byColl.get(c.coll);

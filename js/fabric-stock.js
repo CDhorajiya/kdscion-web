@@ -8,7 +8,7 @@
  *  Shared source of truth (Firebase RTDB) for two things:
  *
  *   1. Which fabrics are currently IN STOCK, globally. Swatch IDs
- *      (e.g. 'cotton-1') are global — the same swatch is reused
+ *      (e.g. 'cotton-plain-1') are global — the same swatch is reused
  *      across many products — so stock is tracked once per fabric,
  *      not per product. Schema:
  *        fabrics/{fabricId}/inStock : boolean
@@ -101,7 +101,7 @@ export async function getProductSnapConfig(sku) {
   return { fabricOrder: val.fabricOrder || [], snaps: val.snaps || {} };
 }
 
-/** setProductFabricOrder(sku, fabricOrder) — e.g. ['cotton-1','linen-1','wool-1'] */
+/** setProductFabricOrder(sku, fabricOrder) — e.g. ['cotton-plain-1','linen-plain-1','wool-plain-1'] */
 export async function setProductFabricOrder(sku, fabricOrder) {
   await ensureFirebase();
   await fFB.update(fFB.ref(fDb, `products/${sku}`), { fabricOrder });

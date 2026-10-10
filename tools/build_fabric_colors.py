@@ -5,7 +5,7 @@ tools/build_fabric_colors.py — swatch images -> data/fabric-color.json
 WHY THIS EXISTS
 ---------------
 The curated palettes speak in colour ("Sapphire", #0F52BA). The fabric
-catalogue speaks in images (images/linen-1.webp). Nothing connected the two,
+catalogue speaks in images (images/fabrics/linen-plain-1.webp). Nothing connected the two,
 so "Sapphire suits you" could never become "this linen, in stock, on this
 dress." This tool reads every swatch image and records what colour it
 actually is, in a form the matcher can measure distance against.
@@ -147,8 +147,8 @@ def analyse(path, sample=140):
 # ── Which swatches exist ─────────────────────────────────────────────────────
 def swatches_from_catalog():
     src = FABRICS.read_text(encoding="utf8")
-    found = re.findall(r"\{\s*id:\s*'([^']+)'\s*,\s*label:\s*'([^']*)'\s*,\s*image:\s*'([^']+)'", src)
-    return [{"id": i, "label": l, "image": img} for i, l, img in found]
+    found = re.findall(r"\{\s*id:\s*'([^']+)'\s*,\s*label:\s*'((?:[^'\\]|\\.)*)'\s*,\s*image:\s*'([^']+)'", src)
+    return [{"id": i, "label": l.replace("\\'", "'"), "image": img} for i, l, img in found]
 
 def main():
     swatches = swatches_from_catalog()
@@ -162,7 +162,7 @@ def main():
 
     colors, missing, failed = {}, [], []
     for s in swatches:
-        img = ROOT / s["image"]
+        img = ROOT / s["image"].split("#")[0]   # tiled swatches carry a "#r<repeat>" suffix
         if not img.exists():
             missing.append(s["id"]); continue
         try:

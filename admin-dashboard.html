@@ -660,6 +660,19 @@
       border-radius: 2px;
       border: 1px solid #ddd;
     }
+    /* ── Fabric library ── */
+    .lib-toolbar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; padding: 1rem 1.4rem; border-bottom: 1px solid #eee; background: #fff; position: sticky; top: 0; z-index: 2; }
+    .lib-chip, .lib-mini { font-family: "Times New Roman", serif; font-size: var(--ds-sm); letter-spacing: 1px; color: #333; background: #fff; border: 1px solid #ccc; border-radius: 999px; padding: 0.3rem 0.9rem; cursor: pointer; }
+    .lib-mini { border-radius: 2px; padding: 0.2rem 0.6rem; font-size: var(--ds-xs); }
+    .lib-chip:hover, .lib-mini:hover { border-color: #111; color: #111; }
+    .lib-chip.on { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+    .lib-count { font-family: "Times New Roman", serif; font-size: var(--ds-sm); letter-spacing: 1px; text-transform: none; color: #777; margin-left: 0.6rem; }
+    .lib-arrow { display: inline-block; font-size: var(--ds-xs); color: #111; transition: transform 0.2s; }
+    .lib-bulk { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .lib-id { font-family: "Courier New", monospace; font-size: var(--ds-xs); color: #888; letter-spacing: 0; }
+    .lib-coll .fab-swatches { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+    .lib-item { grid-template-columns: 56px 1fr auto auto auto; }
+    .lib-item img { width: 56px; height: 56px; }
     .fab-swatch-del {
       background: none;
       border: none;
@@ -1093,7 +1106,7 @@
     import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
-    import { FABRIC_CATALOG, TWOTONE_CATALOG, DRAPE_TYPES, loadFabricOverrides, saveFabricOverrides, startFabricSettingsSync, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
+    import { FABRIC_CATALOG, TWOTONE_CATALOG, DRAPE_TYPES, TYPE_MATERIAL_DEFAULTS, loadFabricOverrides, saveFabricOverrides, startFabricSettingsSync, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
     import { FIREBASE_CONFIG, IS_DEMO } from './js/firebase-config.js';
     import { getAllFabricStock, subscribeFabricStock, setFabricStock } from './js/fabric-stock.js';
 
@@ -2045,7 +2058,7 @@ const ALL_DESIGNS = [
       const rowStyle = "grid-column:1 / -1;display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0 0.25rem 0.2rem;border-top:1px solid #f0f0f0;";
       const rowLabel = "font-family:'Times New Roman',serif;font-size:var(--ds-base);letter-spacing:1px;color:#555;";
       // Opacity: a saved number = on at that value (1.00 included); false (or legacy null) =
-      // switched off (opaque); nothing saved = the built-in value (cotton-1's 0.7 shows as on).
+      // switched off (opaque); nothing saved = the built-in value (cotton-plain-1's 0.7 shows as on).
       const opacityRow = (s) => {
         const builtIn = s.opacity ?? null;
         const saved   = (overrides.swatchOpacity ?? {})[s.id];
@@ -2078,55 +2091,103 @@ const ALL_DESIGNS = [
           </select>
         </div>`;
       };
+      // ── Fabric library: every Main Design swatch, by fabric type → collection ──
+      // Finish = per-swatch roughness / sheen for the 3D cloth (overrides.swatchRoughness /
+      // swatchSheen; nothing saved = the swatch's own value, else its fabric type's default).
+      const finishRow = (s, typeId) => {
+        const def = TYPE_MATERIAL_DEFAULTS[typeId] ?? { roughness: 0.75, sheen: 0 };
+        const baseR = s.roughness ?? def.roughness, baseS = s.sheen ?? def.sheen;
+        const r = (overrides.swatchRoughness ?? {})[s.id], sh = (overrides.swatchSheen ?? {})[s.id];
+        const custom = r !== undefined || sh !== undefined;
+        const slider = (kind, val, base) => `
+          <label style="${rowLabel}display:flex;align-items:center;gap:0.5rem;flex:1;min-width:11rem;">
+            ${kind === 'roughness' ? 'Matte' : 'Sheen'}
+            <input type="range" min="0" max="1" step="0.05" value="${val ?? base}"
+              oninput="setSwatchFinish('${s.id}', '${kind}', parseFloat(this.value)); this.nextElementSibling.textContent = parseFloat(this.value).toFixed(2)"
+              style="flex:1;min-width:60px;accent-color:#1a1a1a;">
+            <span style="font-family:'Courier New',monospace;min-width:3rem;text-align:right;color:${val === undefined ? '#999' : '#111'}">${(val ?? base).toFixed(2)}</span>
+          </label>`;
+        return `<div style="${rowStyle}flex-wrap:wrap;">
+          <span style="${rowLabel}min-width:3.6rem;">Finish</span>
+          ${slider('roughness', r, baseR)}${slider('sheen', sh, baseS)}
+          ${custom ? `<button class="lib-mini" onclick="resetSwatchFinish('${s.id}')" title="Back to the built-in finish">Reset</button>` : ''}
+        </div>`;
+      };
+      const isTranslucent = (s) => {
+        const saved = (overrides.swatchOpacity ?? {})[s.id];
+        return saved === undefined ? (s.opacity ?? 1) < 1 : typeof saved === 'number' && saved < 1;
+      };
+      const hasFinish = (s) => (overrides.swatchRoughness ?? {})[s.id] !== undefined || (overrides.swatchSheen ?? {})[s.id] !== undefined;
+      const libTotals = { all: 0, hidden: 0, out: 0, translucent: 0, finish: 0 };
+      const countLine = (list) => {
+        const h = list.filter(x => !sOn(x.id)).length, o = list.filter(x => !stockOn(x.id)).length;
+        return `${list.length} swatch${list.length === 1 ? '' : 'es'}${h ? ` · ${h} hidden` : ''}${o ? ` · <span style="color:#b03a2e">${o} out of stock</span>` : ''}`;
+      };
       let swatchMgmtHtml = '';
       catalog.forEach(type => {
         let collsHtml = '';
+        const typeSwatches = type.collections.flatMap(c => c.swatches);
         type.collections.forEach(coll => {
           const swatchItems = coll.swatches.map(s => {
             const visible   = sOn(s.id);
             const isExtra   = !!(overrides.extras?.[`${type.id}:${coll.id}`]?.find(e => e.id === s.id));
             const inStock = stockOn(s.id);
-            return `<div class="fab-swatch-item" style="flex-wrap:wrap;gap:0.5rem;">
-              <img src="${s.thumb || s.image}" alt="${s.label}">
-              <span style="flex:1">${s.label}</span>
+            libTotals.all++; if (!visible) libTotals.hidden++; if (!inStock) libTotals.out++;
+            if (isTranslucent(s)) libTotals.translucent++; if (hasFinish(s)) libTotals.finish++;
+            const tile = (s.image || '').split('#')[0];
+            const flags = [!visible && 'hidden', !inStock && 'out', isTranslucent(s) && 'translucent', hasFinish(s) && 'finish'].filter(Boolean).join(' ');
+            return `<div class="fab-swatch-item lib-item" data-q="${(s.label + ' ' + s.id + ' ' + type.label + ' ' + coll.label).toLowerCase().replace(/"/g, '')}" data-flags="${flags}">
+              <a href="${tile}" target="_blank" title="Open the full swatch"><img src="${s.thumb || s.image}" alt="${s.label}" loading="lazy"></a>
+              <span style="flex:1;min-width:0;">${s.label}<br><span class="lib-id">${s.id}</span></span>
               <label class="fab-toggle-col"><span>Visible</span>
-                <label class="fab-toggle" title="Show/hide globally">
+                <label class="fab-toggle" title="Show/hide on every design">
                   <input type="checkbox" ${visible ? 'checked' : ''}
                     onchange="setVisibility('s:${s.id}', this.checked)">
                   <span class="fab-slider"></span>
                 </label>
               </label>
               <label class="fab-toggle-col"><span>Stock</span>
-                <label class="fab-toggle stock" title="In stock — drives the pool page's automatic snap swap">
+                <label class="fab-toggle stock" title="Out of stock: greyed out and unselectable on every product page, skipped by Showcase, swaps the pool snap">
                   <input type="checkbox" ${inStock ? 'checked' : ''}
                     onchange="onFabricStockToggle('${s.id}', this.checked)">
                   <span class="fab-slider"></span>
                 </label>
               </label>
-              ${isExtra ? `<button class="fab-swatch-del" onclick="deleteSwatch('${type.id}','${coll.id}','${s.id}')">✕</button>` : ''}
+              ${isExtra ? `<button class="fab-swatch-del" onclick="deleteSwatch('${type.id}','${coll.id}','${s.id}')">✕</button>` : '<span></span>'}
               ${opacityRow(s)}
               ${drapeRow(s)}
+              ${finishRow(s, type.id)}
             </div>`;
           }).join('');
 
+          const cid = `lib-${type.id}-${coll.id}`;
           collsHtml += `
-            <div class="fab-coll-block">
-              <div class="fab-coll-header">
-                <p class="fab-coll-name">${coll.label}</p>
+            <div class="fab-coll-block lib-coll">
+              <div class="fab-coll-header" style="cursor:pointer;flex-wrap:wrap;gap:0.6rem;" onclick="toggleProductAccordion('acc-${cid}')">
+                <p class="fab-coll-name"><span id="arrow-${cid}" class="lib-arrow">&#9654;</span> ${coll.label}
+                  <span class="lib-count">${countLine(coll.swatches)}</span></p>
+                ${coll.swatches.length ? `<div class="lib-bulk" onclick="event.stopPropagation()">
+                  <button class="lib-mini" onclick="setCollectionVisible('${type.id}','${coll.id}',true)">Show all</button>
+                  <button class="lib-mini" onclick="setCollectionVisible('${type.id}','${coll.id}',false)">Hide all</button>
+                  <button class="lib-mini" onclick="setCollectionStock('${type.id}','${coll.id}',true)">All in stock</button>
+                  <button class="lib-mini" onclick="setCollectionStock('${type.id}','${coll.id}',false)">All out</button>
+                </div>` : ''}
               </div>
-              <div class="fab-swatches">${swatchItems || '<span style="color:#111;font-family:Times New Roman,serif;font-size:var(--ds-base);letter-spacing:2px">No swatches</span>'}</div>
-              <div class="fab-add-form">
-                <input class="fab-add-input" placeholder="Label (e.g. Cotton 3)"
-                  id="lbl-${type.id}-${coll.id}" style="width:140px">
-                <input class="fab-add-input" placeholder="images/filename.jpg"
-                  id="img-${type.id}-${coll.id}" style="width:200px">
-                <select class="fab-add-input" id="drape-${type.id}-${coll.id}"
-                  title="Drape shown in the product page's Fabric Drape window" style="width:150px;cursor:pointer;">
-                  <option value="" disabled selected>Drape type…</option>
-                  ${drapeOptions('')}
-                  <option value="none">No drape</option>
-                </select>
-                <button class="fab-add-btn" onclick="addSwatch('${type.id}','${coll.id}')">+ Add</button>
+              <div id="acc-${cid}" style="display:none;">
+                <div class="fab-swatches">${swatchItems || '<span style="color:#111;font-family:Times New Roman,serif;font-size:var(--ds-base);letter-spacing:2px">No swatches</span>'}</div>
+                <div class="fab-add-form">
+                  <input class="fab-add-input" placeholder="Label (e.g. Navy Twill)"
+                    id="lbl-${type.id}-${coll.id}" style="width:160px">
+                  <input class="fab-add-input" placeholder="images/filename.jpg"
+                    id="img-${type.id}-${coll.id}" style="width:200px">
+                  <select class="fab-add-input" id="drape-${type.id}-${coll.id}"
+                    title="Drape shown in the product page's Fabric Drape window" style="width:150px;cursor:pointer;">
+                    <option value="" disabled selected>Drape type…</option>
+                    ${drapeOptions('')}
+                    <option value="none">No drape</option>
+                  </select>
+                  <button class="fab-add-btn" onclick="addSwatch('${type.id}','${coll.id}')">+ Add</button>
+                </div>
               </div>
             </div>`;
         });
@@ -2134,12 +2195,14 @@ const ALL_DESIGNS = [
         const wreaths = type.wreaths.map(w =>
           `<img src="${w}" style="width:28px;height:28px;object-fit:contain;margin-right:4px">`
         ).join('');
+        const tid = `lib-${type.id}`;
         swatchMgmtHtml += `
-          <div class="fab-type-block">
-            <div class="fab-type-header">
-              <p class="fab-type-name">${wreaths}${type.label}</p>
+          <div class="fab-type-block lib-type">
+            <div class="fab-type-header" style="cursor:pointer;" onclick="toggleProductAccordion('acc-${tid}')">
+              <p class="fab-type-name">${wreaths}${type.label} <span class="lib-count">${countLine(typeSwatches)}</span></p>
+              <span id="arrow-${tid}" class="lib-arrow">&#9654;</span>
             </div>
-            ${collsHtml}
+            <div id="acc-${tid}" style="display:none;">${collsHtml}</div>
           </div>`;
       });
 
@@ -2213,20 +2276,27 @@ const ALL_DESIGNS = [
 
         <hr style="border:none;border-top:2px solid #e0e0e0;margin:2.5rem 0;">
 
-        <!-- Global swatch catalog — Main Design (collapsible) -->
+        <!-- Fabric library — every Main Design swatch (collapsible) -->
         <div style="margin-bottom:1.6rem;border:1px solid #e0e0e0;border-radius:3px;overflow:hidden;">
           <div style="display:flex;align-items:center;justify-content:space-between;
                       padding:1rem 1.4rem;background:#fafaf9;border-bottom:1px solid #e8e8e8;
                       cursor:pointer;" onclick="toggleProductAccordion('acc-catalog-main')">
             <div>
-              <p class="section-label" style="margin:0 0 0.2rem">Global Swatch Catalog — Main Design</p>
+              <p class="section-label" style="margin:0 0 0.2rem">Fabric Library — Main Design</p>
               <p style="font-family:'Times New Roman',serif;font-size:var(--ds-base);letter-spacing:2px;color:#666;margin:0;">
-                Add new swatches · appear in all designs where that fabric type is ON
+                ${libTotals.all} swatches · ${libTotals.hidden} hidden · ${libTotals.out} out of stock · ${libTotals.translucent} translucent · ${libTotals.finish} custom finish
               </p>
             </div>
             <span id="arrow-catalog-main" style="font-size:var(--ds-xs);color:#111;transition:transform 0.2s">&#9654;</span>
           </div>
           <div id="acc-catalog-main" style="display:none;">
+            <div class="lib-toolbar">
+              <input id="lib-search" class="fab-add-input" type="search" placeholder="Search swatches — name, id, fabric or collection"
+                value="${(window._libFilter?.q || '').replace(/"/g, '&quot;')}" oninput="setLibFilter({ q: this.value })" style="flex:1;min-width:16rem;">
+              ${[['all', 'All'], ['hidden', 'Hidden'], ['out', 'Out of stock'], ['translucent', 'Translucent'], ['finish', 'Custom finish']].map(([k, l]) =>
+                `<button class="lib-chip${(window._libFilter?.mode || 'all') === k ? ' on' : ''}" onclick="setLibFilter({ mode: '${k}' })">${l}</button>`).join('')}
+            </div>
+            <p id="lib-empty" class="lib-count" style="display:none;padding:1rem 1.4rem;">No swatches match.</p>
             ${swatchMgmtHtml}
           </div>
         </div>
@@ -2257,6 +2327,7 @@ const ALL_DESIGNS = [
         const arrow = document.getElementById(`arrow-${id.replace('acc-', '')}`);
         if (arrow) arrow.style.transform = 'rotate(90deg)';
       });
+      applyLibFilter();
       window.scrollTo(0, scrollY);
     }
 
@@ -2285,7 +2356,7 @@ const ALL_DESIGNS = [
     };
 
     // ── Per-swatch opacity ────────────────────────────────────────────────────
-    // Stored in overrides.swatchOpacity = { 'cotton-1': 0.7, ... } (Firebase fabricSettings/live, cached in localStorage)
+    // Stored in overrides.swatchOpacity = { 'cotton-plain-1': 0.7, ... } (Firebase fabricSettings/live, cached in localStorage)
     // renderFabricList() reads this and emits data-opacity on every swatch card.
     // All product pages read data-opacity and pass it to applyFabric() / applyFabricToMeshSet().
 
@@ -2327,7 +2398,7 @@ const ALL_DESIGNS = [
     };
 
     // ── Per-swatch drape ──────────────────────────────────────────────────────
-    // Stored under overrides.swatchDrape = { 'cotton-2': 'medium', ... } ('' = no drape).
+    // Stored under overrides.swatchDrape = { 'cotton-plain-2': 'medium', ... } ('' = no drape).
     // renderFabricList() emits it as data-drape on each swatch card, which the
     // product page's Fabric Drape window reads.
     window.setSwatchDrape = function(swatchId, drape) {
@@ -2335,6 +2406,71 @@ const ALL_DESIGNS = [
       if (!overrides.swatchDrape) overrides.swatchDrape = {};
       overrides.swatchDrape[swatchId] = drape;
       saveFabricOverrides(overrides);
+    };
+
+    // ── Fabric library: search + filter (kept across redraws) ─────────────────
+    window._libFilter = window._libFilter || { q: '', mode: 'all' };
+    window.setLibFilter = function(f) {
+      Object.assign(window._libFilter, f);
+      if (f.mode !== undefined) document.querySelectorAll('.lib-chip').forEach(b =>
+        b.classList.toggle('on', b.getAttribute('onclick').includes(`'${f.mode}'`)));
+      applyLibFilter();
+    };
+    function applyLibFilter() {
+      const { q, mode } = window._libFilter;
+      const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      const filtering = terms.length > 0 || mode !== 'all';
+      let shown = 0;
+      document.querySelectorAll('.lib-item').forEach(el => {
+        const ok = terms.every(t => el.dataset.q.includes(t)) && (mode === 'all' || el.dataset.flags.split(' ').includes(mode));
+        el.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      });
+      // while filtering, open every section with a match and fold away the rest
+      document.querySelectorAll('.lib-coll').forEach(c => {
+        const any = [...c.querySelectorAll('.lib-item')].some(el => el.style.display !== 'none');
+        c.style.display = filtering && !any ? 'none' : '';
+        if (filtering && any) c.querySelector('[id^="acc-lib-"]').style.display = 'block';
+      });
+      document.querySelectorAll('.lib-type').forEach(t => {
+        const any = [...t.querySelectorAll('.lib-coll')].some(c => c.style.display !== 'none');
+        t.style.display = filtering && !any ? 'none' : '';
+        if (filtering && any) t.querySelector('[id^="acc-lib-"]').style.display = 'block';
+      });
+      const empty = document.getElementById('lib-empty');
+      if (empty) empty.style.display = filtering && !shown ? '' : 'none';
+    }
+
+    // ── Fabric library: per-swatch finish (roughness / sheen) ────────────────
+    window.setSwatchFinish = function(swatchId, kind, value) {
+      const overrides = loadFabricOverrides();
+      const key = kind === 'roughness' ? 'swatchRoughness' : 'swatchSheen';
+      if (!overrides[key]) overrides[key] = {};
+      overrides[key][swatchId] = Math.round(value * 100) / 100;
+      saveFabricOverrides(overrides);
+    };
+    window.resetSwatchFinish = function(swatchId) {
+      const overrides = loadFabricOverrides();
+      delete overrides.swatchRoughness?.[swatchId];
+      delete overrides.swatchSheen?.[swatchId];
+      saveFabricOverrides(overrides);
+      renderFabricsPanel();
+    };
+
+    // ── Fabric library: bulk actions per collection ───────────────────────────
+    const collSwatchIds = (typeId, collId) =>
+      (getMergedCatalog().find(t => t.id === typeId)?.collections.find(c => c.id === collId)?.swatches ?? []).map(s => s.id);
+    window.setCollectionVisible = function(typeId, collId, on) {
+      const overrides = loadFabricOverrides();
+      if (!overrides.visibility) overrides.visibility = {};
+      collSwatchIds(typeId, collId).forEach(id => { overrides.visibility[`s:${id}`] = on; });
+      saveFabricOverrides(overrides);
+      renderFabricsPanel();
+    };
+    window.setCollectionStock = async function(typeId, collId, on) {
+      const ids = collSwatchIds(typeId, collId);
+      if (!on && !confirm(`Mark all ${ids.length} swatches in this collection out of stock?`)) return;
+      await Promise.all(ids.map(id => setFabricStock(id, on)));   // the live stock listener redraws
     };
 
     window.addSwatch = function(typeId, collId) {
@@ -2649,13 +2785,12 @@ const ALL_DESIGNS = [
     // ── Fabric image map ──────────────────────────────────────────────────────
     function getFabricImage(fabricId) {
       if (!fabricId) return null;
+      // the ordered swatch itself, else a swatch of the same fibre
+      for (const t of getMergedCatalog()) for (const c of t.collections) for (const s of c.swatches)
+        if (s.id === fabricId) return (s.thumb || s.image || '').split('#')[0];
       const id = fabricId.toLowerCase();
-      if (id.includes('cotton-linen') || id.includes('cotton_linen')) return 'images/cotton-linen blend-1.webp';
-      if (id.includes('cotton-wool') || id.includes('wool-blend') || id.includes('wool_blend')) return 'images/wool-blend-2.avif';
-      if (id.includes('cotton')) return 'images/cotton-1.webp';
-      if (id.includes('linen')) return 'images/linen-1.webp';
-      if (id.includes('wool')) return 'images/wool-1.webp';
-      return null;
+      const fibre = ['cotton-linen', 'cotton-wool', 'cotton-spandex', 'cotton', 'linen', 'wool', 'silk', 'leather'].find(f => id.includes(f));
+      return fibre ? `images/fabrics/thumbs/${fibre === 'cotton-spandex' ? 'cotton-spandex-denim' : fibre + '-plain'}-1.webp` : null;
     }
 
     function fabricTypeFromId(id) {
@@ -2922,11 +3057,6 @@ const ALL_DESIGNS = [
             <a href="${mailtoHref}" class="order-email-btn">
               ✉ Email to Bespoke House
             </a>
-            <button class="order-email-btn" style="background:rgba(201,169,110,0.1);border-color:rgba(201,169,110,0.4);color:rgba(201,169,110,0.9);"
-              data-order-id="${orderId}"
-              onclick="generatePassport(this)">
-              ◈ Issue Passport
-            </button>
           </div>
         </div>
 
@@ -3217,68 +3347,6 @@ const ALL_DESIGNS = [
       stat.textContent = '✓ Sent.';
       ta.value = '';
       setTimeout(() => openForumConv(qid), 600);
-    };
-
-    // ── Passport generation ───────────────────────────────────────────────────
-    window.generatePassport = async function(btn) {
-      const orderId = btn.dataset.orderId;
-      // Find the order card and read data from rendered DOM
-      const card = btn.closest('.order-card');
-      if (!card) return;
-
-      const orderIdEl  = card.querySelector('.order-card-id');
-      const dfNameEl   = card.querySelector('.df-name a, .df-name');
-      const dfValEls   = card.querySelectorAll('.df-val');
-      const skuEl      = [...dfValEls].find(el => el.textContent.trim().startsWith('KD-'));
-      const fabricEl   = card.querySelector('.df-details:nth-child(2) .df-name');
-      const fabricIdEl = [...dfValEls].find(el => el !== skuEl);
-
-      const designName  = (dfNameEl?.textContent || '').trim().replace(/\s*→.*/, '').trim();
-      const productSku  = (skuEl?.textContent || '').trim();
-      const fabricLabel = (fabricEl?.textContent || '').trim();
-      const fabricId    = (fabricIdEl?.textContent || '').trim();
-
-      // Derive product number and GLB path from SKU
-      const pNum    = productSku.match(/KD-P(\d+)/i)?.[1] || '';
-      const glbName = designName.toLowerCase().replace(/[^a-z0-9 \-]/g, '').trim();
-      const glbPath = pNum ? `3d/KDscion-p${pNum}-${glbName}.glb` : '';
-
-      btn.textContent = 'Issuing…';
-      btn.disabled    = true;
-
-      try {
-        const res = await fetch('/api/passport/generate', {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            orderId:      parseInt(orderId) || 0,
-            productSku:   productSku || 'KD-UNKNOWN',
-            designName:   designName || 'KD Scion Design',
-            glbPath,
-            fabricId,
-            fabricLabel,
-            customerName: 'KD Client',
-          }),
-        });
-
-        if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
-
-        // Replace button with a live passport link
-        const link = document.createElement('a');
-        link.href        = data.url;
-        link.target      = '_blank';
-        link.className   = 'order-email-btn';
-        link.textContent = `◈ ${data.passport_number}`;
-        link.style.cssText = 'background:rgba(201,169,110,0.15);border-color:rgba(201,169,110,0.5);color:rgba(201,169,110,1);text-decoration:none';
-        btn.replaceWith(link);
-
-      } catch (e) {
-        console.error('[Passport]', e);
-        btn.textContent = '◈ Issue Passport';
-        btn.disabled    = false;
-        alert('Passport generation failed: ' + e.message);
-      }
     };
 
     // ── Traffic tab ───────────────────────────────────────────────────────────

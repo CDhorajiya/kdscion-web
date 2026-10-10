@@ -35,7 +35,7 @@
 
 <h2>2. Simulated pool card for TEST-SKU</h2>
 <p style="color:#999">
-  fabricOrder = <code>['cotton-1','linen-1','wool-1']</code>. Toggle a fabric
+  fabricOrder = <code>['cotton-plain-1','linen-plain-1','wool-plain-1']</code>. Toggle a fabric
   out of stock above and watch this card swap to the next available one
   automatically, live, via Firebase — no page reload.
 </p>
@@ -61,13 +61,13 @@ const TEST_SKU = 'TEST-SKU';
 // Stand-in "snaps" using existing real swatch images so we have something
 // visible to render — Phase 2 replaces these with actual rendered garment snaps.
 const FAKE_SNAPS = {
-  'cotton-1': 'images/cotton-1.webp',
-  'linen-1':  'images/linen-1.webp',
-  'wool-1':   'images/wool-1.webp',
+  'cotton-plain-1': 'images/fabrics/thumbs/cotton-plain-1.webp',
+  'linen-plain-1':  'images/fabrics/thumbs/linen-plain-1.webp',
+  'wool-plain-1':   'images/fabrics/thumbs/wool-plain-1.webp',
 };
 const REAL_SWATCH_IDS = [
-  'cotton-1','cotton-2','linen-1','linen-2','wool-1','wool-2',
-  'cotton-linen-1','cotton-linen-2','cotton-wool-1',
+  'cotton-plain-1','cotton-plain-2','linen-plain-1','linen-plain-2','wool-plain-1','wool-plain-2',
+  'cotton-linen-plain-1','cotton-linen-plain-2','cotton-wool-plain-1',
 ];
 
 const stockListEl   = document.getElementById('stock-list');
@@ -113,7 +113,7 @@ async function resolveCard() {
 }
 
 async function seedTestProduct() {
-  await setProductFabricOrder(TEST_SKU, ['cotton-1', 'linen-1', 'wool-1']);
+  await setProductFabricOrder(TEST_SKU, ['cotton-plain-1', 'linen-plain-1', 'wool-plain-1']);
   for (const [fabricId, url] of Object.entries(FAKE_SNAPS)) {
     await setProductSnap(TEST_SKU, fabricId, url);
   }

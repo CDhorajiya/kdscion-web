@@ -27,7 +27,7 @@ const PRODUCTS = [
   { sku: 'KD-P176-FSASD176', page: 'p176.html' },
 ];
 
-const TEST_FABRIC_IDS = ['cotton-1', 'linen-1', 'wool-1'];
+const TEST_FABRIC_IDS = ['cotton-plain-1', 'linen-plain-1', 'wool-plain-1'];
 
 function waitMs(ms) { return new Promise(r => setTimeout(r, ms)); }
 

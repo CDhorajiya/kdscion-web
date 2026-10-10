@@ -80,7 +80,7 @@ const LS_KEY = 'kd_prices';
  * Shape of the stored object:
  * {
  *   designs: { 'KD-P1-FSS': 1500, 'KD-P60-FSSD': 2000 },
- *   fabrics: { 'cotton-1': 200, 'linen-1': 350 }
+ *   fabrics: { 'cotton-plain-1': 200, 'linen-plain-1': 350 }
  * }
  */
 function loadOverrides() {
@@ -116,7 +116,7 @@ export function getDesignPrice(sku) {
  * Returns the current add-on price for a fabric swatch.
  * Same priority logic as getDesignPrice.
  *
- * @param {string} fabricId - Swatch ID, e.g. 'linen-1'
+ * @param {string} fabricId - Swatch ID, e.g. 'linen-plain-1'
  * @returns {number}        - Price in USD.
  */
 export function getFabricPrice(fabricId) {
@@ -134,7 +134,7 @@ export function getFabricPrice(fabricId) {
  * when the user edits prices in the Pricing tab.
  *
  * @param {object} designs - Map of SKU → price, e.g. { 'KD-P60-FSSD': 2000 }
- * @param {object} fabrics - Map of swatchId → price, e.g. { 'linen-1': 350 }
+ * @param {object} fabrics - Map of swatchId → price, e.g. { 'linen-plain-1': 350 }
  */
 export function savePrices(designs, fabrics) {
   localStorage.setItem(LS_KEY, JSON.stringify({ designs, fabrics }));

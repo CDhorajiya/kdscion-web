@@ -53,8 +53,8 @@ import { renderFabricList }                  from './fabrics.js';
 let product         = null;  // Product record from the server: { id, sku, name, … }
 let options         = null;  // Array of configurable options from the server,
                              // e.g. [{ id: 'fabric', label: 'Fabric',
-                             //         values: [{ id: 'linen-1', label: 'Linen 1' }] }]
-let selectedFabricId = null; // The swatch the customer last clicked, e.g. 'linen-1'
+                             //         values: [{ id: 'linen-plain-1', label: 'Linen 1' }] }]
+let selectedFabricId = null; // The swatch the customer last clicked, e.g. 'linen-plain-1'
 
 // ── Initialisation ────────────────────────────────────────────────────────────
 
@@ -109,7 +109,7 @@ export async function initConfigurator(sku) {
  * Called by the product page's swatch-click handler whenever the customer
  * clicks a fabric swatch in the UI.
  *
- * @param {string} fabricId - The swatch's ID, e.g. 'cotton-1', 'linen-2'.
+ * @param {string} fabricId - The swatch's ID, e.g. 'cotton-plain-1', 'linen-plain-2'.
  *
  * EXPORTED because product pages import and call it directly:
  *   swatch.addEventListener('click', () => selectFabric(swatch.dataset.fabricId));
@@ -127,7 +127,7 @@ export function selectFabric(fabricId) {
  *
  * Returns an object like:
  *   { option: { id: 'fabric', label: 'Fabric' },
- *     value:  { id: 'linen-1', label: 'Linen 1' } }
+ *     value:  { id: 'linen-plain-1', label: 'Linen 1' } }
  * or null if nothing is selected yet, or options haven't loaded yet.
  */
 function getSelectedValue() {

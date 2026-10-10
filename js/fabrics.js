@@ -40,7 +40,7 @@
  *  }
  *
  *  Swatch {
- *    id:    unique key used everywhere, e.g. 'cotton-1'
+ *    id:    unique key used everywhere, e.g. 'cotton-plain-1'
  *    label: display name
  *    image: path to the swatch square image
  *    thumb: optional small copy for the swatch card (when `image` is a large texture)
@@ -810,7 +810,7 @@ export const TWOTONE_CATALOG = [
  * {
  *   visibility: {
  *     'p:KD-P60-FSSD:t:cotton': false,   // hide cotton for product p60
- *     's:linen-1': false,                  // hide linen-1 globally
+ *     's:linen-plain-1': false,                  // hide linen-plain-1 globally
  *   },
  *   extras: {
  *     'cotton:plain': [{ id, label, image }],   // admin-added main swatches
@@ -855,6 +855,10 @@ let seedFromLocalRequested = false;
 // Settings this page last displayed. Tabs share the localStorage cache, so another
 // tab may already have cached an update this page hasn't shown yet — compare per page.
 let appliedJson = null;
+// Global stock (Firebase fabrics/{id}/inStock, written by the admin's Stock toggles).
+// Out-of-stock swatches still show on product pages, greyed out with an
+// "Out of stock" tag, and can't be picked; Showcase skips them.
+let stockMap = {};
 
 function getDb() {
   dbPromise ??= Promise.all([
@@ -953,6 +957,13 @@ export function startFabricSettingsSync({ seedFromLocal = false } = {}) {
       refreshRenderedLists();
       window.dispatchEvent(new CustomEvent('kd:fabric-settings'));
     }, (err) => console.warn('[fabrics] live settings unavailable, using cached settings:', err?.message ?? err));
+    fb.onValue(fb.ref(db, 'fabrics'), (snap) => {
+      const next = snap.val() || {};
+      if (stableStringify(next) === stableStringify(stockMap)) return;
+      stockMap = next;
+      refreshRenderedLists();
+      window.dispatchEvent(new CustomEvent('kd:fabric-settings'));
+    }, (err) => console.warn('[fabrics] live stock unavailable:', err?.message ?? err));
   }).catch(err => console.warn('[fabrics] live settings unavailable, using cached settings:', err));
 }
 
@@ -1106,8 +1117,8 @@ export function getMergedTwotoneCatalog() {
  *         <div class="subcategory-header">   ← clickable sub-header
  *         <div class="sub-swatch-grid">      ← individual swatch cards
  *           <div class="swatch-card"         ← clickable swatch
- *                data-texture="images/cotton-1.webp"
- *                data-fabric-id="cotton-1">
+ *                data-texture="images/fabrics/cotton-plain-1.webp"
+ *                data-fabric-id="cotton-plain-1">
  *             <img src="…"> <span>Cotton 1</span>
  *           </div>
  *         </div>
@@ -1200,9 +1211,16 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
           ? `<em class="swatch-drape-tag" style="display:block;font-style:normal;color:rgba(120,90,10,0.95);">${drape} drape</em>`
           : '';
 
-        return `<div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}" data-roughness="${roughness}" data-sheen="${sheen}"${drapeAttr}>
+        // Out of stock: shown greyed, not pickable (pointer-events off, so the page's click handler never sees it)
+        const out = stockMap[s.id]?.inStock === false;
+        const outAttr = out ? ' aria-disabled="true" title="Out of stock" style="opacity:0.42;pointer-events:none;filter:grayscale(0.6);"' : '';
+        const outTag = out
+          ? `<em class="swatch-stock-tag" style="display:block;font-style:normal;color:#9b2c2c;">Out of stock</em>`
+          : '';
+
+        return `<div class="swatch-card${out ? ' is-out' : ''}" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}" data-roughness="${roughness}" data-sheen="${sheen}"${drapeAttr}${outAttr}>
           <img src="${s.thumb || s.image}" alt="${s.label}" loading="lazy" decoding="async">
-          <span>${s.label}${drapeTag}</span>
+          <span>${s.label}${out ? outTag : drapeTag}</span>
         </div>`;
       }).join('');
 
@@ -1245,7 +1263,7 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
  * Used by the admin dashboard and checkout page to display swatch details
  * when only the swatch ID is known (e.g. from an order record).
  *
- * @param {string} id - Swatch ID, e.g. 'cotton-1' or 'tt-linen-1'.
+ * @param {string} id - Swatch ID, e.g. 'cotton-plain-1' or 'tt-linen-1'.
  */
 export function getFabricById(id) {
   const allCatalogs = [getMergedCatalog(), TWOTONE_CATALOG];

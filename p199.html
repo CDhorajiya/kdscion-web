@@ -1278,13 +1278,27 @@
                 texCache.set(path, new Promise((resolve, reject) => texLoader.load(path, (tex) => {
                     tex.colorSpace = THREE.SRGBColorSpace;
                     tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-                    tex.repeat.set(1, 1);
+                    // '#r<n>' on a swatch path = seamless tile repeated n times across the garment;
+                    // negative V puts it upright (CLO UVs run bottom-up). Plain paths stay 1x1.
+                    const rep = parseFloat(path.split('#r')[1]);
+                    if (rep > 0) tex.repeat.set(rep, -rep); else tex.repeat.set(1, 1);
                     tex.anisotropy = rendererS.capabilities.getMaxAnisotropy();
                     tex.needsUpdate = true;
                     resolve(tex);
                 }, undefined, (err) => { texCache.delete(path); reject(err); })));
             }
-            return texCache.get(path);
+            // keep only the last few cloths in memory: Showcase walks hundreds of swatches,
+            // and every texture kept would stay in GPU + image memory (iOS Safari limit)
+            const keep = texCache.get(path); texCache.delete(path); texCache.set(path, keep);
+            while (texCache.size > 8) {
+                const [oldPath, oldTex] = texCache.entries().next().value;
+                texCache.delete(oldPath);
+                oldTex.then((t) => {
+                    for (const [k, m] of matCache) if (k.startsWith(oldPath + '|')) { matCache.delete(k); m.dispose(); }
+                    t.dispose();
+                }, () => {});
+            }
+            return keep;
         }
         function fabricMaterial(path, tex, opacity) {
             const key = `${path}|${opacity}`;

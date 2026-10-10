@@ -35,7 +35,7 @@ export function visibleFabrics(catalogs, overrides, stockMap) {
           seen.add(s.id);
           const drape = (overrides.swatchDrape ?? {})[s.id] ?? s.drape ?? '';
           out.push({
-            id: s.id, label: s.label, image: s.image,
+            id: s.id, label: s.label, image: s.thumb || s.image,
             typeLabel: type.label, collLabel: coll.label, drape,
             guide: type.id === 'leather' ? 'leather-fundamentals.html' : 'fabric-fundamentals.html',
           });

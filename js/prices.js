@@ -64,15 +64,7 @@ export const DESIGN_PRICES = {
 // All currently 0. When fabric pricing is introduced, set each swatch's cost here.
 
 export const FABRIC_PRICES = {
-  'cotton-1':       0,
-  'cotton-2':       0,
-  'linen-1':        0,
-  'linen-2':        0,
-  'wool-1':         0,
-  'wool-2':         0,
-  'cotton-linen-1': 0,
-  'cotton-linen-2': 0,
-  'cotton-wool-1':  0,
+  // e.g. 'wool-chex-1': 40,   (any swatch not listed costs 0 extra)
 };
 
 // ── localStorage key ──────────────────────────────────────────────────────────

@@ -18,11 +18,18 @@
    The moment the mouse is off the model, the turn and the cloth cycle
    pick up again.
 
-   Placeholder cloths until each product has its own fabric swaps:
-   texture, opacity, roughness and sheen are read from the page's swatch
-   cards (so dashboard overrides still apply), names are the campaign's.
-   A cloth the page doesn't offer is skipped; with fewer than two left,
-   the pill stays hidden.
+   The cycle is every swatch the page offers, read from its swatch cards
+   (so dashboard visibility, opacity, roughness and sheen all apply):
+   Chex first, then Print, Plain, Lining, then the remaining collections,
+   alternating fibres inside each collection. With ~350 cloths at 2.8 s
+   each, no cloth repeats for ~29 full turns; "As designed" closes the
+   loop. Fewer than two cloths and the pill stays hidden.
+
+   Viewer controls (every page, set up in attach()): scroll/pinch zooms
+   toward the cursor; pan by right-drag, Shift-drag, two-finger drag,
+   arrow keys, or the hand button under the pill, which turns a plain
+   drag into a pan; a click on the empty viewer glides back to the
+   opening view, undoing zoom and pan.
 
    The page owns the garment; this file only drives it. Usage:
 
@@ -37,7 +44,7 @@
          designType,                     // label under "As designed", e.g. 'N° 1 · Classic shirt'
          canCycle,                       // optional () → bool: false if the garment has nothing to dress
      });
-     showcase.attach(controls, camera);  // once OrbitControls exists
+     showcase.attach(controls, camera);  // once OrbitControls exists (also sets up zoom, pan, reset)
      showcase.modelReady(model);         // once the GLB is in the scene
      controls.update(showcase.frame());  // every animation frame
      showcase.userPicked();              // a customer's own swatch tap (e.isTrusted)
@@ -46,15 +53,9 @@
 
 import * as THREE from 'https://esm.sh/three@0.169.0';
 
-const CLOTH_CYCLE = [
-    { id: 'original',       name: 'As designed' },
-    { id: 'linen-1',        name: 'Ivory bloom', type: '100% Linen' },
-    // the 1600 px copy, not the 7 MB one
-    { id: 'wool-2',         name: 'Burgundy',    type: '100% Wool', img: 'images/woolen fabric-1600.webp' },
-    { id: 'wool-1',         name: 'Garden',      type: '100% Wool' },
-    { id: 'cotton-linen-2', name: 'Plum',        type: 'Cotton linen blend' },
-    { id: 'cotton-linen-1', name: 'Orchard',     type: 'Cotton linen blend' },
-];
+// Collection order for the cycle; anything not listed follows in catalogue order
+const COLLECTION_ORDER = ['chex', 'print', 'plain', 'lining', 'dobies', 'tweed', 'satin', 'denim', 'corduroy', 'suede', 'patent'];
+const ORIGINAL = { id: 'original', name: 'As designed' };
 const CLOTH_HOLD_MS = 2800;
 const LABEL_OUT_MS  = 400;
 
@@ -162,7 +163,33 @@ const CSS = `
             .showcase.on .showcase__dots i,
             .showcase.on .showcase__turn[aria-pressed="true"] svg { animation: none; }
         }
+        /* ── Pan: hand button under the Showcase pill ── */
+        .view-pan {
+            position: absolute;
+            top: 4.1rem;
+            left: 1.1rem;
+            z-index: 5;
+            width: 2.6rem;
+            height: 2.6rem;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            border: 1px solid #d6d6d6;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.82);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+            color: #777;
+            cursor: pointer;
+            transition: background 0.25s, color 0.25s, border-color 0.25s;
+        }
+        .view-pan:hover { color: #1a1a1a; }
+        .view-pan:focus-visible { outline: 1px solid rgba(100,70,0,0.6); outline-offset: 1px; }
+        .view-pan[aria-pressed="true"] { background: rgba(255,248,232,0.95); border-color: rgba(100,70,0,0.35); color: rgba(100,70,0,0.85); }
+        .view-pan svg { width: 1.35rem; height: 1.35rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
         @media (max-width: 768px) {
+            .view-pan { top: 3.4rem; left: 0.7rem; width: 2.3rem; height: 2.3rem; }
             .showcase { top: 0.7rem; left: 0.7rem; }
             .showcase button { padding: 0.36rem 0.75rem; letter-spacing: 1.5px; gap: 0.45rem; }
         }
@@ -177,6 +204,9 @@ const MARKUP = `
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.35-5.65"/><path d="M20 4v4.5h-4.5"/></svg>Turn
                     </button>
                 </div>
+                <button class="view-pan" id="view-pan" type="button" aria-pressed="false" aria-label="Pan" title="Pan — drag to move the view (also right-drag, Shift-drag or arrow keys). Click the empty background to reset.">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11.5V4a1.5 1.5 0 0 1 3 0v7.5"/><path d="M14 11.5V5.5a1.5 1.5 0 0 1 3 0V13"/><path d="M17 9.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1.6a6 6 0 0 1-4.6-2.2L4.3 15a1.6 1.6 0 0 1 2.4-2.1L8 14.5"/></svg>
+                </button>
                 <p class="cloth-cycle" id="cloth-cycle" aria-live="polite" hidden><span class="cloth-cycle__name"></span><span class="cloth-cycle__type"></span></p>
 `;
 
@@ -205,7 +235,7 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
         if (c.id === 'original') return null;
         const card = list.querySelector(`.swatch-card[data-fabric-id="${window.CSS.escape(c.id)}"]`);
         if (!card) return undefined;    // not offered on this page
-        return [c.img || card.dataset.texture,
+        return [card.dataset.texture,
                 parseFloat(card.dataset.opacity ?? '1'),
                 parseFloat(card.dataset.roughness ?? '0.75'),
                 parseFloat(card.dataset.sheen ?? '0')];
@@ -241,6 +271,38 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
         if (args) loadTexture(args[0]).catch(() => {});
     }
 
+    /* A swatch card → { id, name, type, coll } */
+    function clothOf(card) {
+        const id = card.dataset.fabricId;
+        const coll = (id.match(/-([a-z]+)-\d+$/) || [])[1] || 'plain';
+        return {
+            id, coll,
+            name: card.querySelector('img')?.alt || id,
+            type: card.closest('.fabric-category')?.querySelector('.category-card p')?.textContent?.trim() || '',
+        };
+    }
+    /* Every offered swatch: collections in COLLECTION_ORDER, fibres taking
+       turns inside each, so neighbouring cloths always differ */
+    function buildCycle() {
+        const byColl = new Map();
+        for (const card of list.querySelectorAll('.swatch-card[data-fabric-id]')) {
+            const c = clothOf(card);
+            if (!byColl.has(c.coll)) byColl.set(c.coll, new Map());
+            const byType = byColl.get(c.coll);
+            if (!byType.has(c.type)) byType.set(c.type, []);
+            if (!byType.get(c.type).some(x => x.id === c.id)) byType.get(c.type).push(c);
+        }
+        const rank = (k) => { const i = COLLECTION_ORDER.indexOf(k); return i < 0 ? COLLECTION_ORDER.length : i; };
+        const out = [];
+        for (const coll of [...byColl.keys()].sort((a, b) => rank(a) - rank(b))) {
+            const queues = [...byColl.get(coll).values()];
+            for (let i = 0; queues.some(q => i < q.length); i++)
+                for (const q of queues) if (i < q.length) out.push(q[i]);
+        }
+        out.push(ORIGINAL);
+        return out;
+    }
+
     let viewerOnScreen = true;
     new IntersectionObserver(([e]) => { viewerOnScreen = e.isIntersecting; }).observe(canvas);
 
@@ -253,6 +315,7 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
         if (document.hidden || !viewerOnScreen) { cycleTimer = setTimeout(cycleStep, 500); return; }
         const next = (cycleIdx + 1) % cloths.length;
         const args = clothArgs(cloths[next]);
+        if (args === undefined) { cycleIdx = next; cycleTimer = setTimeout(cycleStep, 0); return; }   // hidden since load
         // the name leaves first; the cloth changes while the label is out of sight
         fadeOutCloth();
         await wait(LABEL_OUT_MS);
@@ -365,10 +428,10 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
         hoverTargetsOf = m;
         return hoverTargets;
     }
-    function overModel() {
-        if (!hoverPt || !model || !camera) return false;
+    function overModel(pt = hoverPt) {
+        if (!pt || !model || !camera) return false;
         const r = canvas.getBoundingClientRect();
-        hoverNdc.set((hoverPt.x - r.left) / r.width * 2 - 1, -(hoverPt.y - r.top) / r.height * 2 + 1);
+        hoverNdc.set((pt.x - r.left) / r.width * 2 - 1, -(pt.y - r.top) / r.height * 2 + 1);
         hoverRay.setFromCamera(hoverNdc, camera);
         return hoverTargetsFor(model).some((m) => {
             const src = m.userData.of || m;
@@ -397,6 +460,38 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
         setHoverHold(false);
     });
 
+    /* Zoom toward the cursor, pan (hand button / right-drag / Shift-drag /
+       two fingers / arrow keys), and a click on the empty viewer resets */
+    const panBtn = document.getElementById('view-pan');
+    function setupViewerControls() {
+        controls.zoomToCursor = true;
+        controls.screenSpacePanning = true;      // the view follows the pointer, up is up
+        controls.keyPanSpeed = 20;
+        canvas.tabIndex = 0;                     // arrow keys pan once the viewer has focus,
+        canvas.style.outline = 'none';           // so they never take page scrolling away
+        controls.listenToKeyEvents(canvas);
+        panBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const on = panBtn.getAttribute('aria-pressed') !== 'true';
+            panBtn.setAttribute('aria-pressed', on);
+            controls.mouseButtons.LEFT = on ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+            controls.touches.ONE = on ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+            canvas.style.cursor = on ? 'grab' : '';
+        });
+        let down = null;
+        canvas.addEventListener('pointerdown', (e) => {
+            down = e.isPrimary ? { x: e.clientX, y: e.clientY, t: performance.now() } : null;
+            if (panBtn.getAttribute('aria-pressed') === 'true') canvas.style.cursor = 'grabbing';
+        });
+        canvas.addEventListener('pointerup', (e) => {
+            if (panBtn.getAttribute('aria-pressed') === 'true') canvas.style.cursor = 'grab';
+            if (!down || !e.isPrimary) return;
+            const tap = Math.hypot(e.clientX - down.x, e.clientY - down.y) <= 6 && performance.now() - down.t < 500;
+            down = null;
+            if (tap && e.button === 0 && !overModel({ x: e.clientX, y: e.clientY })) returnToFront();
+        });
+    }
+
     syncUI();
     showcaseBtn.addEventListener('click', () => setShowcase(!showcaseOn));
     turnBtn.addEventListener('click', () => setTurn(!turnOn));
@@ -410,19 +505,20 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
             // still while the dress is being dragged and picks up after
             controls.autoRotateSpeed = 60 / 33.6;
             controls.addEventListener('start', () => { frontTween = null; });   // a drag takes over
+            setupViewerControls();
             syncUI();
         },
         /* Called once the GLB is in: the model lands in its own cloth */
         modelReady(m) {
             model = m;
-            cloths = canCycle() ? CLOTH_CYCLE.filter(c => clothArgs(c) !== undefined) : [];
+            cloths = canCycle() ? buildCycle() : [];
             if (cloths.length < 2) { cloths = null; return; }
             showcaseEl.hidden = false;
             syncUI();
             if (!showcaseOn) return;
-            showCloth(cloths[0]);
-            prefetch(cloths[1]);
-            cycleTimer = setTimeout(cycleStep, CLOTH_HOLD_MS);
+            cycleIdx = cloths.length - 1;      // "As designed" is on; the cycle opens on the first Chex
+            prefetch(cloths[0]);
+            cycleStep();
         },
         /* Every animation frame: steps the front glide and returns seconds
            since the last frame, so the turn is the same speed at 60 and 120 Hz */
@@ -442,11 +538,9 @@ export function createShowcase({ canvas, list, applyCloth, restoreOriginal, canc
         landed(card) {
             if (!showcaseOn || !cloths) return;
             const id = card.dataset.fabricId;
-            const known = CLOTH_CYCLE.find(c => c.id === id);
-            showCloth(known || {
-                name: card.querySelector('img')?.alt || id,
-                type: card.closest('.fabric-category')?.querySelector('.category-card p')?.textContent || '',
-            });
+            const at = cloths.findIndex(c => c.id === id);
+            if (at >= 0) cycleIdx = at;        // carry on from the landed cloth
+            showCloth(at >= 0 ? cloths[at] : clothOf(card));
             clearTimeout(cycleTimer);
             if (!hoverHold) cycleTimer = setTimeout(cycleStep, CLOTH_HOLD_MS);
         },

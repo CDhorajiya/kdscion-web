@@ -1468,15 +1468,7 @@
   'KD-P176-FSASD176': 'Full Sleeve Asymmetric Shift Dress',
 };
     const FABRIC_META = {
-      'cotton-1':       'Cotton Plain 1',
-      'cotton-2':       'Cotton Plain 2',
-      'linen-1':        'Linen Plain 1',
-      'linen-2':        'Linen Plain 2',
-      'wool-1':         'Wool 1',
-      'wool-2':         'Wool 2',
-      'cotton-linen-1': 'Cotton-Linen Blend 1',
-      'cotton-linen-2': 'Cotton-Linen Blend 2',
-      'cotton-wool-1':  'Cotton-Wool Blend 1',
+      // swatch id → label for the fabric price table (falls back to the id)
     };
 
     // ── Render price tables ───────────────────────────────────────────────────
@@ -1977,7 +1969,7 @@ const ALL_DESIGNS = [
                 swatchToggles += `
                   <div style="display:flex;align-items:center;gap:0.9rem;
                               padding:0.45rem 0.8rem 0.45rem 1.6rem;border-bottom:1px solid #f8f8f8;">
-                    <img src="${s.image}" alt="${s.label}"
+                    <img src="${s.thumb || s.image}" alt="${s.label}"
                          style="width:36px;height:36px;object-fit:cover;border-radius:2px;border:1px solid #e0e0e0;">
                     <span style="flex:1;font-family:'Times New Roman',serif;font-size:var(--ds-base);
                                  letter-spacing:2px;color:#111;">${s.label}</span>
@@ -2095,7 +2087,7 @@ const ALL_DESIGNS = [
             const isExtra   = !!(overrides.extras?.[`${type.id}:${coll.id}`]?.find(e => e.id === s.id));
             const inStock = stockOn(s.id);
             return `<div class="fab-swatch-item" style="flex-wrap:wrap;gap:0.5rem;">
-              <img src="${s.image}" alt="${s.label}">
+              <img src="${s.thumb || s.image}" alt="${s.label}">
               <span style="flex:1">${s.label}</span>
               <label class="fab-toggle-col"><span>Visible</span>
                 <label class="fab-toggle" title="Show/hide globally">
@@ -2162,7 +2154,7 @@ const ALL_DESIGNS = [
           const inStock  = stockOn(s.id);
           const isExtra  = !!(overrides.ttExtras?.[type.id]?.find(e => e.id === s.id));
           return `<div class="fab-swatch-item">
-            <img src="${s.image}" alt="${s.label}">
+            <img src="${s.thumb || s.image}" alt="${s.label}">
             <span>${s.label}</span>
             <label class="fab-toggle-col"><span>Visible</span>
               <label class="fab-toggle" title="Show/hide globally">

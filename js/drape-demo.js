@@ -323,7 +323,8 @@ export function createDrapeDemo(canvas) {
     texLoader.load(texturePath, (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-      tex.repeat.set(2, 2);
+      const rep = parseFloat(texturePath.split('#r')[1]);   // tiled swatch: keep its true scale, upright
+      if (rep > 0) tex.repeat.set(2*rep, -2*rep); else tex.repeat.set(2, 2);
       tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
       if (clothMaterial.map) clothMaterial.map.dispose();
       clothMaterial.map = tex;

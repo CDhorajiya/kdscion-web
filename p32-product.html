@@ -1181,7 +1181,8 @@
             texLoader.load(texturePath, (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
                 tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-                tex.repeat.set(1, 1);
+                const rep = parseFloat(texturePath.split('#r')[1]);   // tiled swatch, upright
+                if (rep > 0) tex.repeat.set(rep, -rep); else tex.repeat.set(1, 1);
                 tex.anisotropy = rendererS.capabilities.getMaxAnisotropy();
                 tex.needsUpdate = true;
                 if (!currentModel) return;

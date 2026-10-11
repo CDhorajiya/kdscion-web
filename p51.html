@@ -741,6 +741,9 @@
             margin: 1.6rem 0 0 0;
         }
     </style>
+    <!-- mobile-refresh: cleaner phone layout (tools/mobile_refresh.py) -->
+    <link rel="stylesheet" href="css/mobile-refresh.css">
+    <script src="js/mobile-refresh.js"></script>
 </head>
 <body>
 
@@ -996,7 +999,7 @@
 
             sceneS  = new THREE.Scene();
             cameraS = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
-            cameraS.position.set(0, 0, 3);
+            cameraS.position.set(0, 0, window.KD_CAMERA_Z || 3);   // phones: js/mobile-refresh.js
 
             sceneS.add(new THREE.AmbientLight(0xffffff, 1.8));
             const key = new THREE.DirectionalLight(0xffffff, 1.4);

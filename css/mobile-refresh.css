@@ -1,0 +1,77 @@
+/* ================================================================
+   mobile-refresh.css — the cleaner phone layout (added 2026-10-11)
+   ================================================================
+   Phones only: every rule sits inside @media (max-width: 768px), so desktop
+   never changes. Rules that need js/mobile-refresh.js to have rearranged the
+   page are also scoped to html.kd-m2, which that script sets on phones.
+
+   Pages: Pool of Designs, design-variation pages, the boutique category
+   galleries, and every product page.
+
+   "Restore default mobile":  python3 tools/mobile_refresh.py restore
+   (unlinks this file and the script from every page; the git tag
+   mobile-default-2026-10-11 is the untouched site). Bring it back with
+   python3 tools/mobile_refresh.py apply.
+   ================================================================ */
+
+@media (max-width: 768px) {
+
+    /* ── 1. Gallery headings: Pool of Designs, Design Variations, categories ── */
+    .container-snaps h3.title {
+        font-size: 1.6rem !important;          /* was 2.1–2.4rem */
+        letter-spacing: 3px !important;
+    }
+    .container-snaps .title-sub {
+        font-size: 1rem !important;            /* was 1.3rem */
+        letter-spacing: 2px !important;
+    }
+    .filter-toggle { gap: 0.4rem !important; }
+    .filter-toggle .filter-btn {
+        font-size: 1rem !important;            /* was 1.1rem, with wider spacing */
+        letter-spacing: 2px !important;
+        padding: 0.15rem 0.7rem !important;
+    }
+
+    /* ── 2. Product pages: logo left, Pool of Designs right, then "P1 · NAME" ── */
+    html.kd-m2 .product-breadcrumb {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin-bottom: 0.6rem !important;
+    }
+    html.kd-m2 .product-breadcrumb > a.kd-m2-logo {
+        display: block;
+        width: 31px;
+        height: 31px;
+        font-size: 0 !important;               /* the "King Dhorajiya" text stays for screen readers */
+        color: transparent !important;
+        /* the monogram fills only ~30% of its image: zoom in, so the mark matches the pool page's */
+        background: url('../images/KD_monogram.png') no-repeat center / 290%;
+        flex-shrink: 0;
+    }
+    html.kd-m2 .product-breadcrumb > .product-home-link {
+        font-size: 1.05rem !important;
+        letter-spacing: 3px !important;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+    html.kd-m2 .product-bb-link,
+    html.kd-m2 .kd-m2-meta,
+    html.kd-m2 .product-tagline { display: none !important; }
+    html.kd-m2 .product-title-row { gap: 0.3rem !important; margin-bottom: 0.7rem !important; }
+    html.kd-m2 .product-title-row h2 { margin-bottom: 0.5rem !important; }
+    html.kd-m2 .product-title-row > div > p { gap: 0 !important; }
+    .kd-m2-code { display: none; }
+    html.kd-m2 .kd-m2-code { display: inline; }
+
+    /* A taller viewer (the camera also comes closer, js/mobile-refresh.js) */
+    html.kd-m2 .product-split .viewer-panel {
+        height: 76vh !important;               /* was 60vh */
+        min-height: 460px !important;
+        max-height: none !important;
+    }
+
+    /* ── 3. The fabric name and its fibre on the viewer: 35% smaller ── */
+    .cloth-cycle__name { font-size: 0.975rem !important; }   /* was 1.5rem */
+    .cloth-cycle__type { font-size: 0.65rem !important; letter-spacing: 2px !important; }   /* was 1rem */
+}

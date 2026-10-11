@@ -1,0 +1,2087 @@
+<!--
+  dresses-woman.html — Bespoke Boutique › Women › Dresses
+  Every women's design whose name has "dress" in it, laid out like the Pool of Designs:
+  one card per design, three across in ascending p# order (card i in column i % 3);
+  a card opens its product page (pN.html). Cards after the first three rows load lazily.
+  Add a dress: a .product-item block in the next column (col1, col2, col3 in turn).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram_favicon.webp" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZJT42EG6J');
+    </script>
+
+    <title>Dresses — KD Scion</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KD: The House of Scion">
+    <meta property="og:title" content="Dresses — KD Scion">
+    <meta property="og:description" content="Bespoke dresses for women, each tailored to your measurements in the fabric you choose.">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-p8-full%20sleeve%20sheath%20dress_Colorway%20A.webp">
+    <meta property="og:url" content="https://kdscion.com/dresses-woman.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dresses — KD Scion">
+    <meta name="twitter:description" content="Bespoke dresses for women, each tailored to your measurements in the fabric you choose.">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-p8-full%20sleeve%20sheath%20dress_Colorway%20A.webp">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
+        }
+        .nav .brand-name h1 {
+            font-size: 2.1rem;
+            color: rgb(128, 0, 0);
+        }
+
+        h3.title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 15px;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        .title-sub {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            font-style: normal;
+            color: #1a1a1a;
+            letter-spacing: 6px;
+            margin: 0 0 0 0;
+            text-align: center;
+        }
+
+        /* ── Product gallery ── */
+        .product-gallery {
+            display: flex;
+            gap: 4rem;
+            margin-top: 0;
+            /* width + auto-centering, not a left/right margin pair — there is
+               no "one side" value that a future edit could throw out of sync,
+               unlike the margin-right-only bug this replaced. */
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .product-column {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            flex: 1;
+        }
+
+        /* ── Each product card ── */
+        .product-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+        .product-item.popup-active {
+            z-index: 10;
+        }
+        .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1679 / 2042;
+            overflow: hidden;
+        }
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ── Pointer annotation ── */
+        .product-desc {
+            position: absolute;
+            top: 50%;
+            left: calc(100% - 40px);
+            transform: translateY(-50%);
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.12s ease;
+            z-index: 300;
+        }
+        .product-column:last-child .product-desc {
+            left: auto;
+            right: calc(100% - 180px);
+            align-items: flex-end;
+            padding-left: 0;
+            padding-right: 14px;
+        }
+        .product-desc::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            box-shadow: 0 0 4px rgba(40,25,5,0.4);
+        }
+        .product-column:last-child .product-desc::before {
+            left: auto;
+            right: 0;
+        }
+        .product-desc::after { display: none; }
+        .product-item.has-variations .product-desc::before { display: none; }
+        .var-dots {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .product-column:last-child .var-dots { left: auto; right: 0; }
+        .var-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            animation: dot-blink 3s ease-in-out infinite;
+        }
+        .var-dot:nth-child(1) { animation-delay: 0s; }
+        .var-dot:nth-child(2) { animation-delay: 1s; }
+        .var-dot:nth-child(3) { animation-delay: 2s; }
+        @keyframes dot-blink {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 1; }
+        }
+        .product-item.popup-active .product-desc { opacity: 1; }
+        .product-desc__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(30,20,5,0.9);
+            margin: 0;
+            white-space: nowrap;
+        }
+        .product-desc__divider { display: none; }
+        .product-desc__sub {
+            display: block;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: rgba(30,20,5,0.7);
+            text-transform: uppercase;
+            margin: 0.5rem 0 0 0;
+            white-space: normal;
+            max-width: 160px;
+        }
+        .product-column:last-child .product-desc__title,
+        .product-column:last-child .product-desc__sub { text-align: right; }
+
+        @media (max-width: 768px) {
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
+            .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
+
+            .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
+            .column { gap: 2rem; }
+            .container-snaps h3 { letter-spacing: 3px; font-size: 2.1rem; }
+
+            .product-desc {
+                position: static !important;
+                transform: none !important;
+                opacity: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 0.35rem !important;
+                padding: 0.55rem 0.5rem 0.4rem !important;
+                background: none !important;
+                pointer-events: none !important;
+            }
+            .product-column:last-child .product-desc {
+                left: auto !important;
+                right: auto !important;
+                align-items: center !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            .product-desc::before { display: none !important; }
+            .product-desc__title { display: none !important; }
+            .var-dots {
+                position: static !important;
+                flex-direction: row !important;
+                gap: 5px !important;
+                order: -1 !important;
+            }
+            .product-desc__sub {
+                font-size: 1rem !important;
+                color: rgba(30,20,5,0.85) !important;
+                letter-spacing: 1.5px !important;
+                margin: 0 !important;
+                white-space: normal !important;
+                max-width: none !important;
+                text-align: center !important;
+            }
+        }
+
+        /* ── Design-type filter ── */
+        .filter-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0 3rem;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(26,26,26,0.25);
+            color: rgba(26,26,26,0.45);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 0.25rem 1rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .filter-btn:hover {
+            background: rgba(26,26,26,0.07);
+            border-color: rgba(26,26,26,0.5);
+            color: rgba(26,26,26,0.8);
+        }
+        .filter-btn.active {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .product-item[data-design-type].hidden {
+            display: none;
+        }
+
+        /* ── Back-to-top: avoids scrolling back through hundreds of designs ──
+           Drawn exactly like the search glass stacked above it: a bare maroon
+           mark, no plate and no circle, fully opaque, growing a little on hover.
+           The 3rem box is kept even though none of it is painted, so the touch
+           target stays comfortable on a phone. */
+        .back-to-top {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 3rem;
+            height: 3rem;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            color: #800000;
+            z-index: 500;
+            transition: transform 0.2s;
+        }
+        .back-to-top:hover,
+        .back-to-top:focus-visible {
+            transform: scale(1.05);
+            outline: none;
+        }
+        .back-to-top svg {
+            width: 1.9rem;
+            height: 1.9rem;
+            fill: currentColor;
+        }
+        /* Matches the step search-ui.js takes at the same breakpoint. */
+        @media (max-width: 768px) {
+            .back-to-top svg { width: 1.6rem; height: 1.6rem; }
+        }
+
+        /* ── Search glass, stacked above the back-to-top button ──
+           search-ui.js appends its own stylesheet to <head> after this one, so
+           .kd-search-btn--float would otherwise win on source order. The id
+           selector outranks it without needing !important. */
+        #kd-search-btn.kd-search-btn--float {
+            /* An identical 3rem box stacked straight on top of the back-to-top
+               one, so the two marks share a centre line and keep an even gap at
+               whatever size the breakpoint draws them. */
+            width: 3rem;
+            height: 3rem;
+            right: 1.5rem;
+            bottom: 4.5rem;
+        }
+
+        /* ────────────────────────────────────────────────────────────
+           "Recently added" panel — appears 10s after the page opens.
+           Deliberately mirrors the Bespoke Boutique nav dropdown:
+           translucent white + backdrop blur, hairline top/bottom rules.
+           ──────────────────────────────────────────────────────────── */
+        .recent-drop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            /* Bottom padding is a permanently reserved strip for the scroll
+               arrow — kept constant so nothing shifts when the arrow hides */
+            padding: 2rem 3rem 3.6rem;
+            /* border-box so max-height caps the whole panel, padding included
+               (the site has no global border-box reset) */
+            box-sizing: border-box;
+            max-height: 88vh;
+            display: none;
+            flex-direction: column;
+        }
+        .recent-drop.open {
+            display: flex;
+            animation: recentDropFade 0.35s ease forwards;
+        }
+        /* Grid scrolls inside the shell so the arrow can stay pinned */
+        .recent-drop__scroll {
+            overflow-y: auto;
+            /* min-height:0 is required — without it the flex item refuses to
+               shrink below its content and the panel overruns its max-height */
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        @keyframes recentDropFade {
+            from { opacity: 0; transform: translateY(-18px); }
+            to   { opacity: 1; transform: translateY(0);     }
+        }
+
+        .recent-drop__head {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            position: relative;
+            /* Gutters keep the centred title clear of the × at every width */
+            padding: 0 3rem;
+            margin-bottom: 1.8rem;
+        }
+        .recent-drop__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.7rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.9);
+            margin: 0;
+            text-align: center;
+        }
+        .recent-drop__close {
+            position: absolute;
+            right: 0;
+            top: -0.4rem;
+            background: transparent;
+            border: none;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2rem;
+            line-height: 1;
+            color: rgba(30, 20, 5, 0.5);
+            cursor: pointer;
+            padding: 0.2rem 0.6rem;
+            transition: color 0.2s ease;
+        }
+        .recent-drop__close:hover { color: #000; }
+
+        .recent-drop__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1.6rem;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        .recent-card {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .recent-card:hover { transform: scale(1.05); }
+        .recent-card .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1679 / 2042;
+            overflow: hidden;
+        }
+        .recent-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transform: translateX(var(--rc, 0%));
+        }
+        .recent-card__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.25rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.9);
+            margin: 0.6rem 0 0;
+        }
+        .recent-card__sub {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.05rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.68);
+            margin: 0.3rem 0 0;
+        }
+        .recent-card:hover .recent-card__title,
+        .recent-card:hover .recent-card__sub { color: #000; }
+
+        /* Soft fade at the base so the cut-off row reads as "continues below"
+           and the arrow stays legible over busy thumbnails */
+        .recent-drop.has-more::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 6.5rem;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.75) 55%, rgba(255, 255, 255, 0));
+            pointer-events: none;
+        }
+
+        /* ── Translucent "scroll for more" arrow, pinned to the panel base ── */
+        .recent-drop__more {
+            position: absolute;
+            /* above the .has-more::after fade, which as a pseudo-element
+               would otherwise paint over the button and wash it out */
+            z-index: 1;
+            bottom: 0.4rem;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 3rem;
+            height: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.16);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.2s ease;
+        }
+        .recent-drop__more.visible {
+            display: flex;
+            opacity: 1;
+            animation: recentNudge 1.8s ease-in-out infinite;
+        }
+        .recent-drop__more:hover { background: rgba(255, 255, 255, 0.8); }
+        .recent-drop__more svg {
+            width: 1.4rem;
+            height: 1.4rem;
+            fill: none;
+            stroke: rgba(30, 20, 5, 0.8);
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        @keyframes recentNudge {
+            0%, 100% { transform: translateY(0);     }
+            50%      { transform: translateY(4px);   }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .recent-drop__more.visible { animation: none; }
+        }
+
+        @media (max-width: 900px) {
+            .recent-drop { padding: 1.5rem 1.2rem 1.8rem; }
+            .recent-drop__grid { grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+            .recent-drop__head { padding: 0 2.6rem; margin-bottom: 1.4rem; }
+            .recent-drop__title { font-size: 1.15rem; letter-spacing: 2.5px; line-height: 1.5; }
+            .recent-drop__close { top: -0.2rem; font-size: 1.8rem; }
+            .recent-card__title { font-size: 1.1rem; letter-spacing: 2px; }
+            .recent-card__sub { font-size: 1rem; letter-spacing: 1px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav collapsible">
+            <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+            <svg class="icon icon--white nav__toggler">
+                <use xlink:href="images/sprite.svg#menu"></use>
+            </svg>
+            <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+        </nav>
+    </header>
+
+    <div class="container-snaps">
+        <h3 class="title">DRESSES</h3>
+        <p class="title-sub">CUSTOM | PREMIUM | UNIQUE</p>
+
+
+
+
+        <div class="product-gallery snap-gallery">
+
+            <!-- ── Column 1 ── -->
+            <div class="product-column column column1">
+
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p3.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p3-full sleeve overall dress_Colorway A.webp" style="--rc:-12.89%"
+                alt="KDscion p3 full sleeve overall dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P3 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve overall dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:3" data-design-type="solo" data-product-url="p6.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p6-Sleeveless overall dress_Colorway A.webp" style="--rc:-14.29%"
+                alt="KDscion p6 sleeveless overall dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P6 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless overall dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:6" data-design-type="solo" data-product-url="p9.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p9-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.99%"
+                alt="KDscion p9 sleeveless bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P9 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:9" data-design-type="solo" data-product-url="p12.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p12-sleeveless A-line dress_Colorway A.webp" style="--rc:-14.53%" loading="lazy" decoding="async"
+                alt="KDscion p12 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P12 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:12" data-design-type="solo" data-product-url="p15.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p15-full sleeve bodycon dress_Colorway A.webp" style="--rc:-15.04%" loading="lazy" decoding="async"
+                alt="KDscion p15 full sleeve bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P15 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:15" data-design-type="solo" data-product-url="p18.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p18-sleeveless maxi dress_Colorway A.webp" style="--rc:-10.66%" loading="lazy" decoding="async"
+                alt="KDscion p18 sleeveless maxi dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P18 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless maxi dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:18" data-design-type="solo" data-product-url="p23.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p23-sleeveless bodycon dress_Colorway A.webp" style="--rc:-10.13%" loading="lazy" decoding="async"
+                alt="KDscion p23 sleeveless bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P23 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:21" data-design-type="solo" data-product-url="p26.html">
+                <div class="img-wrap">
+                <img src="images/KD-scion-p26-full sleeve A-line dress_Colorway A.webp" style="--rc:-11.85%" loading="lazy" decoding="async"
+                alt="KDscion p26 full sleeve a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P26 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:24" data-design-type="solo" data-product-url="p29.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p29-full sleeve classic fit buttonup dress_Colorway A.webp" style="--rc:-18.70%" loading="lazy" decoding="async"
+                alt="KDscion p29 full sleeve classic fit buttonup dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P29 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve classic fit buttonup dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:27" data-design-type="solo" data-product-url="p32.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p32-sleeveless loose fit button up dress_Colorway A.webp" style="--rc:-13.85%" loading="lazy" decoding="async"
+                alt="KDscion p32 sleeveless loose fit buttonup dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P32 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless loose fit buttonup dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:30" data-design-type="solo" data-product-url="p35.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p35-sleeveless two tone translucent shift dress_Colorway A.webp" style="--rc:-11.26%" loading="lazy" decoding="async"
+                alt="KDscion p35 sleeveless two tone translucent shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P35 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless two tone translucent shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:33" data-design-type="solo" data-product-url="p38.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p38-sleeveless shift dress_Colorway A.webp" style="--rc:-9.56%" loading="lazy" decoding="async"
+                alt="KDscion p38 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P38 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:36" data-design-type="solo" data-product-url="p41.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p41-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.15%" loading="lazy" decoding="async"
+                alt="KDscion p41 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P41 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:39" data-design-type="solo" data-product-url="p44.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p44-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.01%" loading="lazy" decoding="async"
+                alt="KDscion p44 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P44 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:42" data-design-type="solo" data-product-url="p47.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p47-sleeveless sheath dress_Colorway A.webp" style="--rc:-16.74%" loading="lazy" decoding="async"
+                alt="KDscion p47 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P47 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:45" data-design-type="solo" data-product-url="p50.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p50-quarter sleeve shift dress_Colorway A.webp" style="--rc:-18.88%" loading="lazy" decoding="async"
+                alt="KDscion p50 quarter sleeve shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P50 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">quarter sleeve shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:48" data-design-type="solo" data-product-url="p53.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p53-sleeveless shift dress-translucent_Colorway A.webp" style="--rc:-11.67%" loading="lazy" decoding="async"
+                alt="KDscion p53 sleeveless shift dress - translucent">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P53 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress - translucent</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:51" data-design-type="solo" data-product-url="p56.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p56-full sleeve shift dress-elastic lines_Colorway A.webp" style="--rc:-16.74%" loading="lazy" decoding="async"
+                alt="KDscion p56 full sleeve shift dress - elastic lines">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P56 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve shift dress - elastic lines</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:54" data-design-type="solo" data-product-url="p59.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p59-sleeveless sheath dress_Colorway A.webp" style="--rc:-13.64%" loading="lazy" decoding="async"
+                alt="KDscion p59 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P59 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:57" data-design-type="solo" data-product-url="p62.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p62-full sleeve bodycon dress_Colorway A.webp" style="--rc:-14.18%" loading="lazy" decoding="async"
+                alt="KDscion p62 full sleeve bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P62 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:60" data-design-type="solo" data-product-url="p69.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p69-sleeveless quarter button sheath dress_Colorway A.webp" style="--rc:-19.71%" loading="lazy" decoding="async"
+                alt="KDscion p69 sleeveless quarter button sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P69 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless quarter button sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:63" data-design-type="solo" data-product-url="p72.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p72-full sleeve sheath dress_Colorway A.webp" style="--rc:-24.42%" loading="lazy" decoding="async"
+                alt="KDscion p72 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P72 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:66" data-design-type="solo" data-product-url="p75.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p75-sleeveless sheath dress-translucent two tone_Colorway A.webp" style="--rc:-10.78%" loading="lazy" decoding="async"
+                alt="KDscion p75 sleeveless sheath dress - translucent two tone">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P75 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress - translucent two tone</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:69" data-design-type="solo" data-product-url="p83.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p83-sleeveless sheath dress_Colorway A.webp" style="--rc:-18.08%" loading="lazy" decoding="async"
+                alt="KDscion p83 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P83 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:72" data-design-type="solo" data-product-url="p87.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p87-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.75%" loading="lazy" decoding="async"
+                alt="KDscion p87 full sleeve a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P87 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:75" data-design-type="solo" data-product-url="p111.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p111-half sleeve elastic shift dress_Colorway A.webp" style="--rc:-8.64%" loading="lazy" decoding="async"
+                alt="KDscion p111 half sleeve elastic shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P111 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">half sleeve elastic shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:78" data-design-type="solo" data-product-url="p118.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p118-sleeveless shift dress_Colorway A.webp" style="--rc:-8.01%" loading="lazy" decoding="async"
+                alt="KDscion p118 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P118 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:81" data-design-type="solo" data-product-url="p123.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p123-sleeveless shift dress_Colorway A.webp" style="--rc:-10.84%" loading="lazy" decoding="async"
+                alt="KDscion p123 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P123 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:84" data-design-type="solo" data-product-url="p128.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p128-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.27%" loading="lazy" decoding="async"
+                alt="KDscion p128 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P128 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:87" data-design-type="solo" data-product-url="p134.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p134-sleeveless double layer bodycon dress_Colorway A.webp" style="--rc:-16.26%" loading="lazy" decoding="async"
+                alt="KDscion p134 sleeveless double layer bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P134 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless double layer bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:90" data-design-type="solo" data-product-url="p142.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p142-sleeveless shift dress-elastic waist-translucent_Colorway A.webp" style="--rc:-16.11%" loading="lazy" decoding="async"
+                alt="KDscion p142 sleeveless shift dress-elastic waist-translucent">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P142 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress-elastic waist-translucent</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:93" data-design-type="solo" data-product-url="p151.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p151-full sleeve shift dress_Colorway A.webp" style="--rc:-12.84%" loading="lazy" decoding="async"
+                alt="KDscion p151 full sleeve shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P151 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:96" data-design-type="solo" data-product-url="p156.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p156-sleeveless sheath dress_Colorway A.webp" style="--rc:-9.53%" loading="lazy" decoding="async"
+                alt="KDscion p156 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P156 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:99" data-design-type="solo" data-product-url="p175.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p175-asymmetric shift dress_Colorway A.webp" style="--rc:-9.83%" loading="lazy" decoding="async"
+                alt="KDscion p175 asymmetric shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P175 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">asymmetric shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:102" data-design-type="solo" data-product-url="p182.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p182-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.15%" loading="lazy" decoding="async"
+                alt="KDscion p182 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P182 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:105" data-design-type="solo" data-product-url="p189.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p189-sleeveless shift dress_Colorway A.webp" style="--rc:-11.11%" loading="lazy" decoding="async"
+                alt="KDscion p189 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P189 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:108" data-design-type="solo" data-product-url="p193.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p193-full sleeve translucent shift dress - dual layer_Colorway A.webp" style="--rc:-8.49%" loading="lazy" decoding="async"
+                alt="KDscion p193 full sleeve translucent shift dress - dual layer">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P193 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve translucent shift dress - dual layer</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:111" data-design-type="solo" data-product-url="p196.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p196-sleeveless shirring dress - short_Colorway A.webp" style="--rc:-13.43%" loading="lazy" decoding="async"
+                alt="KDscion p196 sleeveless shirring dress - short">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P196 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shirring dress - short</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:114" data-design-type="solo" data-product-url="p199.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p199-full sleeve translucent shift dress - dual asymmetric layer_Colorway A.webp" style="--rc:-9.17%" loading="lazy" decoding="async"
+                alt="KDscion p199 full sleeve translucent shift dress - dual asymmetric layer">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P199 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve translucent shift dress - dual asymmetric layer</p>
+                </div>
+                </div>
+            </div>
+
+            <!-- ── Column 2 ── -->
+            <div class="product-column column column2">
+
+                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="p4.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p4-half sleeve overall dress_Colorway A.webp" style="--rc:-14.38%"
+                alt="KDscion p4 half sleeve overall dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P4 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">half sleeve overall dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:4" data-design-type="solo" data-product-url="p7.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p7-sleeveless sheath dress_Colorway A.webp" style="--rc:-13.16%"
+                alt="KDscion p7 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P7 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:7" data-design-type="solo" data-product-url="p10.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p10-sleeveless sheath dress_Colorway A.webp" style="--rc:-9.26%"
+                alt="KDscion p10 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P10 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:10" data-design-type="solo" data-product-url="p13.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p13-full sleeve swift dress_Colorway A.webp" style="--rc:-14.56%" loading="lazy" decoding="async"
+                alt="KDscion p13 full sleeve swift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P13 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve swift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:13" data-design-type="solo" data-product-url="p16.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p16-sleeveless bodycon dress_Colorway A.webp" style="--rc:-10.84%" loading="lazy" decoding="async"
+                alt="KDscion p16 sleeveless bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P16 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:16" data-design-type="solo" data-product-url="p19.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p19-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.18%" loading="lazy" decoding="async"
+                alt="KDscion p19 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P19 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:19" data-design-type="solo" data-product-url="p24.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p24-full sleeve A-line dress_Colorway A.webp" style="--rc:-17.57%" loading="lazy" decoding="async"
+                alt="KDscion p24 full sleeve a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P24 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:22" data-design-type="solo" data-product-url="p27.html">
+                <div class="img-wrap">
+                <img src="images/KD-scion-p27-sleeveless A-line dress_Colorway A.webp" style="--rc:-14.86%" loading="lazy" decoding="async"
+                alt="KDscion p27 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P27 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:25" data-design-type="solo" data-product-url="p30.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p30-sleeveless classic fit buttonup dress_Colorway A.webp" style="--rc:-15.04%" loading="lazy" decoding="async"
+                alt="KDscion p30 sleeveless classic fit buttonup dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P30 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless classic fit buttonup dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:28" data-design-type="solo" data-product-url="p33.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p33-Quarter shirring sleeve A-line dress_Colorway A.webp" style="--rc:-18.20%" loading="lazy" decoding="async"
+                alt="KDscion p33 quarter shirring sleeve a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P33 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">quarter shirring sleeve a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:31" data-design-type="solo" data-product-url="p36.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p36-sleeveless maxi dress_Colorway A.webp" style="--rc:-13.91%" loading="lazy" decoding="async"
+                alt="KDscion p36 sleeveless maxi dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P36 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless maxi dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:34" data-design-type="solo" data-product-url="p39.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p39-shirring sleeve shift dress_Colorway A.webp" style="--rc:-12.30%" loading="lazy" decoding="async"
+                alt="KDscion p39 shirring sleeve shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P39 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">shirring sleeve shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:37" data-design-type="solo" data-product-url="p42.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p42-sleeveless shift dress_Colorway A.webp" style="--rc:-11.02%" loading="lazy" decoding="async"
+                alt="KDscion p42 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P42 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:40" data-design-type="solo" data-product-url="p45.html">
+                <div class="img-wrap">
+                <img src="images/KD-scion-p45-sleeveless sheath dress_Colorway A.webp" style="--rc:-16.86%" loading="lazy" decoding="async"
+                alt="KDscion p45 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P45 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:43" data-design-type="solo" data-product-url="p48.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p48-quarter sleeve shift dress_Colorway A.webp" style="--rc:-16.08%" loading="lazy" decoding="async"
+                alt="KDscion p48 quarter sleeve shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P48 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">quarter sleeve shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:46" data-design-type="solo" data-product-url="p51.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p51-sleeveless shift dress_Colorway A.webp" style="--rc:-15.90%" loading="lazy" decoding="async"
+                alt="KDscion p51 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P51 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:49" data-design-type="solo" data-product-url="p54.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p54-full sleeve A-line dress_Colorway A.webp" style="--rc:-10.69%" loading="lazy" decoding="async"
+                alt="KDscion p54 full sleeve a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P54 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:52" data-design-type="solo" data-product-url="p57.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p57-sleeveless shift dress-elastic lines_Colorway A.webp" style="--rc:-10.66%" loading="lazy" decoding="async"
+                alt="KDscion p57 sleeveless shift dress - elastic lines">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P57 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress - elastic lines</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:55" data-design-type="solo" data-product-url="p60.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p60-full sleeve sheath dress_Colorway A.webp" style="--rc:-8.52%" loading="lazy" decoding="async"
+                alt="KDscion p60 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P60 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:58" data-design-type="solo" data-product-url="p63.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p63-sleeveless bodycon dress_Colorway A.webp" style="--rc:-12.36%" loading="lazy" decoding="async"
+                alt="KDscion p63 sleeveless bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P63 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:61" data-design-type="solo" data-product-url="p70.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p70-full sleeve button up sheath dress_Colorway A.webp" style="--rc:-22.63%" loading="lazy" decoding="async"
+                alt="KDscion p70 full sleeve button up sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P70 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve button up sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:64" data-design-type="solo" data-product-url="p73.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p73-sleeveless sheath dress_Colorway A.webp" style="--rc:-12.09%" loading="lazy" decoding="async"
+                alt="KDscion p73 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P73 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:67" data-design-type="solo" data-product-url="p78.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp" style="--rc:-21.41%" loading="lazy" decoding="async"
+                alt="KDscion p78 full sleeve sheath dress with belt - two tone layer">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P78 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress with belt - two tone layer</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:70" data-design-type="solo" data-product-url="p85.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p85-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.46%" loading="lazy" decoding="async"
+                alt="KDscion p85 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P85 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:73" data-design-type="solo" data-product-url="p88.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p88-sleeveless A-line dress_Colorway A.webp" style="--rc:-18.61%" loading="lazy" decoding="async"
+                alt="KDscion p88 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P88 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:76" data-design-type="solo" data-product-url="p112.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p112-sleeveless elastic shift dress_Colorway A.webp" style="--rc:-10.81%" loading="lazy" decoding="async"
+                alt="KDscion p112 sleeveless elastic shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P112 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless elastic shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:79" data-design-type="solo" data-product-url="p119.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p119-full sleeve sheath dress_Colorway A.webp" style="--rc:-13.28%" loading="lazy" decoding="async"
+                alt="KDscion p119 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P119 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:82" data-design-type="solo" data-product-url="p124.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p124-sleeveless shift dress_Colorway A.webp" style="--rc:-14.20%" loading="lazy" decoding="async"
+                alt="KDscion p124 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P124 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:85" data-design-type="solo" data-product-url="p130.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p130-sleeveless cross strap bodycon dress_Colorway A.webp" style="--rc:-17.93%" loading="lazy" decoding="async"
+                alt="KDscion p130 sleeveless cross strap bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P130 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless cross strap bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:88" data-design-type="solo" data-product-url="p135.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p135-full sleeve sheath dress_Colorway A.webp" style="--rc:-12.12%" loading="lazy" decoding="async"
+                alt="KDscion p135 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P135 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:91" data-design-type="solo" data-product-url="p145.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p145-full sleeve bodycon dress_Colorway A.webp" style="--rc:-11.02%" loading="lazy" decoding="async"
+                alt="KDscion p145 full sleeve bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P145 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:94" data-design-type="solo" data-product-url="p152.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p152-sleeveless shift dress_Colorway A.webp" style="--rc:-10.66%" loading="lazy" decoding="async"
+                alt="KDscion p152 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P152 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:97" data-design-type="solo" data-product-url="p169.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p169-full sleeve two layer sheath dress_Colorway A.webp" style="--rc:-11.61%" loading="lazy" decoding="async"
+                alt="KDscion p169 full sleeve two layer sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P169 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve two layer sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:100" data-design-type="solo" data-product-url="p176.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p176-full sleeve Asymmetric shift dress_Colorway A.webp" style="--rc:-7.15%" loading="lazy" decoding="async"
+                alt="KDscion p176 full sleeve asymmetric shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P176 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve asymmetric shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:103" data-design-type="solo" data-product-url="p187.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p187-sleeveless asymmetric short dress_Colorway A.webp" style="--rc:-11.73%" loading="lazy" decoding="async"
+                alt="KDscion p187 sleeveless asymmetric short dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P187 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless asymmetric short dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:106" data-design-type="solo" data-product-url="p190.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p190-sleeveless asymmetric shift dress_Colorway A.webp" style="--rc:-13.07%" loading="lazy" decoding="async"
+                alt="KDscion p190 sleeveless asymmetric shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P190 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless asymmetric shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:109" data-design-type="solo" data-product-url="p194.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p194-sleeveless translucent shift dress - dual layer_Colorway A.webp" style="--rc:-7.42%" loading="lazy" decoding="async"
+                alt="KDscion p194 sleeveless translucent shift dress - dual layer">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P194 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless translucent shift dress - dual layer</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:112" data-design-type="solo" data-product-url="p197.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p197-full sleeve shift dress - elastic waist_Colorway A.webp" style="--rc:-9.23%" loading="lazy" decoding="async"
+                alt="KDscion p197 full sleeve shift dress - elastic waist">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P197 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve shift dress - elastic waist</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:115" data-design-type="solo" data-product-url="p200.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p200-sleeveless translucent shift dress - dual asymmetric layer_Colorway A.webp" style="--rc:-9.32%" loading="lazy" decoding="async"
+                alt="KDscion p200 sleeveless translucent shift dress - dual asymmetric layer">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P200 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless translucent shift dress - dual asymmetric layer</p>
+                </div>
+                </div>
+            </div>
+
+            <!-- ── Column 3 ── -->
+            <div class="product-column column column3">
+
+                <div class="product-item" style="--ord:2" data-design-type="solo" data-product-url="p5.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p5-Quarter sleeve overall dress_Colorway A.webp" style="--rc:-12.39%"
+                alt="KDscion p5 quarter sleeve overall dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P5 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">quarter sleeve overall dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:5" data-design-type="solo" data-product-url="p8.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p8-full sleeve sheath dress_Colorway A.webp" style="--rc:-20.61%"
+                alt="KDscion p8 full sleeve bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P8 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:8" data-design-type="solo" data-product-url="p11.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p11-full sleeve A-line dress_Colorway A.webp" style="--rc:-14.38%"
+                alt="KDscion p11 full sleeve a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P11 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:11" data-design-type="solo" data-product-url="p14.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p14-sleeveless swift dress_Colorway A.webp" style="--rc:-10.36%" loading="lazy" decoding="async"
+                alt="KDscion p14 sleeveless swift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P14 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless swift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:14" data-design-type="solo" data-product-url="p17.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p17-sleeveless midi dress_Colorway A.webp" style="--rc:-21.77%" loading="lazy" decoding="async"
+                alt="KDscion p17 sleeveless midi dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P17 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless midi dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:17" data-design-type="solo" data-product-url="p20.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p20-sleeveless A-line dress_Colorway A.webp" style="--rc:-13.76%" loading="lazy" decoding="async"
+                alt="KDscion p20 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P20 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:20" data-design-type="solo" data-product-url="p25.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p25-sleeveless A-line dress_Colorway A.webp" style="--rc:-19.21%" loading="lazy" decoding="async"
+                alt="KDscion p25 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P25 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:23" data-design-type="solo" data-product-url="p28.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p28-sleeveless A-line dress_Colorway A.webp" style="--rc:-13.43%" loading="lazy" decoding="async"
+                alt="KDscion p28 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P28 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:26" data-design-type="solo" data-product-url="p31.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p31-full sleeve loose fit button up dress_Colorway A.webp" style="--rc:-13.55%" loading="lazy" decoding="async"
+                alt="KDscion p31 full sleeve loose fit buttonup dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P31 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve loose fit buttonup dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:29" data-design-type="solo" data-product-url="p34.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p34-sleeveless shift dress_Colorway A.webp" style="--rc:-10.54%" loading="lazy" decoding="async"
+                alt="KDscion p34 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P34 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:32" data-design-type="solo" data-product-url="p37.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p37-sleeveless maxi dress_Colorway A.webp" style="--rc:-9.59%" loading="lazy" decoding="async"
+                alt="KDscion p37 sleeveless maxi dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P37 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless maxi dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:35" data-design-type="solo" data-product-url="p40.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p40-sleeveless sheath dress_Colorway A.webp" style="--rc:-14.68%" loading="lazy" decoding="async"
+                alt="KDscion p40 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P40 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:38" data-design-type="solo" data-product-url="p43.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p43-sleeveless loose fit button up dress_Colorway A.webp" style="--rc:-7.53%" loading="lazy" decoding="async"
+                alt="KDscion p43 sleeveless loose fit button up dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P43 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless loose fit button up dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:41" data-design-type="solo" data-product-url="p46.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p46-full sleeve sheath dress_Colorway A.webp" style="--rc:-15.43%" loading="lazy" decoding="async"
+                alt="KDscion p46 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P46 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:44" data-design-type="solo" data-product-url="p49.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p49-sleeveless shift dress_Colorway A.webp" style="--rc:-14.68%" loading="lazy" decoding="async"
+                alt="KDscion p49 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P49 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:47" data-design-type="solo" data-product-url="p52.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p52-sleeveless shift dress (designer folding)-translucent_Colorway A.webp" style="--rc:-16.62%" loading="lazy" decoding="async"
+                alt="KDscion p52 sleeveless shift dress (designer folding) - translucent">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P52 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress (designer folding) - translucent</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:50" data-design-type="solo" data-product-url="p55.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p55-sleeveless A-line dress_Colorway A.webp" style="--rc:-9.11%" loading="lazy" decoding="async"
+                alt="KDscion p55 sleeveless a-line dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P55 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless a-line dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:53" data-design-type="solo" data-product-url="p58.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p58-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.99%" loading="lazy" decoding="async"
+                alt="KDscion p58 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P58 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:56" data-design-type="solo" data-product-url="p61.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p61-sleeveless sheath dress_Colorway A.webp" style="--rc:-18.02%" loading="lazy" decoding="async"
+                alt="KDscion p61 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P61 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:59" data-design-type="solo" data-product-url="p68.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p68-full sleeve quarter button sheath dress_Colorway A.webp" style="--rc:-24.99%" loading="lazy" decoding="async"
+                alt="KDscion p68 full sleeve quarter button sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P68 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve quarter button sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:62" data-design-type="solo" data-product-url="p71.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p71-sleeveless button up sheath dress_Colorway A.webp" style="--rc:-9.26%" loading="lazy" decoding="async"
+                alt="KDscion p71 sleeveless button up sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P71 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless button up sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:65" data-design-type="solo" data-product-url="p74.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p74-full sleeve sheath dress-translucent two tone_Colorway A.webp" style="--rc:-15.28%" loading="lazy" decoding="async"
+                alt="KDscion p74 full sleeve sheath dress - translucent two tone">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P74 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress - translucent two tone</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:68" data-design-type="solo" data-product-url="p79.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p79-sleeveless sheath dress with belt-two tone layer_Colorway A.webp" style="--rc:-20.64%" loading="lazy" decoding="async"
+                alt="KDscion p79 sleeveless sheath dress with belt - two tone layer">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P79 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress with belt - two tone layer</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:71" data-design-type="solo" data-product-url="p86.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p86-sleeveless sheath dress_Colorway A.webp" style="--rc:-19.39%" loading="lazy" decoding="async"
+                alt="KDscion p86 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P86 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:74" data-design-type="solo" data-product-url="p102.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p102-full sleeve shift dress_Colorway A.webp" style="--rc:-13.52%" loading="lazy" decoding="async"
+                alt="KDscion p102 full sleeve shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P102 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:77" data-design-type="solo" data-product-url="p115.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p115-sleeveless shift dress_Colorway A.webp" style="--rc:-15.46%" loading="lazy" decoding="async"
+                alt="KDscion p115 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P115 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:80" data-design-type="solo" data-product-url="p120.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p120-sleeveless sheath dress_Colorway A.webp" style="--rc:-10.93%" loading="lazy" decoding="async"
+                alt="KDscion p120 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P120 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:83" data-design-type="solo" data-product-url="p127.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p127-half sleeve shift dress_Colorway A.webp" style="--rc:-15.13%" loading="lazy" decoding="async"
+                alt="KDscion p127 half sleeve shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P127 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">half sleeve shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:86" data-design-type="solo" data-product-url="p133.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p133-sleeveless sheath dress_Colorway A.webp" style="--rc:-12.54%" loading="lazy" decoding="async"
+                alt="KDscion p133 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P133 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:89" data-design-type="solo" data-product-url="p136.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p136-quarter sheath dress_Colorway A.webp" style="--rc:-11.29%" loading="lazy" decoding="async"
+                alt="KDscion p136 quarter sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P136 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">quarter sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:92" data-design-type="solo" data-product-url="p146.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p146-sleeveless bodycon dress_Colorway A.webp" style="--rc:-9.89%" loading="lazy" decoding="async"
+                alt="KDscion p146 sleeveless bodycon dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P146 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless bodycon dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:95" data-design-type="solo" data-product-url="p155.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p155-full sleeve sheath dress_Colorway A.webp" style="--rc:-10.66%" loading="lazy" decoding="async"
+                alt="KDscion p155 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P155 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:98" data-design-type="solo" data-product-url="p170.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p170-sleeveless sheath dress_Colorway A.webp" style="--rc:-11.23%" loading="lazy" decoding="async"
+                alt="KDscion p170 sleeveless sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P170 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:101" data-design-type="solo" data-product-url="p181.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p181-full sleeve sheath dress_Colorway A.webp" style="--rc:-7.33%" loading="lazy" decoding="async"
+                alt="KDscion p181 full sleeve sheath dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P181 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve sheath dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:104" data-design-type="solo" data-product-url="p188.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p188-sleeveless shift dress_Colorway A.webp" style="--rc:-9.11%" loading="lazy" decoding="async"
+                alt="KDscion p188 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P188 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:107" data-design-type="solo" data-product-url="p191.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p191-sleeveless shift dress_Colorway A.webp" style="--rc:-14.92%" loading="lazy" decoding="async"
+                alt="KDscion p191 sleeveless shift dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P191 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:110" data-design-type="solo" data-product-url="p195.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p195-sleeveless shirring dress_Colorway A.webp" style="--rc:-11.23%" loading="lazy" decoding="async"
+                alt="KDscion p195 sleeveless shirring dress">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P195 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shirring dress</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:113" data-design-type="solo" data-product-url="p198.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-p198-sleeveless shift dress - elastic waist_Colorway A.webp" style="--rc:-9.62%" loading="lazy" decoding="async"
+                alt="KDscion p198 sleeveless shift dress - elastic waist">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">P198 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">sleeveless shift dress - elastic waist</p>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+
+    <script>
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.product-item[data-product-url]').forEach(item => {
+            if (item.dataset.productUrl.includes('design variations')) {
+                item.classList.add('has-variations');
+                const desc = item.querySelector('.product-desc');
+                if (desc) {
+                    const dots = document.createElement('span');
+                    dots.className = 'var-dots';
+                    dots.innerHTML = '<span class="var-dot"></span><span class="var-dot"></span><span class="var-dot"></span>';
+                    desc.prepend(dots);
+                }
+            }
+            item.addEventListener('click', () => {
+                sessionStorage.setItem('dressesScrollY', window.scrollY);
+                // Track which design was clicked and whether it has variations
+                const url = item.dataset.productUrl || '';
+                const subEl = item.querySelector('.product-desc__sub');
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack(
+                        url.includes('design variations') ? 'variation_opened' : 'design_clicked',
+                        {
+                            destination:  url,
+                            design_name:  subEl ? subEl.textContent.trim() : '',
+                            has_variations: url.includes('design variations'),
+                        }
+                    );
+                }
+                window.location.href = url;
+            });
+        });
+
+        window.addEventListener('pageshow', () => {
+            const y = sessionStorage.getItem('dressesScrollY');
+            if (y !== null) {
+                window.scrollTo(0, parseInt(y));
+                sessionStorage.removeItem('dressesScrollY');
+            }
+        });
+
+        const items = document.querySelectorAll('.product-item');
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                items.forEach(el => el.classList.remove('popup-active'));
+                item.classList.add('popup-active');
+            });
+            item.addEventListener('mouseleave', () => {
+                item.classList.remove('popup-active');
+            });
+        });
+    </script>
+
+
+
+
+    <script src="js/analytics.js"></script>
+
+
+    <script type="module">
+    // ── Fabric-accurate, stock-aware pool snaps ──────────────────────────────
+    // For every thumbnail (main grid + recent-additions popup — both use the
+    // same .img-wrap img markup), check Firebase for a pre-rendered snap of
+    // that product's currently in-stock fabric. Products with no Firebase
+    // data yet (the vast majority, until each is migrated) fall back to
+    // today's static image — this is a no-op for them, not a placeholder.
+    import { getProductSnapConfig, subscribeFabricStock, pickPoolSnap } from './js/fabric-stock.js';
+
+    (async () => {
+        const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
+
+        document.querySelectorAll('.img-wrap img').forEach((img) => {
+            const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
+            if (!m) return;
+            const slug = m[1].toLowerCase();
+            if (!bySlug.has(slug)) {
+                bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
+            }
+            bySlug.get(slug).imgs.push(img);
+        });
+
+        const configs = {};
+        await Promise.all([...bySlug.keys()].map(async (slug) => {
+            try {
+                configs[slug] = await getProductSnapConfig(slug);
+            } catch (err) {
+                configs[slug] = { fabricOrder: [], snaps: {} };
+            }
+        }));
+
+        function applyStock(stockMap) {
+            for (const [slug, { fallbackUrl, imgs }] of bySlug) {
+                const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
+                imgs.forEach((img) => {
+                    // Compare against the raw attribute, not the .src property —
+                    // the browser always resolves .src to an absolute URL, which
+                    // would never match our relative `chosen`/`fallbackUrl` paths.
+                    if (img.getAttribute('src') !== chosen) img.src = chosen;
+                });
+            }
+        }
+
+        try {
+            subscribeFabricStock(applyStock);
+        } catch (err) {
+            console.warn('[fabric-stock] pool snaps unavailable, staying on static images:', err);
+        }
+    })();
+    </script>
+
+    <script type="module" src="js/search-ui.js"></script>
+</body>
+</html>

@@ -47,7 +47,48 @@
         if (pool) crumb.appendChild(pool);
 
         addFabricTab();
+        // Trial on p1 first (html.kd-m3): the viewer's tools in one rail, with real fingertip targets.
+        if (/\/p1(\.html)?$/.test(location.pathname)) {
+            document.documentElement.classList.add('kd-m3');
+            buildToolRail();
+        }
     });
+
+    // The tool rail (css/mobile-refresh.css §6): Search, the Colourist and Pan, which arrive
+    // from their own modules, gathered into one ivory capsule on the right edge of the
+    // viewer. Each slot is a 40px target; a tap anywhere in it works its tool.
+    function buildToolRail() {
+        var viewer = document.querySelector('.viewer-panel');
+        if (!viewer) return;
+        var rail = document.createElement('div');
+        rail.className = 'kd-m3-rail';
+        rail.setAttribute('role', 'toolbar');
+        rail.setAttribute('aria-label', 'Viewer tools');
+        viewer.appendChild(rail);
+        var order = ['#kd-search-btn', '.kd-viewer-logo', '#view-pan'], placed = {};
+        var tries = 0;
+        (function gather() {
+            order.forEach(function (sel) {
+                if (placed[sel]) return;
+                var el = viewer.querySelector(sel);
+                if (!el) return;
+                var slot = document.createElement('span');
+                slot.className = 'kd-m3-slot';
+                slot.setAttribute('data-tool', sel.replace(/[#.]/g, ''));
+                el.parentNode.insertBefore(slot, el);
+                slot.appendChild(el);
+                // A tap on the slot's margin works the tool too (the KD mark itself is a small mask).
+                slot.addEventListener('click', function (e) { if (e.target === slot) el.click(); });
+                placed[sel] = slot;
+            });
+            // keep the rail in the fixed order, whatever arrived first
+            order.forEach(function (sel) { if (placed[sel]) rail.appendChild(placed[sel]); });
+            if (Object.keys(placed).length < order.length && ++tries < 60) setTimeout(gather, 150);
+            // a Colourist hover tip travels with its mark; on touch it is hidden anyway
+            var tip = rail.querySelector('.kdc-tip');
+            if (tip) tip.remove();
+        })();
+    }
 
     // "Select Fabric" tab (css/mobile-refresh.css §5): the 3D viewer fills most of the
     // screen and takes the swipes, so this glides down to the fabrics, and back.

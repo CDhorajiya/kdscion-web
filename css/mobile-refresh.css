@@ -138,4 +138,96 @@
     @media (prefers-reduced-motion: reduce) {
         .kd-m2-jump, .kd-m2-jump svg { transition: none; animation: none; }
     }
+
+    /* ── 6. Trial on p1 (html.kd-m3): controls a fingertip can hit ──
+       Search, the Colourist and Pan share one slim ivory rail on the right edge
+       of the viewer, in the Showcase pill's glass, with gold hairlines between.
+       Each slot is a 40px target around a small icon. The Showcase pill keeps its
+       letters small but stands tall enough to tap, and Design Only / Design
+       Details get room around them. */
+    html.kd-m3 .kd-m3-rail {
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
+        z-index: 7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.2rem 0;
+        border: 1px solid #d6d6d6;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.82);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    html.kd-m3 .kd-m3-slot {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+    html.kd-m3 .kd-m3-slot + .kd-m3-slot::before {          /* gold hairline between tools */
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        width: 16px; height: 1px;
+        margin-left: -8px;
+        background: rgba(100,70,0,0.28);
+    }
+    /* the tools themselves, settled into their slots */
+    html.kd-m3 .kd-m3-slot > * {
+        position: static !important;
+        top: auto !important; right: auto !important; left: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+    }
+    html.kd-m3 .kd-m3-slot > #kd-search-btn {
+        display: grid; place-items: center;
+        width: 40px; height: 40px; padding: 0;
+        background: none; border: 0;
+    }
+    html.kd-m3 .kd-m3-slot > #kd-search-btn svg { width: 1.7rem !important; height: 1.7rem !important; }
+    html.kd-m3 .kd-m3-slot > .kd-viewer-logo { width: 1.7rem !important; height: 1.7rem !important; }
+    html.kd-m3 .kd-m3-slot > #view-pan {
+        width: 32px !important; height: 32px !important;
+        border: 0 !important; box-shadow: none !important;
+        background: transparent !important;
+        -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+    }
+    html.kd-m3 .kd-m3-slot > #view-pan[aria-pressed="true"] { background: rgba(255,240,205,0.95) !important; }
+    html.kd-m3 .kd-m3-slot > #view-pan svg { width: 1.6rem; height: 1.6rem; }
+
+    /* Showcase | Turn: small letters, tall enough to tap (no shrinking scale) */
+    html.kd-m3 .viewer-panel .showcase {
+        transform: none !important;
+        top: 0.8rem !important; left: 0.8rem !important;
+    }
+    html.kd-m3 .viewer-panel .showcase button {
+        font-size: 0.85rem !important;
+        letter-spacing: 1.5px !important;
+        padding: 0.95rem 0.85rem !important;           /* ~34px tall */
+        gap: 0.45rem !important;
+    }
+
+    /* Design Only / Design Details: a little apart, each with a 34px target */
+    html.kd-m3 .viewer-panel .design-only-btn,
+    html.kd-m3 .viewer-panel .design-details-btn {
+        transform: none !important;
+        font-size: 0.8rem !important;
+        letter-spacing: 1.5px !important;
+        padding: 0.55rem 0.8rem !important;
+        right: 0.8rem !important;
+    }
+    html.kd-m3 .viewer-panel .design-details-btn { bottom: 0.8rem !important; }
+    html.kd-m3 .viewer-panel .design-only-btn { bottom: 4.2rem !important; }
+    html.kd-m3 .viewer-panel .design-only-btn::after,
+    html.kd-m3 .viewer-panel .design-details-btn::after {  /* invisible: a larger fingertip target */
+        content: '';
+        position: absolute;
+        inset: -6px -4px;
+    }
 }

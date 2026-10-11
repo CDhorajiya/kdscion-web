@@ -6,7 +6,8 @@
     python3 tools/mobile_refresh.py status
 
 Pages: the Pool of Designs, design-variation pages and category galleries
-(.container-snaps) and every product page (.product-title-row). Desktop is never
+(.container-snaps), every product page (.product-title-row) and the Bespoke
+Boutique page's phone menu (.bb-panel). Desktop is never
 affected: every rule is inside a phone-width media query.
 
 On product pages, apply also lets the 3D camera come closer on phones
@@ -30,7 +31,9 @@ def pages():
     out = []
     for f in sorted(glob.glob(os.path.join(ROOT, '*.html'))):
         s = open(f, encoding='utf-8').read()
-        if 'class="product-title-row"' in s or 'class="container-snaps"' in s:
+        if '-copy' in os.path.basename(f):
+            continue
+        if 'class="product-title-row"' in s or 'class="container-snaps"' in s or 'class="bb-panel"' in s:
             out.append(f)
     return out
 

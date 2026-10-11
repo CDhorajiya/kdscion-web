@@ -12,6 +12,8 @@
     window.KD_CAMERA_Z = 2.65;
 
     document.addEventListener('DOMContentLoaded', function () {
+        var menu = document.querySelector('.bb-panel-nav');
+        if (menu) menuScroll(menu);
         var row = document.querySelector('.product-title-row');
         var crumb = document.querySelector('.product-breadcrumb');
         if (!row || !crumb) return;
@@ -47,13 +49,76 @@
         if (pool) crumb.appendChild(pool);
 
         addFabricTab();
-        // Trial on p1 first (html.kd-m3): the viewer's tools in one rail, with real fingertip targets.
-        if (/\/p1(\.html)?$/.test(location.pathname)) {
-            document.documentElement.classList.add('kd-m3');
-            buildToolRail();
-            compactShowcase();
-        }
+        // The viewer's tools with real fingertip targets (html.kd-m3): every product page.
+        document.documentElement.classList.add('kd-m3');
+        buildToolRail();
+        compactShowcase();
     });
+
+    // The Bespoke Boutique menu (Men, Women, Boy, Girl) on phones (css/mobile-refresh.css §7):
+    // a light tick as each row passes the middle of the list, like a watch crown;
+    // a firmer bump and a small give at either end; a fade and a gold chevron while
+    // there is more below, and a gold hairline with a diamond once the list ends.
+    // (Vibration is Android's; iPhones show the same cues without it.)
+    function menuScroll(nav) {
+        var panel = nav.closest('.bb-panel') || nav.parentNode;
+        nav.classList.add('kd-m2-scroller');
+        var cue = document.createElement('div');
+        cue.className = 'kd-m2-cue';
+        cue.setAttribute('aria-hidden', 'true');
+        cue.innerHTML = '<svg class="kd-m2-cue__more" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>' +
+            '<span class="kd-m2-cue__end"><i></i><b></b><i></i></span>';
+        panel.appendChild(cue);
+        var buzz = function (ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* not allowed */ } };
+        var last = nav.scrollTop, row = null, queued = false, bounceT = 0, endT = 0, touched = false;
+        nav.addEventListener('touchstart', function () { touched = true; }, { passive: true });
+        function rowAtMiddle() {
+            var mid = nav.getBoundingClientRect().top + nav.clientHeight / 2, rows = nav.querySelectorAll('.bb-acc-hdr, .bb-acc.open .bb-acc-body a');
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i].getBoundingClientRect();
+                if (r.height && r.top <= mid && r.bottom > mid) return rows[i];
+            }
+            return null;
+        }
+        function give(where) {
+            nav.classList.remove('kd-give-top', 'kd-give-bottom');
+            void nav.offsetWidth;                                    // restart the animation
+            nav.classList.add('kd-give-' + where);
+            clearTimeout(bounceT);
+            bounceT = setTimeout(function () { nav.classList.remove('kd-give-' + where); }, 500);
+        }
+        function update() {
+            queued = false;
+            var max = nav.scrollHeight - nav.clientHeight, st = nav.scrollTop;
+            var up = st > 2, down = st < max - 2;
+            nav.classList.toggle('kd-up', up);
+            nav.classList.toggle('kd-down', down && max > 2);
+            // the cue sits just under the list, clear of its last row
+            var nr = nav.getBoundingClientRect(), pr = panel.getBoundingClientRect();
+            cue.style.top = Math.round(nr.bottom - pr.top + 4) + 'px';
+            cue.classList.toggle('is-more', down && max > 2);
+            if (touched) {
+                var r = rowAtMiddle();
+                if (r && r !== row && row) buzz(6);              // a tick per row
+                row = r;
+                if (max > 2 && st <= 0 && last > 0) { buzz(18); give('top'); }
+                if (max > 2 && st >= max - 1 && last < max - 1) {
+                    buzz([14, 40, 14]); give('bottom');
+                    cue.classList.add('is-end');
+                    clearTimeout(endT);
+                    endT = setTimeout(function () { cue.classList.remove('is-end'); }, 1600);
+                }
+            }
+            last = st;
+        }
+        function soon() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+        nav.addEventListener('scroll', soon, { passive: true });
+        window.addEventListener('resize', soon);
+        // a category opening or closing changes the list's length
+        nav.addEventListener('click', function () { setTimeout(soon, 30); });
+        new MutationObserver(soon).observe(panel, { attributes: true, attributeFilter: ['class'] });
+        soon();
+    }
 
     // Showcase, folded (css/mobile-refresh.css §6): one button with just the three dots and
     // the turn arrow. A tap opens the full Showcase | Turn pill in its place; it folds back

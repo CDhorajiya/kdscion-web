@@ -6,7 +6,7 @@
    page are also scoped to html.kd-m2, which that script sets on phones.
 
    Pages: Pool of Designs, design-variation pages, the boutique category
-   galleries, and every product page.
+   galleries, every product page, and the Bespoke Boutique menu.
 
    "Restore default mobile":  python3 tools/mobile_refresh.py restore
    (unlinks this file and the script from every page; the git tag
@@ -258,5 +258,50 @@
         content: '';
         position: absolute;
         inset: -6px -4px;
+    }
+
+    /* ── 7. The Bespoke Boutique menu (Men, Women, Boy, Girl): it can scroll / it has ended ──
+       js/mobile-refresh.js, menuScroll: the list's edge fades where there is more;
+       a gold chevron bobs at the foot while more lies below; at the end, a small
+       give and a gold hairline with a diamond. */
+    .kd-m2-scroller { scrollbar-width: none; }
+    .kd-m2-scroller::-webkit-scrollbar { display: none; }
+    .kd-m2-scroller.kd-down { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 4.5rem), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 4.5rem), transparent); }
+    .kd-m2-scroller.kd-up { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 3rem); mask-image: linear-gradient(to bottom, transparent, #000 3rem); }
+    .kd-m2-scroller.kd-up.kd-down {
+        -webkit-mask-image: linear-gradient(to bottom, transparent, #000 3rem, #000 calc(100% - 4.5rem), transparent);
+        mask-image: linear-gradient(to bottom, transparent, #000 3rem, #000 calc(100% - 4.5rem), transparent);
+    }
+    .kd-m2-scroller.kd-give-top { animation: kdGiveTop 0.45s cubic-bezier(.3,.7,.4,1); }
+    .kd-m2-scroller.kd-give-bottom { animation: kdGiveBottom 0.45s cubic-bezier(.3,.7,.4,1); }
+    @keyframes kdGiveTop { 0% { transform: none; } 35% { transform: translateY(7px); } 100% { transform: none; } }
+    @keyframes kdGiveBottom { 0% { transform: none; } 35% { transform: translateY(-7px); } 100% { transform: none; } }
+    .kd-m2-cue {
+        position: absolute;
+        left: 50%;
+        width: 6rem;
+        height: 2.4rem;
+        margin-left: -3rem;
+        pointer-events: none;
+        z-index: 3;
+    }
+    .kd-m2-cue__more {
+        position: absolute; left: 50%; top: 0.2rem;
+        width: 1.8rem; height: 1.8rem; margin-left: -0.9rem;
+        fill: none; stroke: rgba(100,70,0,0.75); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round;
+        opacity: 0; transition: opacity 0.3s ease;
+    }
+    .kd-m2-cue.is-more .kd-m2-cue__more { opacity: 1; animation: kdCueBob 1.8s ease-in-out infinite; }
+    @keyframes kdCueBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+    .kd-m2-cue__end {
+        position: absolute; left: 0; right: 0; top: 0.9rem;
+        display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        opacity: 0; transform: translateY(4px); transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .kd-m2-cue__end i { width: 1.8rem; height: 1px; background: rgba(100,70,0,0.5); }
+    .kd-m2-cue__end b { width: 5px; height: 5px; background: rgba(100,70,0,0.75); transform: rotate(45deg); }
+    .kd-m2-cue.is-end .kd-m2-cue__end { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+        .kd-m2-scroller.kd-give-top, .kd-m2-scroller.kd-give-bottom, .kd-m2-cue.is-more .kd-m2-cue__more { animation: none; }
     }
 }

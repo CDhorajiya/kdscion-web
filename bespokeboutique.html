@@ -101,7 +101,8 @@
             left: 0;
             right: 0;
             width: 100%;
-            grid-template-columns: repeat(5, 1fr);
+            box-sizing: border-box;   /* padding inside the screen, and columns that shrink (long names wrap) */
+            grid-template-columns: repeat(5, minmax(0, 1fr));   /* so the fifth column is never cut off */
             padding: 2rem 3rem;
             max-height: none;
             overflow-y: visible;
@@ -137,6 +138,21 @@
             color: #000000;
             letter-spacing: 6px;
             padding-left: 3.8rem;
+        }
+
+        /* Narrower screens: tighter spacing below 1700px and three columns below 1300px,
+           so every category fits inside the screen without running into its neighbour. */
+        @media (min-width: 769px) and (max-width: 1699px) {
+            .navigation ul li ul.dropdown { padding: 2rem 1.5rem; }
+            .navigation ul li ul.dropdown li a { padding: 1rem 1.2rem; letter-spacing: 2px; }
+            .navigation ul li ul.dropdown li a:hover { letter-spacing: 3px; padding-left: 1.6rem; }
+        }
+        @media (min-width: 769px) and (max-width: 1299px) {
+            .navigation ul li ul.dropdown { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .navigation ul li ul.dropdown li a { padding: 0.9rem 1.2rem; }
+        }
+        @media (min-width: 769px) and (max-width: 899px) {
+            .navigation ul li ul.dropdown li a { font-size: 1.3rem; letter-spacing: 1.5px; }
         }
 
         /* House Recommendations special style */
@@ -400,6 +416,11 @@
                 <li><a href="" class="">V-nake layering</a></li>
                 <li><a href="turtle-necks-woman.html" class="">Turtle nakes</a></li>
                 <li><a href="dresses-woman.html" class="">Dresses</a></li>
+                <li><a href="sheath-dresses-woman.html" class="">Sheath dress</a></li>
+                <li><a href="bodycon-dresses-woman.html" class="">Bodycon dress</a></li>
+                <li><a href="a-line-dresses-woman.html" class="">A-line dress</a></li>
+                <li><a href="shift-dresses-woman.html" class="">Shift dress</a></li>
+                <li><a href="maxi-dresses-woman.html" class="">Maxi dress</a></li>
                 <li><a href="" class="">Classic B & W</a></li>
                 <li><a href="" class="">Eastern style</a></li>
                 <li><a href="" class="">Gowns</a></li>
@@ -537,6 +558,11 @@
                     <a href="">V-Neck Layering</a>
                     <a href="turtle-necks-woman.html">Turtle Necks</a>
                     <a href="dresses-woman.html">Dresses</a>
+                    <a href="sheath-dresses-woman.html">Sheath Dress</a>
+                    <a href="bodycon-dresses-woman.html">Bodycon Dress</a>
+                    <a href="a-line-dresses-woman.html">A-line Dress</a>
+                    <a href="shift-dresses-woman.html">Shift Dress</a>
+                    <a href="maxi-dresses-woman.html">Maxi Dress</a>
                     <a href="">Classic B &amp; W</a>
                     <a href="">Eastern Style</a>
                     <a href="">Gowns</a>

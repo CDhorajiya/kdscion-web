@@ -145,21 +145,14 @@
        Each slot is a 40px target around a small icon. The Showcase pill keeps its
        letters small but stands tall enough to tap, and Design Only / Design
        Details get room around them. */
-    html.kd-m3 .kd-m3-rail {
+    html.kd-m3 .kd-m3-rail {                  /* no capsule: just the icons, each in a 40px slot */
         position: absolute;
         top: 0.8rem;
-        right: 0.8rem;
+        right: 0.6rem;
         z-index: 7;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0.2rem 0;
-        border: 1px solid #d6d6d6;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.82);
-        -webkit-backdrop-filter: blur(6px);
-        backdrop-filter: blur(6px);
-        box-shadow: 0 1px 8px rgba(0,0,0,0.06);
     }
     html.kd-m3 .kd-m3-slot {
         position: relative;
@@ -169,14 +162,6 @@
         height: 40px;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
-    }
-    html.kd-m3 .kd-m3-slot + .kd-m3-slot::before {          /* gold hairline between tools */
-        content: '';
-        position: absolute;
-        top: 0; left: 50%;
-        width: 16px; height: 1px;
-        margin-left: -8px;
-        background: rgba(100,70,0,0.28);
     }
     /* the tools themselves, settled into their slots */
     html.kd-m3 .kd-m3-slot > * {
@@ -193,24 +178,66 @@
     html.kd-m3 .kd-m3-slot > #kd-search-btn svg { width: 1.7rem !important; height: 1.7rem !important; }
     html.kd-m3 .kd-m3-slot > .kd-viewer-logo { width: 1.7rem !important; height: 1.7rem !important; }
     html.kd-m3 .kd-m3-slot > #view-pan {
-        width: 32px !important; height: 32px !important;
+        width: 40px !important; height: 40px !important;
+        display: grid !important; place-items: center !important; padding: 0 !important;
+        border-radius: 50% !important;
         border: 0 !important; box-shadow: none !important;
         background: transparent !important;
         -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
     }
     html.kd-m3 .kd-m3-slot > #view-pan[aria-pressed="true"] { background: rgba(255,240,205,0.95) !important; }
-    html.kd-m3 .kd-m3-slot > #view-pan svg { width: 1.6rem; height: 1.6rem; }
+    html.kd-m3 .viewer-panel .kd-m3-slot > #view-pan { transform: none !important; }   /* outranks §4's three-quarter scale */
+    html.kd-m3 .kd-m3-slot > #view-pan svg {
+        width: 2rem !important; height: 2rem !important;   /* the palm comes out ~15px tall, like the other two */
+        stroke-width: 1.4 !important;
+    }
 
-    /* Showcase | Turn: small letters, tall enough to tap (no shrinking scale) */
+    /* Showcase, folded: the dots and the turn arrow, no words. A tap opens the full
+       Showcase | Turn pill in its place (js/mobile-refresh.js, compactShowcase). */
+    html.kd-m3 .viewer-panel:not(.kd-m3-sc-open) .showcase { display: none !important; }
+    html.kd-m3 .viewer-panel.kd-m3-sc-open .kd-m3-sc { display: none; }
     html.kd-m3 .viewer-panel .showcase {
         transform: none !important;
         top: 0.8rem !important; left: 0.8rem !important;
+        animation: kdM3Open 0.25s ease;
     }
+    @keyframes kdM3Open { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
     html.kd-m3 .viewer-panel .showcase button {
         font-size: 0.85rem !important;
         letter-spacing: 1.5px !important;
-        padding: 0.95rem 0.85rem !important;           /* ~34px tall */
+        padding: 0.95rem 0.85rem !important;           /* ~30px tall */
         gap: 0.45rem !important;
+    }
+    html.kd-m3 .kd-m3-sc {
+        position: absolute;
+        top: 0.8rem;
+        left: 0.6rem;
+        z-index: 7;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        height: 40px;
+        padding: 0 0.6rem;
+        border: 0;
+        background: none;
+        color: rgba(100,70,0,0.85);
+        font-size: 1.6rem;                    /* sets the dots' size (they are em-sized) */
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+    html.kd-m3 .kd-m3-sc[hidden] { display: none; }
+    html.kd-m3 .kd-m3-sc .showcase__dots i { filter: grayscale(1) opacity(0.55); }
+    html.kd-m3 .kd-m3-sc.on .showcase__dots i { filter: none; animation: showcase-dot 8.4s ease-in-out infinite; }
+    html.kd-m3 .kd-m3-sc.on .showcase__dots i:nth-child(2) { animation-delay: 2.8s; }
+    html.kd-m3 .kd-m3-sc.on .showcase__dots i:nth-child(3) { animation-delay: 5.6s; }
+    html.kd-m3 .kd-m3-sc svg {
+        width: 1.8rem; height: 1.8rem;
+        fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    html.kd-m3 .kd-m3-sc:not(.on) svg { opacity: 0.45; }
+    html.kd-m3 .kd-m3-sc.on.turning svg { animation: showcase-spin 6s linear infinite; }
+    @media (prefers-reduced-motion: reduce) {
+        html.kd-m3 .kd-m3-sc .showcase__dots i, html.kd-m3 .kd-m3-sc svg, html.kd-m3 .viewer-panel .showcase { animation: none !important; }
     }
 
     /* Design Only / Design Details: a little apart, each with a 34px target */
@@ -219,7 +246,9 @@
         transform: none !important;
         font-size: 0.8rem !important;
         letter-spacing: 1.5px !important;
-        padding: 0.55rem 0.8rem !important;
+        padding: 0.55rem 0 !important;
+        width: 10.4rem !important;              /* both the same size */
+        text-align: center !important;
         right: 0.8rem !important;
     }
     html.kd-m3 .viewer-panel .design-details-btn { bottom: 0.8rem !important; }

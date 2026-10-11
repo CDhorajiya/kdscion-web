@@ -51,8 +51,47 @@
         if (/\/p1(\.html)?$/.test(location.pathname)) {
             document.documentElement.classList.add('kd-m3');
             buildToolRail();
+            compactShowcase();
         }
     });
+
+    // Showcase, folded (css/mobile-refresh.css §6): one button with just the three dots and
+    // the turn arrow. A tap opens the full Showcase | Turn pill in its place; it folds back
+    // four seconds after the last touch on it, or at a tap anywhere else.
+    function compactShowcase() {
+        var viewer = document.querySelector('.viewer-panel'), tries = 0;
+        (function wait() {
+            var pill = viewer && viewer.querySelector('#showcase'), turn = pill && pill.querySelector('#turn-btn');
+            if (!pill || !turn) { if (++tries < 60) setTimeout(wait, 150); return; }
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'kd-m3-sc';
+            btn.setAttribute('aria-label', 'Showcase and Turn');
+            btn.innerHTML = '<span class="showcase__dots" aria-hidden="true"><i></i><i></i><i></i></span>' +
+                (turn.querySelector('svg') ? turn.querySelector('svg').outerHTML : '');
+            viewer.appendChild(btn);
+            var timer = 0;
+            function sync() {
+                btn.classList.toggle('on', pill.classList.contains('on'));
+                btn.classList.toggle('turning', turn.getAttribute('aria-pressed') === 'true');
+                btn.hidden = pill.hidden;                       // no Showcase on this design: no button
+            }
+            function fold() { clearTimeout(timer); viewer.classList.remove('kd-m3-sc-open'); }
+            function later() { clearTimeout(timer); timer = setTimeout(fold, 4000); }
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                viewer.classList.add('kd-m3-sc-open');
+                later();
+            });
+            pill.addEventListener('click', later);
+            document.addEventListener('click', function (e) {
+                if (viewer.classList.contains('kd-m3-sc-open') && !pill.contains(e.target) && e.target !== btn) fold();
+            }, true);
+            new MutationObserver(sync).observe(pill, { attributes: true, attributeFilter: ['class', 'hidden'] });
+            new MutationObserver(sync).observe(turn, { attributes: true, attributeFilter: ['aria-pressed'] });
+            sync();
+        })();
+    }
 
     // The tool rail (css/mobile-refresh.css §6): Search, the Colourist and Pan, which arrive
     // from their own modules, gathered into one ivory capsule on the right edge of the

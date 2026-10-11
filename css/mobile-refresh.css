@@ -41,8 +41,8 @@
     }
     html.kd-m2 .product-breadcrumb > a.kd-m2-logo {
         display: block;
-        width: 31px;
-        height: 31px;
+        width: 14px;                           /* the mark comes out ~11px tall: the Pool of Designs letters */
+        height: 14px;
         font-size: 0 !important;               /* the "King Dhorajiya" text stays for screen readers */
         color: transparent !important;
         /* the monogram fills only ~30% of its image: zoom in, so the mark matches the pool page's */
@@ -74,4 +74,68 @@
     /* ── 3. The fabric name and its fibre on the viewer: 35% smaller ── */
     .cloth-cycle__name { font-size: 0.975rem !important; }   /* was 1.5rem */
     .cloth-cycle__type { font-size: 0.65rem !important; letter-spacing: 2px !important; }   /* was 1rem */
+
+    /* ── 4. The 3D viewer's controls, smaller (2026-10-11, second pass) ── */
+    /* Showcase | Turn pill and the hand under it: three quarters of their size */
+    html.kd-m2 .viewer-panel .showcase {
+        transform: scale(0.75) !important;
+        transform-origin: top left !important;
+    }
+    html.kd-m2 .viewer-panel .view-pan {
+        top: 3.3rem !important;                /* just under the smaller pill */
+        transform: scale(0.75) !important;
+        transform-origin: top left !important;
+    }
+    /* Design Only / Design Details, bottom right */
+    html.kd-m2 .viewer-panel .design-only-btn,
+    html.kd-m2 .viewer-panel .design-details-btn {
+        transform: scale(0.65) !important;     /* was 0.85 */
+        transform-origin: bottom right !important;
+    }
+    html.kd-m2 .viewer-panel .design-details-btn { bottom: 1.2rem !important; }
+    html.kd-m2 .viewer-panel .design-only-btn { bottom: 3.2rem !important; }
+
+    /* ── 5. "Select Fabric" tab: the way down past the tall viewer, and back ──
+       A slim ivory pill fixed at the foot of the screen, in the Showcase pill's
+       glass. Tap: glide to the fabrics; there it reads "View in 3D" and glides
+       back up. It steps aside at the very bottom of the page. */
+    .kd-m2-jump {
+        position: fixed;
+        left: 50%;
+        bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px));
+        z-index: 40;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.75rem 1.6rem 0.75rem 1.8rem;
+        border: 1px solid #d6d6d6;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.86);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+        color: #1a1a1a;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 1.1rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transform: translate(-50%, 0);
+        opacity: 1;
+        transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .kd-m2-jump[hidden] { display: inline-flex; opacity: 0; pointer-events: none; transform: translate(-50%, 1.2rem); }
+    .kd-m2-jump__rule { width: 1.4rem; height: 1px; background: rgba(100,70,0,0.45); }
+    .kd-m2-jump svg {
+        width: 1.1rem; height: 1.1rem; fill: none; stroke: rgba(100,70,0,0.8); stroke-width: 1.4;
+        stroke-linecap: round; stroke-linejoin: round; transition: transform 0.35s ease;
+        animation: kdM2Nudge 2.4s ease-in-out 1.2s 2;
+    }
+    .kd-m2-jump.is-up svg { transform: rotate(180deg); animation: none; }
+    @keyframes kdM2Nudge { 0%, 100% { translate: 0 0; } 50% { translate: 0 3px; } }
+    @media (prefers-reduced-motion: reduce) {
+        .kd-m2-jump, .kd-m2-jump svg { transition: none; animation: none; }
+    }
 }

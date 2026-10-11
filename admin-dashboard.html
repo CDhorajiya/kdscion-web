@@ -1479,6 +1479,10 @@
   'KD-P174-TSHWL174': 'Translucent Shawl',
   'KD-P175-ASD175': 'Asymmetric Shift Dress',
   'KD-P176-FSASD176': 'Full Sleeve Asymmetric Shift Dress',
+  'KD-S1-LS': 'Long Scarf',
+  'KD-S2-SS': 'Short Scarf',
+  'KD-S3-FS': 'Full Shawl',
+  'KD-P83S3-SSDFS': 'Sleeveless Sheath Dress with Full Shawl',
 };
     const FABRIC_META = {
       // swatch id → label for the fabric price table (falls back to the id)
@@ -1855,6 +1859,10 @@ const ALL_DESIGNS = [
   { sku: 'KD-P174-TSHWL174', name: 'Translucent Shawl', group: 'woman' },
   { sku: 'KD-P175-ASD175', name: 'Asymmetric Shift Dress', group: 'woman' },
   { sku: 'KD-P176-FSASD176', name: 'Full Sleeve Asymmetric Shift Dress', group: 'woman' },
+  { sku: 'KD-S1-LS', name: 'Long Scarf', group: 'woman' },
+  { sku: 'KD-S2-SS', name: 'Short Scarf', group: 'woman' },
+  { sku: 'KD-S3-FS', name: 'Full Shawl', group: 'woman' },
+  { sku: 'KD-P83S3-SSDFS', name: 'Sleeveless Sheath Dress with Full Shawl', group: 'woman' },
 ];
 
     const DESIGN_GROUPS = [
@@ -1930,6 +1938,9 @@ const ALL_DESIGNS = [
       function getProductUrl(sku) {
         if (!sku) return null;
         if (/279|280/i.test(sku)) return 'p279&p280-product.html';
+        const sc = sku.match(/KD-S(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
+        if (sc) return `s${sc[1]}.html`;
+        if (duo) return `p${duo[1]}-s${duo[2]}.html`;
         const m = sku.match(/KD-P(\d+)-/i);
         return m ? `p${m[1]}.html` : null;
       }
@@ -2773,10 +2784,17 @@ const ALL_DESIGNS = [
   '174': 'images/KDscion-p174-translucent shawl_Colorway A.webp',
   '175': 'images/KDscion-p175-asymmetric shift dress_Colorway A.webp',
   '176': 'images/KDscion-p176-full sleeve Asymmetric shift dress_Colorway A.webp',
+  's1': 'images/KDscion-s1-long scarf_Colorway A.webp',
+  's2': 'images/KDscion-s2-short scarf_Colorway A.webp',
+  's3': 'images/KDscion-s3-full shawl_Colorway A.webp',
+  '83-s3': 'images/KDscion-p83 & s3 - sleeveless sheath dress with full shawl_Colorway A.webp',
 };
 
     function getDesignImage(sku) {
       if (!sku) return null;
+      const s = sku.match(/KD-S(\d+)-/i), d = sku.match(/KD-P(\d+)S(\d+)-/i);
+      if (s) return DESIGN_IMAGES['s' + s[1]] || null;
+      if (d) return DESIGN_IMAGES[d[1] + '-s' + d[2]] || null;
       const m = sku.match(/KD-P(\d+)-/i) || sku.match(/P(\d+)/i);
       if (!m) return null;
       return DESIGN_IMAGES[m[1]] || null;

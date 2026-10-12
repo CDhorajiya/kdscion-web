@@ -22,19 +22,19 @@
         '.klm-rule i:last-child{background:linear-gradient(90deg,rgba(100,70,0,0.55),transparent);}' +
         '.klm-rule b{width:5px;height:5px;background:rgba(100,70,0,0.7);transform:rotate(45deg);}' +
         '.klm-sa{margin:0;font-family:"Noto Serif Devanagari","Times New Roman",serif;font-weight:400;' +
-            'font-size:1.75rem;line-height:1.35;color:rgba(128,0,0,0.82);letter-spacing:0.5px;' +
+            'font-size:1.55rem;line-height:1.35;color:rgba(128,0,0,0.82);letter-spacing:0.5px;' +
             'text-shadow:0 1px 0 rgba(255,255,255,0.7);}' +
-        '.klm-iast{margin:0;font-family:"Times New Roman",Times,serif;font-style:italic;font-size:1.15rem;' +
+        '.klm-iast{margin:0;font-family:"Times New Roman",Times,serif;font-style:italic;font-size:1.3rem;' +
             'letter-spacing:1px;color:#6f6a63;text-shadow:0 1px 0 rgba(255,255,255,0.7);}' +
-        '.klm-en{margin:0;font-family:"Times New Roman",Times,serif;font-size:0.95rem;letter-spacing:3px;' +
-            'text-transform:uppercase;color:#8a8378;text-shadow:0 1px 0 rgba(255,255,255,0.7);}' +
+        '.klm-en{margin:0;font-family:"Times New Roman",Times,serif;font-size:1.15rem;letter-spacing:3px;' +
+            'text-transform:uppercase;color:#111;text-shadow:0 1px 0 rgba(255,255,255,0.7);}' +
         '.klm-en q{quotes:"\\201C" "\\201D";}' +
         '@media (max-width:768px){' +
             '.kd-leather-mark{bottom:7rem;gap:0.25rem;}' +
             '.klm-rule i{width:2.2rem;}' +
-            '.klm-sa{font-size:1.4rem;}' +
-            '.klm-iast{font-size:1rem;}' +
-            '.klm-en{font-size:1rem;letter-spacing:1.5px;}' +
+            '.klm-sa{font-size:1.25rem;}' +
+            '.klm-iast{font-size:1.12rem;}' +
+            '.klm-en{font-size:1.12rem;letter-spacing:1.2px;}' +
         '}' +
         '@media (prefers-reduced-motion:reduce){.kd-leather-mark{transition:none;}}';
 

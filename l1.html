@@ -969,13 +969,17 @@
             cameraS = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
             cameraS.position.set(0, 0, window.KD_CAMERA_Z || 3);   // phones: js/mobile-refresh.js
 
-            sceneS.add(new THREE.AmbientLight(0xffffff, 1.8));
+            sceneS.add(new THREE.AmbientLight(0xffffff, 1.35));   // leather: a little less flat fill, so form shows
             const key = new THREE.DirectionalLight(0xffffff, 1.4);
             key.position.set(5, 8, 5); sceneS.add(key);
             const fill = new THREE.DirectionalLight(0xffffff, 0.8);
             fill.position.set(-5, 2, -5); sceneS.add(fill);
             const back = new THREE.DirectionalLight(0xffffff, 0.5);
             back.position.set(0, 4, -8); sceneS.add(back);
+            // A low light from the upper left, as leather goods are photographed: it rakes
+            // across the face so the flap edge, the overlap and the stitching read.
+            const rake = new THREE.DirectionalLight(0xfff6ea, 1.1);
+            rake.position.set(-4, 3, 1.4); sceneS.add(rake);
 
             controlsS = new OrbitControls(cameraS, rendererS.domElement);
             controlsS.enableDamping = true;
@@ -1063,6 +1067,42 @@
                 if (node.isMesh && !isBodyMesh(node) && /^cloth/i.test(node.name || node.parent?.name || '')) garmentNodes.add(node);
             });
             console.log('[leather] pieces:', garmentNodes.size);
+            // A fine edge around every leather piece (flap, overlap, body), like an edge-painted
+            // seam, so the design reads whatever the leather: light on dark leathers, dark on light.
+            garmentNodes.forEach((node) => {
+                const lines = new THREE.LineSegments(new THREE.EdgesGeometry(node.geometry, 35),
+                    new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.3, depthWrite: false }));
+                lines.name = 'leather-edge';
+                lines.renderOrder = 2;
+                node.add(lines);
+                edgeLines.push(lines);
+            });
+        }
+        const edgeLines = [];
+        const toneCache = new Map();
+        // The leather's average brightness (0–1), read once from its texture.
+        function leatherTone(tex, path) {
+            if (toneCache.has(path)) return toneCache.get(path);
+            let v = 0.5;
+            try {
+                const img = tex.image, c = document.createElement('canvas');
+                c.width = c.height = 16;
+                const g = c.getContext('2d');
+                g.drawImage(img, 0, 0, 16, 16);
+                const d = g.getImageData(0, 0, 16, 16).data;
+                let sum = 0;
+                for (let i = 0; i < d.length; i += 4) sum += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+                v = sum / (d.length / 4) / 255;
+            } catch (e) { /* keep the middle */ }
+            toneCache.set(path, v);
+            return v;
+        }
+        function tuneEdges(tone) {
+            const dark = tone < 0.42;
+            edgeLines.forEach((l) => {
+                l.material.color.set(dark ? 0xfff4e2 : 0x1a120c);
+                l.material.opacity = dark ? 0.5 : 0.42;
+            });
         }
         function isGarment(node) { return node.isMesh && garmentNodes.has(node); }
 
@@ -1127,10 +1167,19 @@
             }
             return keep;
         }
+        /* Leather is lit, not flat-painted: on a piece this flat, light and shadow are
+           what show the flap, its overlapping edge and the stitching. Each finish
+           keeps its own sheen: calf semi-matte, suede matte, patent glossy. */
+        function leatherFinish(path) {
+            if (/patent/i.test(path)) return { roughness: 0.18, metalness: 0 };
+            if (/suede/i.test(path))  return { roughness: 0.95, metalness: 0 };
+            return { roughness: 0.55, metalness: 0 };
+        }
         function fabricMaterial(path, tex, opacity) {
             const key = `${path}|${opacity}`;
-            if (!matCache.has(key)) matCache.set(key, new THREE.MeshBasicMaterial({
+            if (!matCache.has(key)) matCache.set(key, new THREE.MeshStandardMaterial({
                 map: tex,
+                ...leatherFinish(path),
                 side: THREE.DoubleSide,
                 opacity: opacity,
                 transparent: opacity < 1,
@@ -1172,6 +1221,7 @@
                 if (!currentModel || gen !== fabricGen) return false;   // superseded
                 initFabricData();
                 const mat = fabricMaterial(texturePath, tex, opacity);
+                tuneEdges(leatherTone(tex, texturePath));
                 currentModel.traverse((node) => {
                     if (!isGarment(node)) return;
                     dressNode(node, mat);
@@ -1186,6 +1236,7 @@
             if (!currentModel) return;
             fabricGen++;
             currentModel.traverse((node) => { if (node.isMesh) undressNode(node); });
+            tuneEdges(0.3);   // the design's own brown
         }
 
         /* ── Showcase: auto-turn + auto cloth cycle (js/showcase.js) ── */
@@ -1345,7 +1396,9 @@
             const size = new THREE.Box3().setFromObject(currentModel).getSize(new THREE.Vector3());
             const t = Math.tan(THREE.MathUtils.degToRad(cameraS.fov / 2));
             const d = Math.max(size.y / 2 / t, size.x / 2 / (t * cameraS.aspect)) * 1.25 + size.z / 2;
-            cameraS.position.set(0, 0, d);
+            // seen a little from above, as leather goods are photographed: the flap's edge and depth show
+            const up = THREE.MathUtils.degToRad(11);
+            cameraS.position.set(0, d * Math.sin(up), d * Math.cos(up));
             controlsS.target.set(0, 0, 0);
             controlsS.update();
         }

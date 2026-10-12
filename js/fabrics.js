@@ -657,7 +657,7 @@ export const FABRIC_CATALOG = [
   },
   {
     id: 'leather',
-    label: 'Premium Leather',
+    label: 'Premium European Leather',
     wreaths: ['images/Leather Wreath.webp'],
     collections: [
       {
@@ -781,7 +781,7 @@ export const TWOTONE_CATALOG = [
   },
   {
     id: 'leather',
-    label: 'Premium Leather',
+    label: 'Premium European Leather',
     wreaths: ['images/Leather Wreath.webp'],
     collections: [
       {

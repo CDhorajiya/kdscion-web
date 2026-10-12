@@ -207,14 +207,16 @@
             '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
         document.body.appendChild(btn);
         var text = btn.querySelector('.kd-m2-jump__text');
+        // the panel's own title: "Select Fabric", or "Select Leather" on leather pieces
+        var pick = ((document.querySelector('.fabric-panel-title') || {}).textContent || 'Select Fabric').trim();
         // Where we are, read from the page itself: at the fabrics once their panel
         // reaches the upper part of the screen.
         function atFabrics() { return fabrics.getBoundingClientRect().top < window.innerHeight * 0.45; }
         function render() {
             var up = atFabrics();
-            text.textContent = up ? 'View in 3D' : 'Select Fabric';
+            text.textContent = up ? 'View in 3D' : pick;
             btn.classList.toggle('is-up', up);
-            btn.setAttribute('aria-label', up ? 'Back to the 3D view' : 'Go to the fabrics');
+            btn.setAttribute('aria-label', up ? 'Back to the 3D view' : pick);
             btn.hidden = !!end && end.getBoundingClientRect().top < window.innerHeight - 10;
         }
         btn.addEventListener('click', function () {

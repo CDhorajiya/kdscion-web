@@ -22,7 +22,7 @@
         // "· KDscion-p1 · The House of Scion" → read the code, then hide that text
         var code = '';
         if (p) {
-            var m = p.textContent.match(/KDscion-\s*([ps]\d+(?:\s*&\s*[ps]\d+)?)/i);
+            var m = p.textContent.match(/KDscion-\s*([a-z]\d+(?:\s*&\s*[a-z]\d+)?)/i);
             if (m) code = m[1].replace(/\s+/g, ' ').toUpperCase();
             [].slice.call(p.childNodes).forEach(function (n) {
                 if (n.nodeType === 3 && n.textContent.trim()) {

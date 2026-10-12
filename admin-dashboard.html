@@ -1483,6 +1483,7 @@
   'KD-S2-SS': 'Short Scarf',
   'KD-S3-FS': 'Full Shawl',
   'KD-P83S3-SSDFS': 'Sleeveless Sheath Dress with Full Shawl',
+  'KD-L1-PLEC': 'Premium Leather iPad or MacBook Envelope Cover',
 };
     const FABRIC_META = {
       // swatch id → label for the fabric price table (falls back to the id)
@@ -1863,6 +1864,8 @@ const ALL_DESIGNS = [
   { sku: 'KD-S2-SS', name: 'Short Scarf', group: 'woman' },
   { sku: 'KD-S3-FS', name: 'Full Shawl', group: 'woman' },
   { sku: 'KD-P83S3-SSDFS', name: 'Sleeveless Sheath Dress with Full Shawl', group: 'woman' },
+  { sku: 'KD-L1-PLEC', name: 'Premium Leather iPad or MacBook Envelope Cover', group: 'man' },
+  { sku: 'KD-L1-PLEC', name: 'Premium Leather iPad or MacBook Envelope Cover', group: 'woman' },
 ];
 
     const DESIGN_GROUPS = [
@@ -1940,6 +1943,8 @@ const ALL_DESIGNS = [
         if (/279|280/i.test(sku)) return 'p279&p280-product.html';
         const sc = sku.match(/KD-S(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
         if (sc) return `s${sc[1]}.html`;
+        const lt = sku.match(/KD-L(\d+)-/i);
+        if (lt) return `l${lt[1]}.html`;
         if (duo) return `p${duo[1]}-s${duo[2]}.html`;
         const m = sku.match(/KD-P(\d+)-/i);
         return m ? `p${m[1]}.html` : null;
@@ -2788,12 +2793,14 @@ const ALL_DESIGNS = [
   's2': 'images/KDscion-s2-short scarf_Colorway A.webp',
   's3': 'images/KDscion-s3-full shawl_Colorway A.webp',
   '83-s3': 'images/KDscion-p83 & s3 - sleeveless sheath dress with full shawl_Colorway A.webp',
+  'l1': 'images/KDscion-L1-Premium leather ipad or macbook envelope cover_Default Colorway.webp',
 };
 
     function getDesignImage(sku) {
       if (!sku) return null;
-      const s = sku.match(/KD-S(\d+)-/i), d = sku.match(/KD-P(\d+)S(\d+)-/i);
+      const s = sku.match(/KD-S(\d+)-/i), d = sku.match(/KD-P(\d+)S(\d+)-/i), l = sku.match(/KD-L(\d+)-/i);
       if (s) return DESIGN_IMAGES['s' + s[1]] || null;
+      if (l) return DESIGN_IMAGES['l' + l[1]] || null;
       if (d) return DESIGN_IMAGES[d[1] + '-s' + d[2]] || null;
       const m = sku.match(/KD-P(\d+)-/i) || sku.match(/P(\d+)/i);
       if (!m) return null;

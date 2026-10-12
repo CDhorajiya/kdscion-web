@@ -1198,8 +1198,6 @@
             cancelPending: () => { fabricGen++; },
             loadTexture: loadFabricTexture,
         });
-        // A flat leather piece reads best facing you: the leathers cycle, the turn starts off.
-        document.getElementById('turn-btn')?.getAttribute('aria-pressed') === 'true' && document.getElementById('turn-btn').click();
 
         /* ── Fabric preview overlay ── */
         const fabricPreview    = document.getElementById('fabric-preview');

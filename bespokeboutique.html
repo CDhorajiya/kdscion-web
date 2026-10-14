@@ -156,6 +156,37 @@
             .navigation ul li ul.dropdown li a { font-size: 1.3rem; letter-spacing: 1.5px; }
         }
 
+        /* ── Women › Premium European leather portfolio: a second dropdown ──
+           A click on the name opens a small panel under it with the portfolio's
+           categories (Jackets / Coats, Accessories); a click elsewhere closes it. */
+        .navigation ul li ul.dropdown li.leather-sub { position: relative; }
+        .navigation ul li ul.dropdown li.leather-sub > a span {
+            display: inline-block; font-size: 0.8em; letter-spacing: 0; transition: transform 0.2s ease;
+        }
+        .navigation ul li ul.dropdown li.leather-sub.is-open > a { color: #000; }
+        .navigation ul li ul.dropdown li.leather-sub.is-open > a span { transform: rotate(180deg); }
+        .navigation ul li ul.dropdown .leather-sub__menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 1.5rem;
+            min-width: 24rem;
+            margin: 0;
+            padding: 0.6rem 0;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-top: 1px solid rgba(128, 0, 0, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            z-index: 1000;
+        }
+        .navigation ul li ul.dropdown li.leather-sub.is-open > .leather-sub__menu {
+            display: block;
+            animation: dropFade 0.2s ease forwards;
+        }
+        .navigation ul li ul.dropdown .leather-sub__menu li a { white-space: nowrap; }
+
         /* House Recommendations special style */
         .navigation ul li ul.dropdown li a em {
             color: rgba(180, 20, 20, 0.9);
@@ -345,6 +376,36 @@
             }
             .bb-acc-body a:last-child { color: rgb(6,70,6); font-size: 1.05rem; letter-spacing: 2.5px; border-bottom: none; }
 
+            /* Women › Premium European Leather Portfolio: a nested accordion */
+            .bb-sub { width: 100%; border-bottom: 1px solid rgba(0,0,0,0.1); }
+            .bb-sub-hdr {
+                font-family: "Times New Roman", Times, serif;
+                font-size: 1.05rem;
+                letter-spacing: 2.5px;
+                text-transform: uppercase;
+                color: rgba(0,0,0,0.65);
+                background: none;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                padding: 0.7rem 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .bb-sub.open .bb-acc-arrow { transform: rotate(180deg); }
+            .bb-sub-body { display: none; flex-direction: column; width: 100%; padding-bottom: 0.4rem; }
+            .bb-sub.open .bb-sub-body { display: flex; }
+            .bb-acc-body .bb-sub-body a,
+            .bb-acc-body .bb-sub-body a:last-child {
+                color: rgb(128,0,0);
+                font-size: 1rem;
+                letter-spacing: 2px;
+                border-bottom: none;
+                padding: 0.55rem 0;
+            }
+
             /* Family photo: cover fills screen, position shifted to keep full family in frame */
             .family_shot {
                 scale: 0.85 !important;
@@ -404,7 +465,7 @@
                 <li><a href="" class="">Over coats</a></li>
                 <li><a href="" class="">Scarves</a></li>
                 <li><a href="" class="">Gloves</a></li>
-                <li><a href="premium-leather-portfolio.html" class="">Premium European leather portfolio</a></li>
+                <li><a href="leather-accessories-woman.html" class="">Premium European leather portfolio</a></li>
                 <li><a href="" class=""><em>House Recommendations</em></a></li>
                 <li><a href="pool-of-designs-woman.html" class="">Pool of Designs - MEN</a></li>
               </ul></li>
@@ -448,7 +509,13 @@
                 <li><a href="scarves-woman.html" class="">Scarves</a></li>
                 <li><a href="" class="">Gloves</a></li>
                 <li><a href="" class="">Belts</a></li>
-                <li><a href="premium-leather-portfolio.html" class="">Premium European leather portfolio</a></li>
+                <li class="leather-sub">
+                    <a href="#" class="leather-sub__toggle" aria-expanded="false">Premium European leather portfolio <span aria-hidden="true">▾</span></a>
+                    <ul class="leather-sub__menu">
+                        <li><a href="leather-jackets-coats-woman.html">Jackets / Coats</a></li>
+                        <li><a href="leather-accessories-woman.html">Accessories</a></li>
+                    </ul>
+                </li>
                 <li><a href="" class=""><em>House Recommendations</em></a></li>
                 <li><a href="pool-of-designs-woman.html" class="">Pool of Designs - WOMEN</a></li>
           </ul></li>
@@ -551,7 +618,7 @@
                     <a href="">Over Coats</a>
                     <a href="">Scarves</a>
                     <a href="">Gloves</a>
-                    <a href="premium-leather-portfolio.html">Premium European Leather Portfolio</a>
+                    <a href="leather-accessories-woman.html">Premium European Leather Portfolio</a>
                     <a href="pool-of-designs-woman.html">Pool of Designs — Men</a>
                 </div>
             </div>
@@ -595,7 +662,13 @@
                     <a href="scarves-woman.html">Scarves</a>
                     <a href="">Gloves</a>
                     <a href="">Belts</a>
-                    <a href="premium-leather-portfolio.html">Premium European Leather Portfolio</a>
+                    <div class="bb-sub">
+                        <button class="bb-sub-hdr" aria-expanded="false">Premium European Leather Portfolio <span class="bb-acc-arrow">▾</span></button>
+                        <div class="bb-sub-body">
+                            <a href="leather-jackets-coats-woman.html">Jackets / Coats</a>
+                            <a href="leather-accessories-woman.html">Accessories</a>
+                        </div>
+                    </div>
                     <a href="pool-of-designs-woman.html">Pool of Designs — Women</a>
                 </div>
             </div>
@@ -685,6 +758,31 @@
             bbHamburger.addEventListener('click', () => bbPanel.classList.add('open'));
             bbClose.addEventListener('click', () => bbPanel.classList.remove('open'));
         }
+
+        // Women › Premium European leather portfolio: click opens its second dropdown
+        document.querySelectorAll('.leather-sub__toggle').forEach(toggle => {
+            const item = toggle.closest('.leather-sub');
+            toggle.addEventListener('click', e => {
+                e.preventDefault();
+                const open = item.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', open);
+            });
+            document.addEventListener('click', e => {
+                if (!item.contains(e.target)) { item.classList.remove('is-open'); toggle.setAttribute('aria-expanded', false); }
+            });
+            // Closing the Women panel closes it too
+            item.closest('.navigation ul > li:not(.leather-sub)')?.addEventListener('mouseleave', () => {
+                setTimeout(() => { if (!item.closest('li.open')) item.classList.remove('is-open'); }, 250);
+            });
+        });
+
+        // The same on phones, inside the Women accordion
+        document.querySelectorAll('.bb-sub-hdr').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sub = btn.closest('.bb-sub');
+                btn.setAttribute('aria-expanded', sub.classList.toggle('open'));
+            });
+        });
 
         // Accordion categories
         document.querySelectorAll('.bb-acc-hdr').forEach(btn => {

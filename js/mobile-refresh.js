@@ -73,7 +73,7 @@
         var last = nav.scrollTop, row = null, queued = false, bounceT = 0, endT = 0, touched = false;
         nav.addEventListener('touchstart', function () { touched = true; }, { passive: true });
         function rowAtMiddle() {
-            var mid = nav.getBoundingClientRect().top + nav.clientHeight / 2, rows = nav.querySelectorAll('.bb-acc-hdr, .bb-acc.open .bb-acc-body a');
+            var mid = nav.getBoundingClientRect().top + nav.clientHeight / 2, rows = nav.querySelectorAll('.bb-acc-hdr, .bb-acc.open .bb-acc-body > a, .bb-acc.open .bb-sub-hdr, .bb-sub.open .bb-sub-body a');
             for (var i = 0; i < rows.length; i++) {
                 var r = rows[i].getBoundingClientRect();
                 if (r.height && r.top <= mid && r.bottom > mid) return rows[i];

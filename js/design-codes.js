@@ -6,24 +6,24 @@
    Internal ids keep the old p-number (SKU KD-P60-FSSD, Firebase key p60), so stock,
    prices and dashboard settings carry over unchanged.
 
-   A new w/l design: add its number (and every member of its variation set) here,
-   then rename its page and files and add it to leather-jackets-coats-woman.html. */
+   A new w/l design: python3 tools/make_wl.py N — it updates this file, renames the
+   page and files, rebuilds Leather Portfolio › Jackets / Coats and the redirects. */
 
 export const WL = new Set([
-    21, 24, 25, 26, 27, 41, 42, 52, 53, 60, 61, 62, 63, 72, 73, 76, 77, 81, 82, 83,
-    85, 86, 87, 88, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 105, 106, 107, 108,
-    116, 117, 121, 122, 125, 131, 132, 133, 135, 136, 145, 146, 149, 150, 155, 156,
-    157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168,
+    19, 21, 24, 25, 26, 27, 41, 42, 52, 53, 60, 61, 62, 63, 72, 73, 76, 77, 81, 82, 83, 85,
+    86, 87, 88, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 105, 106, 107, 108, 116, 117, 121,
+    122, 125, 131, 132, 133, 135, 136, 145, 146, 149, 150, 155, 156, 157, 158, 159, 160,
+    161, 162, 163, 164, 165, 166, 167, 168,
 ]);
 
 /* The cards of Leather Portfolio › Jackets / Coats, in gallery order: a single design,
    or a variation set (first number = its "w-lN design variations" page). */
 export const LEATHER_JACKETS_COATS = [
-    [21], [24, 25, 26, 27], [41, 42], [52, 53], [60, 61], [62, 63], [72, 73], [76, 77],
-    [81, 82], [83], [85, 86], [87, 88], [92, 93], [94, 95], [96, 97, 98, 99], [100, 101],
-    [105, 106], [107, 108], [116, 117], [121, 122], [125], [131, 132], [133], [135, 136],
-    [145, 146], [149, 150], [155, 156], [157, 158], [159, 160], [161, 162], [163, 164],
-    [165, 166], [167, 168],
+    [19], [21], [24, 25, 26, 27], [41, 42], [52, 53], [60, 61], [62, 63], [72, 73],
+    [76, 77], [81, 82], [83], [85, 86], [87, 88], [92, 93], [94, 95], [96, 97, 98, 99],
+    [100, 101], [105, 106], [107, 108], [116, 117], [121, 122], [125], [131, 132], [133],
+    [135, 136], [145, 146], [149, 150], [155, 156], [157, 158], [159, 160], [161, 162],
+    [163, 164], [165, 166], [167, 168],
 ];
 
 /** 60 → 'w-l60', 1 → 'w1' */

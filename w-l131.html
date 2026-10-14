@@ -745,6 +745,7 @@
     <link rel="stylesheet" href="css/mobile-refresh.css">
     <script src="js/mobile-refresh.js"></script>
     <script src="js/leather-mode.js"></script>
+    <script type="module" src="js/leather-look.js"></script>
 </head>
 <body>
 
@@ -1124,8 +1125,10 @@
                     });
                 }
             }
-            bottomMeshes = [...twoToneSet].map(n => n);
-            topMeshes    = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
+            // Swapped: on this design the trim has more pieces than the body, so the
+            // count above picks the trim as "primary". Main Design must dress the body.
+            topMeshes    = [...twoToneSet].map(n => n);
+            bottomMeshes = cloth.filter(m => !twoToneSet.has(m.node)).map(m => m.node);
         }
 
         const origMaterials  = new Map();   // node uuid → the GLB's own material, for "As designed"

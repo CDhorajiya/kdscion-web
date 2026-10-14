@@ -49,6 +49,30 @@
         document.addEventListener('pointerdown', function (e) {        // the customer chose first: leave it
             if (e.target.closest && e.target.closest('.swatch-card')) userPicked = true;
         }, true);
+        // The swatch click opens the full-screen swatch preview over the 3D model. It can
+        // open late (the swatch picture loads first), and left open it hides the model, so
+        // the skin tone buttons seem to do nothing. Watch for it for a few seconds and close it.
+        function closePreview() {
+            var until = Date.now() + 5000;
+            (function check() {
+                var p = document.getElementById('fabric-preview');
+                if (p && p.classList.contains('visible') && !userPicked) {
+                    var back = document.getElementById('fabric-preview-back');
+                    if (back) back.click(); else p.classList.remove('visible');
+                }
+                if (Date.now() < until && !userPicked) setTimeout(check, 120);
+            })();
+        }
+
+        // The customer's own tone: a click before the model is in is ignored by the page,
+        // so it is applied again once the model lands; and it always wins over the
+        // gallery's tone (&skin=), which is only the starting point.
+        var earlyTone = null;
+        document.addEventListener('click', function (e) {
+            var b = e.isTrusted && e.target.closest && e.target.closest('.skin-btn');
+            if (b) earlyTone = b.dataset.skin;
+        }, true);
+
         function modelIn() {
             var l = document.getElementById('viewer-loading');
             return !l || l.style.display === 'none';
@@ -60,6 +84,11 @@
             // shows, and a pick before that marks the swatch without dressing anything.
             [600, 3500].forEach(function (ms) {
                 setTimeout(function () {
+                    var tone = earlyTone !== null ? earlyTone : skin;   // the customer's own pick wins
+                    if (tone !== null) {                      // the tone, now that the model is in
+                        var t = document.querySelector('.skin-btn[data-skin="' + tone + '"]');
+                        if (t) t.click();
+                    }
                     if (userPicked) return;
                     // Look it up again: live settings may have redrawn the list since.
                     // Cognac shows the construction best; the first leather if it is hidden.
@@ -67,14 +96,7 @@
                               || document.querySelector('.fabric-panel .swatch-card');
                     if (swatch) {
                         swatch.click();
-                        setTimeout(function () {
-                            var back = document.getElementById('fabric-preview-back');
-                            if (back) back.click();
-                        }, 300);
-                    }
-                    if (skin) {                               // the tone, now that the model is in
-                        var b = document.querySelector('.skin-btn[data-skin="' + skin + '"]');
-                        if (b) b.click();
+                        closePreview();
                     }
                 }, ms);
             });

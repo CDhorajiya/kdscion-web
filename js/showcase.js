@@ -41,7 +41,7 @@
          restoreOriginal,                // put the GLB's own cloth back
          cancelPending,                  // drop a cloth still loading (Showcase was switched off)
          loadTexture,                    // path → Promise, for prefetching the next cloth
-         designType,                     // label under "As designed", e.g. 'N° 1 · Classic shirt'
+         designType,                     // label under "As designed", e.g. 'N° W1 · Classic shirt'
          canCycle,                       // optional () → bool: false if the garment has nothing to dress
      });
      showcase.attach(controls, camera);  // once OrbitControls exists (also sets up zoom, pan, reset)

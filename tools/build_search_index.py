@@ -56,7 +56,7 @@ def text(fragment: str) -> str:
 
 
 def page_type(name: str) -> str:
-    if re.match(r'^p\d+(-product)?\.html$', name, re.I):
+    if re.match(r'^(w-l|w|p)\d+(-product)?\.html$', name, re.I):
         return 'design'
     if 'variations' in name.lower():
         return 'variation'
@@ -112,7 +112,7 @@ def entry_for(name: str, html: str) -> dict:
         img = OGIMG_RE.search(html)
         if img:
             item['img'] = re.sub(r'^https?://[^/]+/', '', img.group(1))
-        code = re.match(r'^(p\d+)', name, re.I)
+        code = re.match(r'^((?:w-l|w|p)\d+)', name, re.I)
         if code:
             item['code'] = code.group(1).lower()
 

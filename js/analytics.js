@@ -190,7 +190,7 @@
    *   window.kdTrack('model_rotated',       { product_sku: 'KD-P60-FSSD' })
    *   window.kdTrack('add_to_cart',         { product_sku: 'KD-P60-FSSD', fabric_id: 'linen-plain-1' })
    *   window.kdTrack('pool_filter_used',    { filter: 'pair' })
-   *   window.kdTrack('variation_opened',    { variation_page: 'p96 design variations' })
+   *   window.kdTrack('variation_opened',    { variation_page: 'w-l96 design variations' })
    */
   window.kdTrack = function (eventType, properties) {
     enqueue(eventType, properties || {});

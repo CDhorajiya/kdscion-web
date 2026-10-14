@@ -163,7 +163,7 @@ function renderPriceForSku(sku) {
 
   label.innerHTML = `
     <span class="cfg-price-part">Design&nbsp;<strong id="cfg-price">${fmt(designPrice)}</strong></span>
-    <span class="cfg-price-hint">+ select fabric for total</span>
+    <span class="cfg-price-hint">+ select ${document.documentElement.classList.contains('kd-leather') ? 'leather' : 'fabric'} for total</span>
   `;
 }
 

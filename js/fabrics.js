@@ -62,6 +62,9 @@ import { FIREBASE_CONFIG } from './firebase-config.js';
 // ── localStorage key where the overrides are cached (source of truth: Firebase) ──
 const LS_KEY = 'kd_fabrics';
 
+// Leather Portfolio view of a w/l design (wN.html?leather): only the leather type is offered.
+const LEATHER_ONLY = typeof location !== 'undefined' && new URLSearchParams(location.search).has('leather');
+
 // ── Material defaults by fabric type ──────────────────────────────────────────
 // Real-time PBR values applied to the 3D model when a swatch of this type is
 // selected — separate from `opacity`, which already existed per-swatch.
@@ -809,7 +812,7 @@ export const TWOTONE_CATALOG = [
  * Shape of the returned object:
  * {
  *   visibility: {
- *     'p:KD-P60-FSSD:t:cotton': false,   // hide cotton for product p60
+ *     'p:KD-P60-FSSD:t:cotton': false,   // hide cotton for product w-l60
  *     's:linen-plain-1': false,                  // hide linen-plain-1 globally
  *   },
  *   extras: {
@@ -1138,13 +1141,21 @@ export function getMergedTwotoneCatalog() {
  * @param {Array|null}  catalogSource  - Override the catalog (used by two-tone zone
  *                                       to pass TWOTONE_CATALOG instead of the default).
  */
+// Escape a value before it goes into HTML. Admin extras and the per-swatch
+// overrides come from the shared Firebase settings, so they are never trusted raw.
+function escHtml(v) {
+  return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 export function renderFabricList(containerEl, sku, zone = null, catalogSource = null) {
   const overrides = loadOverrides();
   appliedJson = stableStringify(normalizeOverrides(overrides));
   const vis       = overrides.visibility || {};
 
   // Choose the right catalog: caller can pass a custom one, otherwise use main.
-  const catalog = catalogSource ?? getMergedCatalog();
+  // A w/l design opened from the Leather Portfolio (?leather) offers leather only, in every zone.
+  let catalog = catalogSource ?? getMergedCatalog();
+  if (LEATHER_ONLY) catalog = catalog.filter(t => t.id === 'leather');
 
   // Convenience wrappers so the code below reads naturally.
   function typeOn(typeId)         { return vis[productTypeKey(sku, typeId, zone)]         ?? true; }
@@ -1159,7 +1170,7 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
 
     // Build the wreath images row for the category card header.
     const wreathImgs = type.wreaths
-      .map(w => `<img src="${w}" alt="${type.label}" loading="lazy" decoding="async">`)
+      .map(w => `<img src="${escHtml(w)}" alt="${escHtml(type.label)}" loading="lazy" decoding="async">`)
       .join('');
 
     // Build HTML for each collection within this type.
@@ -1203,24 +1214,24 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
         // drape: which sphere-drop simulation preset this fabric uses (see DRAPE_TYPES).
         // Priority: 1) admin override ('' = explicitly none)  2) swatch definition.
         const drape = (overrides.swatchDrape ?? {})[s.id] ?? s.drape;
-        const drapeAttr = drape ? ` data-drape="${drape}"` : '';
+        const drapeAttr = drape ? ` data-drape="${escHtml(drape)}"` : '';
 
         // The drape type is shown under the fabric name (styled inline so every page gets it).
         const drapeTag = drape
-          ? `<em class="swatch-drape-tag" style="display:block;font-style:normal;color:rgba(120,90,10,0.95);">${drape} drape</em>`
+          ? `<em class="swatch-drape-tag" style="display:block;font-style:normal;color:rgba(120,90,10,0.95);">${escHtml(drape)} drape</em>`
           : '';
 
-        return `<div class="swatch-card" data-texture="${s.image}" data-fabric-id="${s.id}" data-opacity="${opacity}" data-roughness="${roughness}" data-sheen="${sheen}"${drapeAttr}>
-          <img src="${s.thumb || s.image}" alt="${s.label}" loading="lazy" decoding="async">
-          <span>${s.label}${drapeTag}</span>
+        return `<div class="swatch-card" data-texture="${escHtml(s.image)}" data-fabric-id="${escHtml(s.id)}" data-opacity="${escHtml(opacity)}" data-roughness="${escHtml(roughness)}" data-sheen="${escHtml(sheen)}"${drapeAttr}>
+          <img src="${escHtml(s.thumb || s.image)}" alt="${escHtml(s.label)}" loading="lazy" decoding="async">
+          <span>${escHtml(s.label)}${drapeTag}</span>
         </div>`;
       }).join('');
 
       // Sub-category block: collapsible header + swatch grid.
       collectionsHtml += `
-        <div class="fabric-subcategory" data-coll-key="${type.id}:${coll.id}">
+        <div class="fabric-subcategory" data-coll-key="${escHtml(type.id)}:${escHtml(coll.id)}">
           <div class="subcategory-header">
-            <span>${coll.label}</span>
+            <span>${escHtml(coll.label)}</span>
             <span class="sub-arrow">&#9654;</span><!-- ▶ arrow, rotates when open -->
           </div>
           <div class="sub-swatch-grid">${swatchCards}</div>
@@ -1229,10 +1240,10 @@ export function renderFabricList(containerEl, sku, zone = null, catalogSource = 
 
     // Outer category block: wreath card + all collections inside.
     html += `
-      <div class="fabric-category" data-type-id="${type.id}">
+      <div class="fabric-category" data-type-id="${escHtml(type.id)}">
         <div class="category-card">
           <div class="wreath-preview">${wreathImgs}</div>
-          <p>${type.label}</p>
+          <p>${escHtml(type.label)}</p>
         </div>
         <div class="swatch-grid">${collectionsHtml}</div>
       </div>`;

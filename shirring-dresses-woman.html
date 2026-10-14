@@ -26,12 +26,12 @@
     <meta property="og:site_name" content="KD: The House of Scion">
     <meta property="og:title" content="Shirring Dresses — KD Scion">
     <meta property="og:description" content="Bespoke shirring dresses for women, each tailored to your measurements in the fabric you choose.">
-    <meta property="og:image" content="https://kdscion.com/images/KDscion-p195-sleeveless%20shirring%20dress_Colorway%20A.webp">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-w195-sleeveless%20shirring%20dress_Colorway%20A.webp">
     <meta property="og:url" content="https://kdscion.com/shirring-dresses-woman.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Shirring Dresses — KD Scion">
     <meta name="twitter:description" content="Bespoke shirring dresses for women, each tailored to your measurements in the fabric you choose.">
-    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-p195-sleeveless%20shirring%20dress_Colorway%20A.webp">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-w195-sleeveless%20shirring%20dress_Colorway%20A.webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -561,13 +561,13 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p195.html">
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="w195.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p195-sleeveless shirring dress_Colorway A.webp" style="--rc:-11.23%"
-                alt="KDscion p195 sleeveless shirring dress">
+                <img src="images/KDscion-w195-sleeveless shirring dress_Colorway A.webp" style="--rc:-11.23%"
+                alt="KDscion w195 sleeveless shirring dress">
                 </div>
                 <div class="product-desc">
-                <p class="product-desc__title">P195 | KD Scion</p>
+                <p class="product-desc__title">W195 | KD Scion</p>
                 <div class="product-desc__divider"></div>
                 <p class="product-desc__sub">sleeveless shirring dress</p>
                 </div>
@@ -577,13 +577,13 @@
             <!-- ── Column 2 ── -->
             <div class="product-column column column2">
 
-                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="p196.html">
+                <div class="product-item" style="--ord:1" data-design-type="solo" data-product-url="w196.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p196-sleeveless shirring dress - short_Colorway A.webp" style="--rc:-13.43%"
-                alt="KDscion p196 sleeveless shirring dress - short">
+                <img src="images/KDscion-w196-sleeveless shirring dress - short_Colorway A.webp" style="--rc:-13.43%"
+                alt="KDscion w196 sleeveless shirring dress - short">
                 </div>
                 <div class="product-desc">
-                <p class="product-desc__title">P196 | KD Scion</p>
+                <p class="product-desc__title">W196 | KD Scion</p>
                 <div class="product-desc__divider"></div>
                 <p class="product-desc__sub">sleeveless shirring dress - short</p>
                 </div>
@@ -680,9 +680,9 @@
         const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
 
         document.querySelectorAll('.img-wrap img').forEach((img) => {
-            const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
+            const m = img.getAttribute('src')?.match(/KDscion-(?:w-l|w|p)(\d+)-/i);
             if (!m) return;
-            const slug = m[1].toLowerCase();
+            const slug = 'p' + m[1];   // Firebase keeps the design's p-number key
             if (!bySlug.has(slug)) {
                 bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
             }

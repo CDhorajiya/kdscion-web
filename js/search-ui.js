@@ -142,6 +142,9 @@ const CSS = `
 const ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
   <circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.4" y1="15.4" x2="21" y2="21"></line></svg>`;
 
+// A design code typed any way finds the design: w60, w-l60, wl60, or the old p60.
+const codeNum = (s) => (/^(?:w-?l|w|p)(\d+)$/.exec(s) || [])[1];
+
 function score(item, terms) {
   const name = (item.n || '').toLowerCase();
   const sku = (item.sku || '').toLowerCase();
@@ -153,7 +156,7 @@ function score(item, terms) {
     let best = 0;
     if (name.startsWith(term)) best = 12;
     else if (name.includes(term)) best = 9;
-    if (sku.includes(term) || code === term) best = Math.max(best, 11);
+    if (sku.includes(term) || code === term || (code && codeNum(term) === codeNum(code))) best = Math.max(best, 11);
     if (!best && new RegExp(`\\b${term}`).test(keys)) best = 5;
     if (!best && desc.includes(term)) best = 2;
     if (!best) return 0;               // every word must match somewhere
@@ -217,13 +220,17 @@ function init() {
     return pages;
   }
 
+  // Fabric names and images can come from the shared Firebase settings, and the
+  // query is whatever was typed, so everything is escaped before it becomes HTML.
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
   function render(scored, query) {
     if (!query) {
-      results.innerHTML = `<p class="kd-search-empty">Search designs by name or code (p42), fabrics, or guides.</p>`;
+      results.innerHTML = `<p class="kd-search-empty">Search designs by name or code (w42), fabrics, or guides.</p>`;
       return;
     }
     if (!scored.length) {
-      results.innerHTML = `<p class="kd-search-empty">Nothing found for “${query}”.</p>`;
+      results.innerHTML = `<p class="kd-search-empty">Nothing found for “${esc(query)}”.</p>`;
       return;
     }
     // Groups are ordered by their best hit, so searching "measurement" leads with
@@ -237,9 +244,9 @@ function init() {
     for (const { type, hits } of groups) {
       html += `<p class="kd-search-group">${TYPE_LABELS[type]}</p>`;
       for (const { item } of hits) {
-        html += `<button class="kd-search-hit" data-url="${item.u}">
-          ${item.img ? `<img src="${item.img}" alt="">` : ''}
-          <span><b>${item.n}</b>${item.d ? `<span>${item.d}</span>` : ''}</span>
+        html += `<button class="kd-search-hit" data-url="${esc(item.u)}">
+          ${item.img ? `<img src="${esc(item.img)}" alt="">` : ''}
+          <span><b>${esc(item.n)}</b>${item.d ? `<span>${esc(item.d)}</span>` : ''}</span>
         </button>`;
       }
     }
@@ -283,11 +290,11 @@ function init() {
   input.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
     const hit = results.querySelector('.kd-search-hit.sel') || results.querySelector('.kd-search-hit');
-    if (hit) window.location.href = hit.dataset.url;
+    if (hit && !/^\s*(javascript|data|vbscript):/i.test(hit.dataset.url)) window.location.href = hit.dataset.url;
   });
   results.addEventListener('click', (e) => {
     const hit = e.target.closest('.kd-search-hit');
-    if (hit) window.location.href = hit.dataset.url;
+    if (hit && !/^\s*(javascript|data|vbscript):/i.test(hit.dataset.url)) window.location.href = hit.dataset.url;
   });
 }
 

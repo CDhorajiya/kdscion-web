@@ -19,10 +19,10 @@
         if (!row || !crumb) return;
         var h2 = row.querySelector('h2'), p = row.querySelector('div > p');
 
-        // "· KDscion-p1 · The House of Scion" → read the code, then hide that text
+        // "· KDscion-w1 · The House of Scion" → read the code, then hide that text
         var code = '';
         if (p) {
-            var m = p.textContent.match(/KDscion-\s*([a-z]\d+(?:\s*&\s*[a-z]\d+)?)/i);
+            var m = p.textContent.match(/KDscion-\s*([a-z](?:-[a-z])?\d+(?:\s*&\s*[a-z]\d+)?)/i);
             if (m) code = m[1].replace(/\s+/g, ' ').toUpperCase();
             [].slice.call(p.childNodes).forEach(function (n) {
                 if (n.nodeType === 3 && n.textContent.trim()) {
@@ -34,7 +34,7 @@
             });
         }
 
-        // "P1 · Full Sleeve Classic Shirt"
+        // "W1 · Full Sleeve Classic Shirt"
         if (h2 && code && !h2.querySelector('.kd-m2-code')) {
             var c = document.createElement('span');
             c.className = 'kd-m2-code';

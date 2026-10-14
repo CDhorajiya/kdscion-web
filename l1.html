@@ -751,7 +751,7 @@
                 <h2>Premium European Leather iPad or MacBook Envelope Cover</h2>
                 <a href="bespokeboutique.html" class="product-bb-link">Bespoke Boutique</a>
                 <p>
-                    <a href="premium-leather-portfolio.html" class="product-home-link">Leather Portfolio</a> &nbsp;·&nbsp; KDscion-L1 &nbsp;·&nbsp; The House of Scion
+                    <a href="leather-accessories-woman.html" class="product-home-link">Leather Portfolio</a> &nbsp;·&nbsp; KDscion-L1 &nbsp;·&nbsp; The House of Scion
                     <!-- no skin tones: a leather piece, no avatar -->
                 </p>
             </div>
@@ -1445,7 +1445,7 @@
     import { getProductSnapConfig, getAllFabricStock, pickActiveFabricId } from './js/fabric-stock.js';
 
     (async () => {
-        const slug = decodeURIComponent(window.location.pathname).match(/\/?(p\d+)\.html$/i)?.[1]?.toLowerCase();
+        const slug = decodeURIComponent(window.location.pathname).match(/\/?(?:w-l|w|p)(\d+)\.html$/i)?.[1]?.replace(/^/, 'p');   // Firebase keeps the p-number key
         if (!slug) return;
 
         let cfg, stockMap;

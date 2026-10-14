@@ -28,8 +28,8 @@ COLOUR = ('<!-- The KD monogram under the search glass opens the Colourist. If t
           '     fails to load the monogram stays an ordinary link to the home page. -->\n'
           '<script type="module" src="js/colourist/index.js"></script>')
 
-pages = sorted((p for p in glob.glob(str(ROOT / 'p*.html'))
-                if re.fullmatch(r'p\d+\.html', Path(p).name)),
+pages = sorted((p for p in glob.glob(str(ROOT / '*.html'))
+                if re.fullmatch(r'(w-l|w|p)\d+\.html', Path(p).name)),
                key=lambda p: int(re.findall(r'\d+', Path(p).name)[0]))
 
 changed, skipped, problems = [], [], []

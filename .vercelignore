@@ -1,0 +1,33 @@
+# Files that exist for building/maintaining the site, not for visitors.
+# Vercel serves every deployed file publicly, so these are kept off the live site.
+
+# Build / batch scripts
+*.py
+*.mjs
+gen-palette-pdf.js
+tools/
+scripts/
+
+# Server code, backups and config that only describe internals
+analytics-server/
+backup/
+firebase-rules.json
+.claude/
+memory/
+AI
+
+# Test and scratch pages
+test-admin.html
+test-fabric-stock.html
+test-pool.html
+index-1.html
+bespokeboutique-copy.html
+instagram-studio backup.html
+a.png
+b.png
+c.png
+
+# Package manifests (dependencies are loaded from CDNs)
+package.json
+package-lock.json
+node_modules/

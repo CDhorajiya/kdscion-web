@@ -89,13 +89,17 @@ function rateOk(ip) {
 
 router.post('/track', async (req, res) => {
   try {
+    // Only the Vercel proxy (which holds ANALYTICS_SECRET) may write events.
+    const token = (req.headers.authorization || '').replace('Bearer ', '');
+    if (!process.env.ANALYTICS_SECRET || token !== process.env.ANALYTICS_SECRET) return res.status(401).end();
+
     if (isBot(req)) return res.status(204).end();
 
-    const ip = getIp(req);
+    const ip = req.headers['x-client-ip'] || getIp(req);   // the proxy forwards the visitor's real IP
     if (!rateOk(ip)) return res.status(429).end();
 
     const { events } = req.body;
-    if (!Array.isArray(events) || !events.length) return res.status(400).end();
+    if (!Array.isArray(events) || !events.length || events.length > 50) return res.status(400).end();
 
     // Resolve geo once per batch (all events in a batch share the same IP)
     const geo = await geoFromIp(ip);

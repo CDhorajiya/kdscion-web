@@ -22,9 +22,9 @@ const PORT = 8811;
 const OUT_DIR = process.argv[2] || '/private/tmp/claude-501/-Users-kd-Desktop-KDscion-web/31eae504-c781-48f6-9c02-8496ed5ced7c/scratchpad/raw-snaps';
 
 const PRODUCTS = [
-  { sku: 'KD-P60-FSSD',      page: 'p60.html' },
-  { sku: 'KD-P78-FSBLTL',    page: 'p78.html' },
-  { sku: 'KD-P176-FSASD176', page: 'p176.html' },
+  { sku: 'KD-P60-FSSD',      page: 'w-l60.html' },
+  { sku: 'KD-P78-FSBLTL',    page: 'w78.html' },
+  { sku: 'KD-P176-FSASD176', page: 'w176.html' },
 ];
 
 const TEST_FABRIC_IDS = ['cotton-plain-1', 'linen-plain-1', 'wool-plain-1'];

@@ -464,7 +464,21 @@
     }
 
     // ── Render ────────────────────────────────────────────────────────────────
-    function render(order, meas) {
+    // Order fields are typed by customers and the order id can come from the URL,
+    // so everything is HTML-escaped before it is rendered.
+    function escHtml(v) {
+      return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function escDeep(v) {
+      if (typeof v === 'string') return escHtml(v);
+      if (Array.isArray(v)) return v.map(escDeep);
+      if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, escDeep(x)]));
+      return v;
+    }
+
+    function render(rawOrder, rawMeas) {
+      const order = escDeep(rawOrder);
+      const meas  = escDeep(rawMeas);
       const items = order.items ?? order.cartItems ?? [];
       const total = items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
       const addr  = order.shippingAddress;
@@ -515,7 +529,7 @@
         : '';
 
       const dateStr = fmtDate(order.createdAt);
-      const refStr  = order.id ?? orderId ?? '—';
+      const refStr  = order.id ?? escHtml(orderId ?? '—');
 
       wrap.innerHTML = `
         <div class="brief-header">
@@ -592,7 +606,7 @@
         render(order, measRes);
 
       } catch (err) {
-        wrap.innerHTML = `<p class="brief-error">${err.message ?? 'Could not load order details.'}</p>`;
+        wrap.innerHTML = `<p class="brief-error">${escHtml(err.message ?? 'Could not load order details.')}</p>`;
       }
     }
 

@@ -26,12 +26,12 @@
     <meta property="og:site_name" content="KD: The House of Scion">
     <meta property="og:title" content="Midi Dresses — KD Scion">
     <meta property="og:description" content="Bespoke midi dresses for women, each tailored to your measurements in the fabric you choose.">
-    <meta property="og:image" content="https://kdscion.com/images/KDscion-p17-sleeveless%20midi%20dress_Colorway%20A.webp">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-w17-sleeveless%20midi%20dress_Colorway%20A.webp">
     <meta property="og:url" content="https://kdscion.com/midi-dresses-woman.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Midi Dresses — KD Scion">
     <meta name="twitter:description" content="Bespoke midi dresses for women, each tailored to your measurements in the fabric you choose.">
-    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-p17-sleeveless%20midi%20dress_Colorway%20A.webp">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-w17-sleeveless%20midi%20dress_Colorway%20A.webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -561,13 +561,13 @@
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="p17.html">
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="w17.html">
                 <div class="img-wrap">
-                <img src="images/KDscion-p17-sleeveless midi dress_Colorway A.webp" style="--rc:-21.77%"
-                alt="KDscion p17 sleeveless midi dress">
+                <img src="images/KDscion-w17-sleeveless midi dress_Colorway A.webp" style="--rc:-21.77%"
+                alt="KDscion w17 sleeveless midi dress">
                 </div>
                 <div class="product-desc">
-                <p class="product-desc__title">P17 | KD Scion</p>
+                <p class="product-desc__title">W17 | KD Scion</p>
                 <div class="product-desc__divider"></div>
                 <p class="product-desc__sub">sleeveless midi dress</p>
                 </div>
@@ -669,9 +669,9 @@
         const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
 
         document.querySelectorAll('.img-wrap img').forEach((img) => {
-            const m = img.getAttribute('src')?.match(/KDscion-(p\d+)-/i);
+            const m = img.getAttribute('src')?.match(/KDscion-(?:w-l|w|p)(\d+)-/i);
             if (!m) return;
-            const slug = m[1].toLowerCase();
+            const slug = 'p' + m[1];   // Firebase keeps the design's p-number key
             if (!bySlug.has(slug)) {
                 bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
             }

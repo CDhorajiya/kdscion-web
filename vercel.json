@@ -1,0 +1,99 @@
+{
+  "redirects": [
+    {
+      "source": "/p(21|24|25|26|27|41|42|52|53|60|61|62|63|72|73|76|77|81|82|83|85|86|87|88|92|93|94|95|96|97|98|99|100|101|105|106|107|108|116|117|121|122|125|131|132|133|135|136|145|146|149|150|155|156|157|158|159|160|161|162|163|164|165|166|167|168)\\.html",
+      "destination": "/w-l$1.html",
+      "permanent": true
+    },
+    {
+      "source": "/p(21|24|25|26|27|41|42|52|53|60|61|62|63|72|73|76|77|81|82|83|85|86|87|88|92|93|94|95|96|97|98|99|100|101|105|106|107|108|116|117|121|122|125|131|132|133|135|136|145|146|149|150|155|156|157|158|159|160|161|162|163|164|165|166|167|168)(%20| )design(%20| )variations\\.html",
+      "destination": "/w-l$1%20design%20variations.html",
+      "permanent": true
+    },
+    {
+      "source": "/p83-s3\\.html",
+      "destination": "/w-l83-s3.html",
+      "permanent": true
+    },
+    {
+      "source": "/images/KDscion-p(21|24|25|26|27|41|42|52|53|60|61|62|63|72|73|76|77|81|82|83|85|86|87|88|92|93|94|95|96|97|98|99|100|101|105|106|107|108|116|117|121|122|125|131|132|133|135|136|145|146|149|150|155|156|157|158|159|160|161|162|163|164|165|166|167|168)-(.*)",
+      "destination": "/images/KDscion-w-l$1-$2",
+      "permanent": true
+    },
+    {
+      "source": "/3d/KDscion-p(21|24|25|26|27|41|42|52|53|60|61|62|63|72|73|76|77|81|82|83|85|86|87|88|92|93|94|95|96|97|98|99|100|101|105|106|107|108|116|117|121|122|125|131|132|133|135|136|145|146|149|150|155|156|157|158|159|160|161|162|163|164|165|166|167|168)-(.*)",
+      "destination": "/3d/KDscion-w-l$1-$2",
+      "permanent": true
+    },
+    {
+      "source": "/p(\\d+)\\.html",
+      "destination": "/w$1.html",
+      "permanent": true
+    },
+    {
+      "source": "/p(\\d+)(%20| )design(%20| )variations\\.html",
+      "destination": "/w$1%20design%20variations.html",
+      "permanent": true
+    },
+    {
+      "source": "/images/KDscion-p(\\d+)-(.*)",
+      "destination": "/images/KDscion-w$1-$2",
+      "permanent": true
+    },
+    {
+      "source": "/3d/KDscion-p(\\d+)-(.*)",
+      "destination": "/3d/KDscion-w$1-$2",
+      "permanent": true
+    },
+    {
+      "source": "/images/KD-scion-p(26|27)-(.*)",
+      "destination": "/images/KD-scion-w-l$1-$2",
+      "permanent": true
+    },
+    {
+      "source": "/images/KD-scion-p(\\d+)-(.*)",
+      "destination": "/images/KD-scion-w$1-$2",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(self \"https://js.stripe.com\")"
+        }
+      ]
+    },
+    {
+      "source": "/(admin-dashboard|order-brief)(.html)?",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ]
+}

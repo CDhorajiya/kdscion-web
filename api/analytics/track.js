@@ -69,7 +69,7 @@ export default async function handler(req) {
     return new Response(null, { status: 400 });
   }
 
-  if (!Array.isArray(body?.events) || !body.events.length) {
+  if (!Array.isArray(body?.events) || !body.events.length || body.events.length > 50) {
     return new Response(null, { status: 400 });
   }
 

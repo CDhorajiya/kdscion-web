@@ -28,7 +28,8 @@ export default async function handler(req) {
     });
   }
 
-  const days = new URL(req.url).searchParams.get('days') || '30';
+  // Whole number of days, 1–365 — never pass the raw query string through to Railway.
+  const days = Math.min(365, Math.max(1, parseInt(new URL(req.url).searchParams.get('days'), 10) || 30));
 
   try {
     const res = await fetch(`${railwayUrl}/api/v1/analytics/dashboard?days=${days}`, {

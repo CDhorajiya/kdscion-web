@@ -424,6 +424,7 @@
   <script type="module">
     import { getCart, getCartTotal, removeFromCart, placeOrder, createPaymentIntent, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
+    import { designPage } from './js/design-codes.js';
 
     // ── Replace with your Stripe publishable key from dashboard.stripe.com/apikeys
     const STRIPE_KEY = 'pk_test_51TF1uoD4pLXnD62zsIhrMXEuD0t1Ir0AZ2Qkrmp5aAbJYTLzTZE5P6PR5PdEzFdpq0p0rHbZeQMdJQJ4CuSuajAT00pYbAuYs9';
@@ -448,18 +449,19 @@
         return;
       }
 
+      const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
       list.innerHTML = items.map(item => {
         const skuMatch = item.product?.sku?.match(/KD-P(\d+)-/i);
-        const productPage = skuMatch ? `p${skuMatch[1]}-product.html` : 'pool-of-designs-woman.html';
+        const productPage = skuMatch ? designPage(skuMatch[1]) : 'pool-of-designs-woman.html';
         return `
-        <div class="cart-item" data-id="${item.id}">
+        <div class="cart-item" data-id="${esc(item.id)}">
           <div>
-            <a href="${productPage}" class="cart-item__name">${item.displayName ?? 'Product'}</a>
-            <p class="cart-item__qty">Qty ${item.quantity}</p>
+            <a href="${productPage}" class="cart-item__name">${esc(item.displayName ?? 'Product')}</a>
+            <p class="cart-item__qty">Qty ${esc(item.quantity)}</p>
           </div>
           <div style="display:flex;align-items:center;gap:.5rem">
             <span class="cart-item__price">$${(Number(item.unitPrice) * item.quantity).toLocaleString()}</span>
-            <button class="cart-item__remove" data-id="${item.id}" title="Remove">✕</button>
+            <button class="cart-item__remove" data-id="${esc(item.id)}" title="Remove">✕</button>
           </div>
         </div>`;
       }).join('');

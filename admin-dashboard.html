@@ -838,6 +838,7 @@
           <p class="prices-section-title">Design Prices</p>
           <table class="prices-table">
             <thead><tr>
+              <th>Design</th>
               <th>SKU</th>
               <th>Design Name</th>
               <th style="text-align:right">Price ($)</th>
@@ -1109,6 +1110,7 @@
     import { FABRIC_CATALOG, TWOTONE_CATALOG, DRAPE_TYPES, TYPE_MATERIAL_DEFAULTS, loadFabricOverrides, saveFabricOverrides, startFabricSettingsSync, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
     import { FIREBASE_CONFIG, IS_DEMO } from './js/firebase-config.js';
     import { getAllFabricStock, subscribeFabricStock, setFabricStock } from './js/fabric-stock.js';
+     import { WL, designCode, designPage, LEATHER_JACKETS_COATS } from './js/design-codes.js';
 
     // Global fabric stock (Firebase-backed, unlike the localStorage-only
     // visibility toggles above) — updates live when any admin flips a fabric,
@@ -1496,6 +1498,7 @@
       const dTbody = document.getElementById('design-prices-tbody');
       dTbody.innerHTML = Object.entries(DESIGN_META).map(([sku, name]) => `
         <tr>
+          <td style="white-space:nowrap;"><b>${skuCode(sku)}</b></td>
           <td>${sku}</td>
           <td>${name}</td>
           <td style="text-align:right">
@@ -1864,12 +1867,38 @@ const ALL_DESIGNS = [
   { sku: 'KD-S2-SS', name: 'Short Scarf', group: 'woman' },
   { sku: 'KD-S3-FS', name: 'Full Shawl', group: 'woman' },
   { sku: 'KD-P83S3-SSDFS', name: 'Sleeveless Sheath Dress with Full Shawl', group: 'woman' },
-  { sku: 'KD-L1-PLEC', name: 'Premium European Leather iPad or MacBook Envelope Cover', group: 'man' },
-  { sku: 'KD-L1-PLEC', name: 'Premium European Leather iPad or MacBook Envelope Cover', group: 'woman' },
+  { sku: 'KD-L1-PLEC', name: 'Premium European Leather iPad or MacBook Envelope Cover', group: 'leather' },
 ];
+
+    // The page a SKU's design lives on (also used by the Orders tab).
+    function getProductUrl(sku) {
+      if (!sku) return null;
+      if (/279|280/i.test(sku)) return 'p279&p280-product.html';
+      const sc = sku.match(/KD-S(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
+      if (sc) return `s${sc[1]}.html`;
+      const lt = sku.match(/KD-L(\d+)-/i);
+      if (lt) return `l${lt[1]}.html`;
+      if (duo) return `${designCode(duo[1])}-s${duo[2]}.html`;
+      const m = sku.match(/KD-P(\d+)-/i);
+      return m ? designPage(m[1]) : null;
+    }
+
+    // The design code people see: W60, W-L60 (also in leather), S1, L1, W-L83 & S3.
+    // SKUs (KD-P60-FSSD) stay the internal ids for prices, stock and settings.
+    function skuCode(sku) {
+      if (!sku) return '';
+      const sc = sku.match(/KD-S(\d+)-/i), lt = sku.match(/KD-L(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
+      if (sc) return `S${sc[1]}`;
+      if (lt) return `L${lt[1]}`;
+      if (duo) return `${designCode(duo[1]).toUpperCase()} & S${duo[2]}`;
+      const m = sku.match(/KD-P(\d+)-/i);
+      return m ? designCode(m[1]).toUpperCase() : '';
+    }
+    const isLeatherDesign = (sku) => { const m = sku && sku.match(/KD-P(\d+)-/i); return !!m && WL.has(+m[1]); };
 
     const DESIGN_GROUPS = [
       { key: 'woman', label: 'Pool of Designs — Woman' },
+      { key: 'leather', label: 'Premium European Leather Portfolio' },
       { key: 'man',   label: 'Pool of Designs — Man'   },
       { key: 'boy',   label: 'Pool of Designs — Boy'   },
       { key: 'girl',  label: 'Pool of Designs — Girl'  },
@@ -1938,16 +1967,53 @@ const ALL_DESIGNS = [
       }
 
       // ── Section 1: per-product visibility ──────────────────────────────────
-      function getProductUrl(sku) {
-        if (!sku) return null;
-        if (/279|280/i.test(sku)) return 'p279&p280-product.html';
-        const sc = sku.match(/KD-S(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
-        if (sc) return `s${sc[1]}.html`;
-        const lt = sku.match(/KD-L(\d+)-/i);
-        if (lt) return `l${lt[1]}.html`;
-        if (duo) return `p${duo[1]}-s${duo[2]}.html`;
-        const m = sku.match(/KD-P(\d+)-/i);
-        return m ? `p${m[1]}.html` : null;
+      // ── Leather Portfolio › Jackets / Coats ──
+      // The w/l designs, card for card as leather-jackets-coats-woman.html shows them. A design
+      // opened there (?leather) offers only the Premium European Leather type, so each one's
+      // leather switch is the same setting as in its Woman entry: off = nothing to pick there.
+      function leatherPortfolioHtml() {
+        const bySku = (n) => ALL_DESIGNS.find(d => new RegExp(`^KD-P${n}-`, 'i').test(d.sku));
+        const sub = (label, note) => `
+          <div style="padding:0.7rem 1.4rem 0.5rem;margin:0.4rem 0 0.8rem;border-bottom:1px solid #e8e8e8;">
+            <p style="font-family:'Times New Roman',serif;font-size:var(--ds-sm);letter-spacing:3px;
+                      text-transform:uppercase;color:#666;margin:0;font-style:italic;">${label}</p>
+            ${note ? `<p style="font-family:'Times New Roman',serif;font-size:var(--ds-sm);color:#888;margin:0.3rem 0 0;">${note}</p>` : ''}
+          </div>`;
+        let html = sub(`Jackets / Coats — ${LEATHER_JACKETS_COATS.length} cards, ${WL.size} designs`,
+          'Every W-L design opens here in leather only. The switch is the design\'s Premium European Leather setting (shared with its Woman entry).');
+        LEATHER_JACKETS_COATS.forEach(set => {
+          const first = set[0];
+          const url = set.length > 1 ? `${designCode(first)} design variations.html?leather` : `${designPage(first)}?leather`;
+          const members = set.map(n => {
+            const d = bySku(n);
+            if (!d) return `<span style="color:#b00;">${designCode(n).toUpperCase()} — no SKU</span>`;
+            const key = `p:${d.sku}:t:leather`, on = vis[key] ?? true;
+            return `
+              <label style="display:inline-flex;align-items:center;gap:0.5rem;margin:0.25rem 1.4rem 0.25rem 0;
+                            font-family:'Courier New',monospace;font-size:var(--ds-sm);color:${on ? '#111' : '#b00'};"
+                     title="${d.name}">
+                <b>${designCode(n).toUpperCase()}</b>
+                <span class="fab-toggle"><input type="checkbox" ${on ? 'checked' : ''}
+                  onchange="setLeatherVisibility('${key}', this.checked)"><span class="fab-slider"></span></span>
+                ${on ? '' : '<span style="font-family:\'Times New Roman\',serif;">leather off</span>'}
+              </label>`;
+          }).join('');
+          const name = bySku(first)?.name || '';
+          html += `
+            <div style="margin-bottom:0.8rem;border:1px solid #e0e0e0;border-radius:3px;padding:0.8rem 1.4rem;
+                        display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+              <div style="flex:1;min-width:16rem;">
+                <p style="font-family:'Times New Roman',serif;font-size:var(--ds-base);letter-spacing:2px;color:#111;margin:0 0 0.3rem;">
+                  ${name}${set.length > 1 ? ` <span style="color:#888;font-style:italic;">· ${set.length} variations</span>` : ''}</p>
+                <div>${members}</div>
+              </div>
+              <a href="${url}" target="_blank"
+                 style="font-family:'Times New Roman',serif;font-size:var(--ds-xs);letter-spacing:3px;
+                        text-transform:uppercase;color:#7a5a12;text-decoration:none;
+                        border:1px solid #d8c9a3;border-radius:2px;padding:0.2rem 0.6rem;">View in Leather</a>
+            </div>`;
+        });
+        return html + sub('Accessories', '');
       }
 
       let productsHtml = '';
@@ -1965,6 +2031,8 @@ const ALL_DESIGNS = [
             </p>
           </div>`;
 
+        if (group.key === 'leather') productsHtml += leatherPortfolioHtml();
+
         if (groupDesigns.length === 0) {
           productsHtml += `
             <div style="padding:1.2rem 1.4rem;border:1px solid #e0e0e0;border-radius:3px;
@@ -1979,7 +2047,7 @@ const ALL_DESIGNS = [
 
         const mainTypesHtml = buildTypesHtml(design.sku, null);
 
-        // p32 only: Two Tone Zone — type toggles + individual swatch toggles (no collection row)
+        // w32 only: Two Tone Zone — type toggles + individual swatch toggles (no collection row)
         let twoToneHtml = '';
         if (isTwoTone) {
           getMergedTwotoneCatalog().forEach(type => {
@@ -2046,7 +2114,7 @@ const ALL_DESIGNS = [
             <div style="display:flex;align-items:center;justify-content:space-between;
                         padding:1rem 1.4rem;background:#fafaf9;border-bottom:1px solid #e8e8e8;">
               <div style="flex:1;cursor:pointer;" onclick="toggleProductAccordion('acc-${design.sku}')">
-                <p style="font-family:'Courier New',monospace;font-size:var(--ds-xs);color:#111;margin:0 0 0.2rem">${design.sku}</p>
+                <p style="font-family:'Courier New',monospace;font-size:var(--ds-xs);color:#111;margin:0 0 0.2rem"><b style="font-size:var(--ds-sm);letter-spacing:1px;">${skuCode(design.sku)}</b> &nbsp;·&nbsp; ${design.sku}${isLeatherDesign(design.sku) ? ` &nbsp;<span style="font-family:'Times New Roman',serif;letter-spacing:2px;color:#7a5a12;">· ALSO IN LEATHER</span>` : ''}</p>
                 <p style="font-family:'Times New Roman',serif;font-size:var(--ds-base);letter-spacing:2px;color:#111;margin:0">${design.name}</p>
               </div>
               <div style="display:flex;align-items:center;gap:1rem;">
@@ -2055,6 +2123,11 @@ const ALL_DESIGNS = [
                            text-transform:uppercase;color:#555;text-decoration:none;
                            border:1px solid #ccc;border-radius:2px;padding:0.2rem 0.6rem;"
                     onclick="event.stopPropagation()">View</a>` : ''}
+                ${productUrl && isLeatherDesign(design.sku) ? `<a href="${productUrl}?leather" target="_blank"
+                    style="font-family:'Times New Roman',serif;font-size:var(--ds-xs);letter-spacing:3px;
+                           text-transform:uppercase;color:#7a5a12;text-decoration:none;
+                           border:1px solid #d8c9a3;border-radius:2px;padding:0.2rem 0.6rem;"
+                    onclick="event.stopPropagation()">View in Leather</a>` : ''}
                 <span id="arrow-${design.sku}" style="font-size:var(--ds-xs);color:#111;transition:transform 0.2s;cursor:pointer;"
                       onclick="toggleProductAccordion('acc-${design.sku}')">&#9654;</span>
               </div>
@@ -2371,6 +2444,12 @@ const ALL_DESIGNS = [
       saveFabricOverrides(overrides);
     };
 
+    // Leather Portfolio switches: also redraw, so the design's Woman entry shows the same state.
+    window.setLeatherVisibility = function(key, on) {
+      window.setVisibility(key, on);
+      renderFabricsPanel();
+    };
+
     // ── Per-swatch opacity ────────────────────────────────────────────────────
     // Stored in overrides.swatchOpacity = { 'cotton-plain-1': 0.7, ... } (Firebase fabricSettings/live, cached in localStorage)
     // renderFabricList() reads this and emits data-opacity on every swatch card.
@@ -2593,206 +2672,206 @@ const ALL_DESIGNS = [
 
     // ── Design image map ──────────────────────────────────────────────────────
     const DESIGN_IMAGES = {
-  '1': 'images/KDscion-p1-full sleeve classic shirt_Colorway A.webp',
-  '2': 'images/KDscion-p2-sleeveless classic shirt_Colorway A.webp',
-  '3': 'images/KDscion-p3-full sleeve overall dress_Colorway A.webp',
-  '4': 'images/KDscion-p4-half sleeve overall dress_Colorway A.webp',
-  '5': 'images/KDscion-p5-Quarter sleeve overall dress_Colorway A.webp',
-  '6': 'images/KDscion-p6-Sleeveless overall dress_Colorway A.webp',
-  '7': 'images/KDscion-p7-sleeveless sheath dress_Colorway A.webp',
-  '8': 'images/KDscion-p8-full sleeve sheath dress_Colorway A.webp',
-  '9': 'images/KDscion-p9-sleeveless sheath dress_Colorway A.webp',
-  '10': 'images/KDscion-p10-sleeveless sheath dress_Colorway A.webp',
-  '11': 'images/KDscion-p11-full sleeve A-line dress_Colorway A.webp',
-  '12': 'images/KDscion-p12-sleeveless A-line dress_Colorway A.webp',
-  '13': 'images/KDscion-p13-full sleeve swift dress_Colorway A.webp',
-  '14': 'images/KDscion-p14-sleeveless swift dress_Colorway A.webp',
-  '15': 'images/KDscion-p15-full sleeve bodycon dress_Colorway A.webp',
-  '16': 'images/KDscion-p16-sleeveless bodycon dress_Colorway A.webp',
-  '17': 'images/KDscion-p17-sleeveless midi dress_Colorway A.webp',
-  '18': 'images/KDscion-p18-sleeveless maxi dress_Colorway A.webp',
-  '19': 'images/KDscion-p19-sleeveless sheath dress_Colorway A.webp',
-  '20': 'images/KDscion-p20-sleeveless A-line dress_Colorway A.webp',
-  '21': 'images/KDscion-p21-full sleeve Button less jacket_Colorway A.webp',
-  '22': 'images/KDscion-p22-modern shawl_Colorway A.webp',
-  '23': 'images/KDscion-p23-sleeveless bodycon dress_Colorway A.webp',
-  '24': 'images/KDscion-p24-full sleeve A-line dress_Colorway A.webp',
-  '25': 'images/KDscion-p25-sleeveless A-line dress_Colorway A.webp',
-  '28': 'images/KDscion-p28-sleeveless A-line dress_Colorway A.webp',
-  '29': 'images/KDscion-p29-full sleeve classic fit buttonup dress_Colorway A.webp',
-  '30': 'images/KDscion-p30-sleeveless classic fit buttonup dress_Colorway A.webp',
-  '31': 'images/KDscion-p31-full sleeve loose fit button up dress_Colorway A.webp',
-  '32': 'images/KDscion-p32-sleeveless loose fit button up dress_Colorway A.webp',
-  '33': 'images/KDscion-p33-Quarter shirring sleeve A-line dress_Colorway A.webp',
-  '34': 'images/KDscion-p34-sleeveless shift dress_Colorway A.webp',
-  '35': 'images/KDscion-p35-sleeveless two tone translucent shift dress_Colorway A.webp',
-  '36': 'images/KDscion-p36-sleeveless maxi dress_Colorway A.webp',
-  '37': 'images/KDscion-p37-sleeveless maxi dress_Colorway A.webp',
-  '38': 'images/KDscion-p38-sleeveless shift dress_Colorway A.webp',
-  '39': 'images/KDscion-p39-shirring sleeve shift dress_Colorway A.webp',
-  '40': 'images/KDscion-p40-sleeveless sheath dress_Colorway A.webp',
-  '41': 'images/KDscion-p41-full sleeve sheath dress_Colorway A.webp',
-  '42': 'images/KDscion-p42-sleeveless shift dress_Colorway A.webp',
-  '43': 'images/KDscion-p43-sleeveless loose fit button up dress_Colorway A.webp',
-  '44': 'images/KDscion-p44-full sleeve sheath dress_Colorway A.webp',
-  '46': 'images/KDscion-p46-full sleeve sheath dress_Colorway A.webp',
-  '47': 'images/KDscion-p47-sleeveless sheath dress_Colorway A.webp',
-  '48': 'images/KDscion-p48-quarter sleeve shift dress_Colorway A.webp',
-  '49': 'images/KDscion-p49-sleeveless shift dress_Colorway A.webp',
-  '50': 'images/KDscion-p50-quarter sleeve shift dress_Colorway A.webp',
-  '51': 'images/KDscion-p51-sleeveless shift dress_Colorway A.webp',
-  '52': 'images/KDscion-p52-sleeveless shift dress (designer folding)-translucent_Colorway A.webp',
-  '53': 'images/KDscion-p53-sleeveless shift dress-translucent_Colorway A.webp',
-  '54': 'images/KDscion-p54-full sleeve A-line dress_Colorway A.webp',
-  '55': 'images/KDscion-p55-sleeveless A-line dress_Colorway A.webp',
-  '56': 'images/KDscion-p56-full sleeve shift dress-elastic lines_Colorway A.webp',
-  '57': 'images/KDscion-p57-sleeveless shift dress-elastic lines_Colorway A.webp',
-  '58': 'images/KDscion-p58-full sleeve sheath dress_Colorway A.webp',
-  '59': 'images/KDscion-p59-sleeveless sheath dress_Colorway A.webp',
-  '60': 'images/KDscion-p60-full sleeve sheath dress_Colorway A.webp',
-  '61': 'images/KDscion-p61-sleeveless sheath dress_Colorway A.webp',
-  '62': 'images/KDscion-p62-full sleeve bodycon dress_Colorway A.webp',
-  '63': 'images/KDscion-p63-sleeveless bodycon dress_Colorway A.webp',
-  '64': 'images/KDscion-p64-full sleeve button up top_Colorway A.webp',
-  '65': 'images/KDscion-p65-sleeveless button up top_Colorway A.webp',
-  '66': 'images/KDscion-p66-full sleeve half button top_Colorway A.webp',
-  '67': 'images/KDscion-p67-sleeveless half button top_Colorway A.webp',
-  '68': 'images/KDscion-p68-full sleeve quarter button sheath dress_Colorway A.webp',
-  '69': 'images/KDscion-p69-sleeveless quarter button sheath dress_Colorway A.webp',
-  '70': 'images/KDscion-p70-full sleeve button up sheath dress_Colorway A.webp',
-  '71': 'images/KDscion-p71-sleeveless button up sheath dress_Colorway A.webp',
-  '72': 'images/KDscion-p72-full sleeve sheath dress_Colorway A.webp',
-  '73': 'images/KDscion-p73-sleeveless sheath dress_Colorway A.webp',
-  '74': 'images/KDscion-p74-full sleeve sheath dress-translucent two tone_Colorway A.webp',
-  '75': 'images/KDscion-p75-sleeveless sheath dress-translucent two tone_Colorway A.webp',
-  '76': 'images/KDscion-p76-full sleeve asymmetric jacket_Colorway A.webp',
-  '77': 'images/KDscion-p77-sleeveless asymmetric jacket_Colorway A.webp',
-  '78': 'images/KDscion-p78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp',
-  '79': 'images/KDscion-p79-sleeveless sheath dress with belt-two tone layer_Colorway A.webp',
-  '81': 'images/KDscion-p81-full sleeve button up jacket_Colorway A.webp',
-  '82': 'images/KDscion-p82-sleeveless buttonup jacket_Colorway A.webp',
-  '83': 'images/KDscion-p83-sleeveless sheath dress_Colorway A.webp',
-  '84': 'images/KDscion-p84-shawl_Colorway A.webp',
-  '85': 'images/KDscion-p85-full sleeve sheath dress_Colorway A.webp',
-  '86': 'images/KDscion-p86-sleeveless sheath dress_Colorway A.webp',
-  '87': 'images/KDscion-p87-full sleeve A-line dress_Colorway A.webp',
-  '88': 'images/KDscion-p88-sleeveless A-line dress_Colorway A.webp',
-  '89': 'images/KDscion-p89-shawl_Colorway A.webp',
-  '90': 'images/KDscion-p90-shawl_Colorway A.webp',
-  '91': 'images/KDscion-p91-short shawl_Colorway A.webp',
-  '92': 'images/KDscion-p92-full sleeve asymmetric jacket_Colorway A.webp',
-  '93': 'images/KDscion-p93-sleeveless asymmetric jacket_Colorway A.webp',
-  '94': 'images/KDscion-p94-full sleeve single breasted coat_Colorway A.webp',
-  '95': 'images/KDscion-p95-sleeveless single breasted coat_Colorway A.webp',
-  '96': 'images/KDscion-p96-full sleeve single breasted coat_Colorway A.webp',
-  '97': 'images/KDscion-p97-sleeveless single breasted coat_Colorway A.webp',
-  '98': 'images/KDscion-p98-full sleeve single breasted coat_Colorway A.webp',
-  '99': 'images/KDscion-p99-sleeveless single breasted coat_Colorway A.webp',
-  '100': 'images/KDscion-p100-full sleeve single breasted long coat_Colorway A.webp',
-  '101': 'images/KDscion-p101-sleeveless single breasted long coat_Colorway A.webp',
-  '102': 'images/KDscion-p102-full sleeve shift dress_Colorway A.webp',
-  '103': 'images/KDscion-p103-skirt_Colorway A.webp',
-  '104': 'images/KDscion-p104-shawl_Colorway A.webp',
-  '105': 'images/KDscion-p105-full sleeve full zipper top_Colorway A.webp',
-  '106': 'images/KDscion-p106-sleeveless full zipper top_Colorway A.webp',
-  '107': 'images/KDscion-p107-sleeveless top_Colorway A.webp',
-  '108': 'images/KDscion-p108-full sleeve top_Colorway A.webp',
-  '109': 'images/KDscion-p109-half sleeve top_Colorway A.webp',
-  '110': 'images/KDscion-p110-sleeveless top_Colorway A.webp',
-  '111': 'images/KDscion-p111-half sleeve elastic shift dress_Colorway A.webp',
-  '112': 'images/KDscion-p112-sleeveless elastic shift dress_Colorway A.webp',
-  '113': 'images/KDscion-p113-sleeveless top_Colorway A.webp',
-  '114': 'images/KDscion-p114-full sleeve top_Colorway A.webp',
-  '115': 'images/KDscion-p115-sleeveless shift dress_Colorway A.webp',
-  '116': 'images/KDscion-p116-quarter sleeve top_Colorway A.webp',
-  '117': 'images/KDscion-p117-sleeveless top_Colorway A.webp',
-  '118': 'images/KDscion-p118-sleeveless shift dress_Colorway A.webp',
-  '119': 'images/KDscion-p119-full sleeve sheath dress_Colorway A.webp',
-  '120': 'images/KDscion-p120-sleeveless sheath dress_Colorway A.webp',
-  '121': 'images/KDscion-p121-half sleeve top_Colorway A.webp',
-  '122': 'images/KDscion-p122-sleeveless top_Colorway A.webp',
-  '123': 'images/KDscion-p123-sleeveless shift dress_Colorway A.webp',
-  '124': 'images/KDscion-p124-sleeveless shift dress_Colorway A.webp',
-  '125': 'images/KDscion-p125-full sleeve top_Colorway A.webp',
-  '126': 'images/KDscion-p126-half sleeve top_Colorway A.webp',
-  '127': 'images/KDscion-p127-half sleeve shift dress_Colorway A.webp',
-  '128': 'images/KDscion-p128-sleeveless sheath dress_Colorway A.webp',
-  '129': 'images/KDscion-p129-sleeveless top-with large side vents_Colorway A.webp',
-  '130': 'images/KDscion-p130-sleeveless cross strap bodycon dress_Colorway A.webp',
-  '131': 'images/KDscion-p131-full sleeve long coat_Colorway A.webp',
-  '132': 'images/KDscion-p132-sleeveless long coat_Colorway A.webp',
-  '133': 'images/KDscion-p133-sleeveless sheath dress_Colorway A.webp',
-  '134': 'images/KDscion-p134-sleeveless double layer bodycon dress_Colorway A.webp',
-  '135': 'images/KDscion-p135-full sleeve sheath dress_Colorway A.webp',
-  '136': 'images/KDscion-p136-quarter sheath dress_Colorway A.webp',
-  '137': 'images/KDscion-p137-full sleeve gown-translucent_Colorway A.webp',
-  '138': 'images/KDscion-p138-sleeveless gown-translucent_Colorway A.webp',
-  '139': 'images/KDscion-p139-full sleeve long gown-translucent_Colorway A.webp',
-  '140': 'images/KDscion-p140-sleeve less long gown-translucent_Colorway A.webp',
-  '141': 'images/KDscion-p141-sleeveless top_Colorway A.webp',
-  '142': 'images/KDscion-p142-sleeveless shift dress-elastic waist-translucent_Colorway A.webp',
-  '143': 'images/KDscion-p143-sleeveless top-elastic edge_Colorway A.webp',
-  '144': 'images/KDscion-p144-sleeveless top-elastic waist_Colorway A.webp',
-  '177': 'images/KDscion-p177-full sleeve loose shift top_Colorway A.webp',
-  '178': 'images/KDscion-p178-sleeveless loose shift top_Colorway A.webp',
-  '179': 'images/KDscion-p179-full sleeve sheath top_Colorway A.webp',
-  '180': 'images/KDscion-p180-sleeveless sheath top_Colorway A.webp',
-  '181': 'images/KDscion-p181-full sleeve sheath dress_Colorway A.webp',
-  '182': 'images/KDscion-p182-sleeveless sheath dress_Colorway A.webp',
-  '183': 'images/KDscion-p183-classic fit trouser_Colorway A.webp',
-  '184': 'images/KDscion-p184-classic fit trouser-short_Colorway A.webp',
-  '185': 'images/KDscion-p185-full sleeve top_Colorway A.webp',
-  '186': 'images/KDscion-p186-sleeveless top_Colorway A.webp',
-  '187': 'images/KDscion-p187-sleeveless asymmetric short dress_Colorway A.webp',
-  '188': 'images/KDscion-p188-sleeveless shift dress_Colorway A.webp',
-  '189': 'images/KDscion-p189-sleeveless shift dress_Colorway A.webp',
-  '190': 'images/KDscion-p190-sleeveless asymmetric shift dress_Colorway A.webp',
-  '191': 'images/KDscion-p191-sleeveless shift dress_Colorway A.webp',
-  '192': 'images/KDscion-p192-sleeveless short top_Colorway A.webp',
-  '193': 'images/KDscion-p193-full sleeve translucent shift dress - dual layer_Colorway A.webp',
-  '194': 'images/KDscion-p194-sleeveless translucent shift dress - dual layer_Colorway A.webp',
-  '195': 'images/KDscion-p195-sleeveless shirring dress_Colorway A.webp',
-  '196': 'images/KDscion-p196-sleeveless shirring dress - short_Colorway A.webp',
-  '197': 'images/KDscion-p197-full sleeve shift dress - elastic waist_Colorway A.webp',
-  '198': 'images/KDscion-p198-sleeveless shift dress - elastic waist_Colorway A.webp',
-  '199': 'images/KDscion-p199-full sleeve translucent shift dress - dual asymmetric layer_Colorway A.webp',
-  '200': 'images/KDscion-p200-sleeveless translucent shift dress - dual asymmetric layer_Colorway A.webp',
-  '145': 'images/KDscion-p145-full sleeve bodycon dress_Colorway A.webp',
-  '146': 'images/KDscion-p146-sleeveless bodycon dress_Colorway A.webp',
-  '147': 'images/KDscion-p147-full sleeve top_Colorway A.webp',
-  '148': 'images/KDscion-p148-sleeveless top_Colorway A.webp',
-  '149': 'images/KDscion-p149-full sleeve long coat_Colorway A.webp',
-  '150': 'images/KDscion-p150-sleeveless long coat_Colorway A.webp',
-  '151': 'images/KDscion-p151-full sleeve shift dress_Colorway A.webp',
-  '152': 'images/KDscion-p152-sleeveless shift dress_Colorway A.webp',
-  '153': 'images/KDscion-p153-full sleeve top_Colorway A.webp',
-  '154': 'images/KDscion-p154-sleeveless top_Colorway A.webp',
-  '155': 'images/KDscion-p155-full sleeve sheath dress_Colorway A.webp',
-  '156': 'images/KDscion-p156-sleeveless sheath dress_Colorway A.webp',
-  '157': 'images/KDscion-p157-full sleeve top_Colorway A.webp',
-  '158': 'images/KDscion-p158-sleeveless top_Colorway A.webp',
-  '159': 'images/KDscion-p159-full sleeve shirring top_Colorway A.webp',
-  '160': 'images/KDscion-p160-sleeveless shirring top_Colorway A.webp',
-  '161': 'images/KDscion-p161-full sleeve turtle neck jacket_Colorway A.webp',
-  '162': 'images/KDscion-p162-sleeveless turtle neck jacket_Colorway A.webp',
-  '163': 'images/KDscion-p163-full sleeve turtle neck short jacket_Colorway A.webp',
-  '164': 'images/KDscion-p164-sleeveless turtle neck short jacket_Colorway A.webp',
-  '165': 'images/KDscion-p165-full sleeve wrap top_Colorway A.webp',
-  '166': 'images/KDscion-p166-sleeveless wrap top_Colorway A.webp',
-  '167': 'images/KDscion-p167-full sleeve top_Colorway A.webp',
-  '168': 'images/KDscion-p168-sleeveless top_Colorway A.webp',
-  '169': 'images/KDscion-p169-full sleeve two layer sheath dress_Colorway A.webp',
-  '170': 'images/KDscion-p170-sleeveless sheath dress_Colorway A.webp',
-  '171': 'images/KDscion-p171-shawl_Colorway A.webp',
-  '172': 'images/KDscion-p172-shawl_Colorway A.webp',
-  '173': 'images/KDscion-p173-translucent shawl_Colorway A.webp',
-  '174': 'images/KDscion-p174-translucent shawl_Colorway A.webp',
-  '175': 'images/KDscion-p175-asymmetric shift dress_Colorway A.webp',
-  '176': 'images/KDscion-p176-full sleeve Asymmetric shift dress_Colorway A.webp',
+  '1': 'images/KDscion-w1-full sleeve classic shirt_Colorway A.webp',
+  '2': 'images/KDscion-w2-sleeveless classic shirt_Colorway A.webp',
+  '3': 'images/KDscion-w3-full sleeve overall dress_Colorway A.webp',
+  '4': 'images/KDscion-w4-half sleeve overall dress_Colorway A.webp',
+  '5': 'images/KDscion-w5-Quarter sleeve overall dress_Colorway A.webp',
+  '6': 'images/KDscion-w6-Sleeveless overall dress_Colorway A.webp',
+  '7': 'images/KDscion-w7-sleeveless sheath dress_Colorway A.webp',
+  '8': 'images/KDscion-w8-full sleeve sheath dress_Colorway A.webp',
+  '9': 'images/KDscion-w9-sleeveless sheath dress_Colorway A.webp',
+  '10': 'images/KDscion-w10-sleeveless sheath dress_Colorway A.webp',
+  '11': 'images/KDscion-w11-full sleeve A-line dress_Colorway A.webp',
+  '12': 'images/KDscion-w12-sleeveless A-line dress_Colorway A.webp',
+  '13': 'images/KDscion-w13-full sleeve swift dress_Colorway A.webp',
+  '14': 'images/KDscion-w14-sleeveless swift dress_Colorway A.webp',
+  '15': 'images/KDscion-w15-full sleeve bodycon dress_Colorway A.webp',
+  '16': 'images/KDscion-w16-sleeveless bodycon dress_Colorway A.webp',
+  '17': 'images/KDscion-w17-sleeveless midi dress_Colorway A.webp',
+  '18': 'images/KDscion-w18-sleeveless maxi dress_Colorway A.webp',
+  '19': 'images/KDscion-w19-sleeveless sheath dress_Colorway A.webp',
+  '20': 'images/KDscion-w20-sleeveless A-line dress_Colorway A.webp',
+  '21': 'images/KDscion-w-l21-full sleeve Button less jacket_Colorway A.webp',
+  '22': 'images/KDscion-w22-modern shawl_Colorway A.webp',
+  '23': 'images/KDscion-w23-sleeveless bodycon dress_Colorway A.webp',
+  '24': 'images/KDscion-w-l24-full sleeve A-line dress_Colorway A.webp',
+  '25': 'images/KDscion-w-l25-sleeveless A-line dress_Colorway A.webp',
+  '28': 'images/KDscion-w28-sleeveless A-line dress_Colorway A.webp',
+  '29': 'images/KDscion-w29-full sleeve classic fit buttonup dress_Colorway A.webp',
+  '30': 'images/KDscion-w30-sleeveless classic fit buttonup dress_Colorway A.webp',
+  '31': 'images/KDscion-w31-full sleeve loose fit button up dress_Colorway A.webp',
+  '32': 'images/KDscion-w32-sleeveless loose fit button up dress_Colorway A.webp',
+  '33': 'images/KDscion-w33-Quarter shirring sleeve A-line dress_Colorway A.webp',
+  '34': 'images/KDscion-w34-sleeveless shift dress_Colorway A.webp',
+  '35': 'images/KDscion-w35-sleeveless two tone translucent shift dress_Colorway A.webp',
+  '36': 'images/KDscion-w36-sleeveless maxi dress_Colorway A.webp',
+  '37': 'images/KDscion-w37-sleeveless maxi dress_Colorway A.webp',
+  '38': 'images/KDscion-w38-sleeveless shift dress_Colorway A.webp',
+  '39': 'images/KDscion-w39-shirring sleeve shift dress_Colorway A.webp',
+  '40': 'images/KDscion-w40-sleeveless sheath dress_Colorway A.webp',
+  '41': 'images/KDscion-w-l41-full sleeve sheath dress_Colorway A.webp',
+  '42': 'images/KDscion-w-l42-sleeveless shift dress_Colorway A.webp',
+  '43': 'images/KDscion-w43-sleeveless loose fit button up dress_Colorway A.webp',
+  '44': 'images/KDscion-w44-full sleeve sheath dress_Colorway A.webp',
+  '46': 'images/KDscion-w46-full sleeve sheath dress_Colorway A.webp',
+  '47': 'images/KDscion-w47-sleeveless sheath dress_Colorway A.webp',
+  '48': 'images/KDscion-w48-quarter sleeve shift dress_Colorway A.webp',
+  '49': 'images/KDscion-w49-sleeveless shift dress_Colorway A.webp',
+  '50': 'images/KDscion-w50-quarter sleeve shift dress_Colorway A.webp',
+  '51': 'images/KDscion-w51-sleeveless shift dress_Colorway A.webp',
+  '52': 'images/KDscion-w-l52-sleeveless shift dress (designer folding)-translucent_Colorway A.webp',
+  '53': 'images/KDscion-w-l53-sleeveless shift dress-translucent_Colorway A.webp',
+  '54': 'images/KDscion-w54-full sleeve A-line dress_Colorway A.webp',
+  '55': 'images/KDscion-w55-sleeveless A-line dress_Colorway A.webp',
+  '56': 'images/KDscion-w56-full sleeve shift dress-elastic lines_Colorway A.webp',
+  '57': 'images/KDscion-w57-sleeveless shift dress-elastic lines_Colorway A.webp',
+  '58': 'images/KDscion-w58-full sleeve sheath dress_Colorway A.webp',
+  '59': 'images/KDscion-w59-sleeveless sheath dress_Colorway A.webp',
+  '60': 'images/KDscion-w-l60-full sleeve sheath dress_Colorway A.webp',
+  '61': 'images/KDscion-w-l61-sleeveless sheath dress_Colorway A.webp',
+  '62': 'images/KDscion-w-l62-full sleeve bodycon dress_Colorway A.webp',
+  '63': 'images/KDscion-w-l63-sleeveless bodycon dress_Colorway A.webp',
+  '64': 'images/KDscion-w64-full sleeve button up top_Colorway A.webp',
+  '65': 'images/KDscion-w65-sleeveless button up top_Colorway A.webp',
+  '66': 'images/KDscion-w66-full sleeve half button top_Colorway A.webp',
+  '67': 'images/KDscion-w67-sleeveless half button top_Colorway A.webp',
+  '68': 'images/KDscion-w68-full sleeve quarter button sheath dress_Colorway A.webp',
+  '69': 'images/KDscion-w69-sleeveless quarter button sheath dress_Colorway A.webp',
+  '70': 'images/KDscion-w70-full sleeve button up sheath dress_Colorway A.webp',
+  '71': 'images/KDscion-w71-sleeveless button up sheath dress_Colorway A.webp',
+  '72': 'images/KDscion-w-l72-full sleeve sheath dress_Colorway A.webp',
+  '73': 'images/KDscion-w-l73-sleeveless sheath dress_Colorway A.webp',
+  '74': 'images/KDscion-w74-full sleeve sheath dress-translucent two tone_Colorway A.webp',
+  '75': 'images/KDscion-w75-sleeveless sheath dress-translucent two tone_Colorway A.webp',
+  '76': 'images/KDscion-w-l76-full sleeve asymmetric jacket_Colorway A.webp',
+  '77': 'images/KDscion-w-l77-sleeveless asymmetric jacket_Colorway A.webp',
+  '78': 'images/KDscion-w78-full sleeve sheath dress with belt-two tone layer_Colorway A.webp',
+  '79': 'images/KDscion-w79-sleeveless sheath dress with belt-two tone layer_Colorway A.webp',
+  '81': 'images/KDscion-w-l81-full sleeve button up jacket_Colorway A.webp',
+  '82': 'images/KDscion-w-l82-sleeveless buttonup jacket_Colorway A.webp',
+  '83': 'images/KDscion-w-l83-sleeveless sheath dress_Colorway A.webp',
+  '84': 'images/KDscion-w84-shawl_Colorway A.webp',
+  '85': 'images/KDscion-w-l85-full sleeve sheath dress_Colorway A.webp',
+  '86': 'images/KDscion-w-l86-sleeveless sheath dress_Colorway A.webp',
+  '87': 'images/KDscion-w-l87-full sleeve A-line dress_Colorway A.webp',
+  '88': 'images/KDscion-w-l88-sleeveless A-line dress_Colorway A.webp',
+  '89': 'images/KDscion-w89-shawl_Colorway A.webp',
+  '90': 'images/KDscion-w90-shawl_Colorway A.webp',
+  '91': 'images/KDscion-w91-short shawl_Colorway A.webp',
+  '92': 'images/KDscion-w-l92-full sleeve asymmetric jacket_Colorway A.webp',
+  '93': 'images/KDscion-w-l93-sleeveless asymmetric jacket_Colorway A.webp',
+  '94': 'images/KDscion-w-l94-full sleeve single breasted coat_Colorway A.webp',
+  '95': 'images/KDscion-w-l95-sleeveless single breasted coat_Colorway A.webp',
+  '96': 'images/KDscion-w-l96-full sleeve single breasted coat_Colorway A.webp',
+  '97': 'images/KDscion-w-l97-sleeveless single breasted coat_Colorway A.webp',
+  '98': 'images/KDscion-w-l98-full sleeve single breasted coat_Colorway A.webp',
+  '99': 'images/KDscion-w-l99-sleeveless single breasted coat_Colorway A.webp',
+  '100': 'images/KDscion-w-l100-full sleeve single breasted long coat_Colorway A.webp',
+  '101': 'images/KDscion-w-l101-sleeveless single breasted long coat_Colorway A.webp',
+  '102': 'images/KDscion-w102-full sleeve shift dress_Colorway A.webp',
+  '103': 'images/KDscion-w103-skirt_Colorway A.webp',
+  '104': 'images/KDscion-w104-shawl_Colorway A.webp',
+  '105': 'images/KDscion-w-l105-full sleeve full zipper top_Colorway A.webp',
+  '106': 'images/KDscion-w-l106-sleeveless full zipper top_Colorway A.webp',
+  '107': 'images/KDscion-w-l107-sleeveless top_Colorway A.webp',
+  '108': 'images/KDscion-w-l108-full sleeve top_Colorway A.webp',
+  '109': 'images/KDscion-w109-half sleeve top_Colorway A.webp',
+  '110': 'images/KDscion-w110-sleeveless top_Colorway A.webp',
+  '111': 'images/KDscion-w111-half sleeve elastic shift dress_Colorway A.webp',
+  '112': 'images/KDscion-w112-sleeveless elastic shift dress_Colorway A.webp',
+  '113': 'images/KDscion-w113-sleeveless top_Colorway A.webp',
+  '114': 'images/KDscion-w114-full sleeve top_Colorway A.webp',
+  '115': 'images/KDscion-w115-sleeveless shift dress_Colorway A.webp',
+  '116': 'images/KDscion-w-l116-quarter sleeve top_Colorway A.webp',
+  '117': 'images/KDscion-w-l117-sleeveless top_Colorway A.webp',
+  '118': 'images/KDscion-w118-sleeveless shift dress_Colorway A.webp',
+  '119': 'images/KDscion-w119-full sleeve sheath dress_Colorway A.webp',
+  '120': 'images/KDscion-w120-sleeveless sheath dress_Colorway A.webp',
+  '121': 'images/KDscion-w-l121-half sleeve top_Colorway A.webp',
+  '122': 'images/KDscion-w-l122-sleeveless top_Colorway A.webp',
+  '123': 'images/KDscion-w123-sleeveless shift dress_Colorway A.webp',
+  '124': 'images/KDscion-w124-sleeveless shift dress_Colorway A.webp',
+  '125': 'images/KDscion-w-l125-full sleeve top_Colorway A.webp',
+  '126': 'images/KDscion-w126-half sleeve top_Colorway A.webp',
+  '127': 'images/KDscion-w127-half sleeve shift dress_Colorway A.webp',
+  '128': 'images/KDscion-w128-sleeveless sheath dress_Colorway A.webp',
+  '129': 'images/KDscion-w129-sleeveless top-with large side vents_Colorway A.webp',
+  '130': 'images/KDscion-w130-sleeveless cross strap bodycon dress_Colorway A.webp',
+  '131': 'images/KDscion-w-l131-full sleeve long coat_Colorway A.webp',
+  '132': 'images/KDscion-w-l132-sleeveless long coat_Colorway A.webp',
+  '133': 'images/KDscion-w-l133-sleeveless sheath dress_Colorway A.webp',
+  '134': 'images/KDscion-w134-sleeveless double layer bodycon dress_Colorway A.webp',
+  '135': 'images/KDscion-w-l135-full sleeve sheath dress_Colorway A.webp',
+  '136': 'images/KDscion-w-l136-quarter sheath dress_Colorway A.webp',
+  '137': 'images/KDscion-w137-full sleeve gown-translucent_Colorway A.webp',
+  '138': 'images/KDscion-w138-sleeveless gown-translucent_Colorway A.webp',
+  '139': 'images/KDscion-w139-full sleeve long gown-translucent_Colorway A.webp',
+  '140': 'images/KDscion-w140-sleeve less long gown-translucent_Colorway A.webp',
+  '141': 'images/KDscion-w141-sleeveless top_Colorway A.webp',
+  '142': 'images/KDscion-w142-sleeveless shift dress-elastic waist-translucent_Colorway A.webp',
+  '143': 'images/KDscion-w143-sleeveless top-elastic edge_Colorway A.webp',
+  '144': 'images/KDscion-w144-sleeveless top-elastic waist_Colorway A.webp',
+  '177': 'images/KDscion-w177-full sleeve loose shift top_Colorway A.webp',
+  '178': 'images/KDscion-w178-sleeveless loose shift top_Colorway A.webp',
+  '179': 'images/KDscion-w179-full sleeve sheath top_Colorway A.webp',
+  '180': 'images/KDscion-w180-sleeveless sheath top_Colorway A.webp',
+  '181': 'images/KDscion-w181-full sleeve sheath dress_Colorway A.webp',
+  '182': 'images/KDscion-w182-sleeveless sheath dress_Colorway A.webp',
+  '183': 'images/KDscion-w183-classic fit trouser_Colorway A.webp',
+  '184': 'images/KDscion-w184-classic fit trouser-short_Colorway A.webp',
+  '185': 'images/KDscion-w185-full sleeve top_Colorway A.webp',
+  '186': 'images/KDscion-w186-sleeveless top_Colorway A.webp',
+  '187': 'images/KDscion-w187-sleeveless asymmetric short dress_Colorway A.webp',
+  '188': 'images/KDscion-w188-sleeveless shift dress_Colorway A.webp',
+  '189': 'images/KDscion-w189-sleeveless shift dress_Colorway A.webp',
+  '190': 'images/KDscion-w190-sleeveless asymmetric shift dress_Colorway A.webp',
+  '191': 'images/KDscion-w191-sleeveless shift dress_Colorway A.webp',
+  '192': 'images/KDscion-w192-sleeveless short top_Colorway A.webp',
+  '193': 'images/KDscion-w193-full sleeve translucent shift dress - dual layer_Colorway A.webp',
+  '194': 'images/KDscion-w194-sleeveless translucent shift dress - dual layer_Colorway A.webp',
+  '195': 'images/KDscion-w195-sleeveless shirring dress_Colorway A.webp',
+  '196': 'images/KDscion-w196-sleeveless shirring dress - short_Colorway A.webp',
+  '197': 'images/KDscion-w197-full sleeve shift dress - elastic waist_Colorway A.webp',
+  '198': 'images/KDscion-w198-sleeveless shift dress - elastic waist_Colorway A.webp',
+  '199': 'images/KDscion-w199-full sleeve translucent shift dress - dual asymmetric layer_Colorway A.webp',
+  '200': 'images/KDscion-w200-sleeveless translucent shift dress - dual asymmetric layer_Colorway A.webp',
+  '145': 'images/KDscion-w-l145-full sleeve bodycon dress_Colorway A.webp',
+  '146': 'images/KDscion-w-l146-sleeveless bodycon dress_Colorway A.webp',
+  '147': 'images/KDscion-w147-full sleeve top_Colorway A.webp',
+  '148': 'images/KDscion-w148-sleeveless top_Colorway A.webp',
+  '149': 'images/KDscion-w-l149-full sleeve long coat_Colorway A.webp',
+  '150': 'images/KDscion-w-l150-sleeveless long coat_Colorway A.webp',
+  '151': 'images/KDscion-w151-full sleeve shift dress_Colorway A.webp',
+  '152': 'images/KDscion-w152-sleeveless shift dress_Colorway A.webp',
+  '153': 'images/KDscion-w153-full sleeve top_Colorway A.webp',
+  '154': 'images/KDscion-w154-sleeveless top_Colorway A.webp',
+  '155': 'images/KDscion-w-l155-full sleeve sheath dress_Colorway A.webp',
+  '156': 'images/KDscion-w-l156-sleeveless sheath dress_Colorway A.webp',
+  '157': 'images/KDscion-w-l157-full sleeve top_Colorway A.webp',
+  '158': 'images/KDscion-w-l158-sleeveless top_Colorway A.webp',
+  '159': 'images/KDscion-w-l159-full sleeve shirring top_Colorway A.webp',
+  '160': 'images/KDscion-w-l160-sleeveless shirring top_Colorway A.webp',
+  '161': 'images/KDscion-w-l161-full sleeve turtle neck jacket_Colorway A.webp',
+  '162': 'images/KDscion-w-l162-sleeveless turtle neck jacket_Colorway A.webp',
+  '163': 'images/KDscion-w-l163-full sleeve turtle neck short jacket_Colorway A.webp',
+  '164': 'images/KDscion-w-l164-sleeveless turtle neck short jacket_Colorway A.webp',
+  '165': 'images/KDscion-w-l165-full sleeve wrap top_Colorway A.webp',
+  '166': 'images/KDscion-w-l166-sleeveless wrap top_Colorway A.webp',
+  '167': 'images/KDscion-w-l167-full sleeve top_Colorway A.webp',
+  '168': 'images/KDscion-w-l168-sleeveless top_Colorway A.webp',
+  '169': 'images/KDscion-w169-full sleeve two layer sheath dress_Colorway A.webp',
+  '170': 'images/KDscion-w170-sleeveless sheath dress_Colorway A.webp',
+  '171': 'images/KDscion-w171-shawl_Colorway A.webp',
+  '172': 'images/KDscion-w172-shawl_Colorway A.webp',
+  '173': 'images/KDscion-w173-translucent shawl_Colorway A.webp',
+  '174': 'images/KDscion-w174-translucent shawl_Colorway A.webp',
+  '175': 'images/KDscion-w175-asymmetric shift dress_Colorway A.webp',
+  '176': 'images/KDscion-w176-full sleeve Asymmetric shift dress_Colorway A.webp',
   's1': 'images/KDscion-s1-long scarf_Colorway A.webp',
   's2': 'images/KDscion-s2-short scarf_Colorway A.webp',
   's3': 'images/KDscion-s3-full shawl_Colorway A.webp',
-  '83-s3': 'images/KDscion-p83 & s3 - sleeveless sheath dress with full shawl_Colorway A.webp',
+  '83-s3': 'images/KDscion-w-l83 & s3 - sleeveless sheath dress with full shawl_Colorway A.webp',
   'l1': 'images/KDscion-L1-Premium leather ipad or macbook envelope cover_Default Colorway.webp',
 };
 
@@ -2985,7 +3064,19 @@ const ALL_DESIGNS = [
     }
 
     // ── Render one order card ─────────────────────────────────────────────────
-    function renderOrderCard(order, meas) {
+    // Order fields (notes, names, address, selections) are typed by customers, so the
+    // whole order is HTML-escaped before it is rendered. Only the mailto link uses raw text.
+    function escDeep(v) {
+      if (typeof v === 'string') return v.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      if (Array.isArray(v)) return v.map(escDeep);
+      if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, escDeep(x)]));
+      return v;
+    }
+
+    function renderOrderCard(rawOrder, rawMeas) {
+      const mailtoHref = buildMailto(rawOrder, rawOrder.items ?? rawOrder.cartItems ?? [], rawMeas);
+      const order   = escDeep(rawOrder);
+      const meas    = escDeep(rawMeas);
       const items   = order.items ?? order.cartItems ?? [];
       const total   = items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
       const orderId = order.id ?? '—';
@@ -3025,7 +3116,7 @@ const ALL_DESIGNS = [
                     <p class="df-name">${sku && getProductUrl(sku)
                         ? `<a href="${getProductUrl(sku)}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid #ccc;">${name}</a>`
                         : name}</p>
-                    ${sku ? `<div class="df-row"><span class="df-key">Ref</span><span class="df-val">${sku}</span></div>` : ''}
+                    ${sku ? `<div class="df-row"><span class="df-key">Ref</span><span class="df-val">${skuCode(sku) ? `${skuCode(sku)} · ` : ''}${sku}</span></div>` : ''}
                     ${(item.quantity ?? 1) > 1 ? `<div class="df-row"><span class="df-key">Qty</span><span class="df-val plain">${item.quantity}</span></div>` : ''}
                     <div class="df-row" style="margin-top:0.5rem">
                       <span class="df-key">Price</span><span class="df-val plain">${fmt(price)}</span>
@@ -3066,8 +3157,6 @@ const ALL_DESIGNS = [
         : '';
 
       // Mailto
-      const mailtoHref = buildMailto(order, items, meas);
-
       const card = document.createElement('div');
       card.className = 'order-card';
       card.innerHTML = `
@@ -3218,7 +3307,8 @@ const ALL_DESIGNS = [
         });
       } else {
         fFB.onValue(fFB.ref(fDb,'queries'), snap => {
-          fAllQueries = snap.val() || {};
+          // Skip crafted query ids: they are written into onclick handlers below.
+          fAllQueries = Object.fromEntries(Object.entries(snap.val() || {}).filter(([id]) => /^[A-Za-z0-9_-]{1,40}$/.test(id)));
           renderForumList();
         });
       }
@@ -3484,14 +3574,22 @@ const ALL_DESIGNS = [
         </div>`).join('');
 
       // Top designs
-      const topDesigns = (d.topPages || [])
-        .filter(p => p.page_url && p.page_url.match(/^\/p\d+/))
+      // Old /p60.html views and new /w-l60.html views are the same design: counted together.
+      const designViews = new Map();
+      (d.topPages || []).forEach(p => {
+        const m = decodeURIComponent(p.page_url || '').match(/^\/(?:w-l|w|p)(\d+)(-s\d+)?(\.html| design variations)/i);
+        if (!m) return;
+        const label = designCode(m[1]).toUpperCase() + (m[2] ? ' & ' + m[2].slice(1).toUpperCase() : '')
+                    + (m[3] === '.html' ? '' : ' variations');
+        designViews.set(label, (designViews.get(label) || 0) + Number(p.views || 0));
+      });
+      const topDesigns = [...designViews].sort((a, b) => b[1] - a[1])
         .slice(0, 8)
-        .map((p,i) => `
+        .map(([label, views], i) => `
           <tr>
             <td style="color:#aaa;font-size:var(--ds-sm)">${i+1}</td>
-            <td style="font-family:'Courier New',monospace;font-size:var(--ds-sm)">${p.page_url}</td>
-            <td>${fmtNum(p.views)}</td>
+            <td style="font-family:'Courier New',monospace;font-size:var(--ds-sm)">${label}</td>
+            <td>${fmtNum(views)}</td>
           </tr>`).join('');
 
       // Top fabrics

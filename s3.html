@@ -1031,7 +1031,7 @@
         }
 
         /* ── The scarf alone takes the fabric ──
-           The model shows the scarf worn over the p83 sheath dress; the dress keeps
+           The model shows the scarf worn over the w-l83 sheath dress; the dress keeps
            its own cloth. The scarf is the largest cloth piece by far (the dress
            pieces are a few thousand vertices; the scarf ten thousand or more). */
         const garmentNodes = new Set();
@@ -1359,7 +1359,7 @@
     import { getProductSnapConfig, getAllFabricStock, pickActiveFabricId } from './js/fabric-stock.js';
 
     (async () => {
-        const slug = decodeURIComponent(window.location.pathname).match(/\/?(p\d+)\.html$/i)?.[1]?.toLowerCase();
+        const slug = decodeURIComponent(window.location.pathname).match(/\/?(?:w-l|w|p)(\d+)\.html$/i)?.[1]?.replace(/^/, 'p');   // Firebase keeps the p-number key
         if (!slug) return;
 
         let cfg, stockMap;

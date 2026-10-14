@@ -1096,7 +1096,9 @@ function startListener() {
     });
   } else {
     FB.onValue(FB.ref(db,'queries'), snap => {
-      allQueries = snap.val() || {};
+      // Only normal generated ids (k<time><rand> / push keys) are shown: anyone can
+      // create a query, and a crafted id would otherwise be written into the page.
+      allQueries = Object.fromEntries(Object.entries(snap.val() || {}).filter(([id]) => /^[A-Za-z0-9_-]{1,40}$/.test(id)));
       renderList();
     });
   }

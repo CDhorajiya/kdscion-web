@@ -7,22 +7,34 @@
        same ?leather and filters every zone),
      - the panel reads "Select Leather", the breadcrumb leads back to the portfolio,
      - the House's maker's mark is set under the viewer (js/leather-mark.js),
-     - the piece is shown in Cognac Calf (as in the gallery), not its fabric colorway,
-     - the gallery's skin tone comes along (&skin=medium|tan|dark),
-     - on a design-variations page every design of the set opens in leather too.
+     - the piece is shown in its family's leather (LEATHER_LOOK in js/design-codes.js),
+       the same one its gallery card wears, not its fabric colorway,
+     - on a design-variations page every card shows its design in that leather
+       (images/leather/KDscion-w-lN.webp) and opens in leather too.
 
    Use: <script src="js/leather-mode.js"></script> in the head of every w-l page
    (product, design variations, duo). */
 (function () {
     if (!new URLSearchParams(location.search).has('leather')) return;
     var GALLERY = 'leather-jackets-coats-woman.html';
-    var DEFAULT_LEATHER = 'leather-plain-2';   // Cognac Calf (the gallery's snapshots wear it too)
+    var FALLBACK_LEATHER = 'leather-plain-2';   // Cognac Calf
     document.documentElement.classList.add('kd-leather');
 
+    // The family's leather, from the one list the gallery and the dashboard use too.
+    var codes = import(new URL('js/design-codes.js', document.baseURI).href).catch(function () { return null; });
+    var pageNumber = +((/w-l(\d+)/.exec(decodeURIComponent(location.pathname)) || [])[1]);
+
     function ready() {
-        // Design-variations page: keep the leather view on every design of the set.
+        // Design-variations page: every card in leather, and every link stays in the leather view.
         document.querySelectorAll('.product-item[data-product-url]').forEach(function (item) {
-            if (!/[?&]leather\b/.test(item.dataset.productUrl)) item.dataset.productUrl += location.search;   // ?leather (&skin=…)
+            var url = item.dataset.productUrl;
+            if (!/[?&]leather\b/.test(url)) item.dataset.productUrl = url + '?leather';
+            var n = (/w-l(\d+)\.html/.exec(url) || [])[1];
+            var img = item.querySelector('.img-wrap img');
+            if (n && img) {
+                img.src = 'images/leather/KDscion-w-l' + n + '.webp';
+                img.style.setProperty('--rc', '0%');       // the leather shots are centred
+            }
         });
 
         var home = document.querySelector('.product-home-link');
@@ -33,18 +45,13 @@
             if (t.textContent.trim() === 'Select Fabric') t.textContent = 'Select Leather';
         });
 
-        // The gallery's skin tone comes along (&skin=medium|tan|dark); it is set once the
-        // model is in (below), as the page's tone buttons need it.
-        var skin = new URLSearchParams(location.search).get('skin');
-        if (!/^(medium|tan|dark)$/.test(skin || '')) skin = null;
-
         var mark = document.createElement('script');
         mark.src = 'js/leather-mark.js';
         document.head.appendChild(mark);
 
-        // Dress the piece in Cognac once the swatches and the 3D model are both in: the
-        // page hides #viewer-loading when its model has landed. A click before that would
-        // mark the swatch but leave the garment in its fabric (slow connections).
+        // Dress the piece in its leather once the swatches and the 3D model are both in:
+        // the page hides #viewer-loading when its model has landed. A click before that
+        // would mark the swatch but leave the garment in its fabric (slow connections).
         var start = Date.now(), userPicked = false;
         document.addEventListener('pointerdown', function (e) {        // the customer chose first: leave it
             if (e.target.closest && e.target.closest('.swatch-card')) userPicked = true;
@@ -64,9 +71,8 @@
             })();
         }
 
-        // The customer's own tone: a click before the model is in is ignored by the page,
-        // so it is applied again once the model lands; and it always wins over the
-        // gallery's tone (&skin=), which is only the starting point.
+        // A skin tone clicked before the model is in is ignored by the page: it is
+        // applied again once the model lands.
         var earlyTone = null;
         document.addEventListener('click', function (e) {
             var b = e.isTrusted && e.target.closest && e.target.closest('.skin-btn');
@@ -77,30 +83,33 @@
             var l = document.getElementById('viewer-loading');
             return !l || l.style.display === 'none';
         }
-        (function wait() {
-            var ready = document.querySelector('.fabric-panel .swatch-card') && modelIn();
-            if (!ready) { if (Date.now() - start < 60000) setTimeout(wait, 200); return; }
-            // Twice: some pages sort the garment into its zones a moment after the model
-            // shows, and a pick before that marks the swatch without dressing anything.
-            [600, 3500].forEach(function (ms) {
-                setTimeout(function () {
-                    var tone = earlyTone !== null ? earlyTone : skin;   // the customer's own pick wins
-                    if (tone !== null) {                      // the tone, now that the model is in
-                        var t = document.querySelector('.skin-btn[data-skin="' + tone + '"]');
-                        if (t) t.click();
-                    }
-                    if (userPicked) return;
-                    // Look it up again: live settings may have redrawn the list since.
-                    // Cognac shows the construction best; the first leather if it is hidden.
-                    var swatch = document.querySelector('.fabric-panel .swatch-card[data-fabric-id="' + DEFAULT_LEATHER + '"]')
-                              || document.querySelector('.fabric-panel .swatch-card');
-                    if (swatch) {
-                        swatch.click();
-                        closePreview();
-                    }
-                }, ms);
-            });
-        })();
+        codes.then(function (m) {
+            var leather = (m && pageNumber) ? m.leatherFor(pageNumber) : FALLBACK_LEATHER;
+            (function wait() {
+                var ready = document.querySelector('.fabric-panel .swatch-card') && modelIn();
+                if (!ready) { if (Date.now() - start < 60000) setTimeout(wait, 200); return; }
+                // Twice: some pages sort the garment into its zones a moment after the model
+                // shows, and a pick before that marks the swatch without dressing anything.
+                [600, 3500].forEach(function (ms) {
+                    setTimeout(function () {
+                        if (earlyTone !== null) {
+                            var t = document.querySelector('.skin-btn[data-skin="' + earlyTone + '"]');
+                            if (t) t.click();
+                        }
+                        if (userPicked) return;
+                        // Look it up again: live settings may have redrawn the list since.
+                        // The family's leather; Cognac, or the first leather, if it is hidden.
+                        var swatch = document.querySelector('.fabric-panel .swatch-card[data-fabric-id="' + leather + '"]')
+                                  || document.querySelector('.fabric-panel .swatch-card[data-fabric-id="' + FALLBACK_LEATHER + '"]')
+                                  || document.querySelector('.fabric-panel .swatch-card');
+                        if (swatch) {
+                            swatch.click();
+                            closePreview();
+                        }
+                    }, ms);
+                });
+            })();
+        });
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);
     else ready();

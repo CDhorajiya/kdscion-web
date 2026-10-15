@@ -318,6 +318,8 @@
     import { getProductSnapConfig, subscribeFabricStock, pickPoolSnap } from './js/fabric-stock.js';
 
     (async () => {
+        // In the Leather Portfolio view the cards show leather (js/leather-mode.js), not stock snaps.
+        if (new URLSearchParams(location.search).has('leather')) return;
         const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
 
         document.querySelectorAll('.img-wrap img').forEach((img) => {

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Leather gallery snapshots: raw 3D canvas PNGs → pool-style WebPs.
+"""Leather snapshots: raw 3D canvas PNGs → pool-style WebPs.
 
     python3 tools/normalize_leather_snaps.py RAW_DIR 19 21 …   (called by render_leather_snaps.mjs)
 
-Each raw shot (w-lN-<tone>.png, on the viewer's flat #e8e8e8) is keyed out by a flood
+Each raw shot (w-lN.png, on the viewer's flat #e8e8e8) is keyed out by a flood
 fill from the border (so a pale panel inside the garment survives), cropped, given a
 soft contact shadow under the feet, and set at 1735 px tall, centred, on the pool's
-transparent 1679×2042 canvas: images/leather/KDscion-w-lN-<tone>.webp.
+transparent 1679×2042 canvas: images/leather/KDscion-w-lN.webp.
 """
 import sys
 from pathlib import Path
@@ -17,7 +17,6 @@ from collections import deque
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'images/leather'
 CANVAS, TARGET_H = (1679, 2042), 1735
-TONES = ('fair', 'medium', 'tan', 'dark')
 
 
 def key_out(img):
@@ -78,13 +77,12 @@ def main():
     raw = Path(sys.argv[1])
     OUT.mkdir(exist_ok=True)
     for n in sys.argv[2:]:
-        for tone in TONES:
-            src = raw / f'w-l{n}-{tone}.png'
-            if not src.exists():
-                print('  missing', src.name); continue
-            dst = OUT / f'KDscion-w-l{n}-{tone}.webp'
-            place(key_out(Image.open(src))).save(dst, 'WEBP', quality=86, method=4)
-            print('  wrote', dst.relative_to(ROOT))
+        src = raw / f'w-l{n}.png'
+        if not src.exists():
+            print('  missing', src.name); continue
+        dst = OUT / f'KDscion-w-l{n}.webp'
+        place(key_out(Image.open(src))).save(dst, 'WEBP', quality=86, method=4)
+        print('  wrote', dst.relative_to(ROOT))
 
 
 if __name__ == '__main__':

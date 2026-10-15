@@ -6,13 +6,16 @@
 
 A w/l design comes in fabric and in leather. Every step this does:
   1. js/design-codes.js     the number joins WL and its card joins LEATHER_JACKETS_COATS
+                            (a new family takes the next leather of the rotation; set
+                            LEATHER_LOOK there to choose one)
                             (the admin dashboard and checkout read both from here)
   2. git mv                 wN.html, "wN design variations.html", wN-sK.html (duos),
                             3d/ and images/ KDscion-wN-… / KD-scion-wN-…  → w-lN
   3. text, every page       wN → w-lN, WN → W-LN, N° WN → N° W-LN (galleries, pool,
                             variation pages, admin image map, sitemap …)
   4. leather view           <script src="js/leather-mode.js"> in the head of each w-l page
-  5. Jackets / Coats        snapshots in Cognac leather for each skin tone (tools/render_leather_snaps.mjs),
+  5. Jackets / Coats        a leather snapshot of each design in its family's leather
+                            (LEATHER_LOOK in js/design-codes.js; tools/render_leather_snaps.mjs),
                             leather-jackets-coats-woman.html rebuilt from the pool's cards,
                             every link with ?leather (Bespoke Boutique › Women ›
                             Premium European leather portfolio › Jackets / Coats)
@@ -146,9 +149,8 @@ def main():
                           '<script src="js/mobile-refresh.js"></script>\n    ' + tag, 1)
             p.write_text(t, encoding='utf-8')
 
-    # 5. leather snapshots (one per skin tone) for the new cards, then the Jackets / Coats gallery
-    firsts = [str(c[0]) for c in cards if set(c) & new]
-    if subprocess.run(['node', str(ROOT / 'tools/render_leather_snaps.mjs'), *firsts], cwd=ROOT).returncode:
+    # 5. leather snapshots for every new design (gallery card + variation pages), then the gallery
+    if subprocess.run(['node', str(ROOT / 'tools/render_leather_snaps.mjs'), *map(str, sorted(new))], cwd=ROOT).returncode:
         print('  some leather snapshots failed: those cards keep their pool image; re-run tools/render_leather_snaps.mjs')
     rebuild_gallery(cards)
 
@@ -179,10 +181,10 @@ def rebuild_gallery(cards):
             sys.exit(f'no pool card for {url}: add it to the pool first')
         card = block(pool, pool.rindex('<div class="product-item"', 0, i))
         card = card.replace(f'data-product-url="{url}"', f'data-product-url="{url}?leather"')
-        # the card wears its leather snapshot (per skin tone, swapped by the page) when there is one
-        if (ROOT / f'images/leather/KDscion-w-l{c[0]}-fair.webp').exists():
-            card = re.sub(r'<img src="images/[^"]+" style="--rc:[^"]*"',
-                          f'<img src="images/leather/KDscion-w-l{c[0]}-fair.webp" style="--rc:0%" data-leather="{c[0]}"', card, count=1)
+        # the card wears its leather snapshot (the family's leather, js/design-codes.js) when there is one
+        if (ROOT / f'images/leather/KDscion-w-l{c[0]}.webp').exists():
+            card = re.sub(r'<img src="images/[^"]+" style="--rc:[^"]*"(?: data-leather="\d+")?',
+                          f'<img src="images/leather/KDscion-w-l{c[0]}.webp" style="--rc:0%"', card, count=1)
         html.append(card)
     cols = [[], [], []]
     for i, card in enumerate(html):

@@ -156,36 +156,34 @@
             .navigation ul li ul.dropdown li a { font-size: 1.3rem; letter-spacing: 1.5px; }
         }
 
-        /* ── Women › Premium European leather portfolio: a second dropdown ──
-           A click on the name opens a small panel under it with the portfolio's
-           categories (Jackets / Coats, Accessories); a click elsewhere closes it. */
-        .navigation ul li ul.dropdown li.leather-sub { position: relative; }
-        .navigation ul li ul.dropdown li.leather-sub > a span {
-            display: inline-block; font-size: 0.8em; letter-spacing: 0; transition: transform 0.2s ease;
+        /* ── Women › Premium European leather portfolio: a full panel of its own ──
+           A click on the name swaps the Women panel for the portfolio's own panel,
+           the same frosted full-width dropdown as Men, Women, Boy and Girl: its
+           categories (Jackets / Coats, Accessories) and a way back to Women. Leaving
+           the menu puts Women's own panel back for next time. */
+        .navigation ul > li:not(.leather-view) > ul.dropdown.leather-dropdown { display: none !important; }
+        .navigation ul > li.leather-view > ul.dropdown:not(.leather-dropdown) { display: none !important; }
+        .navigation ul > li.leather-view > ul.dropdown.leather-dropdown {
+            display: grid !important;
+            animation: dropFade 0.25s ease forwards;
         }
-        .navigation ul li ul.dropdown li.leather-sub.is-open > a { color: #000; }
-        .navigation ul li ul.dropdown li.leather-sub.is-open > a span { transform: rotate(180deg); }
-        .navigation ul li ul.dropdown .leather-sub__menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 1.5rem;
-            min-width: 24rem;
-            margin: 0;
-            padding: 0.6rem 0;
-            list-style: none;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-top: 1px solid rgba(128, 0, 0, 0.35);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-            z-index: 1000;
+        .navigation ul li ul.dropdown.leather-dropdown { align-content: start; }
+        .navigation ul li ul.dropdown li.leather-dropdown__title {
+            grid-column: 1 / -1;
+            padding: 0.4rem 3rem 1rem;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.4rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgb(128, 0, 0);
+            border-bottom: 1px solid rgba(128, 0, 0, 0.18);
+            margin-bottom: 0.6rem;
         }
-        .navigation ul li ul.dropdown li.leather-sub.is-open > .leather-sub__menu {
-            display: block;
-            animation: dropFade 0.2s ease forwards;
+        .navigation ul li ul.dropdown li a.leather-panel-back em { color: rgba(0, 0, 0, 0.5); }
+        .navigation ul li ul.dropdown li a.leather-panel-back:hover em { color: #000; }
+        @media (min-width: 769px) and (max-width: 1699px) {
+            .navigation ul li ul.dropdown li.leather-dropdown__title { padding: 0.4rem 1.2rem 1rem; letter-spacing: 4px; }
         }
-        .navigation ul li ul.dropdown .leather-sub__menu li a { white-space: nowrap; }
 
         /* House Recommendations special style */
         .navigation ul li ul.dropdown li a em {
@@ -376,9 +374,8 @@
             }
             .bb-acc-body a:last-child { color: rgb(6,70,6); font-size: 1.05rem; letter-spacing: 2.5px; border-bottom: none; }
 
-            /* Women › Premium European Leather Portfolio: a nested accordion */
-            .bb-sub { width: 100%; border-bottom: 1px solid rgba(0,0,0,0.1); }
-            .bb-sub-hdr {
+            /* Women › Premium European Leather Portfolio: its own list, in place of Women's */
+            .bb-leather-open, .bb-leather-back {
                 font-family: "Times New Roman", Times, serif;
                 font-size: 1.05rem;
                 letter-spacing: 2.5px;
@@ -386,25 +383,28 @@
                 color: rgba(0,0,0,0.65);
                 background: none;
                 border: none;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
                 cursor: pointer;
                 width: 100%;
                 padding: 0.7rem 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 0.5rem;
             }
-            .bb-sub.open .bb-acc-arrow { transform: rotate(180deg); }
-            .bb-sub-body { display: none; flex-direction: column; width: 100%; padding-bottom: 0.4rem; }
-            .bb-sub.open .bb-sub-body { display: flex; }
-            .bb-acc-body .bb-sub-body a,
-            .bb-acc-body .bb-sub-body a:last-child {
+            .bb-leather { display: none; flex-direction: column; align-items: center; width: 100%; }
+            .bb-acc.leather-view .bb-acc-body > :not(.bb-leather) { display: none; }
+            .bb-acc.leather-view .bb-leather { display: flex; }
+            .bb-leather__title {
+                margin: 0 0 0.3rem;
+                padding-bottom: 0.7rem;
+                width: 100%;
+                text-align: center;
+                font-family: "Times New Roman", Times, serif;
+                font-size: 1.05rem;
+                letter-spacing: 3px;
+                text-transform: uppercase;
                 color: rgb(128,0,0);
-                font-size: 1rem;
-                letter-spacing: 2px;
-                border-bottom: none;
-                padding: 0.55rem 0;
+                border-bottom: 1px solid rgba(128,0,0,0.18);
             }
+            .bb-acc-body .bb-leather a { color: rgba(0,0,0,0.65); border-bottom: 1px solid rgba(0,0,0,0.1); }
+            .bb-leather-back { color: rgba(0,0,0,0.45); border-bottom: none; font-style: italic; }
 
             /* Family photo: cover fills screen, position shifted to keep full family in frame */
             .family_shot {
@@ -509,15 +509,16 @@
                 <li><a href="scarves-woman.html" class="">Scarves</a></li>
                 <li><a href="" class="">Gloves</a></li>
                 <li><a href="" class="">Belts</a></li>
-                <li class="leather-sub">
-                    <a href="#" class="leather-sub__toggle" aria-expanded="false">Premium European leather portfolio <span aria-hidden="true">▾</span></a>
-                    <ul class="leather-sub__menu">
-                        <li><a href="leather-jackets-coats-woman.html">Jackets / Coats</a></li>
-                        <li><a href="leather-accessories-woman.html">Accessories</a></li>
-                    </ul>
-                </li>
+                <li><a href="#" class="leather-panel-open" aria-haspopup="true" aria-expanded="false">Premium European leather portfolio <span aria-hidden="true">›</span></a></li>
                 <li><a href="" class=""><em>House Recommendations</em></a></li>
                 <li><a href="pool-of-designs-woman.html" class="">Pool of Designs - WOMEN</a></li>
+          </ul>
+          <!-- Women › Premium European leather portfolio: a full panel of its own, in place of Women's -->
+          <ul class="dropdown leather-dropdown" aria-label="Premium European leather portfolio">
+                <li class="leather-dropdown__title">Premium European leather portfolio</li>
+                <li><a href="leather-jackets-coats-woman.html">Jackets / Coats</a></li>
+                <li><a href="leather-accessories-woman.html">Accessories</a></li>
+                <li><a href="#" class="leather-panel-back"><em>‹ Back to Women</em></a></li>
           </ul></li>
 
         <li><a href="" class=""><h4>BOY</h4></a>
@@ -662,12 +663,13 @@
                     <a href="scarves-woman.html">Scarves</a>
                     <a href="">Gloves</a>
                     <a href="">Belts</a>
-                    <div class="bb-sub">
-                        <button class="bb-sub-hdr" aria-expanded="false">Premium European Leather Portfolio <span class="bb-acc-arrow">▾</span></button>
-                        <div class="bb-sub-body">
-                            <a href="leather-jackets-coats-woman.html">Jackets / Coats</a>
-                            <a href="leather-accessories-woman.html">Accessories</a>
-                        </div>
+                    <button class="bb-leather-open" type="button">Premium European Leather Portfolio ›</button>
+                    <!-- shown in place of the Women list once the portfolio is chosen -->
+                    <div class="bb-leather">
+                        <p class="bb-leather__title">Premium European Leather Portfolio</p>
+                        <a href="leather-jackets-coats-woman.html">Jackets / Coats</a>
+                        <a href="leather-accessories-woman.html">Accessories</a>
+                        <button class="bb-leather-back" type="button">‹ Back to Women</button>
                     </div>
                     <a href="pool-of-designs-woman.html">Pool of Designs — Women</a>
                 </div>
@@ -759,29 +761,38 @@
             bbClose.addEventListener('click', () => bbPanel.classList.remove('open'));
         }
 
-        // Women › Premium European leather portfolio: click opens its second dropdown
-        document.querySelectorAll('.leather-sub__toggle').forEach(toggle => {
-            const item = toggle.closest('.leather-sub');
-            toggle.addEventListener('click', e => {
+        // Women › Premium European leather portfolio: a click swaps the Women panel for the
+        // portfolio's own full panel; "Back to Women", or leaving the menu, puts Women back.
+        document.querySelectorAll('.leather-panel-open').forEach(link => {
+            const item = link.closest('.navigation > ul > li');
+            const womenPanel = link.closest('ul.dropdown');
+            const leatherPanel = item.querySelector('ul.leather-dropdown');
+            link.addEventListener('click', e => {
                 e.preventDefault();
-                const open = item.classList.toggle('is-open');
-                toggle.setAttribute('aria-expanded', open);
+                // Same size as the Women panel it replaces: a full panel, and the pointer
+                // (still where the link was) stays inside it, so the menu stays open.
+                leatherPanel.style.minHeight = womenPanel.offsetHeight + 'px';
+                item.classList.add('leather-view');
+                link.setAttribute('aria-expanded', true);
             });
-            document.addEventListener('click', e => {
-                if (!item.contains(e.target)) { item.classList.remove('is-open'); toggle.setAttribute('aria-expanded', false); }
+            item.querySelector('.leather-panel-back')?.addEventListener('click', e => {
+                e.preventDefault();
+                item.classList.remove('leather-view');
+                link.setAttribute('aria-expanded', false);
             });
-            // Closing the Women panel closes it too
-            item.closest('.navigation ul > li:not(.leather-sub)')?.addEventListener('mouseleave', () => {
-                setTimeout(() => { if (!item.closest('li.open')) item.classList.remove('is-open'); }, 250);
+            item.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!item.classList.contains('open')) { item.classList.remove('leather-view'); link.setAttribute('aria-expanded', false); }
+                }, 250);
             });
         });
 
         // The same on phones, inside the Women accordion
-        document.querySelectorAll('.bb-sub-hdr').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const sub = btn.closest('.bb-sub');
-                btn.setAttribute('aria-expanded', sub.classList.toggle('open'));
-            });
+        document.querySelectorAll('.bb-leather-open').forEach(btn => {
+            const acc = btn.closest('.bb-acc');
+            btn.addEventListener('click', () => acc.classList.add('leather-view'));
+            acc.querySelector('.bb-leather-back')?.addEventListener('click', () => acc.classList.remove('leather-view'));
+            acc.querySelector('.bb-acc-hdr').addEventListener('click', () => acc.classList.remove('leather-view'));
         });
 
         // Accordion categories

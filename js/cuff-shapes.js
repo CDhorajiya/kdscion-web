@@ -1,8 +1,7 @@
 /* cuff-shapes.js — the three shirt cuffs as one shared geometry.
 
-   Used live by js/cuff-studio.js (the drawn panel) and at build time by
-   tools/render_cuff_images.mjs (the image panel's renders), so the drawing and
-   the image of a cuff always agree.
+   Drawn by tools/render_cuff_images.mjs into the cuff images that
+   js/cuff-studio.js shows (and the names and notes come from CUFFS below).
 
    The board is 240 × 240: the end of a sleeve hanging straight down, seen from
    the outside, with its tower placket, two pleats and the cuff below. A cuff is

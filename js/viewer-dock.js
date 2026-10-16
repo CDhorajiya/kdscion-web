@@ -33,13 +33,15 @@ html.kd-dock-on .viewer-panel .showcase {
     border: 0 !important; background: none !important; box-shadow: none !important;
     -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
 }
+html.kd-dock-on .viewer-panel .showcase button { font-size: 1.2rem !important; letter-spacing: 2.4px !important; }
+html.kd-dock-on .viewer-panel .showcase button:not(.showcase__turn) { max-width: 16rem !important; }
 .kd-dock .kd-rule { width: 1px; height: 1.15rem; background: rgba(0,0,0,.14); flex: none; }
 html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn {
     position: static !important; inset: auto !important; transform: none !important; width: auto !important;
     margin: 0 !important; display: inline-flex !important; align-items: center; gap: .5rem;
     padding: .42rem .95rem !important; border: 0 !important; border-radius: 999px !important;
     background: transparent !important; color: #777 !important; box-shadow: none !important;
-    font-family: "Times New Roman", serif !important; font-size: 1rem !important; letter-spacing: 2px !important;
+    font-family: "Times New Roman", serif !important; font-size: 1.2rem !important; letter-spacing: 2.4px !important;
     text-transform: uppercase; white-space: nowrap; line-height: 1.2; cursor: pointer;
     transition: background .25s, color .25s;
 }

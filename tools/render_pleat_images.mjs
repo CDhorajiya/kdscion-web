@@ -169,7 +169,7 @@ function svg(id) {
   <path d="M120,20.2 L120,${W - 2.9}" stroke="#7a7266" stroke-width=".45"/>
   <path d="M120.7,20.4 L120.7,${W - 3}" stroke="#3b3227" stroke-width="1.2" opacity=".15" filter="url(#b06)"/>
   <!-- belt loops -->
-  ${[74, 99, mx(99), mx(74)].map(loop).join('')}
+  ${[74, mx(74)].map(loop).join('')}
 </svg>`;
 }
 

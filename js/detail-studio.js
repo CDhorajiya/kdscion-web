@@ -12,8 +12,10 @@
    Each detail is a small module that calls createDetailStudio() — see
    js/cuff-studio.js and js/pleat-studio.js. The choice is kept per SKU in
    localStorage ("kd.<key>.<sku>"), published as window.KD_DESIGN_DETAILS[key]
-   plus a 'kd:<key>' event, and written into "kd.designDetails.<sku>" when the
-   piece is added to the collection. */
+   plus a 'kd:<key>' event, and written into "kd.designDetails.<sku>"
+   (js/design-details.js), which checkout puts into the order's note. */
+
+import { saveDetail } from './design-details.js';
 
 const css = `
 .design-detail-btn {
@@ -207,6 +209,7 @@ export function createDetailStudio(o) {
         if (id === chosen) return;
         chosen = id;
         try { localStorage.setItem(STORE, id); } catch (e) {}
+        saveDetail(sku, o.key, id, items.find(x => x.id === id).full);   // travels to the order (js/design-details.js)
         showImage(id);
         paint();
         document.dispatchEvent(new CustomEvent(`kd:${o.key}`, { detail: { sku, [o.key]: id } }));
@@ -254,14 +257,9 @@ export function createDetailStudio(o) {
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 
-    // the choice travels with the piece when it is added
+    // the choice travels with the piece when it is added — the as-cut one too
     document.getElementById('cfg-add-btn')?.addEventListener('click', () => {
-        const i = items.find(x => x.id === chosen);
-        try {
-            const key = `kd.designDetails.${sku}`;
-            const prev = JSON.parse(localStorage.getItem(key) || '{}');
-            localStorage.setItem(key, JSON.stringify({ ...prev, [o.key]: i.id, [`${o.key}Name`]: i.full, at: Date.now() }));
-        } catch (e) {}
+        saveDetail(sku, o.key, chosen, items.find(x => x.id === chosen).full);
     });
 
     paint(true);

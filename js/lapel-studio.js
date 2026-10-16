@@ -14,8 +14,11 @@
        <script type="module" src="js/lapel-studio.js?default=shawl"></script>
    default = the lapel the GLB is cut with (notch | peak | shawl | collarless |
    contrast | slim). The choice is kept per SKU in localStorage
-   ("kd.lapel.<sku>") and published as window.KD_DESIGN_DETAILS.lapel plus a
-   'kd:lapel' event, for the order flow to pick up. */
+   ("kd.lapel.<sku>"), published as window.KD_DESIGN_DETAILS.lapel plus a
+   'kd:lapel' event, and written into "kd.designDetails.<sku>"
+   (js/design-details.js), which checkout puts into the order's note. */
+
+import { saveDetail } from './design-details.js';
 
 const params = new URL(import.meta.url).searchParams;
 const AS_CUT = params.get('default') || 'notch';
@@ -479,6 +482,7 @@ function build() {
         if (id === chosen) return;
         chosen = id;
         try { localStorage.setItem(STORE, id); } catch (e) {}
+        saveDetail(sku, 'lapel', id, LAPELS.find(x => x.id === id).full);   // travels to the order (js/design-details.js)
         morphTo(SHAPES[id]);
         paintChoice();
         document.dispatchEvent(new CustomEvent('kd:lapel', { detail: { sku, lapel: id } }));
@@ -525,10 +529,9 @@ function build() {
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && glass.classList.contains('open')) close(); });
 
-    // the chosen lapel travels with the piece when it is added
+    // the chosen lapel travels with the piece when it is added — the as-cut one too
     document.getElementById('cfg-add-btn')?.addEventListener('click', () => {
-        const l = LAPELS.find(x => x.id === chosen);
-        try { localStorage.setItem(`kd.designDetails.${sku}`, JSON.stringify({ lapel: l.id, lapelName: l.full, at: Date.now() })); } catch (e) {}
+        saveDetail(sku, 'lapel', chosen, LAPELS.find(x => x.id === chosen).full);
     });
 
     paintOccasion();

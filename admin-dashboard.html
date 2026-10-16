@@ -1105,6 +1105,7 @@
     // ─────────────────────────────────────────────────────────────────────────
 
     import { getOrders, getMeasurements, isLoggedIn } from './js/api.js';
+    import { splitNotes } from './js/design-details.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { getAllPrices, savePrices } from './js/prices.js';
     import { FABRIC_CATALOG, TWOTONE_CATALOG, DRAPE_TYPES, TYPE_MATERIAL_DEFAULTS, loadFabricOverrides, saveFabricOverrides, startFabricSettingsSync, getMergedCatalog, getMergedTwotoneCatalog, zoneTypeKey, zoneCollKey } from './js/fabrics.js';
@@ -3085,6 +3086,8 @@ const ALL_DESIGNS = [
       const order   = escDeep(rawOrder);
       const meas    = escDeep(rawMeas);
       const items   = order.items ?? order.cartItems ?? [];
+      // the note's design-details block (js/design-details.js): per piece, and the customer's words apart
+      const noteParts = splitNotes(order.notes);
       const total   = items.reduce((s, i) => s + Number(i.unitPrice ?? 0) * (i.quantity ?? 1), 0);
       const orderId = order.id ?? '—';
       const dateStr = fmtDate(order.createdAt);
@@ -3124,6 +3127,7 @@ const ALL_DESIGNS = [
                         ? `<a href="${getProductUrl(sku)}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid #ccc;">${name}</a>`
                         : name}</p>
                     ${sku ? `<div class="df-row"><span class="df-key">Ref</span><span class="df-val">${skuCode(sku) ? `${skuCode(sku)} · ` : ''}${sku}</span></div>` : ''}
+                    ${(noteParts.bySku[sku] ?? []).map(l => { const [k, ...v] = l.split(': '); return `<div class="df-row"><span class="df-key">${k}</span><span class="df-val plain">${v.join(': ')}</span></div>`; }).join('')}
                     ${(item.quantity ?? 1) > 1 ? `<div class="df-row"><span class="df-key">Qty</span><span class="df-val plain">${item.quantity}</span></div>` : ''}
                     <div class="df-row" style="margin-top:0.5rem">
                       <span class="df-key">Price</span><span class="df-val plain">${fmt(price)}</span>
@@ -3157,10 +3161,10 @@ const ALL_DESIGNS = [
       const measHtml = buildMeasHtml(measData);
 
       // Notes
-      const notesHtml = order.notes
+      const notesHtml = noteParts.customer
         ? `<hr class="meas-divider">
            <p class="section-label">Notes</p>
-           <p class="notes-text">${order.notes}</p>`
+           <p class="notes-text">${noteParts.customer}</p>`
         : '';
 
       // Mailto

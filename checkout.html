@@ -105,6 +105,13 @@
       color: #999;
       margin-top: 0.3rem;
     }
+    .cart-item__detail {
+      font-size: 1.15rem;
+      font-style: italic;
+      letter-spacing: .5px;
+      color: #6f6f6f;
+      margin-top: 0.25rem;
+    }
     .cart-item__price {
       font-family: "Times New Roman", serif;
       font-size: 1.45rem;
@@ -425,6 +432,7 @@
     import { getCart, getCartTotal, removeFromCart, placeOrder, createPaymentIntent, getMeasurements, isLoggedIn } from './js/api.js';
     import { openAuthModal } from './js/auth-modal.js';
     import { designPage } from './js/design-codes.js';
+    import { detailLines, composeNotes } from './js/design-details.js';
 
     // ── Replace with your Stripe publishable key from dashboard.stripe.com/apikeys
     const STRIPE_KEY = 'pk_test_51TF1uoD4pLXnD62zsIhrMXEuD0t1Ir0AZ2Qkrmp5aAbJYTLzTZE5P6PR5PdEzFdpq0p0rHbZeQMdJQJ4CuSuajAT00pYbAuYs9';
@@ -435,12 +443,14 @@
 
     let currentOrderId = null;
     let currentTotal = 0;
+    let cartSkus = [];   // the cart's pieces, for their design details (js/design-details.js)
 
     // ── Render cart ───────────────────────────────────────────────────────────
     async function renderCart() {
       const list = document.getElementById('cart-items-list');
       const totalEl = document.getElementById('cart-total-display');
       const items = await getCart();
+      cartSkus = items.map(i => i.product?.sku).filter(Boolean);
 
       if (!items.length) {
         list.innerHTML = `<p class="cart-empty">Your cart is empty.</p>`;
@@ -457,6 +467,7 @@
         <div class="cart-item" data-id="${esc(item.id)}">
           <div>
             <a href="${productPage}" class="cart-item__name">${esc(item.displayName ?? 'Product')}</a>
+            ${detailLines(item.product?.sku).map(l => `<p class="cart-item__detail">${esc(l)}</p>`).join('')}
             <p class="cart-item__qty">Qty ${esc(item.quantity)}</p>
           </div>
           <div style="display:flex;align-items:center;gap:.5rem">
@@ -502,7 +513,8 @@
         postalCode: document.getElementById('addr-postal').value,
         country:    document.getElementById('addr-country').value,
       };
-      const notes = document.getElementById('order-notes').value;
+      // the customer's note, then each piece's lapel / cuff / pleats for the atelier
+      const notes = composeNotes(document.getElementById('order-notes').value, cartSkus);
 
       try {
         const order = await placeOrder(shippingAddress, notes);

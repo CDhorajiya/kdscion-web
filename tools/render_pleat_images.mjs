@@ -24,8 +24,8 @@ const TMP = path.join(os.tmpdir(), 'kd-pleats');
 // per front: fullness through the hip, and its pleats (x at the waist, depth down the leg)
 const FRONTS = {
     flat:   { f: 0,   pleats: [] },
-    single: { f: 2.6, pleats: [{ x: 90, len: 34, w: 5 }] },
-    double: { f: 4.6, pleats: [{ x: 90, len: 36, w: 5.4 }, { x: 78.5, len: 22, w: 3.8 }] },
+    single: { f: 2.6, pleats: [{ x: 90, len: 46, w: 4.6 }] },
+    double: { f: 4.6, pleats: [{ x: 90, len: 48, w: 4.8 }, { x: 78.5, len: 32, w: 3.8 }] },
 };
 const mx = (x) => 240 - x;
 
@@ -37,13 +37,41 @@ function svg(id) {
                 + `L${56 - f},96 C${55 - f},74 ${58 - f},52 63,34 Z`;
     const crease = (x) => `M${x},${pleats.length ? 36 : 64} Q${x + 0.4},120 ${x - 1.6},214`;
     const pocket = `M73,34.4 Q66,52 ${58.6 - f * 0.8},73`;
-    const pleatSVG = (p, side) => {
-        const x = side ? mx(p.x) : p.x, s = side ? -1 : 1, end = 34 + p.len;
+    /* One pleat, drawn on the wearer's right leg (mirrored for the left): the top
+       layer rolls over and catches the light at its edge, a soft shadow tucks
+       under the fold, the waistband puckers a little where it is caught, and
+       the whole fold fades out down the leg into the pressed crease. */
+    const pleatSVG = (p, k) => {
+        const x = p.x, end = 34 + p.len, mid = 34 + p.len * 0.55, w = p.w;
+        const g = `pl${k}`;
         return `
-      <path d="M${x},34 L${x + s * p.w},34 Q${x + s * p.w * 0.45},${34 + p.len * 0.5} ${x + s * 0.3},${end} Z" fill="#000" opacity=".38" filter="url(#b12)"/>
-      <path d="M${x},34 Q${x + s * 0.5},${34 + p.len * 0.55} ${x + s * 0.3},${end}" fill="none" stroke="#2c2c2b" stroke-width=".55" opacity=".75"/>
-      <path d="M${x - s * 1.3},35 Q${x - s * 0.9},${34 + p.len * 0.55} ${x - s * 0.5},${end - 2}" fill="none" stroke="#fff" stroke-width="1.4" opacity=".4" filter="url(#b06)"/>
-      <path d="M${x + s * 1.5},${end - 4} Q${x + s * 3},${end + 30} ${x + s * 1.5},${end + 70}" fill="none" stroke="#000" stroke-width="3" opacity=".08" filter="url(#b3)"/>`;
+      <defs>
+        <linearGradient id="${g}-fade" x1="0" x2="0" y1="34" y2="${end + 8}" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#000"/></linearGradient>
+        <mask id="${g}-m" maskUnits="userSpaceOnUse" x="0" y="0" width="240" height="240">
+          <rect x="0" y="30" width="240" height="${p.len + 14}" fill="url(#${g}-fade)"/></mask>
+        <linearGradient id="${g}-lip" x1="${x - 4}" x2="${x}" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".65" stop-color="#fff" stop-opacity=".1"/>
+          <stop offset=".92" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity=".08"/></linearGradient>
+        <linearGradient id="${g}-tuck" x1="${x}" x2="${x + w}" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#000" stop-opacity=".42"/><stop offset=".25" stop-color="#000" stop-opacity=".22"/>
+          <stop offset=".65" stop-color="#000" stop-opacity=".07"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+      </defs>
+      <g mask="url(#${g}-m)">
+        <!-- the fullness the pleat gives: a soft rise beside it and a valley past it -->
+        <path d="M${x - 4},36 Q${x - 4.6},${mid + 20} ${x - 3},${end + 40}" fill="none" stroke="#fff" stroke-width="5" opacity=".1" filter="url(#b3)"/>
+        <!-- the top layer rolling over to the fold -->
+        <path d="M${x - 4},34 L${x},34 Q${x + 0.4},${mid} ${x + 0.3},${end} L${x - 3.4},${end} Q${x - 3.8},${mid} ${x - 4},34 Z" fill="url(#${g}-lip)" filter="url(#b06)"/>
+        <!-- the shadow tucked under the fold -->
+        <path d="M${x},34 L${x + w},34 Q${x + w * 0.9},${mid} ${x + w * 0.75},${end} L${x + 0.3},${end} Q${x + 0.4},${mid} ${x},34 Z" fill="url(#${g}-tuck)" filter="url(#b06)"/>
+        <!-- the fold itself: a crisp dark edge with a bright rim beside it -->
+        <path d="M${x},34 Q${x + 0.4},${mid} ${x + 0.3},${end}" fill="none" stroke="#2a2a29" stroke-width=".38" opacity=".6"/>
+        <path d="M${x - 0.45},34.4 Q${x - 0.05},${mid} ${x - 0.15},${end - 3}" fill="none" stroke="#fff" stroke-width=".45" opacity=".26" filter="url(#b03)"/>
+      </g>
+      <!-- where the pleat is caught in the waistband: a small pucker -->
+      <ellipse cx="${x + 1.6}" cy="35" rx="${w * 0.55}" ry="1.1" fill="#000" opacity=".28" filter="url(#b06)"/>
+      <!-- the drape it releases down the thigh -->
+      <path d="M${x + 2},${end - 6} Q${x + 4.5},${end + 34} ${x + 2.5},${end + 80}" fill="none" stroke="#000" stroke-width="3.2" opacity=".07" filter="url(#b3)"/>`;
     };
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="16 6 208 208" width="1000" height="1000">
   <defs>
@@ -70,6 +98,8 @@ function svg(id) {
       <feTurbulence type="fractalNoise" baseFrequency="3.4" numOctaves="1" seed="5"/>
       <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -6.2"/>
     </filter>
+    <filter id="b03" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".3"/></filter>
+    <filter id="b05" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".5"/></filter>
     <filter id="b06" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation=".6"/></filter>
     <filter id="b12" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.2"/></filter>
     <filter id="b3"  x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
@@ -95,7 +125,8 @@ function svg(id) {
     <path d="${crease(mx(90))}" fill="none" stroke="#fff" stroke-width="1.1" opacity=".17" filter="url(#b06)"/>
 
     <!-- pleats, folded towards the fly -->
-    ${pleats.map(p => pleatSVG(p, false) + pleatSVG(p, true)).join('')}
+    ${pleats.map((p, k) => pleatSVG(p, `a${k}`)).join('')}
+    <g transform="translate(240 0) scale(-1 1)">${pleats.map((p, k) => pleatSVG(p, `b${k}`)).join('')}</g>
 
     <!-- slant pockets -->
     <path d="${pocket}" fill="none" stroke="#000" stroke-width="1.8" opacity=".35" filter="url(#b06)" transform="translate(.8 .4)"/>

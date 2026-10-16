@@ -3,8 +3,9 @@
    Design Only, Design Details and any design-detail button (Pleats, Cuff …,
    js/detail-studio.js) were three stacked boxes at the viewer's bottom right.
    This gathers them into one slim pill there, the twin of the Showcase | Turn
-   pill at the top left (js/showcase.js): the same glass, type and warm pressed
-   tint, each control a monoline icon with its name, hairlines between. On a
+   pill at the top left (js/showcase.js): the same type and warm pressed
+   tint, frameless — no border or white ground, on the viewer itself (KD) —
+   each control a monoline icon with its name, hairlines between. On a
    phone the pill keeps only the icons.
 
    The buttons themselves are moved, not copied, so the page's own handlers,
@@ -25,12 +26,14 @@ const css = `
 .kd-dock {
     position: absolute; right: 1.1rem; bottom: 1.1rem; z-index: 6;
     display: inline-flex; align-items: center; padding: 3px;
-    border: 1px solid #d6d6d6; border-radius: 999px;
-    background: rgba(255,255,255,0.82);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 1px 2px rgba(0,0,0,.05), 0 8px 22px -10px rgba(0,0,0,.22);
+    border: 0; border-radius: 999px; background: none;
 }
-.kd-dock .kd-rule { width: 1px; height: 1.15rem; background: #dedede; flex: none; }
+/* its twin at the top left, the Showcase | Turn pill, loses its frame too */
+html.kd-dock-on .viewer-panel .showcase {
+    border: 0 !important; background: none !important; box-shadow: none !important;
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+}
+.kd-dock .kd-rule { width: 1px; height: 1.15rem; background: rgba(0,0,0,.14); flex: none; }
 html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn {
     position: static !important; inset: auto !important; transform: none !important; width: auto !important;
     margin: 0 !important; display: inline-flex !important; align-items: center; gap: .5rem;
@@ -41,7 +44,7 @@ html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn {
     transition: background .25s, color .25s;
 }
 html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn::after { content: none !important; }
-html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn:hover { color: #1a1a1a !important; }
+html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn:hover { color: #1a1a1a !important; background: rgba(0,0,0,.04) !important; }
 html.kd-dock-on .viewer-panel #kd-dock .kd-dock-btn.active {
     background: rgba(100,70,0,0.08) !important; color: rgba(100,70,0,0.85) !important;
 }

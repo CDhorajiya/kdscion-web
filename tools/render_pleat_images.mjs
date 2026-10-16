@@ -4,7 +4,7 @@
      node tools/render_pleat_images.mjs
 
    Flat Front, Single Pleat and Double Pleat drawn as light stone flannel from
-   a clean waistband (side adjusters, no loops or button) to just below the
+   a clean waistband (belt loops, no button) to just below the
    knee — legs shaded round, pressed creases, slant pockets, fly — on a soft
    grey ground, rendered by
    headless Chrome to images/pleats/<id>.webp (1000 × 1000).
@@ -85,12 +85,11 @@ function svg(id) {
       <path d="${pocket}" fill="none" stroke="#3b3227" stroke-width="2" opacity=".3" filter="url(#b06)" transform="translate(.9 .4)"/>
       <path d="${pocket}" fill="none" stroke="#7a7266" stroke-width=".5"/>
       <path d="${pocket}" fill="none" stroke="#ece7dd" stroke-width=".3" stroke-dasharray=".9 .6" transform="translate(1.6 .2)"/>`;
-    const adjuster = `
-      <path d="M62.2,24.6 L74,24.6 L74,31.4 L62.6,31.4 Z" fill="#000" opacity=".25" filter="url(#b06)" transform="translate(.5 .7)"/>
-      <path d="M62.2,24.6 L74,24.6 Q75.6,28 74,31.4 L62.6,31.4 Z" fill="url(#band)" stroke="#8a8276" stroke-width=".3"/>
-      <path d="M63,25.6 L72.6,25.6 M63,30.4 L72.6,30.4" stroke="#ece7dd" stroke-width=".25" stroke-dasharray=".7 .5"/>
-      <rect x="67.4" y="24" width="3.2" height="8" rx=".8" fill="none" stroke="url(#steel)" stroke-width="1"/>
-      <rect x="68.4" y="24.2" width="1.2" height="7.6" fill="#c9c9c9" opacity=".6"/>`;
+    const loop = (x) => `
+      <rect x="${x - 1.7}" y="19.6" width="3.4" height="${W - 18}" rx=".7" fill="#000" opacity=".22" filter="url(#b06)" transform="translate(.6 .8)"/>
+      <rect x="${x - 1.7}" y="19.6" width="3.4" height="${W - 18}" rx=".7" fill="url(#band)" stroke="#8a8276" stroke-width=".3"/>
+      <rect x="${x - 1.7}" y="19.6" width="1.2" height="${W - 18}" fill="#fff" opacity=".25"/>
+      <path d="M${x - 1.2},21.2 H${x + 1.2} M${x - 1.2},${W - 0.6} H${x + 1.2}" stroke="#ece7dd" stroke-width=".3" stroke-dasharray=".5 .4"/>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="16 6 208 208" width="1000" height="1000">
   <defs>
     <radialGradient id="bg" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#f2f2f0"/><stop offset="1" stop-color="#d6d6d3"/></radialGradient>
@@ -160,7 +159,7 @@ function svg(id) {
   <path d="${outer}" fill="none" stroke="#8a8276" stroke-width=".45"/>
   <path d="${outer}" fill="none" stroke="#8a8276" stroke-width=".45" transform="translate(240 0) scale(-1 1)"/>
 
-  <!-- a clean waistband: no loops and no button, the fly closing on a hidden hook -->
+  <!-- a clean waistband: belt loops, no button, the fly closing on a hidden hook -->
   <path d="M63,${W} Q120,${W - 3} 177,${W}" fill="none" stroke="#3b3227" stroke-width="2.4" opacity=".3" filter="url(#b06)" transform="translate(0 1)"/>
   <path d="M64,21.6 Q120,18.6 176,21.6 L177,${W} Q120,${W - 3} 63,${W} Z" fill="url(#band)"/>
   <path d="M64,21.6 Q120,18.6 176,21.6 L177,${W} Q120,${W - 3} 63,${W} Z" fill="#000" filter="url(#heather)" opacity=".06" style="mix-blend-mode:multiply"/>
@@ -169,9 +168,8 @@ function svg(id) {
   <path d="M64.4,23.6 Q120,20.6 175.6,23.6 M63.6,${W - 2} Q120,${W - 5} 176.4,${W - 2}" fill="none" stroke="#ece7dd" stroke-width=".3" stroke-dasharray=".9 .6"/>
   <path d="M120,20.2 L120,${W - 2.9}" stroke="#7a7266" stroke-width=".45"/>
   <path d="M120.7,20.4 L120.7,${W - 3}" stroke="#3b3227" stroke-width="1.2" opacity=".15" filter="url(#b06)"/>
-  <!-- side adjusters, the classic alternative to a belt -->
-  ${adjuster}
-  <g transform="translate(240 0) scale(-1 1)">${adjuster}</g>
+  <!-- belt loops -->
+  ${[74, 99, mx(99), mx(74)].map(loop).join('')}
 </svg>`;
 }
 

@@ -69,88 +69,82 @@ function barrelCuff(s, d) {
 `;
 }
 
-/* The French cuff, as it is worn: a double-length band folded back on itself
-   (a free, rolled top edge over the inner layer; a soft fold, not a seam, at
-   the bottom), its two ends pressed together and standing out from the wrist
-   like a fin, the cufflink through all four layers on the fin's face. Seen a
-   little from above, so the band reads as a cylinder. */
+/* The French cuff, as it is worn (after KD's reference photo): a tall,
+   double-length band folded back on itself — a rolled free edge at the top
+   over the inner layer, a soft fold, not a seam, at the bottom — in a fine
+   piqué. Its two ends meet ("kiss") in a straight pinched edge: the near end's
+   angled corner in front, the far end a shadowed sliver just behind. A round
+   cufflink, silver rim and black onyx, sits on the face beside that edge. */
 function frenchCuff() {
-    const top = 'M60,151 Q117,158.5 172,151.5', bot = 'M60,205 Q117,214 172,205.5';
-    const band = `${top} L172,205.5 Q117,214 60,205 Z`;
-    const inner = 'M60.5,146.5 Q117,153.5 172.5,147 L172.5,151.5 Q117,158.5 60,151 Z';
-    const fin = 'M170,149 L188.5,149 Q194.5,149 194.5,155 L194.5,203 Q194.5,209 188.5,209 L170,209 Z';
+    const top  = 'M60,151 Q110,157 156.5,152.6';
+    const face = 'M60,151 Q110,157 156.5,152.6 L166,161.5 L166,201 Q166,207 160,207.4 Q110,212.5 60,205.4 Z';
+    const far  = 'M163,151.6 L171.5,151.2 L171.5,201.5 Q171.5,206.6 166.5,206.9 L163,207 Z';
+    const inner = 'M60.5,146.6 Q117,152.6 172.5,147 L172.5,151.6 L163,151.6 L156.5,152.6 Q110,157 60,151 Z';
     return `
   <defs>
-    <linearGradient id="frBand" x1="60" x2="172" y1="0" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#c6c6c1"/><stop offset=".12" stop-color="#e7e7e4"/><stop offset=".38" stop-color="#ffffff"/>
-      <stop offset=".7" stop-color="#f4f4f1"/><stop offset=".93" stop-color="#d6d6d1"/><stop offset="1" stop-color="#c2c2bc"/></linearGradient>
-    <linearGradient id="frRoll" x1="0" x2="0" y1="151" y2="214" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".06" stop-color="#fff" stop-opacity="0"/>
-      <stop offset=".72" stop-color="#000" stop-opacity="0"/><stop offset=".84" stop-color="#fff" stop-opacity=".35"/>
-      <stop offset=".9" stop-color="#000" stop-opacity=".04"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
-    <linearGradient id="frFin" x1="170" x2="194.5" y1="149" y2="209" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#e9e9e6"/><stop offset=".35" stop-color="#fbfbfa"/><stop offset=".75" stop-color="#f1f1ee"/><stop offset="1" stop-color="#d9d9d4"/></linearGradient>
-    <clipPath id="clipBand"><path d="${band}"/></clipPath>
-    <clipPath id="clipFin"><path d="${fin}"/></clipPath>
+    <linearGradient id="frFace" x1="60" x2="166" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c8c8c3"/><stop offset=".14" stop-color="#e8e8e5"/><stop offset=".42" stop-color="#ffffff"/>
+      <stop offset=".78" stop-color="#f6f6f3"/><stop offset="1" stop-color="#e6e6e2"/></linearGradient>
+    <linearGradient id="frRoll" x1="0" x2="0" y1="151" y2="212" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity=".05"/><stop offset=".08" stop-color="#fff" stop-opacity=".25"/>
+      <stop offset=".2" stop-color="#fff" stop-opacity="0"/><stop offset=".74" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".85" stop-color="#fff" stop-opacity=".45"/><stop offset=".93" stop-color="#000" stop-opacity=".03"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="frFar" x1="163" x2="171.5" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b9b9b3"/><stop offset=".5" stop-color="#d8d8d3"/><stop offset="1" stop-color="#c9c9c3"/></linearGradient>
+    <pattern id="pique" width="1.1" height="1.1" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="1.1" height="1.1" fill="none"/><path d="M0,.55 H1.1 M.55,0 V1.1" stroke="#000" stroke-width=".14" opacity=".045"/></pattern>
+    <radialGradient id="silver" cx=".38" cy=".32" r=".8">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#e3e3e3"/><stop offset=".65" stop-color="#9c9c9c"/><stop offset="1" stop-color="#5a5a5a"/></radialGradient>
+    <radialGradient id="onyx" cx=".4" cy=".35" r=".75">
+      <stop offset="0" stop-color="#3a3a3c"/><stop offset=".55" stop-color="#121214"/><stop offset="1" stop-color="#050506"/></radialGradient>
+    <clipPath id="clipFace"><path d="${face}"/></clipPath>
   </defs>
-  <ellipse cx="126" cy="215" rx="74" ry="5.5" fill="#000" opacity=".15" filter="url(#blurL)"/>
+  <ellipse cx="116" cy="214" rx="66" ry="5" fill="#000" opacity=".16" filter="url(#blurL)"/>
 
   <!-- the inner layer, sewn to the sleeve, just showing above the folded-back edge -->
-  <path d="${inner}" fill="#dededa"/>
-  <path d="M60.5,146.5 Q117,153.5 172.5,147" fill="none" stroke="#a9a9a3" stroke-width=".4"/>
+  <path d="${inner}" fill="#dcdcd8"/>
+  <path d="M60.5,146.6 Q117,152.6 172.5,147" fill="none" stroke="#a9a9a3" stroke-width=".4"/>
 
-  <!-- the folded-back band -->
-  <path d="${band}" fill="#000" opacity=".26" filter="url(#blurM)" transform="translate(0 1.4)"/>
-  <path d="${band}" fill="url(#frBand)"/>
-  <g clip-path="url(#clipBand)">
-    <rect x="40" y="140" width="160" height="80" filter="url(#weave)" opacity=".05" style="mix-blend-mode:multiply"/>
-    <rect x="40" y="140" width="160" height="80" fill="url(#rib)"/>
-    <rect x="40" y="140" width="160" height="80" fill="url(#frRoll)"/>
-    <path d="M60,201.5 Q117,210.3 172,202" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55" filter="url(#blurS)"/>
-    <path d="M60,153 Q117,160.5 172,153.5" fill="none" stroke="#000" stroke-width="1.2" opacity=".1" filter="url(#blurS)"/>
+  <!-- the far end, a sliver behind the kissing edge -->
+  <path d="${far}" fill="#000" opacity=".22" filter="url(#blurS)" transform="translate(.8 1)"/>
+  <path d="${far}" fill="url(#frFar)"/>
+  <path d="${far}" fill="none" stroke="#a3a39d" stroke-width=".4"/>
+  <path d="M169.6,153 L169.6,204.6" stroke="#bdbdb6" stroke-width=".28" stroke-dasharray=".9 .55"/>
+
+  <!-- the folded-back face -->
+  <path d="${face}" fill="#000" opacity=".26" filter="url(#blurM)" transform="translate(.6 1.4)"/>
+  <path d="${face}" fill="url(#frFace)"/>
+  <g clip-path="url(#clipFace)">
+    <rect x="40" y="140" width="140" height="80" fill="url(#pique)"/>
+    <rect x="40" y="140" width="140" height="80" filter="url(#weave)" opacity=".04" style="mix-blend-mode:multiply"/>
+    <rect x="40" y="140" width="140" height="80" fill="url(#frRoll)"/>
+    <path d="M60,201.8 Q110,208.8 166,197.6" fill="none" stroke="#fff" stroke-width="1.8" opacity=".55" filter="url(#blurS)"/>
+    <path d="M166,161.5 L166,207" stroke="#000" stroke-width="2.2" opacity=".14" filter="url(#blurS)"/>
   </g>
-  <!-- the free top edge: a rolled lip with its own light -->
-  <path d="${top}" fill="none" stroke="#000" stroke-width="1.4" opacity=".22" filter="url(#blurS)" transform="translate(0 -.6)"/>
-  <path d="${top}" fill="none" stroke="#fff" stroke-width=".9"/>
-  <path d="M63,154.4 Q117,161.6 170,155" fill="none" stroke="#fff" stroke-width=".35" stroke-dasharray=".9 .55" transform="translate(.25 .25)" opacity=".9"/>
-  <path d="M63,154.4 Q117,161.6 170,155" fill="none" stroke="#bdbdb6" stroke-width=".3" stroke-dasharray=".9 .55"/>
-  <path d="M60,151 L60,205 ${bot.replace('M60,205', '')}" fill="none" stroke="#a9a9a3" stroke-width=".45"/>
+  <!-- the rolled free edge at the top, and the stitching that follows the angled corner -->
+  <path d="${top} L166,161.5" fill="none" stroke="#000" stroke-width="1.3" opacity=".2" filter="url(#blurS)" transform="translate(0 -.5)"/>
+  <path d="${top} L166,161.5" fill="none" stroke="#fff" stroke-width=".9"/>
+  <path d="M62.6,154.2 Q110,160 155.4,155.9 L162.8,162.8 L162.8,200" fill="none" stroke="#fff" stroke-width=".35" stroke-dasharray=".9 .55" transform="translate(.25 .25)" opacity=".9"/>
+  <path d="M62.6,154.2 Q110,160 155.4,155.9 L162.8,162.8 L162.8,200" fill="none" stroke="#bdbdb6" stroke-width=".3" stroke-dasharray=".9 .55"/>
+  <path d="${face}" fill="none" stroke="#a9a9a3" stroke-width=".45"/>
 
-  <!-- the crease where the band turns into the fin -->
-  <path d="M171,151 L171,206" stroke="#000" stroke-width="2.4" opacity=".2" filter="url(#blurM)"/>
-
-  <!-- the fin: both ends pressed together, standing out from the wrist -->
-  <path d="${fin}" fill="#000" opacity=".22" filter="url(#blurM)" transform="translate(1.6 1.6)"/>
-  <path d="${fin}" fill="url(#frFin)"/>
-  <g clip-path="url(#clipFin)">
-    <rect x="160" y="140" width="40" height="80" filter="url(#weave)" opacity=".05" style="mix-blend-mode:multiply"/>
-    <rect x="160" y="140" width="40" height="80" fill="url(#rib)"/>
-    <path d="M170.5,149 L170.5,209" stroke="#000" stroke-width="1.8" opacity=".14" filter="url(#blurS)"/>
+  <!-- the cufflink: silver rim, black onyx -->
+  <g transform="translate(155.5 181)">
+    <ellipse cx=".9" cy="1.5" rx="5.2" ry="5.2" fill="#000" opacity=".42" filter="url(#blurS)"/>
+    <circle r="4.9" fill="url(#silver)" stroke="#4f4f4f" stroke-width=".25"/>
+    <circle r="4.1" fill="none" stroke="#fff" stroke-width=".25" opacity=".7"/>
+    <circle r="3.45" fill="url(#onyx)" stroke="#2a2a2a" stroke-width=".2"/>
+    <ellipse cx="-1.3" cy="-1.5" rx="1.25" ry=".6" fill="#fff" opacity=".55" transform="rotate(-35 -1.3 -1.5)"/>
+    <ellipse cx="-2.9" cy="-2.6" rx=".9" ry=".4" fill="#fff" opacity=".9" transform="rotate(-40 -2.9 -2.6)"/>
   </g>
-  <path d="${fin}" fill="none" stroke="#a3a39d" stroke-width=".45"/>
-  <!-- the layered ends: four plies meeting at the fin's edge -->
-  <path d="M192.6,151.5 L192.6,206.5 M191.1,150.6 Q193.6,150.6 193.6,153 L193.6,205 Q193.6,207.4 191.1,207.4" fill="none" stroke="#b5b5af" stroke-width=".3"/>
-  <path d="M172.8,152 L187.6,152 Q191.5,152 191.5,156 L191.5,202 Q191.5,206 187.6,206 L172.8,206" fill="none" stroke="#bdbdb6" stroke-width=".3" stroke-dasharray=".9 .55"/>
-  <!-- the fold at the bottom of the fin -->
-  <path d="M171,204 L194.5,204" stroke="#000" stroke-width="1.4" opacity=".08" filter="url(#blurS)"/>
-
-  <!-- the cufflink on the fin's face, its shank shadow running into the plies -->
-  <g transform="translate(182.3 179)">
-    <ellipse cx="1" cy="1.6" rx="5.6" ry="6" fill="#000" opacity=".38" filter="url(#blurS)"/>
-    <ellipse rx="5.2" ry="5.6" fill="url(#gold)" stroke="#6f5016" stroke-width=".3"/>
-    <ellipse rx="3.9" ry="4.2" fill="none" stroke="#7a5718" stroke-width=".3" opacity=".55"/>
-    <ellipse rx="3.9" ry="4.2" fill="none" stroke="#fff3c9" stroke-width=".2" opacity=".6" transform="translate(-.2 -.25)"/>
-    <ellipse cx="-1.8" cy="-2" rx="1.5" ry=".8" fill="#fff" opacity=".85" transform="rotate(-40 -1.8 -2)"/>
-  </g>
-  <rect x="193.4" y="177.6" width="2.6" height="2.8" rx=".7" fill="#9b7430"/>
-  <rect x="193.4" y="177.6" width="2.6" height="1" rx=".5" fill="#f1d690" opacity=".7"/>
 `;
 }
 
 function realSVG(id) {
     const s = SHAPES[id];
     const d = cuffPaths(s);
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${id === 'french' ? '49 66 160 160' : '40 66 160 160'}" width="1000" height="1000">
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 66 160 160" width="1000" height="1000">
   <defs>
     <radialGradient id="bg" cx=".5" cy=".42" r=".78"><stop offset="0" stop-color="#f7f7f5"/><stop offset="1" stop-color="#dcdcd8"/></radialGradient>
     <linearGradient id="sleeve" x1="50" x2="190" y1="0" y2="0" gradientUnits="userSpaceOnUse">

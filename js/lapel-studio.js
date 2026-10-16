@@ -454,7 +454,8 @@ function build() {
             o.tabIndex = on ? 0 : -1;
         });
         const l = LAPELS.find(x => x.id === chosen);
-        btn.innerHTML = `Lapel · <em>${l.name}</em>`;
+        // inside the viewer dock (js/viewer-dock.js) the label is a span beside an icon
+        (btn.querySelector('.kd-dock-label') || btn).innerHTML = `Lapel · <em>${l.name}</em>`;
         btn.classList.toggle('active', glass.classList.contains('open'));
         window.KD_DESIGN_DETAILS = Object.assign(window.KD_DESIGN_DETAILS || {}, { lapel: { id: l.id, name: l.full } });
         caption(immediate);

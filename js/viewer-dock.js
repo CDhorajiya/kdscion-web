@@ -18,6 +18,7 @@ const ICONS = {
     only:    '<path d="M12 7.3a1.8 1.8 0 1 1 1.8-1.8c0 .9-.7 1.3-1.3 1.7l-.5.3v1.6"/><path d="M12 9.1 3.7 15.3c-.6.5-.3 1.5.5 1.5h15.6c.8 0 1.1-1 .5-1.5L12 9.1"/>',
     details: '<circle cx="6.8" cy="16.4" r="2.3"/><path d="M8.5 14.7 13.6 9.6h6.6"/><path d="M15.6 12.9h4.6"/>',
     pleat:   '<path d="M4.5 6.3h15"/><path d="M6.8 6.3 6 19.5M17.2 6.3l.8 13.2"/><path d="M10.3 6.3 12 13.8 13.7 6.3"/><path d="M12 13.8v5.7"/>',
+    lapel:   '<path d="M8.4 4.5 12 13.2l3.6-8.7"/><path d="M8.4 4.5 5.2 8l3.6 1.6L12 13.2l3.2-3.6L18.8 8l-3.2-3.5"/><path d="M12 13.2v6.3"/>',
     cuff:    '<path d="M5 8.5h14v8.8H5z"/><path d="M5 11.2h14"/><circle cx="15.6" cy="14.2" r="1.1"/>',
 };
 const icon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k] || ICONS.details}</svg>`;
@@ -97,7 +98,7 @@ function build() {
     const rule = () => Object.assign(document.createElement('span'), { className: 'kd-rule' });
 
     dock.append(adopt(only, 'only', 'Design Only'), rule(), adopt(details, 'details', 'Design Details'));
-    panel.querySelectorAll('.design-detail-btn').forEach((b) => {
+    panel.querySelectorAll('.design-detail-btn, .design-lapel-btn').forEach((b) => {
         const key = b.id.replace(/^design-|-btn$/g, '');
         dock.append(rule(), adopt(b, key));
         // the detail module rewrites its label on every choice: keep the title in step

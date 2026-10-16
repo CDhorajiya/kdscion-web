@@ -1,13 +1,14 @@
 /* lapel-studio.js — choose the lapel of a blazer / coat on its product page.
 
-   A "Lapel" button sits on the 3D viewer above Design Only. It opens the
-   Lapel Atelier over the viewer: six hand-drawn lapels on ivory paper, each
-   drawn on a dress form and filled with the fabric the customer has selected,
-   a large study of the chosen one, and "Choose by vibe" (Office / Event /
-   Minimal) which lights the lapels that suit the occasion.
+   A "Lapel" button sits on the 3D viewer above Design Only. It opens a
+   translucent grey glass window docked on the viewer (a sheet on phones):
+   a tailor's flat of the jacket front, six lapels to choose from, and an
+   occasion filter (Office / Event / Minimal). The flat is one drawing whose
+   lapel is a single shared geometry, so choosing a lapel reshapes the drawing
+   from one cut into the next rather than swapping pictures.
 
-   The drawings are 2D on purpose: the GLB carries one lapel, so the 3D model
-   keeps showing the design as cut, and the atelier shows the alternative.
+   The drawings are 2D on purpose: the GLB is cut with one lapel, so the 3D
+   model keeps showing the design as cut, and the window shows the alternative.
 
    Use on a page:
        <script type="module" src="js/lapel-studio.js?default=shawl"></script>
@@ -16,254 +17,279 @@
    ("kd.lapel.<sku>") and published as window.KD_DESIGN_DETAILS.lapel plus a
    'kd:lapel' event, for the order flow to pick up. */
 
-const params   = new URL(import.meta.url).searchParams;
-const AS_CUT   = params.get('default') || 'notch';
-const panel    = document.querySelector('.viewer-panel');
-const sku      = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku || location.pathname;
-const STORE    = `kd.lapel.${sku}`;
+const params = new URL(import.meta.url).searchParams;
+const AS_CUT = params.get('default') || 'notch';
+const panel  = document.querySelector('.viewer-panel');
+const sku    = document.querySelector('.fabric-panel[data-sku]')?.dataset.sku || location.pathname;
+const STORE  = `kd.lapel.${sku}`;
+const STILL  = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const LAPELS = [
-    { id: 'notch',      name: 'Notch Lapel',       vibe: 'classic',
-      note: 'The tailor’s standard: a small triangular step where collar meets lapel. Right for every hour of the working day.' },
-    { id: 'peak',       name: 'Peak Lapel',        vibe: 'powerful',
-      note: 'The points sweep up towards the shoulder, widening the chest and lifting the line. Formal and commanding.' },
-    { id: 'shawl',      name: 'Shawl Lapel',       vibe: 'soft evening look',
-      note: 'One unbroken curve from collar to button, with no notch at all. The softest, most graceful line for evening.' },
-    { id: 'collarless', name: 'Collarless',        vibe: 'clean & modern',
-      note: 'No lapel and no collar: a round neckline whose fronts meet edge to edge. Quiet and architectural.' },
-    { id: 'contrast',   name: 'Contrast Lapel',    vibe: 'bold & stylish',
-      note: 'Peak lapels faced in black silk satin against the cloth. The dinner-jacket gesture, made for an entrance.' },
-    { id: 'slim',       name: 'Slim Minimalist',   vibe: 'sleek & refined',
-      note: 'A narrow notch lapel set high, which gives a long, lean V. Precise and unshowy.' },
+    { id: 'notch',      name: 'Notch',      full: 'Notch Lapel',     mood: 'Classic',
+      note: 'The tailor’s standard: a small step where collar meets lapel. Correct from the boardroom to supper.' },
+    { id: 'peak',       name: 'Peak',       full: 'Peak Lapel',      mood: 'Powerful',
+      note: 'Points that rise towards the shoulder, broadening the chest and lifting the eye. Formal and assured.' },
+    { id: 'shawl',      name: 'Shawl',      full: 'Shawl Lapel',     mood: 'Soft evening look',
+      note: 'One unbroken curve from collar to button. The softest line in tailoring, made for evening.' },
+    { id: 'collarless', name: 'Collarless', full: 'Collarless',      mood: 'Clean & modern',
+      note: 'No collar and no lapel: a round neck, with fronts that meet edge to edge. Quiet and architectural.' },
+    { id: 'contrast',   name: 'Contrast',   full: 'Contrast Lapel',  mood: 'Bold & stylish',
+      note: 'Peak lapels faced in black silk satin. The dinner-jacket gesture, made for an entrance.' },
+    { id: 'slim',       name: 'Slim',       full: 'Slim Lapel',      mood: 'Sleek & refined',
+      note: 'A narrow notch set high, for a long and lean opening. Precise and unshowy.' },
 ];
 
-const VIBES = [
-    { id: 'office',  name: 'Office',  picks: ['notch', 'collarless'], line: 'Polished & professional',
-      icon: '<rect x="5" y="10" width="22" height="15" rx="1.5"/><path d="M12 10V7.5a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 20 7.5V10M5 16h22"/>' },
-    { id: 'event',   name: 'Event',   picks: ['peak', 'shawl', 'contrast'], line: 'Elevated & impactful',
-      icon: '<path d="M8 5h6l-.6 6a2.4 2.4 0 0 1-4.8 0zM11 13.5V24M8 24h6M18 5h6l-.6 6a2.4 2.4 0 0 1-4.8 0zM21 13.5V24M18 24h6"/>' },
-    { id: 'minimal', name: 'Minimal', picks: ['slim', 'collarless'], line: 'Clean & understated',
-      icon: '<path d="M8 26C12 18 17 11 25 6M13 18c-3 0-5-2-5-5 3 0 5 2 5 5zM17 13c0-3 2-5 5-5 0 3-2 5-5 5zM18 16c3 0 5 2 5 5-3 0-5-2-5-5z"/>' },
+const OCCASIONS = [
+    { id: 'office',  name: 'Office',  picks: ['notch', 'collarless'],        line: 'Polished & professional' },
+    { id: 'event',   name: 'Event',   picks: ['peak', 'shawl', 'contrast'],  line: 'Elevated & impactful' },
+    { id: 'minimal', name: 'Minimal', picks: ['slim', 'collarless'],         line: 'Clean & understated' },
 ];
 
-/* ── Drawing ──────────────────────────────────────────────────────────────────
-   One left half (the wearer's right) on a 200 × 220 board, mirrored for the
-   other side. A dress form stands behind: brass cap, linen neck and chest. */
-const LEFT = {
-    notch: {
-        lapel:  'M86 54 L73 61 Q69 72 67 83 L72 89 L56 93 Q66 128 100 160 Q94 108 86 54 Z',
-        seams:  'M67 83 L72 89',
-    },
-    peak: {
-        lapel:  'M86 54 L73 61 Q70 72 68 84 L73 88 L46 78 Q58 124 100 160 Q94 108 86 54 Z',
-        seams:  'M68 84 L73 88',
-    },
-    shawl: {
-        lapel:  'M86 54 L74 60 Q56 92 62 116 Q74 142 100 160 Q94 108 86 54 Z',
-        seams:  '',
-    },
-    contrast: {
-        lapel:  'M86 54 L73 61 Q70 72 68 84 L73 88 L46 78 Q58 124 100 160 Q94 108 86 54 Z',
-        seams:  'M68 84 L73 88',
-    },
+/* ── Geometry ─────────────────────────────────────────────────────────────────
+   The wearer's right half (viewer's left) of a jacket front on a 240-wide
+   board, mirrored about x = 120. Every lapel is the same closed outline:
+
+     B  break point (top button)      r1 r2  roll line controls     N  roll at the neck
+     T  collar top at the side neck   k1 k2  collar edge controls   C  collar end
+     Gn notch (collar meets lapel)    P      lapel point            e1 e2 lapel edge controls
+     G2 where the gorge seam meets the roll line under the collar
+     bh lapel buttonhole (x1 y1 x2 y2, on the wearer's left lapel)
+     band  [top, low] of the collar behind the neck
+     seam / btn / satin  0..1 weights
+
+   Collarless collapses the whole lapel onto its round neckline, so changing
+   to or from it opens or folds the lapels away. */
+const ROLL = { B: [120, 176], r1: [114, 140], r2: [107, 86], N: [104, 44], T: [99, 33] };
+const PEAK = { ...ROLL,
+    k1: [96, 40], k2: [92, 50], C: [88, 57], Gn: [90, 63], P: [71, 55],
+    e1: [74, 94], e2: [100, 148], G2: [106, 58], bh: [79, 66, 86, 68.5],
+    band: [26, 36], seam: 1, btn: 1, satin: 0 };
+const SHAPES = {
+    notch: { ...ROLL,
+        k1: [96, 40], k2: [91, 52], C: [86, 60], Gn: [90, 67], P: [78, 72],
+        e1: [79, 102], e2: [103, 154], G2: [106, 60], bh: [84, 78.5, 91, 75.5],
+        band: [26, 36], seam: 1, btn: 1, satin: 0 },
+    peak: PEAK,
+    shawl: { ...ROLL,
+        k1: [94, 46], k2: [80, 68], C: [80, 92], Gn: [80, 92], P: [80, 92],
+        e1: [80, 116], e2: [102, 156], G2: [80, 92], bh: [86, 93, 93, 90.5],
+        band: [26, 36], seam: 0, btn: 1, satin: 0 },
+    collarless: {
+        B: [120, 64], r1: [110, 63], r2: [101, 52], N: [98, 41], T: [98, 41],
+        k1: [98, 41], k2: [98, 41], C: [98, 41], Gn: [98, 41], P: [98, 41],
+        e1: [101, 52], e2: [110, 63], G2: [98, 41], bh: [98, 41, 98, 41],
+        band: [35, 35], seam: 0, btn: 0, satin: 0 },
+    contrast: { ...PEAK, satin: 1 },
     slim: {
-        lapel:  'M86 54 L76 60 Q74 68 73 76 L77 81 L66 84 Q74 124 100 160 Q94 108 86 54 Z',
-        seams:  'M73 76 L77 81',
-    },
+        B: [120, 176], r1: [115, 140], r2: [108, 86], N: [105, 44], T: [100, 34],
+        k1: [97, 41], k2: [94, 49], C: [91, 56], Gn: [94, 62], P: [85, 66],
+        e1: [86, 98], e2: [106, 152], G2: [106, 58], bh: [89, 71.5, 95, 69.5],
+        band: [27, 36], seam: 1, btn: 1, satin: 0 },
 };
 
-let uid = 0;
-function drawLapel(id, fabricUrl) {
-    const k = `lp${++uid}`;
-    const half = LEFT[id];
-    const satin = id === 'contrast';
-    const fill = fabricUrl ? `url(#${k}-cloth)` : `url(#${k}-plain)`;
-    const lapelFill = satin ? `url(#${k}-satin)` : fill;
-    const opening = id === 'collarless'
-        ? 'M84 50 Q100 76 116 50 Z'                              // round neck, fronts meet
-        : 'M86 52 L100 160 L114 52 Z';                          // the V down to the button
-    const side = (body) => `<g>${body}</g><g transform="translate(200 0) scale(-1 1)">${body}</g>`;
-    const lapelGroup = half ? side(`
-        <path d="${half.lapel}" fill="${lapelFill}" />
-        <path d="${half.lapel}" fill="url(#${k}-shade)" />
-        <path d="${half.lapel}" class="ls-ink" />
-        ${half.seams ? `<path d="${half.seams}" class="ls-ink" />` : ''}
-        <path d="M86 56 Q91 104 98 150" class="ls-roll" />`) : '';
+const mx = (p) => [240 - p[0], p[1]];
+const pt = (p) => `${p[0].toFixed(2)},${p[1].toFixed(2)}`;
 
+function lapelPath(s, flip) {
+    const f = flip ? mx : (p) => p;
+    const q = (k) => pt(f(s[k]));
+    return `M${q('B')} C${q('r1')} ${q('r2')} ${q('N')} L${q('T')} C${q('k1')} ${q('k2')} ${q('C')}`
+         + ` L${q('Gn')} L${q('P')} C${q('e1')} ${q('e2')} ${q('B')} Z`;
+}
+function paths(s) {
+    const bandTop = s.band[0], bandLow = s.band[1];
+    return {
+        lapL: lapelPath(s, false),
+        lapR: lapelPath(s, true),
+        band: `M${pt(s.T)} Q120,${bandTop} ${pt(mx(s.T))} L${pt(mx(s.N))} Q120,${bandLow} ${pt(s.N)} Z`,
+        open: `M${pt(s.N)} C${pt(s.r2)} ${pt(s.r1)} ${pt(s.B)} C${pt(mx(s.r1))} ${pt(mx(s.r2))} ${pt(mx(s.N))}`
+            + ` Q120,${(s.N[1] - 4).toFixed(2)} ${pt(s.N)} Z`,
+        front: `M${pt(s.B)} L120,262`,
+        gorge: `M${pt(s.Gn)} L${pt(s.G2)} M${pt(mx(s.Gn))} L${pt(mx(s.G2))}`,
+        bh: `M${pt(mx([s.bh[0], s.bh[1]]))} L${pt(mx([s.bh[2], s.bh[3]]))}`,
+    };
+}
+
+/* The parts of the flat that never change: neck form, coat, sleeves, pockets. */
+const STATIC_BACK = `
+  <rect x="106" y="12" width="28" height="38" class="lf-form"/>
+  <path d="M106 12 L106 46 M134 12 L134 46" class="lf-detail"/>
+  <ellipse cx="120" cy="12" rx="14" ry="3" class="lf-cap"/>`;
+const COAT = 'M120,262 L30,262 L33,104 C34,80 38,62 46,56 L98,40 Q120,33 142,40 L194,56 C202,62 206,80 207,104 L210,262 Z';
+const STATIC_FRONT = `
+  <path d="M46 56 C54 78 57 108 55 136 C56 180 57 220 56 262 M194 56 C186 78 183 108 185 136 C184 180 183 220 184 262" class="lf-detail"/>
+  <path d="M92 188 L90 250 M148 188 L150 250" class="lf-detail lf-faint"/>
+  <path d="M155 145 L179 141 L179 145.5 L155 149.5 Z" class="lf-line lf-thin"/>
+  <path d="M66 229 L103 228 L103 238 Q84 240 66 239 Z M174 229 L137 228 L137 238 Q156 240 174 239 Z" class="lf-line lf-thin"/>`;
+
+let uid = 0;
+function flat(s, cls) {
+    const k = `lf${++uid}`;
+    const d = paths(s);
     return `
-<svg viewBox="14 8 172 196" class="ls-drawing" role="img" aria-label="${LAPELS.find(l => l.id === id).name}">
+<svg class="lf ${cls}" viewBox="${cls === 'lf-thumb' ? '38 20 164 116' : '22 4 196 240'}" aria-hidden="true">
   <defs>
-    ${fabricUrl ? `<pattern id="${k}-cloth" patternUnits="userSpaceOnUse" width="70" height="70">
-        <image href="${fabricUrl}" width="70" height="70" preserveAspectRatio="xMidYMid slice"/></pattern>` : ''}
-    <linearGradient id="${k}-plain" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#3b3a36"/><stop offset="1" stop-color="#262522"/></linearGradient>
     <linearGradient id="${k}-satin" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#2b2b2b"/><stop offset=".45" stop-color="#0e0e0e"/>
-        <stop offset=".6" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></linearGradient>
-    <linearGradient id="${k}-shade" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".7" stop-color="#fff" stop-opacity=".06"/>
-        <stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>
-    <linearGradient id="${k}-body" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".3" stop-color="#000" stop-opacity="0"/>
-        <stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
-    <linearGradient id="${k}-brass" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#8a6a32"/><stop offset=".45" stop-color="#e2c27f"/><stop offset="1" stop-color="#7a5a26"/></linearGradient>
+      <stop offset="0" stop-color="#3a3a3a"/><stop offset=".42" stop-color="#121212"/>
+      <stop offset=".58" stop-color="#2e2e2e"/><stop offset="1" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <filter id="${k}-lift" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="1.1" stdDeviation="1.1" flood-color="#000" flood-opacity=".16"/>
+    </filter>
   </defs>
-  <!-- dress form -->
-  <path d="M84 22 L84 50 Q72 54 60 60 L140 60 Q128 54 116 50 L116 22 Z" class="ls-form"/>
-  <ellipse cx="100" cy="22" rx="17" ry="4.5" fill="url(#${k}-brass)"/>
-  <path d="M83 22 L83 16 Q100 10 117 16 L117 22" fill="url(#${k}-brass)"/>
-  <!-- the coat -->
-  <path d="M22 220 L24 98 Q26 72 52 63 L84 50 L100 62 L116 50 L148 63 Q174 72 176 98 L178 220 Z" fill="${fill}"/>
-  <path d="M22 220 L24 98 Q26 72 52 63 L84 50 L100 62 L116 50 L148 63 Q174 72 176 98 L178 220 Z" fill="url(#${k}-body)"/>
-  <path d="${opening}" class="ls-form"/>
-  <path d="M22 220 L24 98 Q26 72 52 63 L84 50 M116 50 L148 63 Q174 72 176 98 L178 220" class="ls-ink"/>
-  <path d="${id === 'collarless' ? 'M84 50 Q100 76 116 50 M100 63 L100 220' : 'M86 52 L100 160 L114 52 M100 160 L100 220'}" class="ls-ink"/>
-  <path d="M52 63 Q46 90 50 120 M148 63 Q154 90 150 120" class="ls-seam"/>
-  <path d="M132 112 L154 109" class="ls-ink ls-welt"/>
-  <path d="M40 180 L68 178 M132 178 L160 180" class="ls-ink ls-welt"/>
-  ${lapelGroup}
-  ${id === 'collarless'
-      ? ''
-      : `<circle cx="100" cy="167" r="3.6" class="ls-button"/><circle cx="99" cy="166" r="1" fill="#fff" opacity=".35"/>`}
+  <path data-p="band" d="${d.band}" class="lf-cloth lf-line"/>
+  <path data-p="band" d="${d.band}" class="lf-satin" fill="url(#${k}-satin)" style="opacity:${s.satin}"/>
+  ${STATIC_BACK}
+  <path d="${COAT}" class="lf-cloth lf-line"/>
+  ${STATIC_FRONT}
+  <path data-p="open" d="${d.open}" class="lf-form"/>
+  <path data-p="front" d="${d.front}" class="lf-line"/>
+  <g filter="url(#${k}-lift)">
+    <path data-p="lapL" d="${d.lapL}" class="lf-cloth"/>
+    <path data-p="lapR" d="${d.lapR}" class="lf-cloth"/>
+  </g>
+  <path data-p="lapL" d="${d.lapL}" class="lf-satin" fill="url(#${k}-satin)" style="opacity:${s.satin}"/>
+  <path data-p="lapR" d="${d.lapR}" class="lf-satin" fill="url(#${k}-satin)" style="opacity:${s.satin}"/>
+  <path data-p="lapL" d="${d.lapL}" class="lf-line"/>
+  <path data-p="lapR" d="${d.lapR}" class="lf-line"/>
+  <path data-p="gorge" d="${d.gorge}" class="lf-line lf-thin" style="opacity:${s.seam}"/>
+  <path data-p="bh" d="${d.bh}" class="lf-line lf-hole" style="opacity:${s.btn}"/>
+  <g class="lf-button" style="opacity:${s.btn}" transform="translate(120 ${s.B[1] + 7})">
+    <circle r="3.4" class="lf-btn"/><circle r="2.1" class="lf-btn-rim"/>
+  </g>
 </svg>`;
 }
 
-/* ── Styles ── */
+/* ── Morph ── */
+function lerp(a, b, t) {
+    if (Array.isArray(a)) return a.map((v, i) => lerp(v, b[i], t));
+    return a + (b - a) * t;
+}
+function mix(a, b, t) {
+    const o = {};
+    for (const key in a) o[key] = lerp(a[key], b[key], t);
+    return o;
+}
+function apply(svg, s) {
+    const d = paths(s);
+    svg.querySelectorAll('[data-p]').forEach(el => el.setAttribute('d', d[el.dataset.p]));
+    svg.querySelectorAll('.lf-satin').forEach(el => el.style.opacity = s.satin);
+    svg.querySelector('[data-p="gorge"]').style.opacity = s.seam;
+    svg.querySelector('[data-p="bh"]').style.opacity = s.btn;
+    const b = svg.querySelector('.lf-button');
+    b.style.opacity = s.btn;
+    b.setAttribute('transform', `translate(120 ${(s.B[1] + 7).toFixed(2)})`);
+}
+const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+/* ── Styles: the House's grey glass, Times, spaced capitals, square corners ── */
 const css = `
 .design-lapel-btn {
     position: absolute; bottom: 9.2rem; right: 1.4rem; z-index: 5;
-    background: rgba(255,255,255,0.82); border: 1px solid #ccc;
-    color: #666; font-family: "Times New Roman", serif;
-    font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase;
+    background: rgba(255,255,255,0.82); border: 1px solid #ccc; color: #666;
+    font-family: "Times New Roman", serif; font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase;
     padding: 0.52rem 1.1rem; cursor: pointer; border-radius: 2px; transition: all 0.2s;
 }
 .design-lapel-btn:hover { background: #fff; border-color: #999; color: #1a1a1a; }
-.design-lapel-btn.active { background: rgba(100,70,0,0.08); border-color: rgba(100,70,0,0.45); color: rgba(100,70,0,0.85); }
-.design-lapel-btn em { font-style: italic; text-transform: none; letter-spacing: 1px; color: #8a6a32; }
-html.kd-lapel-open .kd-m2-jump { display: none !important; }
+.design-lapel-btn.active { background: rgba(26,26,26,0.06); border-color: #1a1a1a; color: #1a1a1a; }
+.design-lapel-btn em { font-style: italic; text-transform: none; letter-spacing: 1px; }
 
-.lapel-atelier {
-    --ivory: #f6f1e6; --paper: #fbf8f1; --ink: #1d1c1a; --soft: #6b6457;
-    --gold: #a8844a; --gold-l: #d9bf8c; --plaque: #1f2a24;
-    position: absolute; inset: 0; z-index: 12; display: flex; flex-direction: column;
-    background: var(--ivory); color: var(--ink); border-radius: 4px; overflow: hidden;
-    font-family: "Times New Roman", Times, serif;
-    opacity: 0; visibility: hidden; transform: translateY(10px);
-    transition: opacity .35s ease, transform .35s ease, visibility 0s .35s;
+.lapel-glass {
+    position: absolute; z-index: 9; top: 4.4rem; left: 1.1rem;
+    width: min(400px, calc(100% - 2.2rem)); max-height: calc(100% - 5.5rem);
+    display: flex; flex-direction: column; overflow: hidden;
+    border-radius: 4px; border: 1px solid rgba(0,0,0,0.09);
+    background: #eeeeee;
+    background: rgba(238,238,238,0.74);
+    -webkit-backdrop-filter: blur(20px) saturate(140%); backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: 0 18px 48px rgba(0,0,0,0.12);
+    font-family: "Times New Roman", Times, serif; color: #1a1a1a;
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity .3s ease, transform .3s ease, visibility 0s .3s;
 }
-.lapel-atelier.open { opacity: 1; visibility: visible; transform: none; transition: opacity .35s ease, transform .35s ease; }
-.lapel-atelier::before {                         /* the double hairline frame */
-    content: ''; position: absolute; inset: 10px; pointer-events: none;
-    border: 1px solid var(--gold-l); outline: 1px solid rgba(168,132,74,.35); outline-offset: 4px;
-}
-.la-scroll { flex: 1; overflow-y: auto; padding: 1.6rem 1.9rem 1.4rem; position: relative; }
-.la-head { text-align: center; margin-bottom: 1.1rem; }
-.la-head .la-kicker { font-size: 1rem; letter-spacing: 6px; text-transform: uppercase; color: var(--gold); }
-.la-head h3 { font-size: 2.1rem; font-weight: 400; letter-spacing: 7px; text-transform: uppercase; margin: .25rem 0; color: var(--plaque); }
-.la-head .la-sub { font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; color: var(--soft);
-    display: flex; align-items: center; gap: .8rem; justify-content: center; }
-.la-head .la-sub::before, .la-head .la-sub::after { content: ''; width: 3rem; height: 1px; background: var(--gold-l); }
+.lapel-glass.open { opacity: 1; visibility: visible; transform: none; transition: opacity .3s ease, transform .3s ease; }
+.lg-head { display: flex; align-items: center; justify-content: space-between; padding: .95rem 1.2rem .35rem; }
+.lg-title { margin: 0; font-weight: 400; font-size: 1.25rem; letter-spacing: 5px; text-transform: uppercase; }
+.lg-close { background: rgba(255,255,255,0.6); border: 1px solid #d4d4d4; color: #555; width: 2.3rem; height: 2.3rem;
+    border-radius: 50%; font-size: 1.35rem; line-height: 1; cursor: pointer; transition: .2s; }
+.lg-close:hover { background: #fff; border-color: #999; color: #1a1a1a; }
+.lg-body { overflow-y: auto; padding: .3rem 1.1rem 1.1rem; }
 
-.la-study { display: grid; grid-template-columns: minmax(150px, 220px) 1fr; gap: 1.4rem; align-items: center;
-    background: var(--paper); border: 1px solid rgba(168,132,74,.35); padding: 1rem 1.3rem; margin-bottom: 1.2rem; }
-.la-study .ls-drawing { width: 100%; height: auto; display: block; }
-.la-study h4 { margin: 0; font-weight: 400; font-size: 1.6rem; letter-spacing: 4px; text-transform: uppercase; color: var(--plaque); }
-.la-study .la-vibe { font-style: italic; font-size: 1.25rem; color: var(--gold); margin: .2rem 0 .6rem; }
-.la-study p { margin: 0; font-size: 1.08rem; line-height: 1.55; color: #3d3a34; }
-.la-study .la-cut { margin-top: .7rem; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); }
+.lg-study { display: grid; grid-template-columns: 50% 1fr; gap: .9rem; align-items: center; }
+.lg-study .lf { width: 100%; height: auto; display: block; }
+.lg-study.ink .lf { animation: lg-ink 1s cubic-bezier(.4,.1,.2,1) both; }
+@keyframes lg-ink { from { clip-path: inset(0 0 100% 0); opacity: .2; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+.lg-cap { transition: opacity .25s; }
+.lg-cap.fade { opacity: 0; }
+.lg-name { margin: 0; font-weight: 400; font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; }
+.lg-mood { margin: .15rem 0 .7rem; font-style: italic; font-size: 1.1rem; color: #777; }
+.lg-note { margin: 0; font-size: 1rem; line-height: 1.55; color: #4a4a4a; }
+.lg-cut  { margin: .75rem 0 0; padding-top: .6rem; border-top: 1px solid rgba(0,0,0,0.1);
+    font-size: 1rem; letter-spacing: 1px; color: #888; }
 
-.la-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.1rem .9rem; }
-.la-card { background: none; border: 0; padding: 0; cursor: pointer; text-align: center; color: inherit; font: inherit;
-    transition: opacity .3s, filter .3s; }
-.la-card .la-frame { position: relative; background: var(--paper); border: 1px solid rgba(168,132,74,.28);
-    padding: .5rem .5rem 0; transition: border-color .25s, box-shadow .25s, transform .25s; }
-.la-card .la-frame::before { content: ''; position: absolute; inset: 0 22% auto; height: 46%;
-    border: 1px solid rgba(168,132,74,.18); border-bottom: 0; border-radius: 50% 50% 0 0 / 30% 30% 0 0; pointer-events: none; }
-.la-card .ls-drawing { width: 100%; height: auto; display: block; position: relative; }
-.la-card:hover .la-frame { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 18px -12px rgba(60,45,20,.5); }
-.la-card .la-plaque { display: inline-block; margin-top: -1.1rem; position: relative; background: var(--plaque); color: #f1e6cf;
-    border: 1px solid var(--gold-l); outline: 1px solid var(--plaque); padding: .32rem .9rem;
-    font-size: 1rem; letter-spacing: 2.5px; text-transform: uppercase; white-space: nowrap; }
-.la-card .la-word { display: block; font-style: italic; font-size: 1.1rem; color: var(--soft); margin-top: .35rem; }
-.la-card.selected .la-frame { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold), 0 10px 22px -14px rgba(60,45,20,.6); }
-.la-card.selected .la-plaque { background: var(--gold); color: #fff; border-color: #f1e1bd; outline-color: var(--gold); }
-.la-card.selected .la-word { color: var(--gold); }
-.la-card .la-tick { position: absolute; top: .45rem; right: .5rem; width: 1.5rem; height: 1.5rem; border-radius: 50%;
-    background: var(--gold); color: #fff; display: grid; place-items: center; font-size: 1rem; opacity: 0; transform: scale(.6); transition: .25s; }
-.la-card.selected .la-tick { opacity: 1; transform: none; }
-.la-card .la-ascut { position: absolute; top: .5rem; left: .6rem; font-size: 1rem; font-style: italic; color: var(--gold); }
-.la-grid.vibing .la-card:not(.fits) { opacity: .32; filter: grayscale(.8); }
+.lg-rule { height: 1px; background: rgba(0,0,0,0.1); margin: 1rem 0 .9rem; }
+.lg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .55rem; }
+.lg-opt { background: rgba(255,255,255,0.42); border: 1px solid rgba(0,0,0,0.07); border-radius: 2px;
+    padding: .45rem .35rem .4rem; cursor: pointer; color: #777; font: inherit; text-align: center;
+    transition: background .2s, border-color .2s, color .2s, opacity .3s; }
+.lg-opt .lf { width: 100%; height: auto; display: block; }
+.lg-opt span { display: block; margin-top: .2rem; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase; }
+.lg-opt:hover { background: rgba(255,255,255,0.75); border-color: #bbb; color: #1a1a1a; }
+.lg-opt.on { background: #fff; border-color: #1a1a1a; color: #1a1a1a; }
+.lg-opt:focus-visible, .lg-occ button:focus-visible, .lg-close:focus-visible { outline: 1px solid #1a1a1a; outline-offset: 2px; }
+.lg-grid.filtered .lg-opt:not(.fits) { opacity: .32; }
 
-.la-vibes { margin-top: 1.3rem; border: 1px solid rgba(168,132,74,.35); background: var(--paper); padding: .9rem 1rem 1rem; }
-.la-vibes .la-sub { margin-bottom: .7rem; font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; color: var(--plaque);
-    display: flex; align-items: center; gap: .8rem; justify-content: center; }
-.la-vibes .la-sub::before, .la-vibes .la-sub::after { content: '✦'; color: var(--gold); font-size: .8rem; }
-.la-vibe-row { display: grid; grid-template-columns: repeat(3, 1fr); }
-.la-vibe-btn { background: none; border: 0; border-left: 1px solid rgba(168,132,74,.3); cursor: pointer; color: inherit;
-    font: inherit; padding: .3rem .4rem; text-align: center; transition: background .25s; }
-.la-vibe-btn:first-child { border-left: 0; }
-.la-vibe-btn svg { width: 2.6rem; height: 2.6rem; padding: .45rem; border: 1px solid var(--gold); border-radius: 50%;
-    fill: none; stroke: var(--plaque); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; transition: .25s; }
-.la-vibe-btn b { display: block; font-weight: 400; font-size: 1.15rem; letter-spacing: 3px; text-transform: uppercase; margin-top: .3rem; }
-.la-vibe-btn i { display: block; font-size: 1.05rem; color: var(--soft); }
-.la-vibe-btn:hover { background: rgba(168,132,74,.07); }
-.la-vibe-btn.on svg { background: var(--plaque); stroke: var(--gold-l); border-color: var(--plaque); }
-.la-vibe-btn.on b { color: var(--gold); }
+.lg-occ { display: flex; align-items: center; justify-content: center; gap: .4rem; flex-wrap: wrap; }
+.lg-occ-label { width: 100%; text-align: center; margin: 0 0 .5rem; font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; color: #888; }
+/* the same box as the Fair / Medium / Tan / Dark buttons */
+.lg-occ button { background: rgba(245,245,245,0.8); border: 1px solid #ddd; color: #555; font-family: inherit;
+    font-size: 1.05rem; letter-spacing: 2px; text-transform: uppercase; padding: .25rem .85rem; border-radius: 2px;
+    cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
+.lg-occ button:hover { background: #fff; border-color: #bbb; color: #1a1a1a; }
+.lg-occ button.on { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+.lg-occ-line { width: 100%; text-align: center; margin: .5rem 0 0; min-height: 1.5em; font-style: italic; font-size: 1.05rem; color: #777; }
 
-.la-foot { display: flex; justify-content: space-between; align-items: center; gap: .8rem;
-    padding: .8rem 1.9rem 1.2rem; background: var(--ivory); border-top: 1px solid rgba(168,132,74,.3); position: relative; }
-.la-foot .la-chosen { font-size: 1.1rem; color: var(--soft); }
-.la-foot .la-chosen strong { font-weight: 400; color: var(--plaque); letter-spacing: 2px; text-transform: uppercase; }
-.la-btn { font-family: inherit; font-size: 1.05rem; letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
-    padding: .6rem 1.3rem; border-radius: 2px; transition: .2s; }
-.la-btn.ghost { background: none; border: 1px solid rgba(29,28,26,.35); color: var(--ink); }
-.la-btn.ghost:hover { border-color: var(--ink); }
-.la-btn.solid { background: var(--plaque); border: 1px solid var(--plaque); color: #f1e6cf; }
-.la-btn.solid:hover { background: #000; }
-
-.ls-form  { fill: #ece3d3; stroke: #b9ab92; stroke-width: .8; }
-.ls-ink   { fill: none; stroke: rgba(20,18,15,.85); stroke-width: 1.1; stroke-linejoin: round; stroke-linecap: round; }
-.ls-welt  { stroke-width: 1.4; }
-.ls-seam  { fill: none; stroke: rgba(255,255,255,.28); stroke-width: .8; stroke-dasharray: 2 2.2; }
-.ls-roll  { fill: none; stroke: rgba(255,255,255,.18); stroke-width: .8; }
-.ls-button{ fill: #1a1714; stroke: #b08d57; stroke-width: .9; }
+/* the flat: ink on paper */
+.lf-cloth  { fill: #fbfbfa; }
+.lf-form   { fill: #e4e2de; }
+.lf-cap    { fill: #d2cfca; stroke: #9a968f; stroke-width: .8px; vector-effect: non-scaling-stroke; }
+.lf-line   { fill: none; stroke: #1a1a1a; stroke-width: 1.25px; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.lf-cloth.lf-line { fill: #fbfbfa; }
+.lf-thin   { stroke-width: .9px; }
+.lf-hole   { stroke-width: 1.6px; }
+.lf-detail { fill: none; stroke: #1a1a1a; stroke-opacity: .5; stroke-width: .8px; vector-effect: non-scaling-stroke; }
+.lf-faint  { stroke-opacity: .28; stroke-dasharray: 3 3; }
+.lf-btn     { fill: #1a1a1a; }
+.lf-btn-rim { fill: none; stroke: #fff; stroke-opacity: .25; stroke-width: .6px; vector-effect: non-scaling-stroke; }
+.lf-thumb .lf-line { stroke-width: 1px; }
+.lf-thumb .lf-thin, .lf-thumb .lf-detail { stroke-width: .7px; }
 
 @media (max-width: 768px) {
-    .lapel-atelier { position: fixed; inset: 0; z-index: 2000; border-radius: 0; }
-    .la-scroll { padding: 1.4rem 1.2rem 1rem; }
-    .la-head h3 { font-size: 1.6rem; letter-spacing: 5px; }
-    .la-study { grid-template-columns: 130px 1fr; gap: .9rem; padding: .8rem; }
-    .la-study h4 { font-size: 1.25rem; letter-spacing: 3px; }
-    .la-study p { font-size: 1rem; }
-    .la-grid { grid-template-columns: repeat(3, 1fr); gap: .7rem .5rem; }
-    .la-card .la-plaque { letter-spacing: 1px; padding: .3rem .45rem; white-space: normal; }
-    .la-card .la-ascut { display: none; }
-    .la-vibe-btn b { letter-spacing: 1.5px; font-size: 1rem; }
-    .la-vibe-btn i { font-size: 1rem; }
-    .la-foot { padding: .7rem 1.2rem 1rem; flex-wrap: wrap; }
-    .la-foot .la-chosen { flex-basis: 100%; }
-    .la-foot .la-btn { flex: 1; letter-spacing: 2px; }
+    .lapel-glass { position: fixed; z-index: 2000; top: auto; left: 0; right: 0; bottom: 0; width: auto;
+        max-height: 80vh; border-radius: 4px 4px 0 0; border-bottom: 0; transform: translateY(24px);
+        background: rgba(240,240,240,0.9); }
+    .lg-body { padding: .2rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); }
+    .lg-study { grid-template-columns: 42% 1fr; gap: .8rem; }
+    .lg-name { font-size: 1.15rem; letter-spacing: 3px; }
+    .lg-mood { margin-bottom: .45rem; }
+    .lg-opt span { letter-spacing: 1px; }
     .design-lapel-btn { font-size: .6rem; letter-spacing: .8px; padding: .1rem .28rem; transform: scale(.85); transform-origin: bottom right; }
 }
+html.kd-lapel-open .kd-m2-jump { display: none !important; }
 html.kd-m2 .viewer-panel .design-lapel-btn { transform: scale(.65) !important; transform-origin: bottom right !important; bottom: 5.2rem !important; }
 html.kd-m3 .viewer-panel .design-lapel-btn { transform: none !important; font-size: .8rem !important; letter-spacing: 1.5px !important;
     padding: .55rem 0 !important; width: 10.4rem !important; text-align: center !important; right: .8rem !important; bottom: 7.6rem !important; }
-@media (prefers-reduced-motion: reduce) { .lapel-atelier, .la-card, .la-card .la-frame { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+    .lapel-glass, .lg-opt, .lg-cap { transition: none; }
+    .lg-study.ink .lf { animation: none; }
+}
 `;
 
 /* ── State ── */
 let chosen = AS_CUT;
-try { const s = localStorage.getItem(STORE); if (LAPELS.some(l => l.id === s)) chosen = s; } catch (e) {}
-let vibe = null;
-let fabricUrl = '';
+try { const s = localStorage.getItem(STORE); if (SHAPES[s]) chosen = s; } catch (e) {}
+let occasion = null;
 
-function currentFabric() {
-    const a = document.querySelector('.fabric-list .swatch-card.active');
-    return a?.dataset.texture ? a.dataset.texture.split('#')[0] : '';
-}
-
-/* ── Build ── */
 function build() {
     if (!panel) return;
     const style = document.createElement('style');
@@ -275,160 +301,167 @@ function build() {
     btn.id = 'design-lapel-btn';
     btn.type = 'button';
     btn.setAttribute('aria-haspopup', 'dialog');
+    btn.setAttribute('aria-expanded', 'false');
     panel.appendChild(btn);
 
-    const room = document.createElement('div');
-    room.className = 'lapel-atelier';
-    room.setAttribute('role', 'dialog');
-    room.setAttribute('aria-modal', 'true');
-    room.setAttribute('aria-label', 'Choose the lapel');
-    room.innerHTML = `
-      <div class="la-scroll">
-        <header class="la-head">
-          <div class="la-kicker">The House of Scion · Atelier</div>
-          <h3>The Lapel</h3>
-          <div class="la-sub">and the look each creates</div>
-        </header>
-        <section class="la-study" aria-live="polite"></section>
-        <div class="la-grid" role="radiogroup" aria-label="Lapel">
+    const glass = document.createElement('div');
+    glass.className = 'lapel-glass';
+    glass.setAttribute('role', 'dialog');
+    glass.setAttribute('aria-labelledby', 'lg-title');
+    glass.innerHTML = `
+      <div class="lg-head">
+        <h3 class="lg-title" id="lg-title">Lapel</h3>
+        <button type="button" class="lg-close" aria-label="Close lapel">&times;</button>
+      </div>
+      <div class="lg-body">
+        <div class="lg-study">
+          ${flat(SHAPES[chosen], 'lf-study')}
+          <div class="lg-cap" aria-live="polite">
+            <h4 class="lg-name"></h4>
+            <p class="lg-mood"></p>
+            <p class="lg-note"></p>
+            <p class="lg-cut"></p>
+          </div>
+        </div>
+        <div class="lg-rule"></div>
+        <div class="lg-grid" role="radiogroup" aria-label="Lapel">
           ${LAPELS.map(l => `
-            <button type="button" class="la-card" role="radio" data-id="${l.id}">
-              <div class="la-frame">
-                ${l.id === AS_CUT ? '<span class="la-ascut">as cut</span>' : ''}
-                <span class="la-tick" aria-hidden="true">✓</span>
-                <div class="la-art"></div>
-              </div>
-              <span class="la-plaque">${l.name}</span>
-              <span class="la-word">${l.vibe}</span>
+            <button type="button" class="lg-opt" role="radio" data-id="${l.id}" aria-label="${l.full}">
+              ${flat(SHAPES[l.id], 'lf-thumb')}
+              <span>${l.name}</span>
             </button>`).join('')}
         </div>
-        <section class="la-vibes">
-          <div class="la-sub">Choose by vibe</div>
-          <div class="la-vibe-row">
-            ${VIBES.map(v => `
-              <button type="button" class="la-vibe-btn" data-vibe="${v.id}" aria-pressed="false">
-                <svg viewBox="0 0 32 32" aria-hidden="true">${v.icon}</svg>
-                <b>${v.name}</b>
-                <i>${v.picks.map(p => LAPELS.find(l => l.id === p).name.split(' ')[0]).join(' or ')}</i>
-              </button>`).join('')}
-          </div>
-        </section>
-      </div>
-      <footer class="la-foot">
-        <span class="la-chosen"></span>
-        <button type="button" class="la-btn ghost" data-act="close">← 3D View</button>
-        <button type="button" class="la-btn solid" data-act="done">Keep this lapel</button>
-      </footer>`;
-    panel.appendChild(room);
+        <div class="lg-rule"></div>
+        <div class="lg-occ">
+          <p class="lg-occ-label">By occasion</p>
+          ${OCCASIONS.map(o => `<button type="button" data-occ="${o.id}" aria-pressed="false">${o.name}</button>`).join('')}
+          <p class="lg-occ-line"></p>
+        </div>
+      </div>`;
+    panel.appendChild(glass);
 
-    const grid  = room.querySelector('.la-grid');
-    const study = room.querySelector('.la-study');
-    const label = room.querySelector('.la-chosen');
+    const study = glass.querySelector('.lg-study');
+    const studySvg = study.querySelector('svg');
+    const cap = glass.querySelector('.lg-cap');
+    const grid = glass.querySelector('.lg-grid');
+    const occLine = glass.querySelector('.lg-occ-line');
 
-    function paintArt() {
-        fabricUrl = currentFabric();
-        grid.querySelectorAll('.la-card').forEach(c => {
-            c.querySelector('.la-art').innerHTML = drawLapel(c.dataset.id, fabricUrl);
-        });
-        paintStudy();
+    let shown = SHAPES[chosen];   // what the study drawing currently shows
+    let raf = 0;
+    function morphTo(target) {
+        cancelAnimationFrame(raf);
+        const from = shown;
+        if (STILL) { shown = target; apply(studySvg, target); return; }
+        const t0 = performance.now(), dur = 720;
+        const step = (now) => {
+            const t = Math.min(1, (now - t0) / dur);
+            shown = mix(from, target, ease(t));
+            apply(studySvg, shown);
+            if (t < 1) raf = requestAnimationFrame(step);
+        };
+        raf = requestAnimationFrame(step);
     }
-    function paintStudy() {
+
+    function caption(immediate) {
         const l = LAPELS.find(x => x.id === chosen);
-        study.innerHTML = `
-            ${drawLapel(l.id, fabricUrl)}
-            <div>
-              <h4>${l.name}</h4>
-              <div class="la-vibe">${l.vibe}</div>
-              <p>${l.note}</p>
-              <div class="la-cut">${l.id === AS_CUT ? 'As cut on the 3D model' : 'Made to order · the 3D model shows the design as cut'}</div>
-            </div>`;
+        const write = () => {
+            cap.querySelector('.lg-name').textContent = l.full;
+            cap.querySelector('.lg-mood').textContent = l.mood;
+            cap.querySelector('.lg-note').textContent = l.note;
+            cap.querySelector('.lg-cut').textContent = l.id === AS_CUT ? 'As cut on the 3D model' : 'Made to order';
+            cap.classList.remove('fade');
+        };
+        if (immediate || STILL) return write();
+        cap.classList.add('fade');
+        setTimeout(write, 220);
     }
-    function paintChoice() {
-        grid.querySelectorAll('.la-card').forEach(c => {
-            const on = c.dataset.id === chosen;
-            c.classList.toggle('selected', on);
-            c.setAttribute('aria-checked', on);
+
+    function paintChoice(immediate) {
+        grid.querySelectorAll('.lg-opt').forEach(o => {
+            const on = o.dataset.id === chosen;
+            o.classList.toggle('on', on);
+            o.setAttribute('aria-checked', on);
+            o.tabIndex = on ? 0 : -1;
         });
         const l = LAPELS.find(x => x.id === chosen);
-        label.innerHTML = `Lapel &nbsp;<strong>${l.name}</strong>`;
-        btn.innerHTML = `Lapel · <em>${l.name.split(' ')[0]}</em>`;
-        btn.classList.toggle('active', chosen !== AS_CUT);
-        window.KD_DESIGN_DETAILS = Object.assign(window.KD_DESIGN_DETAILS || {}, { lapel: { id: l.id, name: l.name } });
-        paintStudy();
+        btn.innerHTML = `Lapel · <em>${l.name}</em>`;
+        btn.classList.toggle('active', glass.classList.contains('open'));
+        window.KD_DESIGN_DETAILS = Object.assign(window.KD_DESIGN_DETAILS || {}, { lapel: { id: l.id, name: l.full } });
+        caption(immediate);
     }
-    function paintVibe() {
-        const v = VIBES.find(x => x.id === vibe);
-        grid.classList.toggle('vibing', !!v);
-        grid.querySelectorAll('.la-card').forEach(c => c.classList.toggle('fits', !!v && v.picks.includes(c.dataset.id)));
-        room.querySelectorAll('.la-vibe-btn').forEach(b => {
-            const on = b.dataset.vibe === vibe;
+
+    function paintOccasion() {
+        const o = OCCASIONS.find(x => x.id === occasion);
+        grid.classList.toggle('filtered', !!o);
+        grid.querySelectorAll('.lg-opt').forEach(b => b.classList.toggle('fits', !!o && o.picks.includes(b.dataset.id)));
+        glass.querySelectorAll('[data-occ]').forEach(b => {
+            const on = b.dataset.occ === occasion;
             b.classList.toggle('on', on);
             b.setAttribute('aria-pressed', on);
-            b.querySelector('i').textContent = on ? VIBES.find(x => x.id === b.dataset.vibe).line
-                : VIBES.find(x => x.id === b.dataset.vibe).picks.map(p => LAPELS.find(l => l.id === p).name.split(' ')[0]).join(' or ');
         });
+        occLine.textContent = o
+            ? `${o.line} · ${o.picks.map(p => LAPELS.find(l => l.id === p).name).join(', ')}`
+            : '';
     }
 
     function choose(id) {
+        if (id === chosen) return;
         chosen = id;
         try { localStorage.setItem(STORE, id); } catch (e) {}
+        morphTo(SHAPES[id]);
         paintChoice();
         document.dispatchEvent(new CustomEvent('kd:lapel', { detail: { sku, lapel: id } }));
     }
+
     let lastFocus = null;
-    function open() {
+    function open(fromKeys) {
         lastFocus = document.activeElement;
         document.getElementById('fabric-preview')?.classList.remove('visible');
-        paintArt();
-        room.classList.add('open');
+        glass.classList.add('open');
         document.documentElement.classList.add('kd-lapel-open');
         btn.setAttribute('aria-expanded', 'true');
-        room.querySelector('.la-card.selected')?.focus({ preventScroll: true });
+        btn.classList.add('active');
+        study.classList.remove('ink'); void study.offsetWidth; study.classList.add('ink');   // the pen draws it in
+        if (fromKeys) grid.querySelector('.lg-opt.on')?.focus({ preventScroll: true });
     }
     function close() {
-        room.classList.remove('open');
+        glass.classList.remove('open');
         document.documentElement.classList.remove('kd-lapel-open');
         btn.setAttribute('aria-expanded', 'false');
-        lastFocus?.focus?.({ preventScroll: true });
+        btn.classList.remove('active');
+        if (lastFocus && lastFocus !== document.body) lastFocus.focus?.({ preventScroll: true });
     }
 
-    btn.addEventListener('click', (e) => { e.stopPropagation(); room.classList.contains('open') ? close() : open(); });
-    room.addEventListener('click', (e) => {
+    btn.addEventListener('click', (e) => { e.stopPropagation(); glass.classList.contains('open') ? close() : open(e.detail === 0); });
+    glass.addEventListener('click', (e) => {
         e.stopPropagation();
-        const card = e.target.closest('.la-card');
-        if (card) return choose(card.dataset.id);
-        const vb = e.target.closest('.la-vibe-btn');
-        if (vb) { vibe = vibe === vb.dataset.vibe ? null : vb.dataset.vibe; return paintVibe(); }
-        const act = e.target.closest('[data-act]')?.dataset.act;
-        if (act) close();
+        const opt = e.target.closest('.lg-opt');
+        if (opt) return choose(opt.dataset.id);
+        const occ = e.target.closest('[data-occ]');
+        if (occ) { occasion = occasion === occ.dataset.occ ? null : occ.dataset.occ; return paintOccasion(); }
+        if (e.target.closest('.lg-close')) close();
     });
     // arrow keys move through the six, like a radio group
     grid.addEventListener('keydown', (e) => {
-        const cards = [...grid.querySelectorAll('.la-card')];
-        const i = cards.indexOf(document.activeElement);
-        if (i < 0) return;
+        const opts = [...grid.querySelectorAll('.lg-opt')];
+        const i = opts.indexOf(document.activeElement);
         const step = { ArrowRight: 1, ArrowDown: 3, ArrowLeft: -1, ArrowUp: -3 }[e.key];
-        if (!step) return;
+        if (i < 0 || !step) return;
         e.preventDefault();
-        const next = cards[(i + step + cards.length) % cards.length];
-        next.focus(); choose(next.dataset.id);
+        const next = opts[(i + step + opts.length) % opts.length];
+        next.focus();
+        choose(next.dataset.id);
     });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && room.classList.contains('open')) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && glass.classList.contains('open')) close(); });
 
-    // follow the cloth: the drawings are filled with whatever fabric is selected
-    const list = document.querySelector('.fabric-list');
-    if (list) new MutationObserver(() => {
-        if (room.classList.contains('open') && currentFabric() !== fabricUrl) paintArt();
-    }).observe(list, { subtree: true, attributes: true, attributeFilter: ['class'] });
-
-    // the chosen lapel joins the order note when the piece is added
+    // the chosen lapel travels with the piece when it is added
     document.getElementById('cfg-add-btn')?.addEventListener('click', () => {
         const l = LAPELS.find(x => x.id === chosen);
-        try { localStorage.setItem(`kd.designDetails.${sku}`, JSON.stringify({ lapel: l.id, lapelName: l.name, at: Date.now() })); } catch (e) {}
+        try { localStorage.setItem(`kd.designDetails.${sku}`, JSON.stringify({ lapel: l.id, lapelName: l.full, at: Date.now() })); } catch (e) {}
     });
 
-    paintVibe();
-    paintChoice();
+    paintOccasion();
+    paintChoice(true);
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);

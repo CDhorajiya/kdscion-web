@@ -62,17 +62,17 @@ const OCCASIONS = [
 const ROLL = { B: [120, 176], r1: [114, 140], r2: [107, 86], N: [104, 44], T: [99, 33] };
 const PEAK = { ...ROLL,
     k1: [96, 40], k2: [92, 50], C: [88, 57], Gn: [90, 63], P: [71, 55],
-    e1: [74, 94], e2: [100, 148], G2: [106, 58], bh: [79, 66, 86, 68.5],
+    e1: [83.6, 96.8], e2: [100.9, 136.8], G2: [106, 58], bh: [79, 66, 86, 68.5],
     band: [26, 36], seam: 1, btn: 1, satin: 0 };
 const SHAPES = {
     notch: { ...ROLL,
-        k1: [96, 40], k2: [91, 52], C: [86, 60], Gn: [90, 67], P: [78, 72],
-        e1: [79, 102], e2: [103, 154], G2: [106, 60], bh: [84, 78.5, 91, 75.5],
+        k1: [96, 40], k2: [91, 52], C: [86, 60], Gn: [90, 67], P: [77, 72],
+        e1: [87.6, 108.4], e2: [102.4, 142.6], G2: [106, 60], bh: [83, 78.5, 90, 75.5],
         band: [26, 36], seam: 1, btn: 1, satin: 0 },
     peak: PEAK,
     shawl: { ...ROLL,
-        k1: [94, 46], k2: [80, 68], C: [80, 92], Gn: [80, 92], P: [80, 92],
-        e1: [80, 116], e2: [102, 156], G2: [80, 92], bh: [86, 93, 93, 90.5],
+        k1: [96, 48], k2: [86, 64], C: [83, 90], Gn: [83, 90], P: [83, 90],
+        e1: [81, 114], e2: [100, 150], G2: [80, 90], bh: [88, 92, 95, 89.5],
         band: [26, 36], seam: 0, btn: 1, satin: 0 },
     collarless: {
         B: [120, 64], r1: [110, 63], r2: [101, 52], N: [98, 41], T: [98, 41],
@@ -83,9 +83,54 @@ const SHAPES = {
     slim: {
         B: [120, 176], r1: [115, 140], r2: [108, 86], N: [105, 44], T: [100, 34],
         k1: [97, 41], k2: [94, 49], C: [91, 56], Gn: [94, 62], P: [85, 66],
-        e1: [86, 98], e2: [106, 152], G2: [106, 58], bh: [89, 71.5, 95, 69.5],
+        e1: [93.8, 103.6], e2: [105.4, 140.2], G2: [106, 58], bh: [89, 71.5, 95, 69.5],
         band: [27, 36], seam: 1, btn: 1, satin: 0 },
 };
+
+/* ── Pick stitching: a line of hand stitches just inside the collar and lapel
+   edge. The edge is sampled, each sample pushed inwards along its normal, and
+   the stitches stop short of the break where the lapel runs to nothing. */
+const STITCH_IN = 2.1;
+function cubicAt(a, b, c, d, t) {
+    const u = 1 - t;
+    return [0, 1].map(i => u*u*u*a[i] + 3*u*u*t*b[i] + 3*u*t*t*c[i] + t*t*t*d[i]);
+}
+function sampleCubic(a, b, c, d, n, out) { for (let i = 1; i <= n; i++) out.push(cubicAt(a, b, c, d, i / n)); }
+function sampleLine(a, b, n, out) { for (let i = 1; i <= n; i++) out.push([a[0] + (b[0]-a[0])*i/n, a[1] + (b[1]-a[1])*i/n]); }
+function inside(p, poly) {
+    let c = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i], [xj, yj] = poly[j];
+        if ((yi > p[1]) !== (yj > p[1]) && p[0] < (xj - xi) * (p[1] - yi) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+}
+function stitchPts(s) {
+    const edge = [s.T];
+    sampleCubic(s.T, s.k1, s.k2, s.C, 12, edge);
+    sampleLine(s.C, s.Gn, 3, edge);
+    sampleLine(s.Gn, s.P, 4, edge);
+    sampleCubic(s.P, s.e1, s.e2, s.B, 22, edge);
+    const poly = [s.B];
+    sampleCubic(s.B, s.r1, s.r2, s.N, 16, poly);
+    poly.push(...edge);
+    let area = 0;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) area += (poly[j][0] + poly[i][0]) * (poly[j][1] - poly[i][1]);
+    if (Math.abs(area / 2) < 120) return [];               // collarless: nothing to stitch
+    const nrm = (i) => {
+        const a = edge[Math.max(0, i - 1)], b = edge[Math.min(edge.length - 1, i + 1)];
+        const tx = b[0] - a[0], ty = b[1] - a[1], l = Math.hypot(tx, ty) || 1;
+        return [-ty / l, tx / l];
+    };
+    const mid = Math.floor(edge.length * 0.6), n0 = nrm(mid);
+    const sign = inside([edge[mid][0] + n0[0] * STITCH_IN, edge[mid][1] + n0[1] * STITCH_IN], poly) ? 1 : -1;
+    const out = [];
+    for (let i = 2; i < edge.length - 6; i++) {
+        const n = nrm(i);
+        out.push([edge[i][0] + sign * n[0] * STITCH_IN, edge[i][1] + sign * n[1] * STITCH_IN]);
+    }
+    return out;
+}
 
 const mx = (p) => [240 - p[0], p[1]];
 const pt = (p) => `${p[0].toFixed(2)},${p[1].toFixed(2)}`;
@@ -107,6 +152,12 @@ function paths(s) {
         front: `M${pt(s.B)} L120,262`,
         gorge: `M${pt(s.Gn)} L${pt(s.G2)} M${pt(mx(s.Gn))} L${pt(mx(s.G2))}`,
         bh: `M${pt(mx([s.bh[0], s.bh[1]]))} L${pt(mx([s.bh[2], s.bh[3]]))}`,
+        roll: `M${pt(s.N)} C${pt(s.r2)} ${pt(s.r1)} ${pt(s.B)} C${pt(mx(s.r1))} ${pt(mx(s.r2))} ${pt(mx(s.N))}`,
+        stitch: (() => {
+            const p = stitchPts(s);
+            if (!p.length) return 'M0,0';
+            return `M${p.map(pt).join(' L')} M${p.map(q => pt(mx(q))).join(' L')}`;
+        })(),
     };
 }
 
@@ -133,16 +184,26 @@ function flat(s, cls) {
       <stop offset="0" stop-color="#3a3a3a"/><stop offset=".42" stop-color="#121212"/>
       <stop offset=".58" stop-color="#2e2e2e"/><stop offset="1" stop-color="#0d0d0d"/>
     </linearGradient>
+    <linearGradient id="${k}-body" x1="30" y1="0" x2="210" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e6e5e1"/><stop offset=".2" stop-color="#f7f7f5"/>
+      <stop offset=".5" stop-color="#fcfcfb"/><stop offset=".8" stop-color="#f7f7f5"/>
+      <stop offset="1" stop-color="#e6e5e1"/>
+    </linearGradient>
     <filter id="${k}-lift" x="-10%" y="-10%" width="120%" height="125%">
-      <feDropShadow dx="0" dy="1.1" stdDeviation="1.1" flood-color="#000" flood-opacity=".16"/>
+      <feDropShadow dx="0" dy="1.2" stdDeviation="1.3" flood-color="#000" flood-opacity=".18"/>
     </filter>
+    <filter id="${k}-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <clipPath id="${k}-cL"><path data-p="lapL" d="${d.lapL}"/></clipPath>
+    <clipPath id="${k}-cR"><path data-p="lapR" d="${d.lapR}"/></clipPath>
+    <clipPath id="${k}-cO"><path data-p="open" d="${d.open}"/></clipPath>
   </defs>
-  <path data-p="band" d="${d.band}" class="lf-cloth lf-line"/>
+  <path data-p="band" d="${d.band}" class="lf-under lf-line"/>
   <path data-p="band" d="${d.band}" class="lf-satin" fill="url(#${k}-satin)" style="opacity:${s.satin}"/>
   ${STATIC_BACK}
-  <path d="${COAT}" class="lf-cloth lf-line"/>
+  <path d="${COAT}" class="lf-line" style="fill:url(#${k}-body)"/>
   ${STATIC_FRONT}
   <path data-p="open" d="${d.open}" class="lf-form"/>
+  <g clip-path="url(#${k}-cO)"><path data-p="roll" d="${d.roll}" class="lf-shade lf-shade-open" filter="url(#${k}-soft)"/></g>
   <path data-p="front" d="${d.front}" class="lf-line"/>
   <g filter="url(#${k}-lift)">
     <path data-p="lapL" d="${d.lapL}" class="lf-cloth"/>
@@ -150,6 +211,9 @@ function flat(s, cls) {
   </g>
   <path data-p="lapL" d="${d.lapL}" class="lf-satin" fill="url(#${k}-satin)" style="opacity:${s.satin}"/>
   <path data-p="lapR" d="${d.lapR}" class="lf-satin" fill="url(#${k}-satin)" style="opacity:${s.satin}"/>
+  <g clip-path="url(#${k}-cL)"><path data-p="roll" d="${d.roll}" class="lf-shade" filter="url(#${k}-soft)"/></g>
+  <g clip-path="url(#${k}-cR)"><path data-p="roll" d="${d.roll}" class="lf-shade" filter="url(#${k}-soft)"/></g>
+  <path data-p="stitch" d="${d.stitch}" class="lf-stitch" style="opacity:${1 - s.satin * 0.75}"/>
   <path data-p="lapL" d="${d.lapL}" class="lf-line"/>
   <path data-p="lapR" d="${d.lapR}" class="lf-line"/>
   <path data-p="gorge" d="${d.gorge}" class="lf-line lf-thin" style="opacity:${s.seam}"/>
@@ -176,6 +240,7 @@ function apply(svg, s) {
     svg.querySelectorAll('.lf-satin').forEach(el => el.style.opacity = s.satin);
     svg.querySelector('[data-p="gorge"]').style.opacity = s.seam;
     svg.querySelector('[data-p="bh"]').style.opacity = s.btn;
+    svg.querySelector('[data-p="stitch"]').style.opacity = 1 - s.satin * 0.75;
     const b = svg.querySelector('.lf-button');
     b.style.opacity = s.btn;
     b.setAttribute('transform', `translate(120 ${(s.B[1] + 7).toFixed(2)})`);
@@ -254,7 +319,11 @@ const css = `
 .lf-form   { fill: #e4e2de; }
 .lf-cap    { fill: #d2cfca; stroke: #9a968f; stroke-width: .8px; vector-effect: non-scaling-stroke; }
 .lf-line   { fill: none; stroke: #1a1a1a; stroke-width: 1.25px; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.lf-cloth.lf-line { fill: #fbfbfa; }
+.lf-under { fill: #eeeeeb; }
+.lf-shade  { fill: none; stroke: #000; stroke-opacity: .13; stroke-width: 6; }
+.lf-shade-open { stroke-opacity: .3; stroke-width: 7; }
+.lf-stitch { fill: none; stroke: #1a1a1a; stroke-opacity: .55; stroke-width: .8px; stroke-dasharray: 1.6 2.2;
+    stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .lf-thin   { stroke-width: .9px; }
 .lf-hole   { stroke-width: 1.6px; }
 .lf-detail { fill: none; stroke: #1a1a1a; stroke-opacity: .5; stroke-width: .8px; vector-effect: non-scaling-stroke; }
@@ -263,6 +332,7 @@ const css = `
 .lf-btn-rim { fill: none; stroke: #fff; stroke-opacity: .25; stroke-width: .6px; vector-effect: non-scaling-stroke; }
 .lf-thumb .lf-line { stroke-width: 1px; }
 .lf-thumb .lf-thin, .lf-thumb .lf-detail { stroke-width: .7px; }
+.lf-thumb .lf-stitch { stroke-dasharray: 1 1.6; stroke-width: .6px; }
 
 @media (max-width: 768px) {
     .lapel-glass { position: fixed; z-index: 2000; top: auto; left: 0; right: 0; bottom: 0; width: auto;

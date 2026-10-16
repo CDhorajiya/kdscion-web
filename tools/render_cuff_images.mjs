@@ -69,30 +69,28 @@ function barrelCuff(s, d) {
 `;
 }
 
-/* The French cuff, as it is worn (after KD's reference photo). It is a tube,
-   not a band: seen a little from below, so the near rim of the bottom fold
-   arches up and the opening of the cuff shows beneath it. The double-length
-   band is folded back on itself — a free edge at the top over the inner layer,
-   a soft rolled fold at the bottom — and its two ends are closed face to face
-   ("kissing"), standing out from the wrist as one ridge. The cufflink runs
-   through all four plies: its silver-and-onyx face on the near end, turned
-   away with the ridge, and its toggle just showing past the edge. */
+/* The French cuff, as it is worn (after KD's reference photo). A tube seen a
+   little from below, so the near rim of the bottom fold arches up and the
+   elliptical opening of the cuff shows beneath it. The double-length band is
+   folded back on itself — a free edge at the top over the inner layer, a soft
+   rolled fold at the bottom — in a fine piqué. Its two ends meet in a straight
+   kissing edge, the far end a sliver just behind; the cufflink (silver rim,
+   black onyx) sits beside that edge, its toggle just showing past it. */
 function frenchCuff() {
-    const face  = 'M62,150 Q114,145 166,150 Q175,146.6 183,144.6 Q185.5,144.3 185.5,147 L185.5,206.6 Q185.5,209.2 183,209 Q175,207.6 166,205.6 Q114,199.4 62,205.6 Z';
-    const open  = 'M62,205.6 Q114,199.4 166,205.6 L181,206 Q120,219.5 62,205.6 Z';
-    const far   = 'M181.5,143.6 L185.8,143.3 Q187.8,143.3 187.8,145.6 L187.8,208 Q187.8,210.2 185.6,210.2 L181.5,209.8 Z';
-    const inner = 'M62,147 Q114,141.8 166,146.8 Q175,143.6 182.6,141.8 L183,144.6 Q175,146.6 166,150 Q114,145 62,150 Z';
+    const face  = 'M62,150 Q123,144 184,150 L184,203.2 Q184,205.8 181.4,205.7 Q123,199.2 62,205.6 Z';
+    const open  = 'M62,205.6 Q123,199.2 182,205.7 Q123,220.5 62,205.6 Z';
+    const far   = 'M181.5,148.6 L185.6,148.8 Q187.6,148.9 187.6,151 L187.6,204.6 Q187.6,206.8 185.4,206.8 L181.5,206.6 Z';
+    const inner = 'M62,147 Q123,141 184,147 L184,150 Q123,144 62,150 Z';
     return `
   <defs>
-    <linearGradient id="frFace" x1="62" x2="185.5" y1="0" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#c3c3be"/><stop offset=".12" stop-color="#e5e5e2"/><stop offset=".36" stop-color="#ffffff"/>
-      <stop offset=".64" stop-color="#f3f3f0"/><stop offset=".82" stop-color="#e2e2de"/><stop offset=".85" stop-color="#c8c8c3"/>
-      <stop offset=".95" stop-color="#d4d4cf"/><stop offset="1" stop-color="#f2f2ef"/></linearGradient>
-    <linearGradient id="frRoll" x1="0" x2="0" y1="145" y2="206" gradientUnits="userSpaceOnUse">
+    <linearGradient id="frFace" x1="62" x2="184" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c3c3be"/><stop offset=".12" stop-color="#e5e5e2"/><stop offset=".4" stop-color="#ffffff"/>
+      <stop offset=".75" stop-color="#f1f1ee"/><stop offset=".93" stop-color="#dcdcd7"/><stop offset="1" stop-color="#d0d0cb"/></linearGradient>
+    <linearGradient id="frRoll" x1="0" x2="0" y1="144" y2="206" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".07" stop-color="#000" stop-opacity=".05"/>
       <stop offset=".16" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity="0"/>
       <stop offset=".9" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>
-    <linearGradient id="frOpen" x1="0" x2="0" y1="200" y2="218" gradientUnits="userSpaceOnUse">
+    <linearGradient id="frOpen" x1="0" x2="0" y1="200" y2="219" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#6d6d69"/><stop offset=".45" stop-color="#a3a39e"/><stop offset=".8" stop-color="#cfcfca"/><stop offset="1" stop-color="#e2e2de"/></linearGradient>
     <pattern id="pique" width="1.1" height="1.1" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
       <rect width="1.1" height="1.1" fill="none"/><path d="M0,.55 H1.1 M.55,0 V1.1" stroke="#000" stroke-width=".14" opacity=".045"/></pattern>
@@ -104,53 +102,49 @@ function frenchCuff() {
       <stop offset="0" stop-color="#f4f4f4"/><stop offset=".5" stop-color="#a9a9a9"/><stop offset="1" stop-color="#6a6a6a"/></linearGradient>
     <clipPath id="clipFace"><path d="${face}"/></clipPath>
   </defs>
-  <ellipse cx="122" cy="219" rx="70" ry="5" fill="#000" opacity=".16" filter="url(#blurL)"/>
+  <ellipse cx="123" cy="219" rx="70" ry="5" fill="#000" opacity=".16" filter="url(#blurL)"/>
 
   <!-- the inner half of the cuff, sewn to the sleeve, just showing above the free edge -->
   <path d="${inner}" fill="#d9d9d5"/>
-  <path d="M62,147 Q114,141.8 166,146.8 Q175,143.6 182.6,141.8" fill="none" stroke="#a9a9a3" stroke-width=".4"/>
+  <path d="M62,147 Q123,141 184,147" fill="none" stroke="#a9a9a3" stroke-width=".4"/>
 
-  <!-- the opening of the cuff, seen from a little below -->
+  <!-- the elliptical opening of the cuff, seen from a little below -->
   <path d="${open}" fill="url(#frOpen)"/>
-  <path d="M62,205.6 Q120,219.5 181,206" fill="none" stroke="#a3a39d" stroke-width=".45"/>
-  <path d="M66,207.6 Q120,218 178,207.4" fill="none" stroke="#fff" stroke-width=".9" opacity=".55" filter="url(#blurS)"/>
+  <path d="M62,205.6 Q123,220.5 182,205.7" fill="none" stroke="#a3a39d" stroke-width=".45"/>
+  <path d="M66,207.6 Q123,218.6 178,207.6" fill="none" stroke="#fff" stroke-width=".9" opacity=".55" filter="url(#blurS)"/>
 
-  <!-- the far end, a sliver past the kissing edge -->
+  <!-- the far end, a sliver behind the kissing edge -->
   <path d="${far}" fill="#000" opacity=".22" filter="url(#blurS)" transform="translate(.8 .8)"/>
   <path d="${far}" fill="#cdcdc8"/>
   <path d="${far}" fill="none" stroke="#a3a39d" stroke-width=".4"/>
 
-  <!-- the folded-back near face, round the wrist and out to the ridge -->
+  <!-- the folded-back face -->
   <path d="${face}" fill="#000" opacity=".24" filter="url(#blurM)" transform="translate(.6 1.2)"/>
   <path d="${face}" fill="url(#frFace)"/>
   <g clip-path="url(#clipFace)">
     <rect x="40" y="140" width="160" height="80" fill="url(#pique)"/>
     <rect x="40" y="140" width="160" height="80" filter="url(#weave)" opacity=".04" style="mix-blend-mode:multiply"/>
     <rect x="40" y="140" width="160" height="80" fill="url(#frRoll)"/>
-    <!-- where the round of the cuff turns into the ridge -->
-    <path d="M167.5,146 L167.5,208" stroke="#000" stroke-width="3.4" opacity=".15" filter="url(#blurM)"/>
-    <path d="M164.6,149 L164.6,206" stroke="#fff" stroke-width="1.6" opacity=".6" filter="url(#blurS)"/>
-    <!-- the rolled fold along the bottom -->
-    <path d="M62,202.6 Q114,196.6 166,202.6 Q175,204.4 184,205.8" fill="none" stroke="#fff" stroke-width="1.8" opacity=".7" filter="url(#blurS)"/>
+    <path d="M62,202.6 Q123,196.2 184,202.6" fill="none" stroke="#fff" stroke-width="1.8" opacity=".7" filter="url(#blurS)"/>
   </g>
-  <!-- the free top edge: a thin lip with its own light, and the stitching inside every edge -->
-  <path d="M62,150 Q114,145 166,150 Q175,146.6 183,144.6" fill="none" stroke="#000" stroke-width="1.2" opacity=".2" filter="url(#blurS)" transform="translate(0 -.5)"/>
-  <path d="M62,150 Q114,145 166,150 Q175,146.6 183,144.6" fill="none" stroke="#fff" stroke-width=".8"/>
-  <path d="M64,152.7 Q114,147.8 166,152.6 Q174,149.6 181.4,147.6 Q183,147.4 183,149.2 L183,204.8 Q183,206.6 181.3,206.4 Q174,205.2 168,203.6" fill="none" stroke="#fff" stroke-width=".35" stroke-dasharray=".9 .55" transform="translate(.25 .25)" opacity=".9"/>
-  <path d="M64,152.7 Q114,147.8 166,152.6 Q174,149.6 181.4,147.6 Q183,147.4 183,149.2 L183,204.8 Q183,206.6 181.3,206.4 Q174,205.2 168,203.6" fill="none" stroke="#bdbdb6" stroke-width=".3" stroke-dasharray=".9 .55"/>
+  <!-- the free top edge: a thin lip with its own light, and the stitching along it and the end -->
+  <path d="M62,150 Q123,144 184,150" fill="none" stroke="#000" stroke-width="1.2" opacity=".2" filter="url(#blurS)" transform="translate(0 -.5)"/>
+  <path d="M62,150 Q123,144 184,150" fill="none" stroke="#fff" stroke-width=".8"/>
+  <path d="M64,152.7 Q123,147 181.4,152.6 L181.4,202.2" fill="none" stroke="#fff" stroke-width=".35" stroke-dasharray=".9 .55" transform="translate(.25 .25)" opacity=".9"/>
+  <path d="M64,152.7 Q123,147 181.4,152.6 L181.4,202.2" fill="none" stroke="#bdbdb6" stroke-width=".3" stroke-dasharray=".9 .55"/>
   <path d="${face}" fill="none" stroke="#a9a9a3" stroke-width=".45"/>
-  <path d="M184.4,146.6 L184.4,207.4" stroke="#fff" stroke-width=".5" opacity=".8"/>
+  <path d="M183.2,151.4 L183.2,203.6" stroke="#fff" stroke-width=".5" opacity=".8"/>
 
-  <!-- the cufflink: its face on the near end, turned away with the ridge; the toggle past the edge -->
-  <path d="M185.5,177 L189.6,177" stroke="#4b4b4b" stroke-width="1.3" stroke-linecap="round"/>
-  <rect x="188.6" y="172.6" width="2.6" height="9" rx="1.2" fill="url(#bar)" stroke="#555" stroke-width=".2"/>
-  <g transform="translate(176.2 177)">
-    <ellipse cx="-1.4" cy="1.2" rx="3.7" ry="5.2" fill="#000" opacity=".4" filter="url(#blurS)"/>
-    <ellipse rx="3.5" ry="5" fill="url(#silver)" stroke="#4f4f4f" stroke-width=".25"/>
-    <ellipse rx="2.9" ry="4.2" fill="none" stroke="#fff" stroke-width=".22" opacity=".7"/>
-    <ellipse rx="2.4" ry="3.55" fill="url(#onyx)" stroke="#2a2a2a" stroke-width=".2"/>
-    <ellipse cx="-.9" cy="-1.6" rx=".8" ry=".45" fill="#fff" opacity=".6" transform="rotate(-60 -.9 -1.6)"/>
-    <ellipse cx="-2.3" cy="-2.9" rx=".7" ry=".32" fill="#fff" opacity=".9" transform="rotate(-60 -2.3 -2.9)"/>
+  <!-- the cufflink beside the kissing edge, its toggle just showing past it -->
+  <path d="M184,177 L188.6,177" stroke="#4b4b4b" stroke-width="1.3" stroke-linecap="round"/>
+  <rect x="187.8" y="172.6" width="2.6" height="9" rx="1.2" fill="url(#bar)" stroke="#555" stroke-width=".2"/>
+  <g transform="translate(172.5 177)">
+    <ellipse cx=".9" cy="1.5" rx="5.2" ry="5.2" fill="#000" opacity=".42" filter="url(#blurS)"/>
+    <circle r="4.9" fill="url(#silver)" stroke="#4f4f4f" stroke-width=".25"/>
+    <circle r="4.1" fill="none" stroke="#fff" stroke-width=".25" opacity=".7"/>
+    <circle r="3.45" fill="url(#onyx)" stroke="#2a2a2a" stroke-width=".2"/>
+    <ellipse cx="-1.3" cy="-1.5" rx="1.25" ry=".6" fill="#fff" opacity=".55" transform="rotate(-35 -1.3 -1.5)"/>
+    <ellipse cx="-2.9" cy="-2.6" rx=".9" ry=".4" fill="#fff" opacity=".9" transform="rotate(-40 -2.9 -2.6)"/>
   </g>
 `;
 }

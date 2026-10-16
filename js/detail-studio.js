@@ -197,7 +197,9 @@ export function createDetailStudio(o) {
             b.tabIndex = on ? 0 : -1;
         });
         const i = items.find(x => x.id === chosen);
-        btn.innerHTML = `${o.title} · <em>${i.name}</em>`;
+        // inside the viewer dock (js/viewer-dock.js) the label is a span beside an icon
+        const label = btn.querySelector('.kd-dock-label');
+        (label || btn).innerHTML = `${o.title} · <em>${i.name}</em>`;
         window.KD_DESIGN_DETAILS = Object.assign(window.KD_DESIGN_DETAILS || {}, { [o.key]: { id: i.id, name: i.full } });
         caption(immediate);
     }

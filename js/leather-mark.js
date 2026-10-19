@@ -10,8 +10,9 @@
    the English fold away to save room, leaving the ornament and the Sanskrit.
    The Sanskrit is then a quiet control: on hover it turns dark green with a
    hand pointer; a click (or tap) unfolds the two lines again, and they stay
-   until a click or tap anywhere else in the viewer. On phones it sits just
-   above the viewer's bottom row (fabric name, Design Only / Design Details).
+   until a click or tap anywhere else in the viewer. On desktop it sits just
+   above the Design Only / Design Details pill; on phones just above the
+   viewer's bottom row (fabric name, Design Only / Design Details).
 
    Use: <script src="js/leather-mark.js" defer></script> on any leather page. */
 (function () {
@@ -87,6 +88,39 @@
         viewer.addEventListener('click', function (e) {
             if (mark.classList.contains('is-open') && !mark.contains(e.target)) { mark.classList.remove('is-open'); sync(); }
         });
+
+        // Desktop: the Design Only / Design Details pill (js/viewer-dock.js) shares the
+        // viewer's bottom edge, and the English line ran into it. Lifting the mark puts
+        // the Sanskrit on the shoes, so the mark keeps its place under the feet and the
+        // pill rises beside the model, clear of the mark's top. Measured on the unfolded
+        // mark so the pill does not move when the lines fold. A viewer too narrow for the
+        // pill beside the feet stacks the mark above the pill instead, as on phones. The
+        // pill can mount after this, so keep watching.
+        var mq = window.matchMedia('(max-width:768px)');
+        var fullH = 0, fullW = 0, moved = null;
+        function clearDock() {
+            var dock = viewer.querySelector('#kd-dock, .kd-dock');
+            if (moved && moved !== dock) moved.style.bottom = '';
+            if (!dock || !dock.offsetHeight) return;
+            dock.style.bottom = ''; mark.style.bottom = ''; moved = null;
+            if (mq.matches) return;
+            var m = mark.getBoundingClientRect(), d = dock.getBoundingClientRect(), v = viewer.getBoundingClientRect();
+            if (shown()) { fullH = m.height; fullW = m.width; }
+            var top = m.bottom - Math.max(fullH, m.height);
+            var right = (m.left + m.right) / 2 + Math.max(fullW, m.width) / 2;
+            if (d.left - right >= 24 || d.top >= m.bottom) return;      // already clear
+            if (d.left > v.left + v.width / 2 + 90) {                    // room beside the feet
+                dock.style.bottom = Math.round(v.bottom - top + 12) + 'px';
+                moved = dock;
+            } else {                                                     // narrow viewer: stack, as on phones
+                mark.style.bottom = Math.round(v.bottom - d.top + 10) + 'px';
+            }
+        }
+        clearDock();
+        new MutationObserver(clearDock).observe(viewer, { childList: true, subtree: true });
+        window.addEventListener('resize', clearDock);
+        if (document.fonts) document.fonts.ready.then(clearDock);       // Devanagari / serif widths
+        if (mq.addEventListener) mq.addEventListener('change', clearDock);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
     else mount();

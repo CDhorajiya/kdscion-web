@@ -135,6 +135,7 @@ def main():
         t = p.read_text(encoding='utf-8')
         o = re.sub(rf'(KDscion-|KD-scion-)w({alt})(?=[- ])', r'\1w-l\2', t)
         o = lower.sub(r'w-l\1', o)
+        o = re.sub(rf'(kdscion\.com/)w({alt})(?=\.html| design)', r'\1w-l\2', o)   # og:url / canonical
         o = upper.sub(r'W-L\1', o)
         if o != t:
             p.write_text(o, encoding='utf-8'); changed += 1

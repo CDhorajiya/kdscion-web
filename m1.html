@@ -1021,36 +1021,47 @@
         }
 
         /* ── The men's avatar hair ──
-           CLO exports the men's hair as "blend" materials whose maps carry the
-           strands' coverage (white strands on black) but no alpha, so three.js drew
-           the cards see-through and without depth: they showed through one another,
-           the grey scalp cap showed through, and the cards' black edges made a band
-           at the hairline. Now: the strand cards are cut to their strands (the map
-           read as coverage) and drawn solid in the hair colour sampled from the CLO
-           render; the scalp cap under them is solid hair colour, so no skin shows
-           between strands; both matte. The empty, fully transparent layer stays hidden. */
-        const HAIR_COLOR = 0x4a453d, STRAND_TINT = 0x7a7263, CAP_CUT = 0.12, STRAND_CUT = 0.06;
+           CLO exports the men's hair as "blend" materials whose maps are really
+           coverage (white strands on black, the scalp cap a soft grey blob) with no
+           alpha, so three.js drew the cards as opaque grey sheets in random order:
+           cards showed through each other, the skull showed, black edges made a band.
+           Here every hair surface is one colour and its map becomes its coverage
+           (read raw, lifted by a gain so strands are full but keep soft tips). With a
+           single colour, blending gives the same result in any draw order, so the
+           cards need no sorting; they draw after the head and clothes and do not
+           write depth, so the head and collar still hide what is behind them. */
+        const HAIR = { color: 0x3e3a33, capGain: 2.2, strandGain: 3.0, roughness: 0.74, strandLight: 0.35 };
         function fixManHair(root) {
             root.traverse((node) => {
                 if (!node.isMesh) return;
                 const m = node.material;
                 if (!m || !/hair/i.test(m.name || '')) return;
-                if (!m.map && m.opacity === 0) { node.visible = false; return; }
-                const cap = m.color.getHex() === 0xffffff;          // the scalp cap has no colour factor
-                m.alphaMap = m.map;                                  // the maps are coverage: cut where they go black
-                if (cap) {
-                    m.map = null;                                    // solid hair colour under the strands
-                    m.color.setHex(HAIR_COLOR);
-                    m.alphaTest = CAP_CUT;
-                } else {
-                    m.color.setHex(STRAND_TINT);                     // strands keep their light/dark variation
-                    m.alphaTest = STRAND_CUT;
-                }
-                m.transparent = false;
-                m.depthWrite = true;
+                if (!m.map) { node.visible = false; return; }          // the empty, fully transparent layer
+                const cap = m.color.getHex() === 0xffffff;            // the scalp cap carries no colour factor
+                const cov = m.map;
+                cov.colorSpace = THREE.NoColorSpace;                   // coverage, not colour: read it raw
+                cov.needsUpdate = true;
+                m.map = null;
+                m.alphaMap = cov;
+                m.color.setHex(HAIR.color);
+                m.roughness = HAIR.roughness;
+                if ('specularIntensity' in m) m.specularIntensity = 0.12;
+                m.transparent = true;
+                m.depthWrite = false;
+                m.alphaTest = 0;
                 m.side = THREE.DoubleSide;
-                m.roughness = 0.85;
-                if ('specularIntensity' in m) m.specularIntensity = 0.15;
+                const gain = cap ? HAIR.capGain : HAIR.strandGain;
+                m.onBeforeCompile = (shader) => {
+                    shader.fragmentShader = shader.fragmentShader.replace(
+                        '#include <alphamap_fragment>',
+                        `#ifdef USE_ALPHAMAP
+                            float kdCov = texture2D( alphaMap, vAlphaMapUv ).g;
+                            diffuseColor.a *= clamp( kdCov * ${gain.toFixed(2)}, 0.0, 1.0 );
+                            diffuseColor.rgb *= ${cap ? '1.0' : `0.88 + ${HAIR.strandLight.toFixed(2)} * kdCov`};   // strands catch a little light
+                        #endif`);
+                };
+                m.customProgramCacheKey = () => 'kd-hair-' + gain;
+                node.renderOrder = cap ? 2 : 3;                        // after the body and the clothes
                 m.needsUpdate = true;
             });
         }

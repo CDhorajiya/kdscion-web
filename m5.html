@@ -991,6 +991,7 @@
             const _vr = document.getElementById('viewer-loading-ring');
             (() => { const _l = new GLTFLoader(); const _d = new DRACOLoader(); _d.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/'); _l.setDRACOLoader(_d); return _l; })().load('3d/KDscion-m5-single breasted long coat - thigh height.glb', (gltf) => {
                 currentModel = gltf.scene;
+                fixManHair(currentModel);
                 const box = new THREE.Box3().setFromObject(currentModel);
                 currentModel.position.sub(box.getCenter(new THREE.Vector3()));
                 currentModel.scale.setScalar(2.2 / box.getSize(new THREE.Vector3()).length());
@@ -1017,6 +1018,52 @@
                 rendererS.render(sceneS, cameraS);
                 updateDetailAnnotations();
             })();
+        }
+
+        /* ── The men's avatar hair ──
+           CLO exports the men's hair as "blend" materials whose maps are really
+           coverage (white strands on black, the scalp cap a soft grey blob) with no
+           alpha, so three.js drew the cards as opaque grey sheets in random order:
+           cards showed through each other, the skull showed, black edges made a band.
+           Here every hair surface is one colour and its map becomes its coverage
+           (read raw, lifted by a gain so strands are full but keep soft tips). With a
+           single colour, blending gives the same result in any draw order, so the
+           cards need no sorting; they draw after the head and clothes and do not
+           write depth, so the head and collar still hide what is behind them. */
+        const HAIR = { color: 0x3e3a33, capGain: 2.2, strandGain: 3.0, roughness: 0.74, strandLight: 0.35 };
+        function fixManHair(root) {
+            root.traverse((node) => {
+                if (!node.isMesh) return;
+                const m = node.material;
+                if (!m || !/hair/i.test(m.name || '')) return;
+                if (!m.map) { node.visible = false; return; }          // the empty, fully transparent layer
+                const cap = m.color.getHex() === 0xffffff;            // the scalp cap carries no colour factor
+                const cov = m.map;
+                cov.colorSpace = THREE.NoColorSpace;                   // coverage, not colour: read it raw
+                cov.needsUpdate = true;
+                m.map = null;
+                m.alphaMap = cov;
+                m.color.setHex(HAIR.color);
+                m.roughness = HAIR.roughness;
+                if ('specularIntensity' in m) m.specularIntensity = 0.12;
+                m.transparent = true;
+                m.depthWrite = false;
+                m.alphaTest = 0;
+                m.side = THREE.DoubleSide;
+                const gain = cap ? HAIR.capGain : HAIR.strandGain;
+                m.onBeforeCompile = (shader) => {
+                    shader.fragmentShader = shader.fragmentShader.replace(
+                        '#include <alphamap_fragment>',
+                        `#ifdef USE_ALPHAMAP
+                            float kdCov = texture2D( alphaMap, vAlphaMapUv ).g;
+                            diffuseColor.a *= clamp( kdCov * ${gain.toFixed(2)}, 0.0, 1.0 );
+                            diffuseColor.rgb *= ${cap ? '1.0' : `0.88 + ${HAIR.strandLight.toFixed(2)} * kdCov`};   // strands catch a little light
+                        #endif`);
+                };
+                m.customProgramCacheKey = () => 'kd-hair-' + gain;
+                node.renderOrder = cap ? 2 : 3;                        // after the body and the clothes
+                m.needsUpdate = true;
+            });
         }
 
         /* ── Keywords that identify body/avatar/shoe meshes to skip ── */

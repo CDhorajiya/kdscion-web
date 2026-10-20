@@ -1467,6 +1467,14 @@
   'KD-P215-SBJ215': 'Sleeveless Buttonup Jacket',
   'KD-P216-FSCBJ216': 'Full Sleeve Collarless Buttonup Jacket',
   'KD-P217-SCBJ217': 'Sleeveless Collarless Buttonup Jacket',
+  'KD-M1-FSCS1': 'Full Sleeve Classic Shirt',
+  'KD-M2-CFT2': 'Classic Fit Trouser',
+  'KD-M3-SBCC3': 'Single Breasted Classic Coat',
+  'KD-M4-SBLCAKH4': 'Single Breasted Long Coat - Above Knee Height',
+  'KD-M5-SBLCTH5': 'Single Breasted Long Coat - Thigh Height',
+  'KD-M6-RCBUC6': 'Regular Collared Button Up Coat',
+  'KD-M7-RCBULC7': 'Regular Collared Button Up Long Coat',
+  'KD-M8-RCFZC8': 'Regular Collared Full Zipper Coat',
   'KD-P145-FSBD145': 'Full Sleeve Bodycon Dress',
   'KD-P146-SLBD146': 'Sleeveless Bodycon Dress',
   'KD-P147-FST147': 'Full Sleeve Top',
@@ -1910,6 +1918,14 @@ const ALL_DESIGNS = [
   { sku: 'KD-P83S3-SSDFS', name: 'Sleeveless Sheath Dress with Full Shawl', group: 'woman' },
   { sku: 'KD-L1-PLEC', name: 'Premium European Leather iPad or MacBook Envelope Cover', group: 'leather' },
   { sku: 'KD-M1M2-FSCSCT', name: 'Full Sleeve Classic Shirt & Classic Trouser', group: 'man' },
+  { sku: 'KD-M1-FSCS1', name: 'Full Sleeve Classic Shirt', group: 'man' },
+  { sku: 'KD-M2-CFT2', name: 'Classic Fit Trouser', group: 'man' },
+  { sku: 'KD-M3-SBCC3', name: 'Single Breasted Classic Coat', group: 'man' },
+  { sku: 'KD-M4-SBLCAKH4', name: 'Single Breasted Long Coat - Above Knee Height', group: 'man' },
+  { sku: 'KD-M5-SBLCTH5', name: 'Single Breasted Long Coat - Thigh Height', group: 'man' },
+  { sku: 'KD-M6-RCBUC6', name: 'Regular Collared Button Up Coat', group: 'man' },
+  { sku: 'KD-M7-RCBULC7', name: 'Regular Collared Button Up Long Coat', group: 'man' },
+  { sku: 'KD-M8-RCFZC8', name: 'Regular Collared Full Zipper Coat', group: 'man' },
 ];
 
     // The page a SKU's design lives on (also used by the Orders tab).
@@ -1917,6 +1933,8 @@ const ALL_DESIGNS = [
       if (!sku) return null;
       const mm = sku.match(/KD-M(\d+)M(\d+)-/i);
       if (mm) return `m${mm[1]}-m${mm[2]}.html`;
+      const m1 = sku.match(/KD-M(\d+)-/i);
+      if (m1) return `m${m1[1]}.html`;
       const sc = sku.match(/KD-S(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
       if (sc) return `s${sc[1]}.html`;
       const lt = sku.match(/KD-L(\d+)-/i);
@@ -1933,6 +1951,8 @@ const ALL_DESIGNS = [
       const sc = sku.match(/KD-S(\d+)-/i), lt = sku.match(/KD-L(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
       const mm = sku.match(/KD-M(\d+)M(\d+)-/i);
       if (mm) return `M${mm[1]} & M${mm[2]}`;
+      const m1 = sku.match(/KD-M(\d+)-/i);
+      if (m1) return `M${m1[1]}`;
       if (sc) return `S${sc[1]}`;
       if (lt) return `L${lt[1]}`;
       if (duo) return `${designCode(duo[1]).toUpperCase()} & S${duo[2]}`;
@@ -2935,6 +2955,14 @@ const ALL_DESIGNS = [
   's3': 'images/KDscion-s3-full shawl_Colorway A.webp',
   '83-s3': 'images/KDscion-w-l83 & s3 - sleeveless sheath dress with full shawl_Colorway A.webp',
   'm1-m2': 'images/KDscion-m1 & m2 - full sleeve classic shirt & classic trouser_Colorway A.webp',
+  'm1': 'images/KDscion-m1-full sleeve classic shirt_Colorway A.webp',
+  'm2': 'images/KDscion-m2-classic fit trouser_Colorway A.webp',
+  'm3': 'images/KDscion-m3-single breasted classic coat_Colorway A.webp',
+  'm4': 'images/KDscion-m4-single breasted long coat - above knee height_Colorway A.webp',
+  'm5': 'images/KDscion-m5-single breasted long coat - thigh height_Colorway A.webp',
+  'm6': 'images/KDscion-m6-regular collared button up coat_Colorway A.webp',
+  'm7': 'images/KDscion-m7-regular collared button up long coat_Colorway A.webp',
+  'm8': 'images/KDscion-m8-regular collared full zipper coat_Colorway A.webp',
   'l1': 'images/KDscion-L1-Premium leather ipad or macbook envelope cover_Default Colorway.webp',
 };
 
@@ -2943,6 +2971,8 @@ const ALL_DESIGNS = [
       const s = sku.match(/KD-S(\d+)-/i), d = sku.match(/KD-P(\d+)S(\d+)-/i), l = sku.match(/KD-L(\d+)-/i);
       const mm = sku.match(/KD-M(\d+)M(\d+)-/i);
       if (mm) return DESIGN_IMAGES[`m${mm[1]}-m${mm[2]}`] || null;
+      const m1 = sku.match(/KD-M(\d+)-/i);
+      if (m1) return DESIGN_IMAGES['m' + m1[1]] || null;
       if (s) return DESIGN_IMAGES['s' + s[1]] || null;
       if (l) return DESIGN_IMAGES['l' + l[1]] || null;
       if (d) return DESIGN_IMAGES[d[1] + '-s' + d[2]] || null;

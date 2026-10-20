@@ -1,3 +1,9 @@
+<!--
+  pool-of-designs-men.html — Pool of Designs, Men (Bespoke Boutique › Men › Pool of Designs)
+  Built from the women's pool page: same All / Solo / Pair / Triplet filters, every view
+  in ascending M# order, three per row (layout() below). A variation set is one card whose
+  data-product-url is an mN design variations page (three blinking dots). Duos (m1-m2) are Pair.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,47 +11,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Google Analytics 4 — replace G-FZJT42EG6J with your Measurement ID -->
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
-
     <script>
-
       window.dataLayer = window.dataLayer || [];
-
       function gtag(){dataLayer.push(arguments);}
-
       gtag('js', new Date());
-
       gtag('config', 'G-FZJT42EG6J');
-
     </script>
-    <title>Pool of Designs — Men</title>
+
+    <title>Pool of Designs — Men — KD Scion</title>
 
     <meta property="og:type" content="website">
-
     <meta property="og:site_name" content="KD: The House of Scion">
-
-    <meta property="og:title" content="Men's Designs — KD Scion">
-
-    <meta property="og:description" content="Explore our men's collection of custom-tailored shirts and trousers. Premium fabrics, bespoke fit.">
-
-    <meta property="og:image" content="https://kdscion.com/images/KDscion-p1-full%20sleeve%20classic%20shirt.webp">
-
+    <meta property="og:title" content="Pool of Designs — Men — KD Scion">
+    <meta property="og:description" content="Explore our collection of bespoke designs for men. Every piece tailored to your exact measurements.">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-m3-single%20breasted%20classic%20coat_Colorway%20A.webp">
     <meta property="og:url" content="https://kdscion.com/pool-of-designs-men.html">
-
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pool of Designs — Men — KD Scion">
+    <meta name="twitter:description" content="Explore our collection of bespoke designs for men. Every piece tailored to your exact measurements.">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-m3-single%20breasted%20classic%20coat_Colorway%20A.webp">
 
-    <meta name="twitter:title" content="Men's Designs — KD Scion">
-
-    <meta name="twitter:description" content="Explore our men's collection of custom-tailored shirts and trousers. Premium fabrics, bespoke fit.">
-
-    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-p1-full%20sleeve%20classic%20shirt.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+
     <style>
         .monogram img {
             filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
@@ -54,6 +46,7 @@
             font-size: 2.1rem;
             color: rgb(128, 0, 0);
         }
+
         h3.title {
             font-family: "Times New Roman", Times, serif;
             font-size: 3rem;
@@ -69,22 +62,26 @@
             font-style: normal;
             color: #1a1a1a;
             letter-spacing: 6px;
-            margin: 0 0 4rem 0;
+            margin: 0 0 0 0;
             text-align: center;
         }
 
         /* ── Product gallery ── */
         .product-gallery {
             display: flex;
-            gap: 8rem;
+            gap: 4rem;
             margin-top: 0;
+            /* width + auto-centering, not a left/right margin pair — there is
+               no "one side" value that a future edit could throw out of sync,
+               unlike the margin-right-only bug this replaced. */
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        /* ── Each product column ── */
         .product-column {
             display: flex;
             flex-direction: column;
-            gap: 8rem;
+            gap: 4rem;
             flex: 1;
         }
 
@@ -92,15 +89,24 @@
         .product-item {
             position: relative;
             cursor: pointer;
-            z-index: 1;
             transition: transform 0.4s ease;
         }
         .product-item:hover {
             transform: scale(1.05);
         }
-        .product-item img {
+        .product-item.popup-active {
+            z-index: 10;
+        }
+        .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1679 / 2042;
+            overflow: hidden;
+        }
+        .img-wrap img {
             width: 100%;
             height: 100%;
+            object-fit: contain;
             display: block;
         }
 
@@ -108,8 +114,9 @@
         .product-desc {
             position: absolute;
             top: 50%;
-            left: calc(100% - 20px);
+            left: calc(100% - 40px);
             transform: translateY(-50%);
+            white-space: nowrap;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -121,7 +128,7 @@
         }
         .product-column:last-child .product-desc {
             left: auto;
-            right: calc(100% - 20px);
+            right: calc(100% - 180px);
             align-items: flex-end;
             padding-left: 0;
             padding-right: 14px;
@@ -143,6 +150,31 @@
             right: 0;
         }
         .product-desc::after { display: none; }
+        .product-item.has-variations .product-desc::before { display: none; }
+        .var-dots {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .product-column:last-child .var-dots { left: auto; right: 0; }
+        .var-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            animation: dot-blink 3s ease-in-out infinite;
+        }
+        .var-dot:nth-child(1) { animation-delay: 0s; }
+        .var-dot:nth-child(2) { animation-delay: 1s; }
+        .var-dot:nth-child(3) { animation-delay: 2s; }
+        @keyframes dot-blink {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 1; }
+        }
         .product-item.popup-active .product-desc { opacity: 1; }
         .product-desc__title {
             font-family: "Times New Roman", Times, serif;
@@ -170,15 +202,22 @@
         .product-column:last-child .product-desc__sub { text-align: right; }
 
         @media (max-width: 768px) {
-            .product-gallery { flex-direction: column; gap: 2rem; padding: 0 3%; }
-            .product-column { gap: 2rem; }
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
+            .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
 
-            /* Product label — below image, dot above centred text */
+            .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
+            .column { gap: 2rem; }
+            .container-snaps h3 { letter-spacing: 3px; font-size: 2.1rem; }
+
             .product-desc {
-                display: flex !important;
                 position: static !important;
                 transform: none !important;
                 opacity: 1 !important;
+                display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 gap: 0.35rem !important;
@@ -193,23 +232,14 @@
                 padding-left: 0.5rem !important;
                 padding-right: 0.5rem !important;
             }
-            /* Dot as static flex item — sits above text */
-            .product-desc::before {
-                position: static !important;
-                transform: none !important;
-                left: auto !important;
-                right: auto !important;
-                top: auto !important;
-                display: block !important;
-                width: 7px !important;
-                height: 7px !important;
-                flex-shrink: 0 !important;
-            }
-            .product-column:last-child .product-desc::before {
-                left: auto !important;
-                right: auto !important;
-            }
+            .product-desc::before { display: none !important; }
             .product-desc__title { display: none !important; }
+            .var-dots {
+                position: static !important;
+                flex-direction: row !important;
+                gap: 5px !important;
+                order: -1 !important;
+            }
             .product-desc__sub {
                 font-size: 1rem !important;
                 color: rgba(30,20,5,0.85) !important;
@@ -219,8 +249,93 @@
                 max-width: none !important;
                 text-align: center !important;
             }
-            .product-column:last-child .product-desc__sub { text-align: center !important; }
         }
+
+        /* ── Design-type filter ── */
+        .filter-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0 3rem;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(26,26,26,0.25);
+            color: rgba(26,26,26,0.45);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 0.25rem 1rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .filter-btn:hover {
+            background: rgba(26,26,26,0.07);
+            border-color: rgba(26,26,26,0.5);
+            color: rgba(26,26,26,0.8);
+        }
+        .filter-btn.active {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .product-item[data-design-type].hidden {
+            display: none;
+        }
+
+        /* ── Back-to-top: avoids scrolling back through hundreds of designs ──
+           Drawn exactly like the search glass stacked above it: a bare maroon
+           mark, no plate and no circle, fully opaque, growing a little on hover.
+           The 3rem box is kept even though none of it is painted, so the touch
+           target stays comfortable on a phone. */
+        .back-to-top {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 3rem;
+            height: 3rem;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            color: #800000;
+            z-index: 500;
+            transition: transform 0.2s;
+        }
+        .back-to-top:hover,
+        .back-to-top:focus-visible {
+            transform: scale(1.05);
+            outline: none;
+        }
+        .back-to-top svg {
+            width: 1.9rem;
+            height: 1.9rem;
+            fill: currentColor;
+        }
+        /* Matches the step search-ui.js takes at the same breakpoint. */
+        @media (max-width: 768px) {
+            .back-to-top svg { width: 1.6rem; height: 1.6rem; }
+        }
+
+        /* ── Search glass, stacked above the back-to-top button ──
+           search-ui.js appends its own stylesheet to <head> after this one, so
+           .kd-search-btn--float would otherwise win on source order. The id
+           selector outranks it without needing !important. */
+        #kd-search-btn.kd-search-btn--float {
+            /* An identical 3rem box stacked straight on top of the back-to-top
+               one, so the two marks share a centre line and keep an even gap at
+               whatever size the breakpoint draws them. */
+            width: 3rem;
+            height: 3rem;
+            right: 1.5rem;
+            bottom: 4.5rem;
+        }
+
     </style>
     <!-- mobile-refresh: cleaner phone layout (tools/mobile_refresh.py) -->
     <link rel="stylesheet" href="css/mobile-refresh.css">
@@ -240,32 +355,101 @@
 
     <div class="container-snaps">
         <h3 class="title">POOL OF DESIGNS</h3>
-        <p class="title-sub">Custom | Premium | Unique</p>
+        <p class="title-sub">CUSTOM | PREMIUM | UNIQUE</p>
+
+        <div class="filter-toggle">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="solo">Solo</button>
+            <button class="filter-btn" data-filter="pair">Pair</button>
+            <button class="filter-btn" data-filter="triplet">Triplet</button>
+        </div>
+
 
         <div class="product-gallery snap-gallery">
 
             <!-- ── Column 1 ── -->
             <div class="product-column column column1">
 
-                <div class="product-item has-3d" data-design-type="pair"
-                     data-model="3d/KDscion-m1 &amp; m2 - full sleeve classic shirt &amp; classic trouser.glb"
-                     data-product-url="m1-m2.html">
-                    <img src="images/KDscion-m1 &amp; m2 - full sleeve classic shirt &amp; classic trouser_Colorway A.webp"
-                         alt="KDscion m1 &amp; m2 full sleeve classic shirt &amp; classic trouser">
-                    <div class="product-desc">
-                        <p class="product-desc__title">M1 &amp; M2 | KD Scion</p>
-                        <div class="product-desc__divider"></div>
-                        <p class="product-desc__sub">full sleeve classic shirt &amp; classic trouser</p>
-                    </div>
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="m1.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m1-full sleeve classic shirt_Colorway A.webp" style="--rc:-8.71%"
+                alt="KDscion m1 full sleeve classic shirt">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M1 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve classic shirt</p>
+                </div>
                 </div>
 
+                <div class="product-item" style="--ord:3" data-design-type="solo" data-product-url="m3.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m3-single breasted classic coat_Colorway A.webp" style="--rc:-5.22%"
+                alt="KDscion m3 single breasted classic coat">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M3 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">single breasted classic coat</p>
+                </div>
+                </div>
             </div>
 
             <!-- ── Column 2 ── -->
-            <div class="product-column column column2"></div>
+            <div class="product-column column column2">
+
+                <div class="product-item" style="--ord:1" data-design-type="pair" data-product-url="m1-m2.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m1 &amp; m2 - full sleeve classic shirt &amp; classic trouser_Colorway A.webp" style="--rc:-0.47%"
+                alt="KDscion m1 &amp; m2 full sleeve classic shirt &amp; classic trouser">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M1 &amp; M2 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">full sleeve classic shirt &amp; classic trouser</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:4" data-design-type="solo" data-product-url="m4 design variations.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m4-single breasted long coat - above knee height_Colorway A.webp" style="--rc:-7.79%"
+                alt="KDscion m4 single breasted long coat - above knee height">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M4 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">single breasted long coat - above knee height</p>
+                </div>
+                </div>
+            </div>
 
             <!-- ── Column 3 ── -->
-            <div class="product-column column column3"></div>
+            <div class="product-column column column3">
+
+                <div class="product-item" style="--ord:2" data-design-type="solo" data-product-url="m2.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m2-classic fit trouser_Colorway A.webp" style="--rc:-8.52%"
+                alt="KDscion m2 classic fit trouser">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M2 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">classic fit trouser</p>
+                </div>
+                </div>
+
+                <div class="product-item" style="--ord:5" data-design-type="solo" data-product-url="m6 design variations.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m6-regular collared button up coat_Colorway A.webp" style="--rc:-6.59%"
+                alt="KDscion m6 regular collared button up coat">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M6 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">regular collared button up coat</p>
+                </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -274,9 +458,9 @@
         <div class="footer_details">
             <a href="foundermessage.html"><h5>About House</h5></a>
             <a href="queryforum.html"><h5>Contact House</h5></a>
-                    <a href="shipping.html"><h5>Shipping</h5></a>
-        <a href="returns.html"><h5>Returns</h5></a>
-        <a href="privacy.html"><h5>Privacy</h5></a>
+            <a href="shipping.html"><h5>Shipping</h5></a>
+            <a href="returns.html"><h5>Returns</h5></a>
+            <a href="privacy.html"><h5>Privacy</h5></a>
         </div>
         <div class="footer_branding">
             <div class="monogram">
@@ -288,46 +472,58 @@
         </div>
     </div>
 
-    <!-- ── Navigate to product page on click ── -->
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+
     <script>
-        document.querySelectorAll('.product-item[data-model]').forEach(item => {
-            item.addEventListener('click', () => {
-                const url = item.dataset.productUrl;
-                if (url) {
-                    window.location.href = url;
-                } else {
-                    const match = item.dataset.model.match(/p(\d+)-/);
-                    if (match) window.location.href = 'p' + match[1] + '-product.html';
-                }
-            });
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 
     <script>
-        const items = document.querySelectorAll('.product-item');
-
-        items.forEach(item => {
-            const titleEl = item.querySelector('.product-desc__title');
-            const subEl   = item.querySelector('.product-desc__sub');
-            if (titleEl && subEl) {
-                const full  = titleEl.textContent.trim();
-                const idx   = full.indexOf('-');
-                if (idx !== -1) {
-                    const brand = full.slice(0, idx);
-                    titleEl.textContent = brand.startsWith('KD') ? 'KD ' + brand.slice(2) : brand;
-                    subEl.textContent   = full.slice(idx + 1);
+        document.querySelectorAll('.product-item[data-product-url]').forEach(item => {
+            if (item.dataset.productUrl.includes('design variations')) {
+                item.classList.add('has-variations');
+                const desc = item.querySelector('.product-desc');
+                if (desc) {
+                    const dots = document.createElement('span');
+                    dots.className = 'var-dots';
+                    dots.innerHTML = '<span class="var-dot"></span><span class="var-dot"></span><span class="var-dot"></span>';
+                    desc.prepend(dots);
                 }
             }
-        });
-
-        requestAnimationFrame(() => {
-            items.forEach(item => {
-                const titleEl   = item.querySelector('.product-desc__title');
-                const dividerEl = item.querySelector('.product-desc__divider');
-                if (titleEl && dividerEl) dividerEl.style.width = titleEl.offsetWidth + 'px';
+            item.addEventListener('click', () => {
+                sessionStorage.setItem('poolMenScrollY', window.scrollY);
+                // Track which design was clicked and whether it has variations
+                const url = item.dataset.productUrl || '';
+                const subEl = item.querySelector('.product-desc__sub');
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack(
+                        url.includes('design variations') ? 'variation_opened' : 'design_clicked',
+                        {
+                            destination:  url,
+                            design_name:  subEl ? subEl.textContent.trim() : '',
+                            has_variations: url.includes('design variations'),
+                        }
+                    );
+                }
+                window.location.href = url;
             });
         });
 
+        window.addEventListener('pageshow', () => {
+            const y = sessionStorage.getItem('poolMenScrollY');
+            if (y !== null) {
+                window.scrollTo(0, parseInt(y));
+                sessionStorage.removeItem('poolMenScrollY');
+            }
+        });
+
+        const items = document.querySelectorAll('.product-item');
         items.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 items.forEach(el => el.classList.remove('popup-active'));
@@ -340,6 +536,48 @@
     </script>
 
 
+    <script>
+    (function () {
+        /* Lay the shown cards out in p# order, three per row (col1, col2, col3),
+           whatever filter is active — so the HTML column a card sits in never
+           matters, and "Pair"/"Solo" keep the same 3-across reading order. */
+        const cols = [...document.querySelectorAll('.snap-gallery > .product-column')];
+        const all = [...document.querySelectorAll('.snap-gallery .product-item[data-design-type]')];
+        const pnum = el => { const u = el.dataset.productUrl, n = parseInt((u.match(/^(?:w-l|w|p|m)(\d+)/) || [])[1], 10) || 0;
+            return /^m\d+-m\d+/.test(u) ? n + 0.5 : n; };   // the M1 & M2 duo sits after M1
+        all.sort((a, b) => pnum(a) - pnum(b));
+        function layout(f) {
+            let i = 0;
+            all.forEach(item => {
+                const show = f === 'all' || item.dataset.designType === f;
+                item.classList.toggle('hidden', !show);
+                if (show) {
+                    cols[i % 3].appendChild(item);
+                    item.style.setProperty('--ord', i);   // mobile single-column order
+                    i++;
+                }
+            });
+        }
+        layout('all');
+
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const f = btn.dataset.filter;
+                // Track filter usage
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack('pool_filter_used', { filter: f });
+                }
+                layout(f);
+            });
+        });
+    })();
+    </script>
+
     <script src="js/analytics.js"></script>
+
+    <script type="module" src="js/search-ui.js"></script>
 </body>
 </html>

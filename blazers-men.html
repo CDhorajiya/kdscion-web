@@ -1,0 +1,710 @@
+<!--
+  blazers-men.html — Bespoke Boutique › Men › Blazers
+  Men's blazers, laid out like the Pool of Designs:
+  one card per design, three across in ascending M# order (card i in column i % 3);
+  a card opens its product page (mN.html) or variation set. Cards after the first three rows load lazily.
+  Add a design: a .product-item block in the next column (col1, col2, col3 in turn).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="images/KD_monogram_favicon.webp" type="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZJT42EG6J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZJT42EG6J');
+    </script>
+
+    <title>Blazers — Men — KD Scion</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KD: The House of Scion">
+    <meta property="og:title" content="Blazers — Men — KD Scion">
+    <meta property="og:description" content="Bespoke blazers for men, each tailored to your measurements in the fabric you choose.">
+    <meta property="og:image" content="https://kdscion.com/images/KDscion-m3-single%20breasted%20classic%20coat_Colorway%20A.webp">
+    <meta property="og:url" content="https://kdscion.com/blazers-men.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blazers — Men — KD Scion">
+    <meta name="twitter:description" content="Bespoke blazers for men, each tailored to your measurements in the fabric you choose.">
+    <meta name="twitter:image" content="https://kdscion.com/images/KDscion-m3-single%20breasted%20classic%20coat_Colorway%20A.webp">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .monogram img {
+            filter: invert(1) sepia(1) hue-rotate(90deg) saturate(8) brightness(0.22) contrast(1.5);
+        }
+        .nav .brand-name h1 {
+            font-size: 2.1rem;
+            color: rgb(128, 0, 0);
+        }
+
+        h3.title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 15px;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        .title-sub {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            font-style: normal;
+            color: #1a1a1a;
+            letter-spacing: 6px;
+            margin: 0 0 0 0;
+            text-align: center;
+        }
+
+        /* ── Product gallery ── */
+        .product-gallery {
+            display: flex;
+            gap: 4rem;
+            margin-top: 0;
+            /* width + auto-centering, not a left/right margin pair — there is
+               no "one side" value that a future edit could throw out of sync,
+               unlike the margin-right-only bug this replaced. */
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .product-column {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            flex: 1;
+        }
+
+        /* ── Each product card ── */
+        .product-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+        .product-item.popup-active {
+            z-index: 10;
+        }
+        .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1679 / 2042;
+            overflow: hidden;
+        }
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ── Pointer annotation ── */
+        .product-desc {
+            position: absolute;
+            top: 50%;
+            left: calc(100% - 40px);
+            transform: translateY(-50%);
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.12s ease;
+            z-index: 300;
+        }
+        .product-column:last-child .product-desc {
+            left: auto;
+            right: calc(100% - 180px);
+            align-items: flex-end;
+            padding-left: 0;
+            padding-right: 14px;
+        }
+        .product-desc::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            box-shadow: 0 0 4px rgba(40,25,5,0.4);
+        }
+        .product-column:last-child .product-desc::before {
+            left: auto;
+            right: 0;
+        }
+        .product-desc::after { display: none; }
+        .product-item.has-variations .product-desc::before { display: none; }
+        .var-dots {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .product-column:last-child .var-dots { left: auto; right: 0; }
+        .var-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(40,25,5,0.8);
+            animation: dot-blink 3s ease-in-out infinite;
+        }
+        .var-dot:nth-child(1) { animation-delay: 0s; }
+        .var-dot:nth-child(2) { animation-delay: 1s; }
+        .var-dot:nth-child(3) { animation-delay: 2s; }
+        @keyframes dot-blink {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 1; }
+        }
+        .product-item.popup-active .product-desc { opacity: 1; }
+        .product-desc__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(30,20,5,0.9);
+            margin: 0;
+            white-space: nowrap;
+        }
+        .product-desc__divider { display: none; }
+        .product-desc__sub {
+            display: block;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: rgba(30,20,5,0.7);
+            text-transform: uppercase;
+            margin: 0.5rem 0 0 0;
+            white-space: normal;
+            max-width: 160px;
+        }
+        .product-column:last-child .product-desc__title,
+        .product-column:last-child .product-desc__sub { text-align: right; }
+
+        @media (max-width: 768px) {
+            /* ── mobile: centering / reading-order fixes (scoped to mobile only) ── */
+            .snap-gallery { margin: 0 auto !important; }
+            .column { display: contents !important; }
+            .product-item { order: var(--ord, 0) !important; }
+            .img-wrap img { transform: translateX(var(--rc, 0%)) !important; }
+            .title-sub { font-size: 1.3rem !important; letter-spacing: 3px !important; white-space: nowrap !important; }
+
+            .snap-gallery { flex-direction: column; gap: 2rem; width: 94%; padding: 0; }
+            .column { gap: 2rem; }
+            .container-snaps h3 { letter-spacing: 3px; font-size: 2.1rem; }
+
+            .product-desc {
+                position: static !important;
+                transform: none !important;
+                opacity: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 0.35rem !important;
+                padding: 0.55rem 0.5rem 0.4rem !important;
+                background: none !important;
+                pointer-events: none !important;
+            }
+            .product-column:last-child .product-desc {
+                left: auto !important;
+                right: auto !important;
+                align-items: center !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            .product-desc::before { display: none !important; }
+            .product-desc__title { display: none !important; }
+            .var-dots {
+                position: static !important;
+                flex-direction: row !important;
+                gap: 5px !important;
+                order: -1 !important;
+            }
+            .product-desc__sub {
+                font-size: 1rem !important;
+                color: rgba(30,20,5,0.85) !important;
+                letter-spacing: 1.5px !important;
+                margin: 0 !important;
+                white-space: normal !important;
+                max-width: none !important;
+                text-align: center !important;
+            }
+        }
+
+        /* ── Design-type filter ── */
+        .filter-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0 3rem;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(26,26,26,0.25);
+            color: rgba(26,26,26,0.45);
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 0.25rem 1rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .filter-btn:hover {
+            background: rgba(26,26,26,0.07);
+            border-color: rgba(26,26,26,0.5);
+            color: rgba(26,26,26,0.8);
+        }
+        .filter-btn.active {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #fff;
+        }
+        .product-item[data-design-type].hidden {
+            display: none;
+        }
+
+        /* ── Back-to-top: avoids scrolling back through hundreds of designs ──
+           Drawn exactly like the search glass stacked above it: a bare maroon
+           mark, no plate and no circle, fully opaque, growing a little on hover.
+           The 3rem box is kept even though none of it is painted, so the touch
+           target stays comfortable on a phone. */
+        .back-to-top {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 3rem;
+            height: 3rem;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            color: #800000;
+            z-index: 500;
+            transition: transform 0.2s;
+        }
+        .back-to-top:hover,
+        .back-to-top:focus-visible {
+            transform: scale(1.05);
+            outline: none;
+        }
+        .back-to-top svg {
+            width: 1.9rem;
+            height: 1.9rem;
+            fill: currentColor;
+        }
+        /* Matches the step search-ui.js takes at the same breakpoint. */
+        @media (max-width: 768px) {
+            .back-to-top svg { width: 1.6rem; height: 1.6rem; }
+        }
+
+        /* ── Search glass, stacked above the back-to-top button ──
+           search-ui.js appends its own stylesheet to <head> after this one, so
+           .kd-search-btn--float would otherwise win on source order. The id
+           selector outranks it without needing !important. */
+        #kd-search-btn.kd-search-btn--float {
+            /* An identical 3rem box stacked straight on top of the back-to-top
+               one, so the two marks share a centre line and keep an even gap at
+               whatever size the breakpoint draws them. */
+            width: 3rem;
+            height: 3rem;
+            right: 1.5rem;
+            bottom: 4.5rem;
+        }
+
+        /* ────────────────────────────────────────────────────────────
+           "Recently added" panel — appears 10s after the page opens.
+           Deliberately mirrors the Bespoke Boutique nav dropdown:
+           translucent white + backdrop blur, hairline top/bottom rules.
+           ──────────────────────────────────────────────────────────── */
+        .recent-drop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            /* Bottom padding is a permanently reserved strip for the scroll
+               arrow — kept constant so nothing shifts when the arrow hides */
+            padding: 2rem 3rem 3.6rem;
+            /* border-box so max-height caps the whole panel, padding included
+               (the site has no global border-box reset) */
+            box-sizing: border-box;
+            max-height: 88vh;
+            display: none;
+            flex-direction: column;
+        }
+        .recent-drop.open {
+            display: flex;
+            animation: recentDropFade 0.35s ease forwards;
+        }
+        /* Grid scrolls inside the shell so the arrow can stay pinned */
+        .recent-drop__scroll {
+            overflow-y: auto;
+            /* min-height:0 is required — without it the flex item refuses to
+               shrink below its content and the panel overruns its max-height */
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        @keyframes recentDropFade {
+            from { opacity: 0; transform: translateY(-18px); }
+            to   { opacity: 1; transform: translateY(0);     }
+        }
+
+        .recent-drop__head {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            position: relative;
+            /* Gutters keep the centred title clear of the × at every width */
+            padding: 0 3rem;
+            margin-bottom: 1.8rem;
+        }
+        .recent-drop__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.7rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.9);
+            margin: 0;
+            text-align: center;
+        }
+        .recent-drop__close {
+            position: absolute;
+            right: 0;
+            top: -0.4rem;
+            background: transparent;
+            border: none;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 2rem;
+            line-height: 1;
+            color: rgba(30, 20, 5, 0.5);
+            cursor: pointer;
+            padding: 0.2rem 0.6rem;
+            transition: color 0.2s ease;
+        }
+        .recent-drop__close:hover { color: #000; }
+
+        .recent-drop__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1.6rem;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        .recent-card {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .recent-card:hover { transform: scale(1.05); }
+        .recent-card .img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1679 / 2042;
+            overflow: hidden;
+        }
+        .recent-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transform: translateX(var(--rc, 0%));
+        }
+        .recent-card__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.25rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.9);
+            margin: 0.6rem 0 0;
+        }
+        .recent-card__sub {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.05rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(30, 20, 5, 0.68);
+            margin: 0.3rem 0 0;
+        }
+        .recent-card:hover .recent-card__title,
+        .recent-card:hover .recent-card__sub { color: #000; }
+
+        /* Soft fade at the base so the cut-off row reads as "continues below"
+           and the arrow stays legible over busy thumbnails */
+        .recent-drop.has-more::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 6.5rem;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.75) 55%, rgba(255, 255, 255, 0));
+            pointer-events: none;
+        }
+
+        /* ── Translucent "scroll for more" arrow, pinned to the panel base ── */
+        .recent-drop__more {
+            position: absolute;
+            /* above the .has-more::after fade, which as a pseudo-element
+               would otherwise paint over the button and wash it out */
+            z-index: 1;
+            bottom: 0.4rem;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 3rem;
+            height: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.16);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.2s ease;
+        }
+        .recent-drop__more.visible {
+            display: flex;
+            opacity: 1;
+            animation: recentNudge 1.8s ease-in-out infinite;
+        }
+        .recent-drop__more:hover { background: rgba(255, 255, 255, 0.8); }
+        .recent-drop__more svg {
+            width: 1.4rem;
+            height: 1.4rem;
+            fill: none;
+            stroke: rgba(30, 20, 5, 0.8);
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        @keyframes recentNudge {
+            0%, 100% { transform: translateY(0);     }
+            50%      { transform: translateY(4px);   }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .recent-drop__more.visible { animation: none; }
+        }
+
+        @media (max-width: 900px) {
+            .recent-drop { padding: 1.5rem 1.2rem 1.8rem; }
+            .recent-drop__grid { grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+            .recent-drop__head { padding: 0 2.6rem; margin-bottom: 1.4rem; }
+            .recent-drop__title { font-size: 1.15rem; letter-spacing: 2.5px; line-height: 1.5; }
+            .recent-drop__close { top: -0.2rem; font-size: 1.8rem; }
+            .recent-card__title { font-size: 1.1rem; letter-spacing: 2px; }
+            .recent-card__sub { font-size: 1rem; letter-spacing: 1px; }
+        }
+    </style>
+    <!-- mobile-refresh: cleaner phone layout (tools/mobile_refresh.py) -->
+    <link rel="stylesheet" href="css/mobile-refresh.css">
+    <script src="js/mobile-refresh.js"></script>
+</head>
+<body>
+
+    <header>
+        <nav class="nav collapsible">
+            <a href="index.html" class="brand-name"><h1>KING DHORAJIYA</h1></a>
+            <svg class="icon icon--white nav__toggler">
+                <use xlink:href="images/sprite.svg#menu"></use>
+            </svg>
+            <a class="bb" href="bespokeboutique.html"><img src="images/Drawing.svg" alt="Bespoke Boutique link"></a>
+        </nav>
+    </header>
+
+    <div class="container-snaps">
+        <h3 class="title">BLAZERS</h3>
+        <p class="title-sub">CUSTOM | PREMIUM | UNIQUE</p>
+
+
+
+
+        <div class="product-gallery snap-gallery">
+
+            <!-- ── Column 1 ── -->
+            <div class="product-column column column1">
+
+                <div class="product-item" style="--ord:0" data-design-type="solo" data-product-url="m3.html">
+                <div class="img-wrap">
+                <img src="images/KDscion-m3-single breasted classic coat_Colorway A.webp" style="--rc:-5.22%"
+                alt="KDscion m3 single breasted classic coat">
+                </div>
+                <div class="product-desc">
+                <p class="product-desc__title">M3 | KD Scion</p>
+                <div class="product-desc__divider"></div>
+                <p class="product-desc__sub">single breasted classic coat</p>
+                </div>
+                </div>
+            </div>
+
+            <!-- ── Column 2 ── -->
+            <div class="product-column column column2">
+            </div>
+
+            <!-- ── Column 3 ── -->
+            <div class="product-column column column3">
+            </div>
+
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+
+    <script>
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.product-item[data-product-url]').forEach(item => {
+            if (item.dataset.productUrl.includes('design variations')) {
+                item.classList.add('has-variations');
+                const desc = item.querySelector('.product-desc');
+                if (desc) {
+                    const dots = document.createElement('span');
+                    dots.className = 'var-dots';
+                    dots.innerHTML = '<span class="var-dot"></span><span class="var-dot"></span><span class="var-dot"></span>';
+                    desc.prepend(dots);
+                }
+            }
+            item.addEventListener('click', () => {
+                sessionStorage.setItem('BlazersMenScrollY', window.scrollY);
+                // Track which design was clicked and whether it has variations
+                const url = item.dataset.productUrl || '';
+                const subEl = item.querySelector('.product-desc__sub');
+                if (typeof window.kdTrack === 'function') {
+                    window.kdTrack(
+                        url.includes('design variations') ? 'variation_opened' : 'design_clicked',
+                        {
+                            destination:  url,
+                            design_name:  subEl ? subEl.textContent.trim() : '',
+                            has_variations: url.includes('design variations'),
+                        }
+                    );
+                }
+                window.location.href = url;
+            });
+        });
+
+        window.addEventListener('pageshow', () => {
+            const y = sessionStorage.getItem('BlazersMenScrollY');
+            if (y !== null) {
+                window.scrollTo(0, parseInt(y));
+                sessionStorage.removeItem('BlazersMenScrollY');
+            }
+        });
+
+        const items = document.querySelectorAll('.product-item');
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                items.forEach(el => el.classList.remove('popup-active'));
+                item.classList.add('popup-active');
+            });
+            item.addEventListener('mouseleave', () => {
+                item.classList.remove('popup-active');
+            });
+        });
+    </script>
+
+
+
+
+    <script src="js/analytics.js"></script>
+
+
+    <script type="module">
+    // ── Fabric-accurate, stock-aware pool snaps ──────────────────────────────
+    // For every thumbnail (main grid + recent-additions popup — both use the
+    // same .img-wrap img markup), check Firebase for a pre-rendered snap of
+    // that product's currently in-stock fabric. Products with no Firebase
+    // data yet (the vast majority, until each is migrated) fall back to
+    // today's static image — this is a no-op for them, not a placeholder.
+    import { getProductSnapConfig, subscribeFabricStock, pickPoolSnap } from './js/fabric-stock.js';
+
+    (async () => {
+        const bySlug = new Map(); // 'p60' -> { fallbackUrl, imgs: [<img>, ...] }
+
+        document.querySelectorAll('.img-wrap img').forEach((img) => {
+            const m = img.getAttribute('src')?.match(/KDscion-(?:w-l|w|p)(\d+)-/i);
+            if (!m) return;
+            const slug = 'p' + m[1];   // Firebase keeps the design's p-number key
+            if (!bySlug.has(slug)) {
+                bySlug.set(slug, { fallbackUrl: img.getAttribute('src'), imgs: [] });
+            }
+            bySlug.get(slug).imgs.push(img);
+        });
+
+        const configs = {};
+        await Promise.all([...bySlug.keys()].map(async (slug) => {
+            try {
+                configs[slug] = await getProductSnapConfig(slug);
+            } catch (err) {
+                configs[slug] = { fabricOrder: [], snaps: {} };
+            }
+        }));
+
+        function applyStock(stockMap) {
+            for (const [slug, { fallbackUrl, imgs }] of bySlug) {
+                const chosen = pickPoolSnap({ ...(configs[slug] || {}), stockMap, fallbackUrl });
+                imgs.forEach((img) => {
+                    // Compare against the raw attribute, not the .src property —
+                    // the browser always resolves .src to an absolute URL, which
+                    // would never match our relative `chosen`/`fallbackUrl` paths.
+                    if (img.getAttribute('src') !== chosen) img.src = chosen;
+                });
+            }
+        }
+
+        try {
+            subscribeFabricStock(applyStock);
+        } catch (err) {
+            console.warn('[fabric-stock] pool snaps unavailable, staying on static images:', err);
+        }
+    })();
+    </script>
+
+    <script type="module" src="js/search-ui.js"></script>
+</body>
+</html>

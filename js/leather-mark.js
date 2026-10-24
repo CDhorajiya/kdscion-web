@@ -139,10 +139,10 @@
         requestAnimationFrame(function () { requestAnimationFrame(function () { mark.classList.add('is-in'); }); });
 
         // The Legacy window: the picture, the inscription, and what it promises.
-        // Women's pieces show a mother and daughter; men's (mN, m-lN pages, or
-        // data-legacy="son" on the script tag) a father and son. Accessories (lN) pass on a bag,
+        // Women's and girls' pieces show a mother and daughter ("From her hands"); men's and boys'
+        // (mN, m-lN, bN, b-lN pages, or data-legacy="son" on the script tag) a father and son ("From his hands"). Accessories (lN) pass on a bag,
         // jackets and coats (w-lN, m-lN) an overcoat; `at` is where the hands meet (the drift's centre).
-        var SON = (SCRIPT && SCRIPT.getAttribute('data-legacy') === 'son') || /\/m(-l)?\d+[^\/]*\.html$/i.test(location.pathname);
+        var SON = (SCRIPT && SCRIPT.getAttribute('data-legacy') === 'son') || /\/[mb](-l)?\d+[^\/]*\.html$/i.test(location.pathname);
         var COAT = !/\/l\d+[^\/]*\.html$/i.test(location.pathname);
         var L = SON
             ? COAT
@@ -171,9 +171,9 @@
                     '<p class="klg-iast" lang="sa-Latn">hasta-nirmitaṃ yāvaj-jīvam</p>' +
                     '<p class="klg-en"><q>Made by hand, for as long as life lasts</q></p>' +
                     '<span class="klg-rule" aria-hidden="true"><i></i><b></b><i></i></span>' +
-                    '<p class="klg-note">Every leather piece of the House is cut, stitched and finished by hand, ' +
-                        'and made to outlast the years. With time it softens and deepens, and takes the shape ' +
-                        'of the one who keeps it, until the day it is handed on, as all fine things are.</p>' +
+                    '<p class="klg-note">Every leather design is crafted by hand, a mark of the House\'s premium ' +
+                        'craftsmanship, and made to outlast the years. With time it gains intrinsic value and takes ' +
+                        'on the character of the one who keeps it, until the day it is handed on, as all fine things are.</p>' +
                     '<p class="klg-sign">From ' + L.her + ' hands, to yours.</p>' +
                 '</div>' +
             '</div>';

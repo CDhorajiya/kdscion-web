@@ -12,9 +12,11 @@
    design. The Sanskrit is a quiet control: on hover it turns dark green with a
    hand pointer; a click (or tap) opens the Legacy window, docked on the viewer
    like the Cuff window (a sheet on phones). It shows a mother, older now,
-   handing her KD Scion tote to her teenage daughter (images/legacy/
-   handing-on.webp; on men's pieces a father and his teenage son, handing-on-son.webp;
-   generated photographs, used as they are), slowly drifting in towards their hands, with the three
+   handing her KD Scion tote to her teenage daughter on accessories (lN pages:
+   images/legacy/handing-on.webp; men's, a father and his teenage son, handing-on-son.webp),
+   and on leather jackets / coats (w-lN, m-lN) the same grandmother helping her granddaughter
+   into a leather overcoat (coat-on.webp; men's, a grandfather and grandson, coat-on-son.webp).
+   Generated photographs, used as they are, slowly drifting in towards their hands, with the three
    lines of the inscription and what they promise. On desktop the mark sits just above the pill's row; on phones just above the
    viewer's bottom row (fabric name, Design Only / Design Details).
 
@@ -72,7 +74,6 @@
         '.klg-body{overflow-y:auto;padding:.3rem 1.1rem 1.2rem;text-align:center;}' +
         '.klg-stage{position:relative;aspect-ratio:1;border-radius:2px;overflow:hidden;background:#ebe3d5;border:1px solid rgba(0,0,0,0.06);}' +
         '.klg-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}' +
-        '.klg-stage img{transform-origin:49% 52%;}' +                    /* where the hands meet */
         '.klg.open .klg-stage img{animation:klg-in 1.6s cubic-bezier(.2,.7,.2,1) both,klg-drift 30s ease-in-out 1.6s infinite alternate;}' +
         '@keyframes klg-drift{from{transform:scale(1);}to{transform:scale(1.05);}}' +
         '.klg-words{margin-top:1rem;}' +
@@ -139,13 +140,21 @@
 
         // The Legacy window: the picture, the inscription, and what it promises.
         // Women's pieces show a mother and daughter; men's (mN, m-lN pages, or
-        // data-legacy="son" on the script tag) a father and son.
+        // data-legacy="son" on the script tag) a father and son. Accessories (lN) pass on a bag,
+        // jackets and coats (w-lN, m-lN) an overcoat; `at` is where the hands meet (the drift's centre).
         var SON = (SCRIPT && SCRIPT.getAttribute('data-legacy') === 'son') || /\/m(-l)?\d+[^\/]*\.html$/i.test(location.pathname);
+        var COAT = !/\/l\d+[^\/]*\.html$/i.test(location.pathname);
         var L = SON
-            ? { img: 'images/legacy/handing-on-son.webp', his: 'his', her: 'his',
-                alt: 'A father, older now, hands his KD Scion leather bag to his teenage son, who takes it in both hands.' }
-            : { img: 'images/legacy/handing-on.webp', his: 'hers', her: 'her',
-                alt: 'A mother, older now, hands her KD Scion leather tote to her teenage daughter, who takes it in both hands.' };
+            ? COAT
+                ? { img: 'images/legacy/coat-on-son.webp', at: '57% 40%', his: 'his', her: 'his',
+                    alt: 'A grandfather helps his teenage grandson into a KD Scion leather overcoat, settling it on his shoulders.' }
+                : { img: 'images/legacy/handing-on-son.webp', at: '49% 52%', his: 'his', her: 'his',
+                    alt: 'A father, older now, hands his KD Scion leather bag to his teenage son, who takes it in both hands.' }
+            : COAT
+                ? { img: 'images/legacy/coat-on.webp', at: '47% 50%', his: 'hers', her: 'her',
+                    alt: 'A grandmother helps her teenage granddaughter into a KD Scion leather overcoat, guiding her arm into the sleeve.' }
+                : { img: 'images/legacy/handing-on.webp', at: '49% 52%', his: 'hers', her: 'her',
+                    alt: 'A mother, older now, hands her KD Scion leather tote to her teenage daughter, who takes it in both hands.' };
         // The picture settles in, then drifts very slowly towards the hands.
         var glass = document.createElement('section');
         glass.className = 'klg';
@@ -155,7 +164,7 @@
             '<div class="klg-head"><h3 class="klg-title" id="klg-title">Legacy</h3>' +
                 '<button type="button" class="klg-close" aria-label="Close legacy">&times;</button></div>' +
             '<div class="klg-body">' +
-                '<div class="klg-stage"><img src="' + L.img + '" width="1024" height="1024" loading="lazy" ' +
+                '<div class="klg-stage"><img src="' + L.img + '" style="transform-origin:' + L.at + '" width="1024" height="1024" loading="lazy" ' +
                     'alt="' + L.alt + '"></div>' +
                 '<div class="klg-words">' +
                     '<p class="klg-sa" lang="sa">हस्तनिर्मितं यावज्जीवम्</p>' +

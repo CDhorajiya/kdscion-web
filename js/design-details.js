@@ -18,7 +18,7 @@
    details under that piece and the customer's own words as the note. */
 
 export const MARK = '— Design details —';
-const LABELS = { lapel: 'Lapel', cuff: 'Cuff', pleat: 'Pleats' };
+const LABELS = { lapel: 'Lapel', cuff: 'Cuff', pleat: 'Pleats', fit: 'Made For' };
 const KEY = (sku) => `kd.designDetails.${sku}`;
 
 export function readDetails(sku) {

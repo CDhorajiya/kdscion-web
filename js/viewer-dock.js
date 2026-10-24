@@ -20,6 +20,7 @@ const ICONS = {
     pleat:   '<path d="M4.5 6.3h15"/><path d="M6.8 6.3 6 19.5M17.2 6.3l.8 13.2"/><path d="M10.3 6.3 12 13.8 13.7 6.3"/><path d="M12 13.8v5.7"/>',
     lapel:   '<path d="M8.4 4.5 12 13.2l3.6-8.7"/><path d="M8.4 4.5 5.2 8l3.6 1.6L12 13.2l3.2-3.6L18.8 8l-3.2-3.5"/><path d="M12 13.2v6.3"/>',
     cuff:    '<path d="M5 8.5h14v8.8H5z"/><path d="M5 11.2h14"/><circle cx="15.6" cy="14.2" r="1.1"/>',
+    fit:     '<path d="M6.2 6.2h11.6v8.3H6.2z"/><path d="M3.6 17.6h16.8"/><path d="M5.6 14.5 3.6 17.6M18.4 14.5l2 3.1"/>',
 };
 const icon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k] || ICONS.details}</svg>`;
 

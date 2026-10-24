@@ -146,14 +146,14 @@
         var COAT = !/\/l\d+[^\/]*\.html$/i.test(location.pathname);
         var L = SON
             ? COAT
-                ? { img: 'images/legacy/coat-on-son.webp', at: '57% 40%', his: 'his', her: 'his',
+                ? { img: 'images/legacy/coat-on-son.webp', at: '57% 40%', her: 'his',
                     alt: 'A grandfather helps his teenage grandson into a KD Scion leather overcoat, settling it on his shoulders.' }
-                : { img: 'images/legacy/handing-on-son.webp', at: '49% 52%', his: 'his', her: 'his',
+                : { img: 'images/legacy/handing-on-son.webp', at: '49% 52%', her: 'his',
                     alt: 'A father, older now, hands his KD Scion leather bag to his teenage son, who takes it in both hands.' }
             : COAT
-                ? { img: 'images/legacy/coat-on.webp', at: '47% 50%', his: 'hers', her: 'her',
+                ? { img: 'images/legacy/coat-on.webp', at: '47% 50%', her: 'her',
                     alt: 'A grandmother helps her teenage granddaughter into a KD Scion leather overcoat, guiding her arm into the sleeve.' }
-                : { img: 'images/legacy/handing-on.webp', at: '49% 52%', his: 'hers', her: 'her',
+                : { img: 'images/legacy/handing-on.webp', at: '49% 52%', her: 'her',
                     alt: 'A mother, older now, hands her KD Scion leather tote to her teenage daughter, who takes it in both hands.' };
         // The picture settles in, then drifts very slowly towards the hands.
         var glass = document.createElement('section');
@@ -172,8 +172,8 @@
                     '<p class="klg-en"><q>Made by hand, for as long as life lasts</q></p>' +
                     '<span class="klg-rule" aria-hidden="true"><i></i><b></b><i></i></span>' +
                     '<p class="klg-note">Every leather piece of the House is cut, stitched and finished by hand, ' +
-                        'to be carried for a lifetime. With the years the leather deepens and softens, and takes ' +
-                        'the shape of the one who carries it, until one day it is ' + L.his + ' to hand on.</p>' +
+                        'and made to outlast the years. With time it softens and deepens, and takes the shape ' +
+                        'of the one who keeps it, until the day it is handed on, as all fine things are.</p>' +
                     '<p class="klg-sign">From ' + L.her + ' hands, to yours.</p>' +
                 '</div>' +
             '</div>';

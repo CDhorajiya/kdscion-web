@@ -1475,6 +1475,16 @@
   'KD-M6-RCBUC6': 'Regular Collared Button Up Coat',
   'KD-M7-RCBULC7': 'Regular Collared Button Up Long Coat',
   'KD-M8-RCFZC8': 'Regular Collared Full Zipper Coat',
+  'KD-G1-SSD1': 'Sleeveless Shift Dress',
+  'KD-G2-SSD2': 'Sleeveless Shift Dress',
+  'KD-G3-FSSD3': 'Full Sleeve Shift Dress',
+  'KD-G4-SSD4': 'Sleeveless Shift Dress',
+  'KD-G5-SSD5': 'Sleeveless Sheath Dress',
+  'KD-G6-SSD6': 'Sleeveless Shift Dress',
+  'KD-G7-SSD7': 'Sleeveless Sheath Dress',
+  'KD-G8-QSSD8': 'Quarter Sleeve Shift Dress',
+  'KD-G9-SMD9': 'Sleeveless Maxi Dress',
+  'KD-G10-SSD10': 'Sleeveless Shift Dress',
   'KD-P145-FSBD145': 'Full Sleeve Bodycon Dress',
   'KD-P146-SLBD146': 'Sleeveless Bodycon Dress',
   'KD-P147-FST147': 'Full Sleeve Top',
@@ -1690,6 +1700,10 @@
   'KD-P172-SHWL172',
   'KD-P173-TSHWL173',
   'KD-P174-TSHWL174',
+  'KD-G3-FSSD3',
+  'KD-G4-SSD4',
+  'KD-G7-SSD7',
+  'KD-G8-QSSD8',
 ]);
 
 const ALL_DESIGNS = [
@@ -1926,6 +1940,16 @@ const ALL_DESIGNS = [
   { sku: 'KD-M6-RCBUC6', name: 'Regular Collared Button Up Coat', group: 'man' },
   { sku: 'KD-M7-RCBULC7', name: 'Regular Collared Button Up Long Coat', group: 'man' },
   { sku: 'KD-M8-RCFZC8', name: 'Regular Collared Full Zipper Coat', group: 'man' },
+  { sku: 'KD-G1-SSD1', name: 'Sleeveless Shift Dress', group: 'girl' },
+  { sku: 'KD-G2-SSD2', name: 'Sleeveless Shift Dress', group: 'girl' },
+  { sku: 'KD-G3-FSSD3', name: 'Full Sleeve Shift Dress', group: 'girl' },
+  { sku: 'KD-G4-SSD4', name: 'Sleeveless Shift Dress', group: 'girl' },
+  { sku: 'KD-G5-SSD5', name: 'Sleeveless Sheath Dress', group: 'girl' },
+  { sku: 'KD-G6-SSD6', name: 'Sleeveless Shift Dress', group: 'girl' },
+  { sku: 'KD-G7-SSD7', name: 'Sleeveless Sheath Dress', group: 'girl' },
+  { sku: 'KD-G8-QSSD8', name: 'Quarter Sleeve Shift Dress', group: 'girl' },
+  { sku: 'KD-G9-SMD9', name: 'Sleeveless Maxi Dress', group: 'girl' },
+  { sku: 'KD-G10-SSD10', name: 'Sleeveless Shift Dress', group: 'girl' },
 ];
 
     // The page a SKU's design lives on (also used by the Orders tab).
@@ -1935,6 +1959,8 @@ const ALL_DESIGNS = [
       if (mm) return `m${mm[1]}-m${mm[2]}.html`;
       const m1 = sku.match(/KD-M(\d+)-/i);
       if (m1) return `m${m1[1]}.html`;
+      const g1 = sku.match(/KD-G(\d+)-/i);
+      if (g1) return `g${g1[1]}.html`;
       const sc = sku.match(/KD-S(\d+)-/i), duo = sku.match(/KD-P(\d+)S(\d+)-/i);
       if (sc) return `s${sc[1]}.html`;
       const lt = sku.match(/KD-L(\d+)-/i);
@@ -1953,6 +1979,8 @@ const ALL_DESIGNS = [
       if (mm) return `M${mm[1]} & M${mm[2]}`;
       const m1 = sku.match(/KD-M(\d+)-/i);
       if (m1) return `M${m1[1]}`;
+      const g1 = sku.match(/KD-G(\d+)-/i);
+      if (g1) return `G${g1[1]}`;
       if (sc) return `S${sc[1]}`;
       if (lt) return `L${lt[1]}`;
       if (duo) return `${designCode(duo[1]).toUpperCase()} & S${duo[2]}`;
@@ -2963,6 +2991,16 @@ const ALL_DESIGNS = [
   'm6': 'images/KDscion-m6-regular collared button up coat_Colorway A.webp',
   'm7': 'images/KDscion-m7-regular collared button up long coat_Colorway A.webp',
   'm8': 'images/KDscion-m8-regular collared full zipper coat_Colorway A.webp',
+  'g1': 'images/KDscion-g1-sleeveless shift dress_Colorway A.webp',
+  'g2': 'images/KDscion-g2-sleeveless shift dress_Colorway A.webp',
+  'g3': 'images/KDscion-g3-full sleeve shift dress_Colorway A.webp',
+  'g4': 'images/KDscion-g4-sleeveless shift dress_Colorway A.webp',
+  'g5': 'images/KDscion-g5-sleeveless sheath dress_Colorway A.webp',
+  'g6': 'images/KDscion-g6-sleeveless shift dress_Colorway A.webp',
+  'g7': 'images/KDscion-g7-sleeveless sheath dress_Colorway A.webp',
+  'g8': 'images/KDscion-g8-quarter sleeve shift dress_Colorway A.webp',
+  'g9': 'images/KDscion-g9-sleeveless maxi dress_Colorway A.webp',
+  'g10': 'images/KDscion-g10-sleeveless shift dress_Colorway A.webp',
   'l1': 'images/KDscion-L1-Premium leather ipad or macbook envelope cover_Default Colorway.webp',
 };
 
@@ -2973,6 +3011,8 @@ const ALL_DESIGNS = [
       if (mm) return DESIGN_IMAGES[`m${mm[1]}-m${mm[2]}`] || null;
       const m1 = sku.match(/KD-M(\d+)-/i);
       if (m1) return DESIGN_IMAGES['m' + m1[1]] || null;
+      const g1 = sku.match(/KD-G(\d+)-/i);
+      if (g1) return DESIGN_IMAGES['g' + g1[1]] || null;
       if (s) return DESIGN_IMAGES['s' + s[1]] || null;
       if (l) return DESIGN_IMAGES['l' + l[1]] || null;
       if (d) return DESIGN_IMAGES[d[1] + '-s' + d[2]] || null;

@@ -462,10 +462,11 @@
       const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
       list.innerHTML = items.map(item => {
         const sku = item.product?.sku || '';
-        const skuMatch = sku.match(/KD-P(\d+)-/i), menDuo = sku.match(/KD-M(\d+)M(\d+)-/i), men = sku.match(/KD-M(\d+)-/i);
+        const skuMatch = sku.match(/KD-P(\d+)-/i), menDuo = sku.match(/KD-M(\d+)M(\d+)-/i), men = sku.match(/KD-M(\d+)-/i), girl = sku.match(/KD-G(\d+)-/i);
         const productPage = skuMatch ? designPage(skuMatch[1])
             : menDuo ? `m${menDuo[1]}-m${menDuo[2]}.html`
             : men ? `m${men[1]}.html`
+            : girl ? `g${girl[1]}.html`
             : 'pool-of-designs-woman.html';
         return `
         <div class="cart-item" data-id="${esc(item.id)}">
